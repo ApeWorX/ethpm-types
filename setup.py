@@ -8,6 +8,9 @@ extras_require = {
         "pytest-xdist",  # multi-process runner
         "pytest-cov",  # Coverage analyzer plugin
         "hypothesis>=6.2.0,<7.0",  # Strategy-based fuzzer
+        # Test-only deps
+        "PyGithub>=1.54,<2.0",  # Necessary to pull official schema from github
+        "hypothesis-jsonschema==0.19.0",  # Fuzzes based on a json schema
     ],
     "lint": [
         "black>=20.8b1,<21.0",  # auto-formatter and linter
