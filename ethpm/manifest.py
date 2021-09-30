@@ -52,7 +52,6 @@ class PackageMeta(BaseModel):
 
 
 class PackageManifest(BaseModel):
-    # NOTE: Must not override this key
     manifest: str = "ethpm/3"
     name: Optional[PackageName] = None
     # NOTE: ``version`` should be valid SemVer
@@ -75,6 +74,11 @@ class PackageManifest(BaseModel):
     # NOTE: values must be a Content Addressible URI that conforms to the same manifest
     #       version as ``manifest``
     buildDependencies: Optional[Dict[str, str]] = None
+
+    @root_validator
+    def check_valid_manifest_version(cls, values):
+        assert "manifest" in values and values["manifest"] == "ethpm/3"
+        return values
 
     @root_validator
     def check_both_version_and_name(cls, values):
