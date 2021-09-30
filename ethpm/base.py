@@ -1,4 +1,5 @@
 from pydantic import BaseModel as _BaseModel
+from pydantic import root_validator  # noqa: F401
 
 
 class BaseModel(_BaseModel):

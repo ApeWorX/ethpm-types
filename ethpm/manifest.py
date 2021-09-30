@@ -1,6 +1,6 @@
 from typing import Dict, List, Optional
 
-from .base import BaseModel
+from .base import BaseModel, root_validator
 from .contract_type import ContractInstance, ContractType
 from .source import Compiler, Source
 
@@ -16,7 +16,6 @@ class PackageMeta(BaseModel):
 class PackageManifest(BaseModel):
     # NOTE: Must not override this key
     manifest: str = "ethpm/3"
-    # NOTE: ``name`` and ``version`` should appear together
     # NOTE: ``name`` must begin lowercase, and be comprised of only ``[a-z0-9-]`` chars
     # NOTE: ``name`` should not exceed 255 chars in length
     name: Optional[str] = None
@@ -40,6 +39,13 @@ class PackageManifest(BaseModel):
     # NOTE: values must be a Content Addressible URI that conforms to the same manifest
     #       version as ``manifest``
     buildDependencies: Optional[Dict[str, str]] = None
+
+    @root_validator
+    def check_both_version_and_name(cls, values):
+        if "name" in values or "version" in values:
+            assert "name" in values and "version" in values
+
+        return values
 
     def __getattr__(self, attr_name: str):
         if self.contractTypes and attr_name in self.contractTypes:
