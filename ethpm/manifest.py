@@ -1,5 +1,7 @@
 from typing import Dict, List, Optional
 
+from pydantic import AnyUrl
+
 from .base import BaseModel, root_validator
 from .contract_type import ContractInstance, ContractType
 from .source import Compiler, Source
@@ -10,7 +12,7 @@ class PackageMeta(BaseModel):
     license: Optional[str] = None
     description: Optional[str] = None
     keywords: Optional[List[str]] = None
-    links: Optional[Dict[str, str]] = None
+    links: Optional[Dict[str, AnyUrl]] = None
 
 
 class PackageManifest(BaseModel):
