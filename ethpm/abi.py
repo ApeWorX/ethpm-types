@@ -1,6 +1,6 @@
 from typing import List, Optional, Union
 
-from pydantic import BaseModel
+from .base import BaseModel
 
 
 class ABIType(BaseModel):

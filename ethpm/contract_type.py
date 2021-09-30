@@ -1,8 +1,7 @@
 from typing import List, Optional, Set
 
-from pydantic import BaseModel
-
 from .abi import ABI
+from .base import BaseModel
 
 
 # TODO link references & link values are for solidity, not used with Vyper

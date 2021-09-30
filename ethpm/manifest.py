@@ -1,7 +1,6 @@
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel
-
+from .base import BaseModel
 from .contract_type import ContractInstance, ContractType
 from .source import Compiler, Source
 

@@ -1,8 +1,7 @@
 import urllib.request
 from typing import List, Optional
 
-from pydantic import BaseModel
-
+from .base import BaseModel
 from .utils import compute_checksum
 
 
