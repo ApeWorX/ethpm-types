@@ -6,6 +6,42 @@ from .base import BaseModel, root_validator
 from .contract_type import ContractInstance, ContractType
 from .source import Compiler, Source
 
+ALPHABET = set("abcdefghijklmnopqrstuvwxyz".split())
+NUMBERS = set("0123456789".split())
+
+
+class PackageName(str):
+    @classmethod
+    def __modify_schema__(cls, field_schema):
+        field_schema.update(
+            pattern="^[a-z][-a-z0-9]{0,254}$",
+            examples=["my-token", "safe-math", "nft"],
+        )
+
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.check_length
+        yield cls.check_first_character
+        yield cls.check_valid_characters
+
+    @classmethod
+    def check_length(cls, value):
+        assert 0 < len(value) < 256
+        return value
+
+    @classmethod
+    def check_first_character(cls, value):
+        assert value[0] in ALPHABET
+        return value
+
+    @classmethod
+    def check_valid_characters(cls, value):
+        assert set(value.split()) in (ALPHABET + NUMBERS + "-")
+        return value
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}({super().__repr__()})"
+
 
 class PackageMeta(BaseModel):
     authors: Optional[List[str]] = None
@@ -18,9 +54,7 @@ class PackageMeta(BaseModel):
 class PackageManifest(BaseModel):
     # NOTE: Must not override this key
     manifest: str = "ethpm/3"
-    # NOTE: ``name`` must begin lowercase, and be comprised of only ``[a-z0-9-]`` chars
-    # NOTE: ``name`` should not exceed 255 chars in length
-    name: Optional[str] = None
+    name: Optional[PackageName] = None
     # NOTE: ``version`` should be valid SemVer
     version: Optional[str] = None
     # NOTE: ``meta`` should be in all published packages
