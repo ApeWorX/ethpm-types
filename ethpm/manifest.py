@@ -1,6 +1,6 @@
 from typing import Dict, List, Optional
 
-from pydantic import AnyUrl
+from pydantic import AnyUrl, Field
 
 from .base import BaseModel, root_validator
 from .contract_type import ContractInstance, ContractType
@@ -63,7 +63,7 @@ class PackageManifest(BaseModel):
     sources: Optional[Dict[str, Source]] = None
     # NOTE: ``contractTypes`` should only include types directly computed from manifest
     # NOTE: ``contractTypes`` should not include abstracts
-    contractTypes: Optional[Dict[str, ContractType]] = None
+    contract_types: Optional[Dict[str, ContractType]] = Field(None, alias="contractTypes")
     compilers: Optional[List[Compiler]] = None
     # NOTE: Keys must be a valid BIP122 URI chain definition
     # NOTE: Values must be a dict of ``ContractType.contractName`` => ``ContractInstance`` objects
@@ -73,7 +73,7 @@ class PackageManifest(BaseModel):
     # NOTE: keys should not exceed 255 chars in length (like ``PackageManifest.name``)
     # NOTE: values must be a Content Addressible URI that conforms to the same manifest
     #       version as ``manifest``
-    buildDependencies: Optional[Dict[str, str]] = None
+    dependencies: Optional[Dict[PackageName, AnyUrl]] = Field(None, alias="buildDependencies")
 
     @root_validator
     def check_valid_manifest_version(cls, values):

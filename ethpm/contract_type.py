@@ -1,5 +1,7 @@
 from typing import List, Optional, Set
 
+from pydantic import Field
+
 from .abi import ABI
 from .base import BaseModel
 from .utils import is_valid_hash
@@ -37,20 +39,21 @@ class Bytecode(BaseModel):
 
 
 class ContractInstance(BaseModel):
-    contractType: str
+    contract_type: str = Field(..., alias="contractType")
     address: str
     transaction: Optional[str] = None
     block: Optional[str] = None
-    runtimeBytecode: Optional[Bytecode] = None
+    runtime_bytecode: Optional[Bytecode] = Field(None, alias="runtimeBytecode")
 
 
 class ContractType(BaseModel):
     _keep_fields_: Set[str] = {"abi"}
-    _skip_fields_: Set[str] = {"contractName"}
-    contractName: str
-    sourceId: Optional[str] = None
-    deploymentBytecode: Optional[Bytecode] = None
-    runtimeBytecode: Optional[Bytecode] = None
+    _skip_fields_: Set[str] = {"name"}
+    # NOTE: Field is optional if `ContractAlias` is the same as `ContractName`
+    name: Optional[str] = Field(None, alias="contractName")
+    source_id: Optional[str] = Field(None, alias="sourceId")
+    deployment_bytecode: Optional[Bytecode] = Field(None, alias="deploymentBytecode")
+    runtime_bytecode: Optional[Bytecode] = Field(None, alias="runtimeBytecode")
     # abi, userdoc and devdoc must conform to spec
     abi: List[ABI] = []
     userdoc: Optional[str] = None
