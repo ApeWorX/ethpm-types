@@ -1,9 +1,11 @@
 from pydantic import BaseModel as _BaseModel
-from pydantic import root_validator  # noqa: F401
 
 
 class BaseModel(_BaseModel):
     def dict(self, *args, **kwargs) -> dict:
+        # NOTE: We do this to accomodate the aliases needed for EIP-2678 compatibility
+        if "by_alias" not in kwargs:
+            kwargs["by_alias"] = True
 
         # EIP-2678: skip empty fields (at least by default)
         if "exclude_none" not in kwargs:
