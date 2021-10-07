@@ -17,7 +17,7 @@ EXAMPLES_RAW_URL = "https://raw.githubusercontent.com/ethpm/ethpm-spec/master/ex
     "example_name",
     [f.name for f in ETHPM_SPEC_REPO.get_contents("examples")],  # type: ignore
 )
-def test_uniswap_tokenlists(example_name):
+def test_examples(example_name):
     example = requests.get(f"{EXAMPLES_RAW_URL}/{example_name}/v3.json").json()
 
     if "invalid" not in example_name:
