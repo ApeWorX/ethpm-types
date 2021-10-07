@@ -1,15 +1,14 @@
 import urllib.request
 from typing import List, Optional
 
-from pydantic import BaseModel
-
+from .base import BaseModel
 from .utils import compute_checksum
 
 
 class Compiler(BaseModel):
     name: str
     version: str
-    settings: Optional[str] = None
+    settings: Optional[dict] = None
     contractTypes: Optional[List[str]] = None
 
 
