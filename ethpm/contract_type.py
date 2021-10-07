@@ -56,8 +56,8 @@ class ContractType(BaseModel):
     runtime_bytecode: Optional[Bytecode] = Field(None, alias="runtimeBytecode")
     # abi, userdoc and devdoc must conform to spec
     abi: List[ABI] = []
-    userdoc: Optional[str] = None
-    devdoc: Optional[str] = None
+    userdoc: Optional[dict] = None
+    devdoc: Optional[dict] = None
 
     @property
     def constructor(self) -> Optional[ABI]:
