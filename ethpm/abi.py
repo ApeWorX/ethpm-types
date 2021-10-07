@@ -30,9 +30,9 @@ def encode_arg(arg: ABIType) -> str:
 
 
 class ABI(BaseModel):
-    name: str = ""
-    inputs: List[ABIType] = []
-    outputs: List[ABIType] = []
+    name: Optional[str] = None
+    inputs: Optional[List[ABIType]] = None
+    outputs: Optional[List[ABIType]] = None
     # ABI v2 Field
     # NOTE: Only functions have this field
     stateMutability: Optional[str] = None
@@ -51,7 +51,7 @@ class ABI(BaseModel):
         """
         name = self.name if (self.type == "function" or self.type == "event") else self.type
 
-        input_args = ", ".join(map(encode_arg, self.inputs))
+        input_args = ", ".join(map(encode_arg, self.inputs or []))
         output_args = ""
 
         if self.outputs:
@@ -70,7 +70,7 @@ class ABI(BaseModel):
         """
         name = self.name if (self.type == "function" or self.type == "event") else self.type
         # NOTE: There is no space between input args for selector
-        input_names = ",".join(i.canonical_type for i in self.inputs)
+        input_names = ",".join(i.canonical_type for i in (self.inputs or []))
         return f"{name}({input_names})"
 
     @property
