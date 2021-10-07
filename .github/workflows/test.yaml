@@ -2,6 +2,10 @@ on: ["push", "pull_request"]
 
 name: Test
 
+
+env:
+   GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
     linting:
         runs-on: ubuntu-latest
