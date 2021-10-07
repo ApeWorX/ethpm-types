@@ -84,7 +84,7 @@ class ContractType(BaseModel):
         return [abi for abi in self.abi if abi.type == "function" and not abi.is_stateful]
 
     @property
-    def transactions(self) -> List[ABI]:
+    def txns(self) -> List[ABI]:
         return [abi for abi in self.abi if abi.type == "function" and abi.is_stateful]
 
 
