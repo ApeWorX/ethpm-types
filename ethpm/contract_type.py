@@ -2,6 +2,7 @@ from typing import List, Optional, Set
 
 from .abi import ABI
 from .base import BaseModel
+from .utils import is_valid_hash
 
 
 # TODO link references & link values are for solidity, not used with Vyper
@@ -82,3 +83,42 @@ class ContractType(BaseModel):
     @property
     def transactions(self) -> List[ABI]:
         return [abi for abi in self.abi if abi.type == "function" and abi.is_stateful]
+
+
+class BIP122_URI(str):
+    @classmethod
+    def __modify_schema__(cls, field_schema):
+        field_schema.update(
+            pattern="^blockchain://[0-9a-f]{64}/block/[0-9a-f]{64}$",
+            examples=[
+                "blockchain://d4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3"
+                "/block/752820c0ad7abc1200f9ad42c4adc6fbb4bd44b5bed4667990e64565102c1ba6",
+            ],
+        )
+
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate_uri
+        yield cls.validate_genesis_hash
+
+    @classmethod
+    def validate_uri(cls, uri):
+        assert uri.startswith("blockchain://"), "Must use 'blockchain' protocol"
+        assert (
+            len(uri.replace("blockchain://", "").split("/")) == 3
+        ), "must be referenced via <genesis_hash>/block/<block_hash>"
+        _, block_keyword, _ = uri.replace("blockchain://", "").split("/")
+        assert block_keyword == "block", "must use block reference"
+        return uri
+
+    @classmethod
+    def validate_genesis_hash(cls, uri):
+        genesis_hash, _, _ = uri.replace("blockchain://", "").split("/")
+        assert is_valid_hash(genesis_hash), f"hash is not valid: {genesis_hash}"
+        return uri
+
+    @classmethod
+    def validate_block_hash(cls, uri):
+        _, _, block_hash = uri.replace("blockchain://", "").split("/")
+        assert is_valid_hash(block_hash), f"hash is not valid: {block_hash}"
+        return uri
