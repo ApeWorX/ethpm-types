@@ -68,6 +68,7 @@ class PackageManifest(BaseModel):
     # NOTE: ``contractTypes`` should not include abstracts
     contract_types: Optional[Dict[str, ContractType]] = Field(None, alias="contractTypes")
     compilers: Optional[List[Compiler]] = None
+    # NOTE: ``str`` arg should be a valid ``contractType``, but this is not required.
     deployments: Optional[Dict[BIP122_URI, Dict[str, ContractInstance]]] = None
     # NOTE: values must be a Content Addressible URI that conforms to the same manifest
     #       version as ``manifest``
@@ -115,18 +116,6 @@ class PackageManifest(BaseModel):
             # else: contractName != contractAlias (key used in `contractTypes` dict)
 
         return values
-
-    @validator("deployments")
-    def check_deployments(cls, deployments) -> Dict[str, Dict[str, ContractInstance]]:
-        # TODO: Understand how deployments are suppsoed to be checked, since
-        # for blockchain_uri in deployments:
-        #     # NOTE: Values must be a dict of
-        #     #       ``ContractType.name`` => ``ContractInstance`` objects
-        #     for contract_name, contract_instance in deployments[blockchain_uri].items():
-        #         if contract_instance.contract_type != contract_name:
-        #             raise ValueError(f"'{contract_name}' != '{contract_instance.contract_type}'")
-
-        return deployments
 
     def __getattr__(self, attr_name: str):
         # NOTE: **must** raise `AttributeError` or return here, or else Python breaks
