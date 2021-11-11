@@ -45,7 +45,7 @@ jobs:
           run: pip install .[lint,test]  # Might need test deps
 
         - name: Run MyPy
-          run: mypy .
+          run: mypy .  --exclude build/  # For some reason, this gets caught sometimes
 
     functional:
         runs-on: ${{ matrix.os }}
