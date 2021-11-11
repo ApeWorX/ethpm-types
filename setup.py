@@ -45,7 +45,7 @@ with open("./README.md") as readme:
 
 
 setup(
-    name="ethpm",
+    name="ethpm-types",
     use_scm_version=True,
     setup_requires=["setuptools_scm"],
     description="""ethpm: Implementation of EIP-2678""",
@@ -61,7 +61,7 @@ setup(
     ],
     python_requires=">=3.6,<4",
     extras_require=extras_require,
-    py_modules=["ethpm"],
+    py_modules=["ethpm_types"],
     license="Apache-2.0",
     zip_safe=False,
     keywords="ethereum",

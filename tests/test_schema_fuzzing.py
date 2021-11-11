@@ -4,7 +4,7 @@ from hypothesis import HealthCheck, given, settings
 from hypothesis_jsonschema import from_schema
 from pydantic import ValidationError
 
-from ethpm import PackageManifest
+from ethpm_types import PackageManifest
 
 ETHPM_SCHEMA = "https://raw.githubusercontent.com/ethpm/ethpm-spec/master/spec/v3.spec.json"
 

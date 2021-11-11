@@ -5,7 +5,7 @@ import pytest  # type: ignore
 import requests  # type: ignore
 from pydantic import ValidationError
 
-from ethpm import PackageManifest
+from ethpm_types import PackageManifest
 
 # NOTE: Must export GITHUB_ACCESS_TOKEN
 ETHPM_SPEC_REPO = github.Github(os.environ["GITHUB_ACCESS_TOKEN"]).get_repo("ethpm/ethpm-spec")
