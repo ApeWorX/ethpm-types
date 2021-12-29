@@ -66,54 +66,32 @@ class SourceMap(BaseModel):
         """
 
         item = None
-        for row in self.__root__.strip().split(";"):
+
+        def extract_sourcemap_item(expanded_row, item_idx, previous_val=None):
+            if len(expanded_row) > item_idx and expanded_row[item_idx] != "":
+                return expanded_row[item_idx]
+
+            else:
+                return previous_val  # Use previous item (or None if no previous item)
+
+        for i, row in enumerate(self.__root__.strip().split(";")):
 
             if row != "":
                 expanded_row = row.split(":")
 
-                if expanded_row[0] != "":
-                    start = int(expanded_row[0])
-
-                elif item:
-                    start = item.start  # Use previous item
-
-                else:
-                    # NOTE: This should only be true if there is no entry for the
-                    #       first step, which is illegal syntax for the sourcemap.
-                    raise Exception("Corrupted SourceMap")
-
-                if len(expanded_row) > 1 and expanded_row[1] != "":
-                    stop = int(expanded_row[1])
-
-                elif item:
-                    stop = item.stop  # Use previous item
+                if item is None:
+                    start = int(extract_sourcemap_item(expanded_row, 0) or "-1")
+                    stop = int(extract_sourcemap_item(expanded_row, 1) or "-1")
+                    contract_id = int(extract_sourcemap_item(expanded_row, 2) or "-1")
+                    jump_code = extract_sourcemap_item(expanded_row, 3) or ""
 
                 else:
-                    # NOTE: This should only be true if there is no entry for the
-                    #       first step, which is illegal syntax for the sourcemap.
-                    raise Exception("Corrupted SourceMap")
-
-                if len(expanded_row) > 2 and expanded_row[2] != "":
-                    contract_id = int(expanded_row[2])
-
-                elif item:
-                    contract_id = item.contract_id  # Use previous item
-
-                else:
-                    # NOTE: This should only be true if there is no entry for the
-                    #       first step, which is illegal syntax for the sourcemap.
-                    raise Exception("Corrupted SourceMap")
-
-                if len(expanded_row) > 3 and expanded_row[3] != "":
-                    jump_code = expanded_row[3]
-
-                elif item:
-                    jump_code = item.jump_code  # Use previous item
-
-                else:
-                    # NOTE: This should only be true if there is no entry for the
-                    #       first step, which is illegal syntax for the sourcemap.
-                    raise Exception("Corrupted SourceMap")
+                    start = int(extract_sourcemap_item(expanded_row, 0, item.start or "-1"))
+                    stop = int(extract_sourcemap_item(expanded_row, 1, item.stop or "-1"))
+                    contract_id = int(
+                        extract_sourcemap_item(expanded_row, 2, item.contract_id or "-1")
+                    )
+                    jump_code = extract_sourcemap_item(expanded_row, 3, item.jump_code or "")
 
                 item = SourceMapItem.construct(
                     # NOTE: `-1` for these three entries means `None`
