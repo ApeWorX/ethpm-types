@@ -47,10 +47,12 @@ class ContractInstance(BaseModel):
 
 
 class SourceMapItem(BaseModel):
-    start: int
-    stop: int
-    contract_id: int
+    # NOTE: `None` entry means this path was inserted by the compiler during codegen
+    start: Optional[int]
+    stop: Optional[int]
+    contract_id: Optional[int]
     jump_code: str
+    # NOTE: ignore "modifier_depth" keyword introduced in solidity >0.6.x
 
 
 class SourceMap(BaseModel):
@@ -62,22 +64,67 @@ class SourceMap(BaseModel):
         Useful for when parsing the map according to compiler-specific
         decompilation rules back to the source code language files.
         """
-        item = None
-        for row in self.__root__.split(";"):
 
-            if row:
-                # NOTE: ignore "modifier depth" in solidity >0.6.x
-                expanded_row = row.split(":")[:4]
+        item = None
+        for row in self.__root__.strip().split(";"):
+
+            if row != "":
+                expanded_row = row.split(":")
+
+                if expanded_row[0] != "":
+                    start = int(expanded_row[0])
+
+                elif item:
+                    start = item.start  # Use previous item
+
+                else:
+                    # NOTE: This should only be true if there is no entry for the
+                    #       first step, which is illegal syntax for the sourcemap.
+                    raise Exception("Corrupted SourceMap")
+
+                if len(expanded_row) > 1 and expanded_row[1] != "":
+                    stop = int(expanded_row[1])
+
+                elif item:
+                    stop = item.stop  # Use previous item
+
+                else:
+                    # NOTE: This should only be true if there is no entry for the
+                    #       first step, which is illegal syntax for the sourcemap.
+                    raise Exception("Corrupted SourceMap")
+
+                if len(expanded_row) > 2 and expanded_row[2] != "":
+                    contract_id = int(expanded_row[2])
+
+                elif item:
+                    contract_id = item.contract_id  # Use previous item
+
+                else:
+                    # NOTE: This should only be true if there is no entry for the
+                    #       first step, which is illegal syntax for the sourcemap.
+                    raise Exception("Corrupted SourceMap")
+
+                if len(expanded_row) > 3 and expanded_row[3] != "":
+                    jump_code = expanded_row[3]
+
+                elif item:
+                    jump_code = item.jump_code  # Use previous item
+
+                else:
+                    # NOTE: This should only be true if there is no entry for the
+                    #       first step, which is illegal syntax for the sourcemap.
+                    raise Exception("Corrupted SourceMap")
 
                 item = SourceMapItem.construct(
-                    start=int(expanded_row[0]),
-                    stop=int(expanded_row[1]),
-                    contract_id=int(expanded_row[2]),
-                    jump_code=expanded_row[3],
+                    # NOTE: `-1` for these three entries means `None`
+                    start=start if start != -1 else None,
+                    stop=stop if stop != -1 else None,
+                    contract_id=contract_id if contract_id != -1 else None,
+                    jump_code=jump_code,
                 )
 
             # else: use previous `item`
-            # NOTE: Format of SourceMap is like `1:2:3:blah;;4:5:6:blah;;;`
+            # NOTE: Format of SourceMap is like `1:2:3:a;;4:5:6:b;;;`
             #       where an empty entry means to copy the previous step.
 
             if not item:
