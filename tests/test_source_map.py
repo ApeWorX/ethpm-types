@@ -67,4 +67,4 @@ def serialize(sourcemap: Iterator[SourceMapItem]) -> str:
 def test_source_map(sourcemap_filename):
     sourcemap = SOURCE_MAP_FILES[sourcemap_filename].read_text().strip()
     sm = SourceMap.construct(__root__=sourcemap)
-    assert serialize(sm.parse()) == sourcemap
+    assert sourcemap == serialize(sm.parse())
