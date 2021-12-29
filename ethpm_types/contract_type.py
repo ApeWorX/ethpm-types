@@ -1,4 +1,4 @@
-from typing import List, Optional, Set
+from typing import Iterator, List, Optional, Set
 
 from pydantic import Field
 
@@ -46,6 +46,49 @@ class ContractInstance(BaseModel):
     runtime_bytecode: Optional[Bytecode] = Field(None, alias="runtimeBytecode")
 
 
+class SourceMapItem(BaseModel):
+    start: int
+    stop: int
+    contract_id: int
+    jump_code: str
+
+
+class SourceMap(BaseModel):
+    __root__: str
+
+    def parse(self) -> Iterator[SourceMapItem]:
+        """
+        Parses the source map string into a stream of ``SourceMapItem`` items.
+        Useful for when parsing the map according to compiler-specific
+        decompilation rules back to the source code language files.
+        """
+        item = None
+        for row in self.__root__.split(";"):
+
+            if row:
+                # NOTE: ignore "modifier depth" in solidity >0.6.x
+                expanded_row = row.split(":")[:4]
+
+                item = SourceMapItem.construct(
+                    start=int(expanded_row[0]),
+                    stop=int(expanded_row[1]),
+                    contract_id=int(expanded_row[2]),
+                    jump_code=expanded_row[3],
+                )
+
+            # else: use previous `item`
+            # NOTE: Format of SourceMap is like `1:2:3:blah;;4:5:6:blah;;;`
+            #       where an empty entry means to copy the previous step.
+
+            if not item:
+                # NOTE: This should only be true if there is no entry for the
+                #       first step, which is illegal syntax for the sourcemap.
+                raise Exception("Corrupted SourceMap")
+
+            # NOTE: If row is empty, just yield previous step
+            yield item
+
+
 class ContractType(BaseModel):
     _keep_fields_: Set[str] = {"abi"}
     _skip_fields_: Set[str] = {"name"}
@@ -56,6 +99,7 @@ class ContractType(BaseModel):
     runtime_bytecode: Optional[Bytecode] = Field(None, alias="runtimeBytecode")
     # abi, userdoc and devdoc must conform to spec
     abi: List[ABI] = []
+    sourcemap: Optional[SourceMap] = None  # NOTE: Not a part of canonical EIP-2678 spec
     userdoc: Optional[dict] = None
     devdoc: Optional[dict] = None
 
