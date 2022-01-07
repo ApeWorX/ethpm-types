@@ -55,7 +55,7 @@ class ContractType(BaseModel):
     deployment_bytecode: Optional[Bytecode] = Field(None, alias="deploymentBytecode")
     runtime_bytecode: Optional[Bytecode] = Field(None, alias="runtimeBytecode")
     # abi, userdoc and devdoc must conform to spec
-    abi: List[ABI] = []
+    abi: List[ABI] = None  # type: ignore
     userdoc: Optional[dict] = None
     devdoc: Optional[dict] = None
 

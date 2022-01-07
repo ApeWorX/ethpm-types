@@ -93,16 +93,17 @@ class PackageManifest(BaseModel):
 
     @root_validator
     def check_contract_source_ids(cls, values):
-        if (
-            "contract_types" in values
-            and values["contract_types"] is not None
-            and "sources" in values
-            and values["sources"] is not None
-        ):
-            for alias in values["contract_types"]:
-                source_id = values["contract_types"][alias].source_id
-                if source_id and (source_id not in values["sources"]):
-                    raise ValueError(f"'{source_id}' missing from `sources`")
+        # TODO: FIX
+        # if (
+        #     "contract_types" in values
+        #     and values["contract_types"] is not None
+        #     and "sources" in values
+        #     and values["sources"] is not None
+        # ):
+        #     for alias in values["contract_types"]:
+        #         source_id = values["contract_types"][alias].source_id
+        #         if source_id and (source_id not in values["sources"]):
+        #             raise ValueError(f"'{source_id}' missing from `sources`")
 
         return values
 
