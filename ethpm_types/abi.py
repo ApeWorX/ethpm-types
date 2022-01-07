@@ -4,7 +4,7 @@ from .base import BaseModel
 
 
 class ABIType(BaseModel):
-    name: str = None  # type: ignore  # NOTE: Tuples don't have names by default
+    name: Optional[str] = None  # NOTE: Tuples don't have names by default
     indexed: Optional[bool] = None  # Only event ABI types should have this field
     type: Union[str, "ABIType"]
     internalType: Optional[str] = None
