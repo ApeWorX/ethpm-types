@@ -1,5 +1,3 @@
-import os
-
 import github
 import pytest  # type: ignore
 import requests  # type: ignore
@@ -7,8 +5,7 @@ from pydantic import ValidationError
 
 from ethpm_types import PackageManifest
 
-# NOTE: Must export GITHUB_ACCESS_TOKEN
-ETHPM_SPEC_REPO = github.Github(os.environ["GITHUB_ACCESS_TOKEN"]).get_repo("ethpm/ethpm-spec")
+ETHPM_SPEC_REPO = github.Github().get_repo("ethpm/ethpm-spec")
 
 EXAMPLES_RAW_URL = "https://raw.githubusercontent.com/ethpm/ethpm-spec/master/examples"
 
