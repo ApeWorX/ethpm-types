@@ -7,7 +7,9 @@ from pydantic import ValidationError
 
 from ethpm_types import PackageManifest
 
-ETHPM_SPEC_REPO = github.Github(os.environ.get("GITHUB_ACCESS_TOKEN")).get_repo("ethpm/ethpm-spec")
+ETHPM_SPEC_REPO = github.Github(os.environ.get("GITHUB_ACCESS_TOKEN", None)).get_repo(
+    "ethpm/ethpm-spec"
+)
 
 EXAMPLES_RAW_URL = "https://raw.githubusercontent.com/ethpm/ethpm-spec/master/examples"
 
