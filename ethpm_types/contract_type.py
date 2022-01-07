@@ -55,12 +55,15 @@ class ContractType(BaseModel):
     deployment_bytecode: Optional[Bytecode] = Field(None, alias="deploymentBytecode")
     runtime_bytecode: Optional[Bytecode] = Field(None, alias="runtimeBytecode")
     # abi, userdoc and devdoc must conform to spec
-    abi: List[ABI] = []
+    abi: Optional[List[ABI]] = None
     userdoc: Optional[dict] = None
     devdoc: Optional[dict] = None
 
     @property
     def constructor(self) -> Optional[ABI]:
+        if not self.abi:
+            return None
+
         for abi in self.abi:
             if abi.type == "constructor":
                 return abi
@@ -69,6 +72,9 @@ class ContractType(BaseModel):
 
     @property
     def fallback(self) -> Optional[ABI]:
+        if not self.abi:
+            return None
+
         for abi in self.abi:
             if abi.type == "fallback":
                 return abi
@@ -77,14 +83,23 @@ class ContractType(BaseModel):
 
     @property
     def events(self) -> List[ABI]:
+        if not self.abi:
+            return []
+
         return [abi for abi in self.abi if abi.type == "event"]
 
     @property
     def calls(self) -> List[ABI]:
+        if not self.abi:
+            return []
+
         return [abi for abi in self.abi if abi.type == "function" and not abi.is_stateful]
 
     @property
     def txns(self) -> List[ABI]:
+        if not self.abi:
+            return []
+
         return [abi for abi in self.abi if abi.type == "function" and abi.is_stateful]
 
 

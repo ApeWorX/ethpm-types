@@ -13,10 +13,14 @@ extras_require = {
         "hypothesis-jsonschema==0.19.0",  # Fuzzes based on a json schema
     ],
     "lint": [
-        "black>=20.8b1,<21.0",  # auto-formatter and linter
-        "mypy>=0.800,<1.0",  # Static type analyzer
-        "flake8>=3.8.3,<4.0",  # Style linter
-        "isort>=5.7.0,<6.0",  # Import sorting linter
+        "black>=21.10b0,<22.0",  # auto-formatter and linter
+        "mypy>=0.910,<1.0",  # Static type analyzer
+        "types-PyYAML",  # NOTE: Needed due to mypy typeshed
+        "types-requests",  # NOTE: Needed due to mypy typeshed
+        "flake8>=3.9.2,<4.0",  # Style linter
+        "flake8-breakpoint>=1.1.0,<2.0.0",  # detect breakpoints left in code
+        "flake8-print>=4.0.0,<5.0.0",  # detect print statements left in code
+        "isort>=5.9.3,<6.0",  # Import sorting linter
     ],
     "release": [  # `release` GitHub Action job uses this
         "setuptools",  # Installation tool
@@ -59,7 +63,7 @@ setup(
         "importlib-metadata ; python_version<'3.8'",
         "pydantic>=1.8.2,<2.0.0",
     ],
-    python_requires=">=3.6,<4",
+    python_requires=">=3.7,<4",
     extras_require=extras_require,
     py_modules=["ethpm_types"],
     license="Apache-2.0",
@@ -68,14 +72,13 @@ setup(
     packages=find_packages(exclude=["tests", "tests.*"]),
     package_data={"ethpm": ["py.typed"]},
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
         "Natural Language :: English",
         "Operating System :: MacOS",
         "Operating System :: POSIX",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
