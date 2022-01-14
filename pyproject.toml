@@ -35,3 +35,6 @@ known_third_party = ["github", "hypothesis", "hypothesis_jsonschema", "pydantic"
 known_first_party = ["ethpm"]
 multi_line_output = 3
 use_parentheses = true
+
+[tool.mypy]
+exclude = "build"
