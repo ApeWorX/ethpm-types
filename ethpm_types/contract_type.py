@@ -115,6 +115,12 @@ class SourceMap(BaseModel):
 
 
 class ContractType(BaseModel):
+    """
+    A serializable type representing the type of a contract.
+    For example, if you define your contract as ``contract MyContract`` (in Solidity),
+    then ``MyContract`` would be the type.
+    """
+
     _keep_fields_: Set[str] = {"abi"}
     _skip_fields_: Set[str] = {"name"}
     # NOTE: Field is optional if `ContractAlias` is the same as `ContractName`
@@ -130,6 +136,12 @@ class ContractType(BaseModel):
 
     @property
     def constructor(self) -> Optional[ABI]:
+        """
+        The constructor of the contract, if it has one. For example,
+        your smart-contract (in Solidity) may define a ``constructor() public {}``.
+        This property contains information about the parameters needed to initialize
+        a contract.
+        """
         if not self.abi:
             return None
 
@@ -141,6 +153,12 @@ class ContractType(BaseModel):
 
     @property
     def fallback(self) -> Optional[ABI]:
+        """
+        The fallback method of the contract, if it has one. A fallback method
+        is external, has no name, arguments, or return value, and gets invoked
+        when the user attempts to call a method that does not exist.
+        """
+
         if not self.abi:
             return None
 
@@ -152,6 +170,12 @@ class ContractType(BaseModel):
 
     @property
     def events(self) -> List[ABI]:
+        """
+        The events defined in a smart contract.
+        Returns:
+            List[:class:`~ethpm_types.abi.ABI`]
+        """
+
         if not self.abi:
             return []
 
@@ -159,13 +183,25 @@ class ContractType(BaseModel):
 
     @property
     def calls(self) -> List[ABI]:
+        """
+        The call-methods (read-only method, non-payable methods) defined in a smart contract.
+        Returns:
+            List[:class:`~ethpm_types.abi..ABI`]
+        """
+
         if not self.abi:
             return []
 
         return [abi for abi in self.abi if abi.type == "function" and not abi.is_stateful]
 
     @property
-    def txns(self) -> List[ABI]:
+    def transactions(self) -> List[ABI]:
+        """
+        The transaction-methods (stateful or payable methods) defined in a smart contract.
+        Returns:
+            List[:class:`~ethpm_types.abi..ABI`]
+        """
+
         if not self.abi:
             return []
 
