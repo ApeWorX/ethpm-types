@@ -1,4 +1,4 @@
-from typing import Iterator, List, Optional, Set
+from typing import Iterator, List, Optional
 
 from pydantic import Field
 
@@ -121,15 +121,13 @@ class ContractType(BaseModel):
     then ``MyContract`` would be the type.
     """
 
-    _keep_fields_: Set[str] = {"abi"}
-    _skip_fields_: Set[str] = {"name"}
     # NOTE: Field is optional if `ContractAlias` is the same as `ContractName`
     name: Optional[str] = Field(None, alias="contractName")
     source_id: Optional[str] = Field(None, alias="sourceId")
     deployment_bytecode: Optional[Bytecode] = Field(None, alias="deploymentBytecode")
     runtime_bytecode: Optional[Bytecode] = Field(None, alias="runtimeBytecode")
     # abi, userdoc and devdoc must conform to spec
-    abi: Optional[List[ABI]] = None
+    abi: List[ABI] = []
     sourcemap: Optional[SourceMap] = None  # NOTE: Not a part of canonical EIP-2678 spec
     userdoc: Optional[dict] = None
     devdoc: Optional[dict] = None
@@ -142,8 +140,6 @@ class ContractType(BaseModel):
         This property contains information about the parameters needed to initialize
         a contract.
         """
-        if not self.abi:
-            return None
 
         for abi in self.abi:
             if abi.type == "constructor":
@@ -159,9 +155,6 @@ class ContractType(BaseModel):
         when the user attempts to call a method that does not exist.
         """
 
-        if not self.abi:
-            return None
-
         for abi in self.abi:
             if abi.type == "fallback":
                 return abi
@@ -176,9 +169,6 @@ class ContractType(BaseModel):
             List[:class:`~ethpm_types.abi.ABI`]
         """
 
-        if not self.abi:
-            return []
-
         return [abi for abi in self.abi if abi.type == "event"]
 
     @property
@@ -186,11 +176,8 @@ class ContractType(BaseModel):
         """
         The call-methods (read-only method, non-payable methods) defined in a smart contract.
         Returns:
-            List[:class:`~ethpm_types.abi..ABI`]
+            List[:class:`~ethpm_types.abi.ABI`]
         """
-
-        if not self.abi:
-            return []
 
         return [abi for abi in self.abi if abi.type == "function" and not abi.is_stateful]
 
@@ -199,11 +186,8 @@ class ContractType(BaseModel):
         """
         The transaction-methods (stateful or payable methods) defined in a smart contract.
         Returns:
-            List[:class:`~ethpm_types.abi..ABI`]
+            List[:class:`~ethpm_types.abi.ABI`]
         """
-
-        if not self.abi:
-            return []
 
         return [abi for abi in self.abi if abi.type == "function" and abi.is_stateful]
 
