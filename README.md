@@ -1,8 +1,8 @@
 # EthPM v3 Implementation
 
-EthPM is an Ethereum Package Manifest containing data types for contracts, deployments,
+EthPM is an Ethereum package manifest containing data types for contracts, deployments,
 and source code using [EIP-2678](https://eips.ethereum.org/EIPS/eip-2678).
-Validates and serializes contract related data and provides JSON schemas.
+The library validates and serializes contract related data and provides JSON schemas.
 
 ## Dependencies
 
