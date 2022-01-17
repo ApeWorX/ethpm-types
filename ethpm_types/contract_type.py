@@ -1,4 +1,4 @@
-from typing import Iterator, List, Optional, Set
+from typing import Iterator, List, Optional
 
 from pydantic import Field
 
@@ -115,23 +115,31 @@ class SourceMap(BaseModel):
 
 
 class ContractType(BaseModel):
-    _keep_fields_: Set[str] = {"abi"}
-    _skip_fields_: Set[str] = {"name"}
+    """
+    A serializable type representing the type of a contract.
+    For example, if you define your contract as ``contract MyContract`` (in Solidity),
+    then ``MyContract`` would be the type.
+    """
+
     # NOTE: Field is optional if `ContractAlias` is the same as `ContractName`
     name: Optional[str] = Field(None, alias="contractName")
     source_id: Optional[str] = Field(None, alias="sourceId")
     deployment_bytecode: Optional[Bytecode] = Field(None, alias="deploymentBytecode")
     runtime_bytecode: Optional[Bytecode] = Field(None, alias="runtimeBytecode")
     # abi, userdoc and devdoc must conform to spec
-    abi: Optional[List[ABI]] = None
+    abi: List[ABI] = []
     sourcemap: Optional[SourceMap] = None  # NOTE: Not a part of canonical EIP-2678 spec
     userdoc: Optional[dict] = None
     devdoc: Optional[dict] = None
 
     @property
     def constructor(self) -> Optional[ABI]:
-        if not self.abi:
-            return None
+        """
+        The constructor of the contract, if it has one. For example,
+        your smart-contract (in Solidity) may define a ``constructor() public {}``.
+        This property contains information about the parameters needed to initialize
+        a contract.
+        """
 
         for abi in self.abi:
             if abi.type == "constructor":
@@ -141,8 +149,11 @@ class ContractType(BaseModel):
 
     @property
     def fallback(self) -> Optional[ABI]:
-        if not self.abi:
-            return None
+        """
+        The fallback method of the contract, if it has one. A fallback method
+        is external, has no name, arguments, or return value, and gets invoked
+        when the user attempts to call a method that does not exist.
+        """
 
         for abi in self.abi:
             if abi.type == "fallback":
@@ -152,22 +163,31 @@ class ContractType(BaseModel):
 
     @property
     def events(self) -> List[ABI]:
-        if not self.abi:
-            return []
+        """
+        The events defined in a smart contract.
+        Returns:
+            List[:class:`~ethpm_types.abi.ABI`]
+        """
 
         return [abi for abi in self.abi if abi.type == "event"]
 
     @property
     def calls(self) -> List[ABI]:
-        if not self.abi:
-            return []
+        """
+        The call-methods (read-only method, non-payable methods) defined in a smart contract.
+        Returns:
+            List[:class:`~ethpm_types.abi.ABI`]
+        """
 
         return [abi for abi in self.abi if abi.type == "function" and not abi.is_stateful]
 
     @property
     def transactions(self) -> List[ABI]:
-        if not self.abi:
-            return []
+        """
+        The transaction-methods (stateful or payable methods) defined in a smart contract.
+        Returns:
+            List[:class:`~ethpm_types.abi.ABI`]
+        """
 
         return [abi for abi in self.abi if abi.type == "function" and abi.is_stateful]
 

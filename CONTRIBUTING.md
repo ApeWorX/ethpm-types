@@ -4,8 +4,8 @@ To get started with working on the codebase, use the following steps prepare you
 
 ```bash
 # clone the github repo and navigate into the folder
-git clone https://github.com/ApeWorX/ethpm.git
-cd ethpm
+git clone https://github.com/ApeWorX/ethpm-types.git
+cd ethpm-types
 
 # create and load a virtual environment
 python3 -m venv venv
@@ -30,7 +30,7 @@ pip install pre-commit
 pre-commit install
 ```
 
-Commiting will now automatically run the local hooks and ensure that your commit passes all lint checks.
+Committing will now automatically run the local hooks and ensure that your commit passes all lint checks.
 
 ## Pull Requests
 

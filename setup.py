@@ -29,7 +29,7 @@ extras_require = {
     ],
     "dev": [
         "commitizen",  # Manage commits and publishing releases
-        "pre-commit",  # Ensure that linters are run prior to commiting
+        "pre-commit",  # Ensure that linters are run prior to committing
         "pytest-watch",  # `ptw` test watcher/runner
         "IPython",  # Console for interacting
         "ipdb",  # Debugger (Must use `export PYTHONBREAKPOINT=ipdb.set_trace`)
@@ -52,12 +52,12 @@ setup(
     name="ethpm-types",
     use_scm_version=True,
     setup_requires=["setuptools_scm"],
-    description="""ethpm: Implementation of EIP-2678""",
+    description="""ethpm_types: Implementation of EIP-2678""",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="ApeWorX Ltd.",
     author_email="admin@apeworx.io",
-    url="https://github.com/ApeWorX/ethpm",
+    url="https://github.com/ApeWorX/ethpm-types",
     include_package_data=True,
     install_requires=[
         "importlib-metadata ; python_version<'3.8'",
@@ -70,7 +70,7 @@ setup(
     zip_safe=False,
     keywords="ethereum",
     packages=find_packages(exclude=["tests", "tests.*"]),
-    package_data={"ethpm": ["py.typed"]},
+    package_data={"ethpm_types": ["py.typed"]},
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
