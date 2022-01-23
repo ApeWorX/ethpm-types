@@ -17,8 +17,8 @@ class BaseModel(_BaseModel):
         # NOTE: When serializing to IPFS, the canonical representation must be repeatable
 
         # EIP-2678: minified representation (at least by default)
-        if "indent" not in kwargs:
-            kwargs["indent"] = (",", ":")
+        if "separators" not in kwargs:
+            kwargs["separators"] = (",", ":")
 
         # EIP-2678: sort keys (at least by default)
         if "sort_keys" not in kwargs:
