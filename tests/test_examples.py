@@ -22,7 +22,8 @@ def test_examples(example_name):
     example = requests.get(f"{EXAMPLES_RAW_URL}/{example_name}/v3.json").json()
 
     if "invalid" not in example_name:
-        assert PackageManifest.parse_obj(example).dict() == example
+        package = PackageManifest.parse_obj(example)
+        assert package.dict() == example
 
     else:
         with pytest.raises((ValidationError, ValueError)):

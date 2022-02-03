@@ -2,7 +2,7 @@ from typing import Iterator, List, Optional
 
 from pydantic import Field
 
-from .abi import ABI
+from .abi import ABI, ConstructorABI, EventABI, FallbackABI, MethodABI
 from .base import BaseModel
 from .utils import is_valid_hash
 
@@ -133,7 +133,7 @@ class ContractType(BaseModel):
     devdoc: Optional[dict] = None
 
     @property
-    def constructor(self) -> Optional[ABI]:
+    def constructor(self) -> Optional[ConstructorABI]:
         """
         The constructor of the contract, if it has one. For example,
         your smart-contract (in Solidity) may define a ``constructor() public {}``.
@@ -142,13 +142,13 @@ class ContractType(BaseModel):
         """
 
         for abi in self.abi:
-            if abi.type == "constructor":
+            if isinstance(abi, ConstructorABI):
                 return abi
 
         return None
 
     @property
-    def fallback(self) -> Optional[ABI]:
+    def fallback(self) -> Optional[FallbackABI]:
         """
         The fallback method of the contract, if it has one. A fallback method
         is external, has no name, arguments, or return value, and gets invoked
@@ -156,40 +156,40 @@ class ContractType(BaseModel):
         """
 
         for abi in self.abi:
-            if abi.type == "fallback":
+            if isinstance(abi, FallbackABI):
                 return abi
 
         return None
 
     @property
-    def events(self) -> List[ABI]:
+    def events(self) -> List[EventABI]:
         """
         The events defined in a smart contract.
         Returns:
             List[:class:`~ethpm_types.abi.ABI`]
         """
 
-        return [abi for abi in self.abi if abi.type == "event"]
+        return [abi for abi in self.abi if isinstance(abi, EventABI)]
 
     @property
-    def calls(self) -> List[ABI]:
+    def calls(self) -> List[MethodABI]:
         """
         The call-methods (read-only method, non-payable methods) defined in a smart contract.
         Returns:
             List[:class:`~ethpm_types.abi.ABI`]
         """
 
-        return [abi for abi in self.abi if abi.type == "function" and not abi.is_stateful]
+        return [abi for abi in self.abi if isinstance(abi, MethodABI) and not abi.is_stateful]
 
     @property
-    def transactions(self) -> List[ABI]:
+    def transactions(self) -> List[MethodABI]:
         """
         The transaction-methods (stateful or payable methods) defined in a smart contract.
         Returns:
             List[:class:`~ethpm_types.abi.ABI`]
         """
 
-        return [abi for abi in self.abi if abi.type == "function" and abi.is_stateful]
+        return [abi for abi in self.abi if isinstance(abi, MethodABI) and abi.is_stateful]
 
 
 class BIP122_URI(str):
