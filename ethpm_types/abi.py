@@ -1,6 +1,11 @@
-from typing import List, Literal, Optional, Union
+from typing import List, Optional, Union
 
 from .base import BaseModel
+
+try:
+    from typing import Literal  # type: ignore
+except ImportError:
+    from typing_extensions import Literal  # type: ignore
 
 
 class ABIType(BaseModel):

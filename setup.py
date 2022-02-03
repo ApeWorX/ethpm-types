@@ -61,6 +61,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "importlib-metadata ; python_version<'3.8'",
+        "typing_extensions ; python_version<'3.8'",
         "pydantic>=1.8.2,<2.0.0",
     ],
     python_requires=">=3.7,<4",
