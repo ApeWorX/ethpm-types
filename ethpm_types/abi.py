@@ -30,20 +30,8 @@ class ABIType(BaseModel):
             return self.canonical_type
 
 
-class EventABIType(BaseModel):
-    name: Optional[str] = None  # NOTE: Tuples don't have names by default
+class EventABIType(ABIType):
     indexed: bool = False  # Only event ABI types should have this field
-    type: Union[str, "ABIType"]
-    internalType: Optional[str] = None
-
-    @property
-    def canonical_type(self) -> str:
-        if isinstance(self.type, str):
-            return self.type
-
-        else:
-            # Recursively discover the canonical type
-            return self.type.canonical_type
 
     @property
     def signature(self) -> str:
