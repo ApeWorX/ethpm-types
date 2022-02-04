@@ -1,5 +1,6 @@
 from typing import Iterator, List, Optional
 
+from hexbytes import HexBytes
 from pydantic import Field
 
 from .abi import ABI, ConstructorABI, EventABI, FallbackABI, MethodABI
@@ -36,6 +37,13 @@ class Bytecode(BaseModel):
             )
 
         return self_str
+
+    def to_bytes(self) -> Optional[HexBytes]:
+        if self.bytecode:
+            return HexBytes(self.bytecode)
+
+        # TODO: Resolve links to produce dynamically linked bytecode
+        return None
 
 
 class ContractInstance(BaseModel):
@@ -131,6 +139,18 @@ class ContractType(BaseModel):
     sourcemap: Optional[SourceMap] = None  # NOTE: Not a part of canonical EIP-2678 spec
     userdoc: Optional[dict] = None
     devdoc: Optional[dict] = None
+
+    def get_runtime_bytecode(self) -> Optional[HexBytes]:
+        if self.runtime_bytecode:
+            return self.runtime_bytecode.to_bytes()
+
+        return None
+
+    def get_deployment_bytecode(self) -> Optional[HexBytes]:
+        if self.deployment_bytecode:
+            return self.deployment_bytecode.to_bytes()
+
+        return None
 
     @property
     def constructor(self) -> Optional[ConstructorABI]:
