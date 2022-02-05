@@ -84,6 +84,24 @@ class FallbackABI(BaseModel):
         return "fallback()"
 
 
+class ReceiveABI(BaseModel):
+    type: Literal["receive"]
+
+    # No `name` field
+    stateMutability: str = "payable"  # NOTE: Should be either "payable" or "nonpayable"
+
+    @property
+    def is_payable(self) -> bool:
+        return self.stateMutability == "payable"
+
+    @property
+    def signature(self) -> str:
+        """
+        String representing the function signature for display purposes only.
+        """
+        return "receive()"
+
+
 class MethodABI(BaseModel):
     type: Literal["function"]
 
@@ -156,4 +174,4 @@ class EventABI(BaseModel):
         return f"{self.name}({input_args})"
 
 
-ABI = Union[ConstructorABI, FallbackABI, MethodABI, EventABI]
+ABI = Union[ConstructorABI, FallbackABI, ReceiveABI, MethodABI, EventABI]
