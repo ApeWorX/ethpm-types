@@ -24,4 +24,12 @@ class BaseModel(_BaseModel):
         if "sort_keys" not in kwargs:
             kwargs["sort_keys"] = True
 
+        # NOTE: We do this to accomodate the aliases needed for EIP-2678 compatibility
+        if "by_alias" not in kwargs:
+            kwargs["by_alias"] = True
+
+        # EIP-2678: skip empty fields (at least by default)
+        if "exclude_none" not in kwargs:
+            kwargs["exclude_none"] = True
+
         return super().json(*args, **kwargs)

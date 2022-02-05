@@ -1,5 +1,6 @@
 from typing import Iterator, List, Optional
 
+from hexbytes import HexBytes
 from pydantic import Field
 
 from .abi import ABI, ConstructorABI, EventABI, FallbackABI, MethodABI
@@ -36,6 +37,13 @@ class Bytecode(BaseModel):
             )
 
         return self_str
+
+    def to_bytes(self) -> Optional[HexBytes]:
+        if self.bytecode:
+            return HexBytes(self.bytecode)
+
+        # TODO: Resolve links to produce dynamically linked bytecode
+        return None
 
 
 class ContractInstance(BaseModel):
@@ -132,8 +140,20 @@ class ContractType(BaseModel):
     userdoc: Optional[dict] = None
     devdoc: Optional[dict] = None
 
+    def get_runtime_bytecode(self) -> Optional[HexBytes]:
+        if self.runtime_bytecode:
+            return self.runtime_bytecode.to_bytes()
+
+        return None
+
+    def get_deployment_bytecode(self) -> Optional[HexBytes]:
+        if self.deployment_bytecode:
+            return self.deployment_bytecode.to_bytes()
+
+        return None
+
     @property
-    def constructor(self) -> Optional[ConstructorABI]:
+    def constructor(self) -> ConstructorABI:
         """
         The constructor of the contract, if it has one. For example,
         your smart-contract (in Solidity) may define a ``constructor() public {}``.
@@ -145,10 +165,10 @@ class ContractType(BaseModel):
             if isinstance(abi, ConstructorABI):
                 return abi
 
-        return None
+        return ConstructorABI()  # Use default constructor (no args)
 
     @property
-    def fallback(self) -> Optional[FallbackABI]:
+    def fallback(self) -> FallbackABI:
         """
         The fallback method of the contract, if it has one. A fallback method
         is external, has no name, arguments, or return value, and gets invoked
@@ -159,7 +179,27 @@ class ContractType(BaseModel):
             if isinstance(abi, FallbackABI):
                 return abi
 
-        return None
+        return FallbackABI()  # Use default fallback (no args)
+
+    @property
+    def view_methods(self) -> List[MethodABI]:
+        """
+        The call-methods (read-only method, non-payable methods) defined in a smart contract.
+        Returns:
+            List[:class:`~ethpm_types.abi.ABI`]
+        """
+
+        return [abi for abi in self.abi if isinstance(abi, MethodABI) and not abi.is_stateful]
+
+    @property
+    def mutable_methods(self) -> List[MethodABI]:
+        """
+        The transaction-methods (stateful or payable methods) defined in a smart contract.
+        Returns:
+            List[:class:`~ethpm_types.abi.ABI`]
+        """
+
+        return [abi for abi in self.abi if isinstance(abi, MethodABI) and abi.is_stateful]
 
     @property
     def events(self) -> List[EventABI]:
@@ -170,26 +210,6 @@ class ContractType(BaseModel):
         """
 
         return [abi for abi in self.abi if isinstance(abi, EventABI)]
-
-    @property
-    def calls(self) -> List[MethodABI]:
-        """
-        The call-methods (read-only method, non-payable methods) defined in a smart contract.
-        Returns:
-            List[:class:`~ethpm_types.abi.ABI`]
-        """
-
-        return [abi for abi in self.abi if isinstance(abi, MethodABI) and not abi.is_stateful]
-
-    @property
-    def transactions(self) -> List[MethodABI]:
-        """
-        The transaction-methods (stateful or payable methods) defined in a smart contract.
-        Returns:
-            List[:class:`~ethpm_types.abi.ABI`]
-        """
-
-        return [abi for abi in self.abi if isinstance(abi, MethodABI) and abi.is_stateful]
 
 
 class BIP122_URI(str):

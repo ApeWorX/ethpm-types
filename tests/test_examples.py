@@ -19,12 +19,17 @@ EXAMPLES_RAW_URL = "https://raw.githubusercontent.com/ethpm/ethpm-spec/master/ex
     [f.name for f in ETHPM_SPEC_REPO.get_contents("examples")],  # type: ignore
 )
 def test_examples(example_name):
-    example = requests.get(f"{EXAMPLES_RAW_URL}/{example_name}/v3.json").json()
+    example = requests.get(f"{EXAMPLES_RAW_URL}/{example_name}/v3.json")
+    example_str = example.text.strip()  # NOTE: Some examples have extra newline
+    example_json = example.json()
 
     if "invalid" not in example_name:
-        package = PackageManifest.parse_obj(example)
-        assert package.dict() == example
+        package = PackageManifest.parse_obj(example_json)
+        assert package.dict() == example_json
+
+        # NOTE: Also make sure that the encoding is exactly the same (per EIP-2678)
+        assert package.json() == example_str
 
     else:
         with pytest.raises((ValidationError, ValueError)):
-            PackageManifest.parse_obj(example).dict()
+            PackageManifest.parse_obj(example_json).dict()
