@@ -57,13 +57,13 @@ class ConstructorABI(BaseModel):
         return self.stateMutability == "payable"
 
     @property
-    def selector(self) -> str:
+    def signature(self) -> str:
         """
-        String representing the function selector, used to compute ``method_id``.
+        String representing the function signature, which includes the arg names and types,
+        for display purposes only
         """
-        # NOTE: There is no space between input args for selector
-        input_names = ",".join(i.canonical_type for i in (self.inputs))
-        return f"{self.type}({input_names})"
+        input_args = ", ".join(i.signature for i in self.inputs)
+        return f"constructor({input_args})"
 
 
 class FallbackABI(BaseModel):
@@ -77,11 +77,11 @@ class FallbackABI(BaseModel):
         return self.stateMutability == "payable"
 
     @property
-    def selector(self) -> str:
+    def signature(self) -> str:
         """
-        String representing the function selector, used to compute ``method_id``.
+        String representing the function signature for display purposes only.
         """
-        return f"{self.type}()"
+        return "fallback()"
 
 
 class MethodABI(BaseModel):
@@ -104,7 +104,7 @@ class MethodABI(BaseModel):
     @property
     def selector(self) -> str:
         """
-        String representing the function selector, used to compute ``method_id`` and ``event_id``.
+        String representing the function selector, used to compute ``method_id``.
         """
         # NOTE: There is no space between input args for selector
         input_names = ",".join(i.canonical_type for i in (self.inputs))
@@ -113,8 +113,8 @@ class MethodABI(BaseModel):
     @property
     def signature(self) -> str:
         """
-        String representing the function/event signature, which includes the arg names and types,
-        and output names (if any) and type(s)
+        String representing the function signature, which includes the arg names and types,
+        and output names and type(s) (if any) for display purposes only.
         """
         input_args = ", ".join(i.signature for i in self.inputs)
         output_args = ""
@@ -140,7 +140,7 @@ class EventABI(BaseModel):
     @property
     def selector(self) -> str:
         """
-        String representing the function selector, used to compute ``event_id``.
+        String representing the event selector, used to compute ``event_id``.
         """
         # NOTE: There is no space between input args for selector
         input_names = ",".join(i.canonical_type for i in (self.inputs))
@@ -149,8 +149,8 @@ class EventABI(BaseModel):
     @property
     def signature(self) -> str:
         """
-        String representing the function/event signature, which includes the arg names and types,
-        and output names (if any) and type(s)
+        String representing the event signature, which includes the arg names and types,
+        and output names and type(s) (if any) for display purposes only.
         """
         input_args = ", ".join(i.signature for i in self.inputs)
         return f"{self.name}({input_args})"
