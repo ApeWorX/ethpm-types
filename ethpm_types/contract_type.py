@@ -165,7 +165,7 @@ class ContractType(BaseModel):
             if isinstance(abi, ConstructorABI):
                 return abi
 
-        return ConstructorABI()  # Use default constructor (no args)
+        return ConstructorABI(type="constructor")  # Use default constructor (no args)
 
     @property
     def fallback(self) -> FallbackABI:
@@ -179,7 +179,7 @@ class ContractType(BaseModel):
             if isinstance(abi, FallbackABI):
                 return abi
 
-        return FallbackABI()  # Use default fallback (no args)
+        return FallbackABI(type="fallback")  # Use default fallback (no args)
 
     @property
     def view_methods(self) -> List[MethodABI]:
