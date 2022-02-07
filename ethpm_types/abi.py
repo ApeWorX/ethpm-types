@@ -88,11 +88,11 @@ class ReceiveABI(BaseModel):
     type: Literal["receive"]
 
     # No `name` field
-    stateMutability: str = "payable"  # NOTE: Should be either "payable" or "nonpayable"
+    stateMutability: Literal["payable"]
 
     @property
     def is_payable(self) -> bool:
-        return self.stateMutability == "payable"
+        return True
 
     @property
     def signature(self) -> str:
