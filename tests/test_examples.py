@@ -30,7 +30,7 @@ def test_examples(example_name):
         assert package.dict() == example_json
 
         # NOTE: Also make sure that the encoding is exactly the same (per EIP-2678)
-        assert package.jsoln() == example_str
+        assert package.json() == example_str
 
     else:
         with pytest.raises((ValidationError, ValueError)):
