@@ -1,4 +1,6 @@
+import json
 import os
+from pathlib import Path
 
 import github
 import pytest  # type: ignore
@@ -33,3 +35,10 @@ def test_examples(example_name):
     else:
         with pytest.raises((ValidationError, ValueError)):
             PackageManifest.parse_obj(example_json).dict()
+
+
+def test_open_zeppelin_contracts():
+    oz_manifest_file = Path(__file__).parent / "data" / "OpenZeppelinContracts.json"
+    manifest_dict = json.loads(oz_manifest_file.read_text())
+    package = PackageManifest.parse_obj(manifest_dict)
+    assert package.dict() == manifest_dict
