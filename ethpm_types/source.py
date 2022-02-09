@@ -80,3 +80,12 @@ class Source(BaseModel):
             hash=compute_checksum(content.encode("utf8"), algorithm=algorithm),
             algorithm=algorithm,
         )
+
+    @property
+    def checksum_is_valid(self) -> bool:
+        if self.checksum:
+            checksum = self.calculate_checksum(algorithm=self.checksum.algorithm)
+
+            return checksum == self.checksum
+
+        return False
