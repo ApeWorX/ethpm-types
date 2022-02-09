@@ -5,7 +5,7 @@ from pydantic import Field
 
 from .abi import ABI, ConstructorABI, EventABI, FallbackABI, MethodABI
 from .base import BaseModel
-from .utils import is_valid_hash
+from .utils import Hex, is_valid_hex
 
 
 # TODO link references & link values are for solidity, not used with Vyper
@@ -23,7 +23,7 @@ class LinkReference(BaseModel):
 
 
 class Bytecode(BaseModel):
-    bytecode: Optional[str] = None
+    bytecode: Optional[Hex] = None
     linkReferences: Optional[List[LinkReference]] = None
     linkDependencies: Optional[List[LinkDependency]] = None
 
@@ -48,9 +48,9 @@ class Bytecode(BaseModel):
 
 class ContractInstance(BaseModel):
     contract_type: str = Field(..., alias="contractType")
-    address: str
-    transaction: Optional[str] = None
-    block: Optional[str] = None
+    address: Hex
+    transaction: Optional[Hex] = None
+    block: Optional[Hex] = None
     runtime_bytecode: Optional[Bytecode] = Field(None, alias="runtimeBytecode")
 
 
@@ -241,13 +241,13 @@ class BIP122_URI(str):
     @classmethod
     def validate_genesis_hash(cls, uri):
         genesis_hash, _, _ = uri.replace("blockchain://", "").split("/")
-        assert is_valid_hash(genesis_hash), f"hash is not valid: {genesis_hash}"
+        assert is_valid_hex("0x" + genesis_hash), f"hash is not valid: {genesis_hash}"
         assert len(genesis_hash) == 64, f"hash is not valid length: {genesis_hash}"
         return uri
 
     @classmethod
     def validate_block_hash(cls, uri):
         _, _, block_hash = uri.replace("blockchain://", "").split("/")
-        assert is_valid_hash(block_hash), f"hash is not valid: {block_hash}"
+        assert is_valid_hex("0x" + block_hash), f"hash is not valid: {block_hash}"
         assert len(block_hash) == 64, f"hash is not valid length: {block_hash}"
         return uri

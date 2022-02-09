@@ -4,7 +4,7 @@ from typing import List, Optional
 from pydantic import AnyUrl
 
 from .base import BaseModel
-from .utils import Algorithm, compute_checksum
+from .utils import Algorithm, Hex, compute_checksum
 
 
 class Compiler(BaseModel):
@@ -18,7 +18,7 @@ class Checksum(BaseModel):
     """Checksum information about the contents of a source file."""
 
     algorithm: Algorithm
-    hash: str
+    hash: Hex
 
 
 class Source(BaseModel):
