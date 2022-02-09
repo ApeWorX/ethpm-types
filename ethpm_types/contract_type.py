@@ -242,10 +242,12 @@ class BIP122_URI(str):
     def validate_genesis_hash(cls, uri):
         genesis_hash, _, _ = uri.replace("blockchain://", "").split("/")
         assert is_valid_hash(genesis_hash), f"hash is not valid: {genesis_hash}"
+        assert len(genesis_hash) == 64, f"hash is not valid length: {genesis_hash}"
         return uri
 
     @classmethod
     def validate_block_hash(cls, uri):
         _, _, block_hash = uri.replace("blockchain://", "").split("/")
         assert is_valid_hash(block_hash), f"hash is not valid: {block_hash}"
+        assert len(block_hash) == 64, f"hash is not valid length: {block_hash}"
         return uri
