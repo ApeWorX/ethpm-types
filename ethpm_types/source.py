@@ -1,6 +1,8 @@
 import urllib.request
 from typing import List, Optional
 
+from pydantic import AnyUrl
+
 from .base import BaseModel
 from .utils import Algorithm, compute_checksum
 
@@ -20,14 +22,27 @@ class Checksum(BaseModel):
 
 
 class Source(BaseModel):
+    """Information about a source file included in a Package Manifest."""
+
+    """Array of urls that resolve to the same source file."""
+    urls: List[AnyUrl] = []
+
+    """Hash of the source file."""
     checksum: Optional[Checksum] = None
-    urls: List[str] = []
+
+    """Inlined contract source."""
     content: Optional[str] = None
-    # TODO This was probably done for solidity, needs files cached to disk for compiling
-    # If processing a local project, code already exists, so no issue
-    # If processing remote project, cache them in ape project data folder
+
+    """Filesystem path of source file."""
     installPath: Optional[str] = None
+    # NOTE: This was probably done for solidity, needs files cached to disk for compiling
+    #       If processing a local project, code already exists, so no issue
+    #       If processing remote project, cache them in ape project data folder
+
+    """The type of the source file."""
     type: Optional[str] = None
+
+    """The type of license associated with this source file."""
     license: Optional[str] = None
     # Set of `Source` objects that depend on this object
     # TODO: Add `SourceId` type and use instead of `str`
