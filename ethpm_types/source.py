@@ -2,7 +2,7 @@ import urllib.request
 from typing import List, Optional
 
 from .base import BaseModel
-from .utils import compute_checksum
+from .utils import Algorithm, compute_checksum
 
 
 class Compiler(BaseModel):
@@ -13,7 +13,9 @@ class Compiler(BaseModel):
 
 
 class Checksum(BaseModel):
-    algorithm: str
+    """Checksum information about the contents of a source file."""
+
+    algorithm: Algorithm
     hash: str
 
 
@@ -41,7 +43,7 @@ class Source(BaseModel):
         response = urllib.request.urlopen(self.urls[0])
         self.content = response.read().decode("utf-8")
 
-    def compute_checksum(self, algorithm: str = "md5", force: bool = False):
+    def compute_checksum(self, algorithm: Algorithm = Algorithm.MD5, force: bool = False):
         """
         Compute the checksum if ``content`` exists but ``checksum`` doesn't
         exist yet. Or compute the checksum regardless if ``force`` is ``True``.
