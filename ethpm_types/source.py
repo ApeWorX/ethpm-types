@@ -50,26 +50,33 @@ class Source(BaseModel):
     # NOTE: Set of source objects that this object depends on
     imports: Optional[List[str]] = None  # NOTE: Not a part of canonical EIP-2678 spec
 
-    def load_content(self):
+    def fetch_content(self) -> str:
         """Loads resource at ``urls`` into ``content``."""
         if len(self.urls) == 0:
-            return
+            raise ValueError("No content to fetch.")
 
         response = urllib.request.urlopen(self.urls[0])
-        self.content = response.read().decode("utf-8")
+        content = response.read().decode("utf-8")
 
-    def compute_checksum(self, algorithm: Algorithm = Algorithm.MD5, force: bool = False):
+        if self.content and self.content != content:
+            raise ValueError("Content mismatches stored.")
+
+        return content
+
+    def calculate_checksum(self, algorithm: Algorithm = Algorithm.MD5) -> Checksum:
         """
-        Compute the checksum if ``content`` exists but ``checksum`` doesn't
-        exist yet. Or compute the checksum regardless if ``force`` is ``True``.
+        Compute the checksum of the ``Source`` object.
+        Fails if ``content`` isn't available locally or by fetching.
         """
-        if self.checksum and not force:
-            return  # skip recalculating
+        # TODO: If `self.urls` contains a content hash, return the decoded hash object (EIP-2678)
 
-        if not self.content:
-            raise ValueError("Content not loaded yet. Can't compute checksum.")
+        if self.content:
+            content = self.content
 
-        self.checksum = Checksum(  # type: ignore
-            hash=compute_checksum(self.content.encode("utf8"), algorithm=algorithm),
+        else:
+            content = self.fetch_content()
+
+        return Checksum(
+            hash=compute_checksum(content.encode("utf8"), algorithm=algorithm),
             algorithm=algorithm,
         )
