@@ -232,10 +232,10 @@ class BIP122_URI(str):
     @classmethod
     def validate_uri(cls, uri):
         if not uri.startswith("blockchain://"):
-            raise ValueError("Must use 'blockchain' protocol")
+            raise ValueError("Must use 'blockchain' protocol.")
 
         if len(uri.replace("blockchain://", "").split("/")) != 3:
-            raise ValueError("must be referenced via <genesis_hash>/block/<block_hash>")
+            raise ValueError("Must be referenced via <genesis_hash>/block/<block_hash>.")
 
         _, block_keyword, _ = uri.replace("blockchain://", "").split("/")
         if block_keyword != "block":
