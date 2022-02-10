@@ -227,27 +227,40 @@ class BIP122_URI(str):
     def __get_validators__(cls):
         yield cls.validate_uri
         yield cls.validate_genesis_hash
+        yield cls.validate_block_hash
 
     @classmethod
     def validate_uri(cls, uri):
-        assert uri.startswith("blockchain://"), "Must use 'blockchain' protocol"
-        assert (
-            len(uri.replace("blockchain://", "").split("/")) == 3
-        ), "must be referenced via <genesis_hash>/block/<block_hash>"
+        if not uri.startswith("blockchain://"):
+            raise ValueError("Must use 'blockchain' protocol")
+
+        if len(uri.replace("blockchain://", "").split("/")) != 3:
+            raise ValueError("must be referenced via <genesis_hash>/block/<block_hash>")
+
         _, block_keyword, _ = uri.replace("blockchain://", "").split("/")
-        assert block_keyword == "block", "must use block reference"
+        if block_keyword != "block":
+            raise ValueError("must use block reference")
+
         return uri
 
     @classmethod
     def validate_genesis_hash(cls, uri):
         genesis_hash, _, _ = uri.replace("blockchain://", "").split("/")
-        assert is_valid_hex("0x" + genesis_hash), f"hash is not valid: {genesis_hash}"
-        assert len(genesis_hash) == 64, f"hash is not valid length: {genesis_hash}"
+        if not is_valid_hex("0x" + genesis_hash):
+            raise ValueError(f"hash is not valid: {genesis_hash}")
+
+        if len(genesis_hash) != 64:
+            raise ValueError(f"hash is not valid length: {genesis_hash}")
+
         return uri
 
     @classmethod
     def validate_block_hash(cls, uri):
         _, _, block_hash = uri.replace("blockchain://", "").split("/")
-        assert is_valid_hex("0x" + block_hash), f"hash is not valid: {block_hash}"
-        assert len(block_hash) == 64, f"hash is not valid length: {block_hash}"
+        if not is_valid_hex("0x" + block_hash):
+            raise ValueError(f"hash is not valid: {block_hash}")
+
+        if len(block_hash) != 64:
+            raise ValueError(f"hash is not valid length: {block_hash}")
+
         return uri
