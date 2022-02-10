@@ -24,26 +24,27 @@ class Checksum(BaseModel):
 class Source(BaseModel):
     """Information about a source file included in a Package Manifest."""
 
-    """Array of urls that resolve to the same source file."""
     urls: List[AnyUrl] = []
+    """Array of urls that resolve to the same source file."""
 
-    """Hash of the source file."""
     checksum: Optional[Checksum] = None
+    """Hash of the source file."""
 
-    """Inlined contract source."""
     content: Optional[str] = None
+    """Inlined contract source."""
 
-    """Filesystem path of source file."""
     installPath: Optional[str] = None
+    """Filesystem path of source file."""
     # NOTE: This was probably done for solidity, needs files cached to disk for compiling
     #       If processing a local project, code already exists, so no issue
     #       If processing remote project, cache them in ape project data folder
 
-    """The type of the source file."""
     type: Optional[str] = None
+    """The type of the source file."""
 
-    """The type of license associated with this source file."""
     license: Optional[str] = None
+    """The type of license associated with this source file."""
+
     # Set of `Source` objects that depend on this object
     # TODO: Add `SourceId` type and use instead of `str`
     references: Optional[List[str]] = None  # NOTE: Not a part of canonical EIP-2678 spec
@@ -52,6 +53,7 @@ class Source(BaseModel):
 
     def fetch_content(self) -> str:
         """Loads resource at ``urls`` into ``content``."""
+
         if len(self.urls) == 0:
             raise ValueError("No content to fetch.")
 
@@ -59,7 +61,7 @@ class Source(BaseModel):
         content = response.read().decode("utf-8")
 
         if self.content and self.content != content:
-            raise ValueError("Content mismatches stored.")
+            raise ValueError("Content mismatched stored value.")
 
         return content
 
@@ -83,6 +85,8 @@ class Source(BaseModel):
 
     @property
     def checksum_is_valid(self) -> bool:
+        """Return if checksum is valid or not."""
+
         if self.checksum:
             checksum = self.calculate_checksum(algorithm=self.checksum.algorithm)
 
