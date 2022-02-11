@@ -239,7 +239,7 @@ class BIP122_URI(str):
 
         _, block_keyword, _ = uri.replace("blockchain://", "").split("/")
         if block_keyword != "block":
-            raise ValueError("must use block reference")
+            raise ValueError("Must use block reference.")
 
         return uri
 
@@ -247,10 +247,10 @@ class BIP122_URI(str):
     def validate_genesis_hash(cls, uri):
         genesis_hash, _, _ = uri.replace("blockchain://", "").split("/")
         if not is_valid_hex("0x" + genesis_hash):
-            raise ValueError(f"hash is not valid: {genesis_hash}")
+            raise ValueError(f"Hash is not valid: {genesis_hash}.")
 
         if len(genesis_hash) != 64:
-            raise ValueError(f"hash is not valid length: {genesis_hash}")
+            raise ValueError(f"Hash is not valid length: {genesis_hash}.")
 
         return uri
 
@@ -258,9 +258,9 @@ class BIP122_URI(str):
     def validate_block_hash(cls, uri):
         _, _, block_hash = uri.replace("blockchain://", "").split("/")
         if not is_valid_hex("0x" + block_hash):
-            raise ValueError(f"hash is not valid: {block_hash}")
+            raise ValueError(f"Hash is not valid: {block_hash}.")
 
         if len(block_hash) != 64:
-            raise ValueError(f"hash is not valid length: {block_hash}")
+            raise ValueError(f"Hash is not valid length: {block_hash}.")
 
         return uri
