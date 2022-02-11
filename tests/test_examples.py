@@ -22,7 +22,6 @@ EXAMPLES_RAW_URL = "https://raw.githubusercontent.com/ethpm/ethpm-spec/master/ex
 )
 def test_examples(example_name):
     example = requests.get(f"{EXAMPLES_RAW_URL}/{example_name}/v3.json")
-    example_str = example.text.strip()  # NOTE: Some examples have extra newline
     example_json = example.json()
 
     if "invalid" not in example_name:
@@ -30,7 +29,7 @@ def test_examples(example_name):
         assert package.dict() == example_json
 
         # NOTE: Also make sure that the encoding is exactly the same (per EIP-2678)
-        assert package.json() == example_str
+        assert package.json() == example.text
 
     else:
         with pytest.raises((ValidationError, ValueError)):
