@@ -13,7 +13,7 @@ extras_require = {
         "hypothesis-jsonschema==0.19.0",  # Fuzzes based on a json schema
     ],
     "lint": [
-        "black>=21.10b0,<22.0",  # auto-formatter and linter
+        "black>=21.12b0,<22.0",  # auto-formatter and linter
         "mypy>=0.910,<1.0",  # Static type analyzer
         "types-PyYAML",  # NOTE: Needed due to mypy typeshed
         "types-requests",  # NOTE: Needed due to mypy typeshed
@@ -62,10 +62,9 @@ setup(
     install_requires=[
         "importlib-metadata ; python_version<'3.8'",
         "typing_extensions ; python_version<'3.8'",
-        "hexbytes>=0.2.2,<0.3",
-        "pydantic>=1.8.2,<2.0.0",
+        "pydantic>=1.9.0,<2.0",
     ],
-    python_requires=">=3.7,<4",
+    python_requires=">=3.7.2,<3.11",
     extras_require=extras_require,
     py_modules=["ethpm_types"],
     license="Apache-2.0",
@@ -74,7 +73,7 @@ setup(
     packages=find_packages(exclude=["tests", "tests.*"]),
     package_data={"ethpm_types": ["py.typed"]},
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
         "Natural Language :: English",
@@ -84,5 +83,6 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
     ],
 )

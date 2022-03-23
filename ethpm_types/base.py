@@ -1,7 +1,13 @@
+from eth_utils import to_hex
 from pydantic import BaseModel as _BaseModel
+
+from .utils import Bytes32
 
 
 class BaseModel(_BaseModel):
+    class Config:
+        json_encoders = {bytes: Bytes32.__serialize__}
+
     def dict(self, *args, **kwargs) -> dict:
         # NOTE: We do this to accomodate the aliases needed for EIP-2678 compatibility
         if "by_alias" not in kwargs:
@@ -11,7 +17,9 @@ class BaseModel(_BaseModel):
         if "exclude_none" not in kwargs:
             kwargs["exclude_none"] = True
 
-        return super().dict(*args, **kwargs)
+        return {
+            k: to_hex(v) for k, v in super().dict(*args, **kwargs).items() if isinstance(v, bytes)
+        }
 
     def json(self, *args, **kwargs) -> str:
         # NOTE: When serializing to IPFS, the canonical representation must be repeatable

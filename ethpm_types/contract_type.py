@@ -1,11 +1,10 @@
 from typing import Iterator, List, Optional
 
-from hexbytes import HexBytes
 from pydantic import Field
 
 from .abi import ABI, ConstructorABI, EventABI, FallbackABI, MethodABI
 from .base import BaseModel
-from .utils import is_valid_hash
+from .utils import Bytes32, is_valid_hash
 
 
 # TODO link references & link values are for solidity, not used with Vyper
@@ -38,9 +37,9 @@ class Bytecode(BaseModel):
 
         return self_str
 
-    def to_bytes(self) -> Optional[HexBytes]:
+    def to_bytes(self) -> Optional[Bytes32]:
         if self.bytecode:
-            return HexBytes(self.bytecode)
+            return Bytes32(self.bytecode)  # type: ignore
 
         # TODO: Resolve links to produce dynamically linked bytecode
         return None
@@ -140,13 +139,13 @@ class ContractType(BaseModel):
     userdoc: Optional[dict] = None
     devdoc: Optional[dict] = None
 
-    def get_runtime_bytecode(self) -> Optional[HexBytes]:
+    def get_runtime_bytecode(self) -> Optional[Bytes32]:
         if self.runtime_bytecode:
             return self.runtime_bytecode.to_bytes()
 
         return None
 
-    def get_deployment_bytecode(self) -> Optional[HexBytes]:
+    def get_deployment_bytecode(self) -> Optional[Bytes32]:
         if self.deployment_bytecode:
             return self.deployment_bytecode.to_bytes()
 
