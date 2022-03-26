@@ -1,7 +1,8 @@
 from typing import Iterator, List, Optional
 
+from eth_utils import add_0x_prefix
 from hexbytes import HexBytes
-from pydantic import Field
+from pydantic import Field, validator
 
 from .abi import ABI, ConstructorABI, EventABI, FallbackABI, MethodABI
 from .base import BaseModel
@@ -26,6 +27,12 @@ class Bytecode(BaseModel):
     bytecode: Optional[Hex] = None
     linkReferences: Optional[List[LinkReference]] = None
     linkDependencies: Optional[List[LinkDependency]] = None
+
+    @validator("bytecode", pre=True)
+    def prefix_bytecode(cls, v):
+        if not v:
+            return None
+        return add_0x_prefix(v)
 
     def __repr__(self) -> str:
         self_str = super().__repr__()
