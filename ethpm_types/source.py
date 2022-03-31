@@ -1,5 +1,5 @@
 import urllib.request
-from typing import List, Optional
+from typing import List, Optional, Set
 
 from .base import BaseModel
 from .utils import compute_checksum
@@ -27,6 +27,8 @@ class Source(BaseModel):
     installPath: Optional[str] = None
     type: Optional[str] = None
     license: Optional[str] = None
+    references: Set[str] = set()
+    # NOTE: Added outside of current spec for tracking dependent files
 
     def load_content(self):
         """Loads resource at ``urls`` into ``content``."""
