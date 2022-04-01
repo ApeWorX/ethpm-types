@@ -29,7 +29,7 @@ class Source(BaseModel):
     license: Optional[str] = None
     # Set of `Source` objects that depend on this object
     # TODO: Add `SourceId` type and use instead of `str`
-    references: List[str] = []  # NOTE: Not a part of canonical EIP-2678 spec
+    references: Optional[List[str]] = None  # NOTE: Not a part of canonical EIP-2678 spec
 
     def load_content(self):
         """Loads resource at ``urls`` into ``content``."""
