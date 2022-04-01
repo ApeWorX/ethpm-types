@@ -1,5 +1,5 @@
 import urllib.request
-from typing import List, Optional, Set
+from typing import List, Optional
 
 from .base import BaseModel
 from .utils import compute_checksum
@@ -27,8 +27,9 @@ class Source(BaseModel):
     installPath: Optional[str] = None
     type: Optional[str] = None
     license: Optional[str] = None
-    references: Set[str] = set()
-    # NOTE: Added outside of current spec for tracking dependent files
+    # Set of `Source` objects that depend on this object
+    # TODO: Add `SourceId` type and use instead of `str`
+    references: List[str] = []  # NOTE: Not a part of canonical EIP-2678 spec
 
     def load_content(self):
         """Loads resource at ``urls`` into ``content``."""
