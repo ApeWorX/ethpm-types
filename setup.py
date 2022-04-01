@@ -14,13 +14,13 @@ extras_require = {
     ],
     "lint": [
         "black>=22.3.0,<23.0",  # auto-formatter and linter
-        "mypy>=0.910,<1.0",  # Static type analyzer
+        "mypy>=0.941,<1.0",  # Static type analyzer
         "types-PyYAML",  # NOTE: Needed due to mypy typeshed
         "types-requests",  # NOTE: Needed due to mypy typeshed
         "flake8>=3.9.2,<4.0",  # Style linter
         "flake8-breakpoint>=1.1.0,<2.0.0",  # detect breakpoints left in code
         "flake8-print>=4.0.0,<5.0.0",  # detect print statements left in code
-        "isort>=5.9.3,<6.0",  # Import sorting linter
+        "isort>=5.10.1,<6.0",  # Import sorting linter
     ],
     "release": [  # `release` GitHub Action job uses this
         "setuptools",  # Installation tool
@@ -28,7 +28,7 @@ extras_require = {
         "twine",  # Package upload tool
     ],
     "dev": [
-        "commitizen",  # Manage commits and publishing releases
+        "commitizen>=2.19,<2.20",  # Manage commits and publishing releases
         "pre-commit",  # Ensure that linters are run prior to committing
         "pytest-watch",  # `ptw` test watcher/runner
         "IPython",  # Console for interacting
@@ -65,7 +65,7 @@ setup(
         "hexbytes>=0.2.2,<0.3",
         "pydantic>=1.8.2,<2.0.0",
     ],
-    python_requires=">=3.7,<4",
+    python_requires=">=3.7.2,<3.11",
     extras_require=extras_require,
     py_modules=["ethpm_types"],
     license="Apache-2.0",
@@ -74,7 +74,7 @@ setup(
     packages=find_packages(exclude=["tests", "tests.*"]),
     package_data={"ethpm_types": ["py.typed"]},
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
         "Natural Language :: English",
