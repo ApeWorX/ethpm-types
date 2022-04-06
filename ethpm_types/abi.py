@@ -125,7 +125,7 @@ class MethodABI(BaseModel):
         String representing the function selector, used to compute ``method_id``.
         """
         # NOTE: There is no space between input args for selector
-        input_names = ",".join(i.canonical_type for i in (self.inputs))
+        input_names = ",".join(i.canonical_type for i in self.inputs)
         return f"{self.name}({input_names})"
 
     @property
@@ -161,7 +161,7 @@ class EventABI(BaseModel):
         String representing the event selector, used to compute ``event_id``.
         """
         # NOTE: There is no space between input args for selector
-        input_names = ",".join(i.canonical_type for i in (self.inputs))
+        input_names = ",".join(i.canonical_type for i in self.inputs)
         return f"{self.name}({input_names})"
 
     @property
@@ -174,4 +174,42 @@ class EventABI(BaseModel):
         return f"{self.name}({input_args})"
 
 
-ABI = Union[ConstructorABI, FallbackABI, ReceiveABI, MethodABI, EventABI]
+class StructABIType(ABIType):
+    offset: int
+
+    @property
+    def signature(self) -> str:
+        sig = self.canonical_type
+        if self.name:
+            sig += f" {self.name}"
+
+        return f"{sig} {self.offset}"
+
+
+class StructABI(BaseModel):
+    type: Literal["struct"]
+
+    name: str
+    members: List[StructABIType]
+    size: int
+
+    @property
+    def selector(self) -> str:
+        """
+        String representing the struct selector.
+        """
+        # NOTE: There is no space between input args for selector
+        input_names = ",".join(i.canonical_type for i in self.members)
+        return f"{self.name}({input_names})"
+
+    @property
+    def signature(self) -> str:
+        """
+        String representing the struct signature, which includes the member names and types,
+        and offsets (if any) for display purposes only.
+        """
+        members_str = ", ".join(m.signature for m in self.members)
+        return f"{self.name}({members_str})"
+
+
+ABI = Union[ConstructorABI, FallbackABI, ReceiveABI, MethodABI, EventABI, StructABI]
