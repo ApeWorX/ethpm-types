@@ -1,5 +1,7 @@
 from typing import List, Optional, Union
 
+from pydantic import Extra
+
 from .base import BaseModel
 
 try:
@@ -12,6 +14,9 @@ class ABIType(BaseModel):
     name: Optional[str] = None  # NOTE: Tuples don't have names by default
     type: Union[str, "ABIType"]
     internalType: Optional[str] = None
+
+    class Config:
+        extra = Extra.allow
 
     @property
     def canonical_type(self) -> str:
@@ -174,24 +179,14 @@ class EventABI(BaseModel):
         return f"{self.name}({input_args})"
 
 
-class StructABIType(ABIType):
-    offset: int
-
-    @property
-    def signature(self) -> str:
-        sig = self.canonical_type
-        if self.name:
-            sig += f" {self.name}"
-
-        return f"{sig} {self.offset}"
-
-
 class StructABI(BaseModel):
     type: Literal["struct"]
 
     name: str
-    members: List[StructABIType]
-    size: int
+    members: List[ABIType]
+
+    class Config:
+        extra = Extra.allow
 
     @property
     def selector(self) -> str:
