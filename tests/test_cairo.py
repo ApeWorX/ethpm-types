@@ -115,17 +115,25 @@ CAIRO_ERC20_ABI = [
 
 
 def test_cairo_abi():
-    abi = ContractType.parse_obj({"abi": CAIRO_ERC20_ABI}).abi
+    contract_type = ContractType.parse_obj({"abi": CAIRO_ERC20_ABI})
+    abi = contract_type.abi
 
     # Verify struct
     struct = abi[0]
-    assert struct.type == "struct"
-    assert struct.size == 2
-    assert struct.members[0].name == "low"
-    assert struct.members[0].offset == 0
-    assert struct.members[1].name == "high"
-    assert struct.members[1].offset == 1
+    raw_struct = struct.dict()
+    assert struct.type == raw_struct["type"] == "struct"
+    assert struct.size == raw_struct["size"] == 2
+
+    struct_member_0 = struct.members[0]
+    raw_struct_member_0 = struct_member_0.dict()
+    struct_member_1 = struct.members[1]
+    raw_struct_member_1 = struct_member_1.dict()
+    assert struct_member_0.name == raw_struct_member_0["name"] == "low"
+    assert struct_member_0.offset == raw_struct_member_0["offset"] == 0
+    assert struct_member_1.name == raw_struct_member_1["name"] == "high"
+    assert struct_member_1.offset == raw_struct_member_1["offset"] == 1
 
     # Verify constructor
     constructor = abi[1]
-    assert constructor.type == "constructor"
+    constructor_raw = constructor.dict()
+    assert constructor.type == constructor_raw["type"] == "constructor"
