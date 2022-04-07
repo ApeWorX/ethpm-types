@@ -13,7 +13,6 @@ except ImportError:
 class ABIType(BaseModel):
     name: Optional[str] = None  # NOTE: Tuples don't have names by default
     type: Union[str, "ABIType"]
-    internalType: Optional[str] = None
 
     class Config:
         extra = Extra.allow
