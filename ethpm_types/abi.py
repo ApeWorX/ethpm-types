@@ -1,5 +1,7 @@
 from typing import List, Optional, Union
 
+from pydantic import Extra
+
 from .base import BaseModel
 
 try:
@@ -11,7 +13,9 @@ except ImportError:
 class ABIType(BaseModel):
     name: Optional[str] = None  # NOTE: Tuples don't have names by default
     type: Union[str, "ABIType"]
-    internalType: Optional[str] = None
+
+    class Config:
+        extra = Extra.allow
 
     @property
     def canonical_type(self) -> str:
@@ -125,7 +129,7 @@ class MethodABI(BaseModel):
         String representing the function selector, used to compute ``method_id``.
         """
         # NOTE: There is no space between input args for selector
-        input_names = ",".join(i.canonical_type for i in (self.inputs))
+        input_names = ",".join(i.canonical_type for i in self.inputs)
         return f"{self.name}({input_names})"
 
     @property
@@ -161,7 +165,7 @@ class EventABI(BaseModel):
         String representing the event selector, used to compute ``event_id``.
         """
         # NOTE: There is no space between input args for selector
-        input_names = ",".join(i.canonical_type for i in (self.inputs))
+        input_names = ",".join(i.canonical_type for i in self.inputs)
         return f"{self.name}({input_names})"
 
     @property
@@ -174,4 +178,32 @@ class EventABI(BaseModel):
         return f"{self.name}({input_args})"
 
 
-ABI = Union[ConstructorABI, FallbackABI, ReceiveABI, MethodABI, EventABI]
+class StructABI(BaseModel):
+    type: Literal["struct"]
+
+    name: str
+    members: List[ABIType]
+
+    class Config:
+        extra = Extra.allow
+
+    @property
+    def selector(self) -> str:
+        """
+        String representing the struct selector.
+        """
+        # NOTE: There is no space between input args for selector
+        input_names = ",".join(i.canonical_type for i in self.members)
+        return f"{self.name}({input_names})"
+
+    @property
+    def signature(self) -> str:
+        """
+        String representing the struct signature, which includes the member names and types,
+        and offsets (if any) for display purposes only.
+        """
+        members_str = ", ".join(m.signature for m in self.members)
+        return f"{self.name}({members_str})"
+
+
+ABI = Union[ConstructorABI, FallbackABI, ReceiveABI, MethodABI, EventABI, StructABI]

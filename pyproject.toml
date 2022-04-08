@@ -32,8 +32,6 @@ markers = "fuzzing: Run Hypothesis fuzz test suite"
 line_length = 100
 force_grid_wrap = 0
 include_trailing_comma = true
-known_third_party = ["github", "hexbytes", "hypothesis", "hypothesis_jsonschema", "pydantic", "pytest", "requests", "setuptools"]
-known_first_party = ["ethpm_types"]
 multi_line_output = 3
 use_parentheses = true
 
