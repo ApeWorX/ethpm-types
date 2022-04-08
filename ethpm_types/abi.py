@@ -214,28 +214,7 @@ class UnknownABI(BaseModel):
 
     @property
     def signature(self) -> str:
-        """
-        Make best guess at unknown ABI signature.
-        """
-        properties = self.dict()
-        sig = properties.get("name", "")
-
-        # Is likely a special method type.
-        if "inputs" in properties:
-            input_args = ", ".join(i.signature for i in properties["inputs"])
-            sig = f"{sig}({input_args})"
-            outputs = properties.get("outputs", [])
-            if "outputs" in properties:
-                output_args = " -> "
-                if len(outputs) > 1:
-                    output_args += "(" + ", ".join(o.canonical_type for o in outputs) + ")"
-
-                else:
-                    output_args += outputs[0].canonical_type
-
-                f"{sig}{output_args}"
-
-        return sig
+        return self.json()
 
 
 ABI = Union[ConstructorABI, FallbackABI, ReceiveABI, MethodABI, EventABI, StructABI, UnknownABI]
