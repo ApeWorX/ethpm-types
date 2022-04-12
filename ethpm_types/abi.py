@@ -206,7 +206,7 @@ class StructABI(BaseModel):
         return f"{self.name}({members_str})"
 
 
-class UnknownABI(BaseModel):
+class UnprocessedABI(BaseModel):
     type: str
 
     class Config:
@@ -217,4 +217,4 @@ class UnknownABI(BaseModel):
         return self.json()
 
 
-ABI = Union[ConstructorABI, FallbackABI, ReceiveABI, MethodABI, EventABI, StructABI, UnknownABI]
+ABI = Union[ConstructorABI, FallbackABI, ReceiveABI, MethodABI, EventABI, StructABI, UnprocessedABI]
