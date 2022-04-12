@@ -206,4 +206,15 @@ class StructABI(BaseModel):
         return f"{self.name}({members_str})"
 
 
-ABI = Union[ConstructorABI, FallbackABI, ReceiveABI, MethodABI, EventABI, StructABI]
+class UnprocessedABI(BaseModel):
+    type: str
+
+    class Config:
+        extra = Extra.allow
+
+    @property
+    def signature(self) -> str:
+        return self.json()
+
+
+ABI = Union[ConstructorABI, FallbackABI, ReceiveABI, MethodABI, EventABI, StructABI, UnprocessedABI]

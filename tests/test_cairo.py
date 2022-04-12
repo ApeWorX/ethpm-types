@@ -1,121 +1,80 @@
 from ethpm_types import ContractType
 
-CAIRO_ERC20_ABI = [
+CAIRO_ABI = [
     {
-        "members": [
-            {"name": "low", "offset": 0, "type": "felt"},
-            {"name": "high", "offset": 1, "type": "felt"},
-        ],
-        "name": "Uint256",
-        "size": 2,
         "type": "struct",
-    },
-    {
-        "inputs": [
-            {"name": "name", "type": "felt"},
-            {"name": "symbol", "type": "felt"},
-            {"name": "recipient", "type": "felt"},
+        "name": "MyStruct",
+        "members": [
+            {"name": "foo", "type": "felt", "offset": 0},
+            {"name": "bar", "type": "felt", "offset": 1},
         ],
-        "name": "constructor",
-        "outputs": [],
+        "size": 2,
+    },
+    {"type": "event", "name": "Upgraded", "inputs": [], "anonymous": False},
+    {
         "type": "constructor",
+        "stateMutability": "nonpayable",
+        "inputs": [{"name": "implementation_address", "type": "felt"}],
     },
     {
+        "type": "function",
+        "name": "compare_arrays",
+        "stateMutability": "nonpayable",
+        "inputs": [
+            {"name": "a_len", "type": "felt"},
+            {"name": "a", "type": "felt*"},
+            {"name": "b_len", "type": "felt"},
+            {"name": "b", "type": "felt*"},
+        ],
+        "outputs": [],
+    },
+    {
+        "type": "function",
+        "name": "increase_balance",
+        "stateMutability": "nonpayable",
+        "inputs": [{"name": "amount", "type": "felt"}],
+        "outputs": [],
+    },
+    {
+        "type": "function",
+        "name": "get_balance",
+        "stateMutability": "view",
         "inputs": [],
-        "name": "name",
-        "outputs": [{"name": "name", "type": "felt"}],
-        "stateMutability": "view",
-        "type": "function",
+        "outputs": [{"name": "res", "type": "felt"}],
     },
     {
-        "inputs": [],
-        "name": "symbol",
-        "outputs": [{"name": "symbol", "type": "felt"}],
-        "stateMutability": "view",
         "type": "function",
+        "name": "sum_points",
+        "stateMutability": "view",
+        "inputs": [{"name": "points", "type": "(Point, Point)"}],
+        "outputs": [{"name": "res", "type": "Point"}],
     },
     {
-        "inputs": [],
-        "name": "totalSupply",
-        "outputs": [{"name": "totalSupply", "type": "Uint256"}],
-        "stateMutability": "view",
         "type": "function",
-    },
-    {
-        "inputs": [],
-        "name": "decimals",
-        "outputs": [{"name": "decimals", "type": "felt"}],
-        "stateMutability": "view",
-        "type": "function",
-    },
-    {
-        "inputs": [{"name": "account", "type": "felt"}],
-        "name": "balanceOf",
-        "outputs": [{"name": "balance", "type": "Uint256"}],
-        "stateMutability": "view",
-        "type": "function",
-    },
-    {
-        "inputs": [{"name": "owner", "type": "felt"}, {"name": "spender", "type": "felt"}],
-        "name": "allowance",
-        "outputs": [{"name": "remaining", "type": "Uint256"}],
-        "stateMutability": "view",
-        "type": "function",
-    },
-    {
-        "inputs": [{"name": "recipient", "type": "felt"}, {"name": "amount", "type": "Uint256"}],
-        "name": "transfer",
-        "outputs": [{"name": "success", "type": "felt"}],
-        "type": "function",
+        "name": "__default__",
+        "stateMutability": "nonpayable",
+        "inputs": [
+            {"name": "selector", "type": "felt"},
+            {"name": "calldata_size", "type": "felt"},
+            {"name": "calldata", "type": "felt*"},
+        ],
+        "outputs": [{"name": "retdata_size", "type": "felt"}, {"name": "retdata", "type": "felt*"}],
     },
     {
         "inputs": [
-            {"name": "sender", "type": "felt"},
-            {"name": "recipient", "type": "felt"},
-            {"name": "amount", "type": "Uint256"},
+            {"name": "selector", "type": "felt"},
+            {"name": "calldata_size", "type": "felt"},
+            {"name": "calldata", "type": "felt*"},
         ],
-        "name": "transferFrom",
-        "outputs": [{"name": "success", "type": "felt"}],
-        "type": "function",
-    },
-    {
-        "inputs": [{"name": "spender", "type": "felt"}, {"name": "amount", "type": "Uint256"}],
-        "name": "approve",
-        "outputs": [{"name": "success", "type": "felt"}],
-        "type": "function",
-    },
-    {
-        "inputs": [{"name": "spender", "type": "felt"}, {"name": "added_value", "type": "Uint256"}],
-        "name": "increaseAllowance",
-        "outputs": [{"name": "success", "type": "felt"}],
-        "type": "function",
-    },
-    {
-        "inputs": [
-            {"name": "spender", "type": "felt"},
-            {"name": "subtracted_value", "type": "Uint256"},
-        ],
-        "name": "decreaseAllowance",
-        "outputs": [{"name": "success", "type": "felt"}],
-        "type": "function",
-    },
-    {
-        "inputs": [{"name": "recipient", "type": "felt"}, {"name": "amount", "type": "Uint256"}],
-        "name": "mint",
+        "name": "__l1_default__",
         "outputs": [],
-        "type": "function",
-    },
-    {
-        "inputs": [{"name": "user", "type": "felt"}, {"name": "amount", "type": "Uint256"}],
-        "name": "burn",
-        "outputs": [],
-        "type": "function",
+        "type": "l1_handler",
     },
 ]
 
 
 def test_cairo_abi():
-    contract_type = ContractType.parse_obj({"abi": CAIRO_ERC20_ABI})
+    contract_type = ContractType.parse_obj({"abi": CAIRO_ABI})
     abi = contract_type.abi
 
     # Verify struct
@@ -128,12 +87,23 @@ def test_cairo_abi():
     raw_struct_member_0 = struct_member_0.dict()
     struct_member_1 = struct.members[1]
     raw_struct_member_1 = struct_member_1.dict()
-    assert struct_member_0.name == raw_struct_member_0["name"] == "low"
+    assert struct_member_0.name == raw_struct_member_0["name"] == "foo"
     assert struct_member_0.offset == raw_struct_member_0["offset"] == 0
-    assert struct_member_1.name == raw_struct_member_1["name"] == "high"
+    assert struct_member_1.name == raw_struct_member_1["name"] == "bar"
     assert struct_member_1.offset == raw_struct_member_1["offset"] == 1
 
+    # Verify event
+    event = abi[1]
+    event_raw = event.dict()
+    assert event.name == event_raw["name"] == "Upgraded"
+
     # Verify constructor
-    constructor = abi[1]
+    constructor = abi[2]
     constructor_raw = constructor.dict()
     assert constructor.type == constructor_raw["type"] == "constructor"
+
+    # Verify L1 handler
+    l1_handler = abi[-1]
+    l1_handler_raw = l1_handler.dict()
+    assert l1_handler.type == l1_handler_raw["type"] == "l1_handler"
+    assert l1_handler.name == l1_handler_raw["name"] == "__l1_default__"
