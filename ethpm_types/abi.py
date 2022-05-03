@@ -14,6 +14,7 @@ class ABIType(BaseModel):
     name: Optional[str] = None  # NOTE: Tuples don't have names by default
     type: Union[str, "ABIType"]
     components: Optional[List["ABIType"]] = None  # NOTE: Tuples/Structs have this field
+    internalType: Optional[str] = None  # Some compilers insert this field, can have useful info
 
     class Config:
         extra = Extra.allow
