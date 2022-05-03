@@ -13,13 +13,18 @@ except ImportError:
 class ABIType(BaseModel):
     name: Optional[str] = None  # NOTE: Tuples don't have names by default
     type: Union[str, "ABIType"]
+    components: Optional[List["ABIType"]] = None  # NOTE: Tuples/Structs have this field
+    internalType: Optional[str] = None  # Some compilers insert this field, can have useful info
 
     class Config:
         extra = Extra.allow
 
     @property
     def canonical_type(self) -> str:
-        if isinstance(self.type, str):
+        if self.type == "tuple" and self.components:  # NOTE: 2nd condition just to satisfy mypy
+            return f"({','.join(m.canonical_type for m in self.components)})"
+
+        elif isinstance(self.type, str):
             return self.type
 
         else:
