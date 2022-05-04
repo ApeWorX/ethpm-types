@@ -183,6 +183,31 @@ class EventABI(BaseModel):
         return f"{self.name}({input_args})"
 
 
+class ErrorABI(BaseModel):
+    type: Literal["error"]
+
+    name: str
+    inputs: List[ABIType] = []
+
+    @property
+    def selector(self) -> str:
+        """
+        String representing the event selector, used to compute ``event_id``.
+        """
+        # NOTE: There is no space between input args for selector
+        input_names = ",".join(i.canonical_type for i in self.inputs)
+        return f"{self.name}({input_names})"
+
+    @property
+    def signature(self) -> str:
+        """
+        String representing the event signature, which includes the arg names and types,
+        and output names and type(s) (if any) for display purposes only.
+        """
+        input_args = ", ".join(i.signature for i in self.inputs)
+        return f"{self.name}({input_args})"
+
+
 class StructABI(BaseModel):
     type: Literal["struct"]
 
@@ -222,4 +247,13 @@ class UnprocessedABI(BaseModel):
         return self.json()
 
 
-ABI = Union[ConstructorABI, FallbackABI, ReceiveABI, MethodABI, EventABI, StructABI, UnprocessedABI]
+ABI = Union[
+    ConstructorABI,
+    FallbackABI,
+    ReceiveABI,
+    MethodABI,
+    EventABI,
+    ErrorABI,
+    StructABI,
+    UnprocessedABI,
+]
