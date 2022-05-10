@@ -1,6 +1,6 @@
-import urllib.request
 from typing import List, Optional
 
+import requests
 from pydantic import AnyUrl
 
 from .base import BaseModel
@@ -60,13 +60,16 @@ class Source(BaseModel):
         if len(self.urls) == 0:
             raise ValueError("No content to fetch.")
 
-        response = urllib.request.urlopen(self.urls[0])
-        content = response.read().decode("utf-8")
+        for url in map(str, self.urls):
+            # TODO: Have more robust handling of IPFS URIs
+            if url.startswith("ipfs"):
+                url = url.replace("ipfs://", "https://ipfs.io/ipfs/")
 
-        if self.content and self.content != content:
-            raise ValueError("Content mismatched stored value.")
+            response = requests.get(url)
+            if response.status_code == 200:
+                return response.text
 
-        return content
+        raise ValueError("Could not fetch content.")
 
     def calculate_checksum(self, algorithm: Algorithm = Algorithm.MD5) -> Checksum:
         """
