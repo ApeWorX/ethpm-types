@@ -30,6 +30,8 @@ class Source(BaseModel):
     # Set of `Source` objects that depend on this object
     # TODO: Add `SourceId` type and use instead of `str`
     references: Optional[List[str]] = None  # NOTE: Not a part of canonical EIP-2678 spec
+    # NOTE: Set of source objects that this object depends on
+    imports: Optional[List[str]] = None  # NOTE: Not a part of canonical EIP-2678 spec
 
     def load_content(self):
         """Loads resource at ``urls`` into ``content``."""
