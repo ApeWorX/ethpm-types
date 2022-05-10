@@ -28,7 +28,8 @@ class Source(BaseModel):
     """Array of urls that resolve to the same source file."""
 
     checksum: Optional[Checksum] = None
-    """Hash of the source file."""
+    """Hash of the source file. Per EIP-2678,
+    this field is only necessary if source must be fetched."""
 
     content: Optional[str] = None
     """Inlined contract source."""
@@ -45,11 +46,13 @@ class Source(BaseModel):
     license: Optional[str] = None
     """The type of license associated with this source file."""
 
-    # Set of `Source` objects that depend on this object
-    # TODO: Add `SourceId` type and use instead of `str`
     references: Optional[List[str]] = None  # NOTE: Not a part of canonical EIP-2678 spec
-    # NOTE: Set of source objects that this object depends on
+    """List of `Source` objects that depend on this object."""
+    # TODO: Add `SourceId` type and use instead of `str`
+
     imports: Optional[List[str]] = None  # NOTE: Not a part of canonical EIP-2678 spec
+    """List of source objects that this object depends on."""
+    # TODO: Add `SourceId` type and use instead of `str`
 
     def fetch_content(self) -> str:
         """Loads resource at ``urls`` into ``content``."""
