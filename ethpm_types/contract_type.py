@@ -1,11 +1,12 @@
 from typing import Iterator, List, Optional
 
+from eth_utils import add_0x_prefix
 from hexbytes import HexBytes
-from pydantic import Field
+from pydantic import Field, validator
 
 from .abi import ABI, ConstructorABI, EventABI, FallbackABI, MethodABI
 from .base import BaseModel
-from .utils import is_valid_hash
+from .utils import Hex, is_valid_hex
 
 
 # TODO link references & link values are for solidity, not used with Vyper
@@ -23,9 +24,15 @@ class LinkReference(BaseModel):
 
 
 class Bytecode(BaseModel):
-    bytecode: Optional[str] = None
+    bytecode: Optional[Hex] = None
     linkReferences: Optional[List[LinkReference]] = None
     linkDependencies: Optional[List[LinkDependency]] = None
+
+    @validator("bytecode", pre=True)
+    def prefix_bytecode(cls, v):
+        if not v:
+            return None
+        return add_0x_prefix(v)
 
     def __repr__(self) -> str:
         self_str = super().__repr__()
@@ -48,9 +55,9 @@ class Bytecode(BaseModel):
 
 class ContractInstance(BaseModel):
     contract_type: str = Field(..., alias="contractType")
-    address: str
-    transaction: Optional[str] = None
-    block: Optional[str] = None
+    address: Hex
+    transaction: Optional[Hex] = None
+    block: Optional[Hex] = None
     runtime_bytecode: Optional[Bytecode] = Field(None, alias="runtimeBytecode")
 
 
@@ -227,25 +234,40 @@ class BIP122_URI(str):
     def __get_validators__(cls):
         yield cls.validate_uri
         yield cls.validate_genesis_hash
+        yield cls.validate_block_hash
 
     @classmethod
     def validate_uri(cls, uri):
-        assert uri.startswith("blockchain://"), "Must use 'blockchain' protocol"
-        assert (
-            len(uri.replace("blockchain://", "").split("/")) == 3
-        ), "must be referenced via <genesis_hash>/block/<block_hash>"
+        if not uri.startswith("blockchain://"):
+            raise ValueError("Must use 'blockchain' protocol.")
+
+        if len(uri.replace("blockchain://", "").split("/")) != 3:
+            raise ValueError("Must be referenced via <genesis_hash>/block/<block_hash>.")
+
         _, block_keyword, _ = uri.replace("blockchain://", "").split("/")
-        assert block_keyword == "block", "must use block reference"
+        if block_keyword != "block":
+            raise ValueError("Must use block reference.")
+
         return uri
 
     @classmethod
     def validate_genesis_hash(cls, uri):
         genesis_hash, _, _ = uri.replace("blockchain://", "").split("/")
-        assert is_valid_hash(genesis_hash), f"hash is not valid: {genesis_hash}"
+        if not is_valid_hex("0x" + genesis_hash):
+            raise ValueError(f"Hash is not valid: {genesis_hash}.")
+
+        if len(genesis_hash) != 64:
+            raise ValueError(f"Hash is not valid length: {genesis_hash}.")
+
         return uri
 
     @classmethod
     def validate_block_hash(cls, uri):
         _, _, block_hash = uri.replace("blockchain://", "").split("/")
-        assert is_valid_hash(block_hash), f"hash is not valid: {block_hash}"
+        if not is_valid_hex("0x" + block_hash):
+            raise ValueError(f"Hash is not valid: {block_hash}.")
+
+        if len(block_hash) != 64:
+            raise ValueError(f"Hash is not valid length: {block_hash}.")
+
         return uri

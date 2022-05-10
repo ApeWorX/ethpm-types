@@ -64,6 +64,8 @@ setup(
         "typing_extensions ; python_version<'3.8'",
         "hexbytes>=0.2.2,<0.3",
         "pydantic>=1.8.2,<2.0.0",
+        "eth-utils==1.10.0",
+        "py-cid>=0.3.0,<0.4.0",
     ],
     python_requires=">=3.7.2,<3.11",
     extras_require=extras_require,
