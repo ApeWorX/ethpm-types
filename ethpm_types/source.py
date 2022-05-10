@@ -56,7 +56,14 @@ class Source(BaseModel):
     # TODO: Add `SourceId` type and use instead of `str`
 
     def fetch_content(self) -> str:
-        """Loads resource at ``urls`` into ``content`` if not available."""
+        """
+        Fetch the content for the given Source object.
+        Loads resource at ``urls`` into ``content`` if not available.
+
+        Returns:
+            str
+        """
+
         # NOTE: This is a trapdoor to bypass fetching logic if already available
         if self.content:
             return self.content
@@ -78,7 +85,15 @@ class Source(BaseModel):
     def calculate_checksum(self, algorithm: Algorithm = Algorithm.MD5) -> Checksum:
         """
         Compute the checksum of the ``Source`` object.
+        Will shortcircuit to content identifier if using content-addressed file references
         Fails if ``content`` isn't available locally or by fetching.
+
+        Args:
+            algorithm (`Optional[~ethpm_types.utils.Algorithm]`): The algorithm to use to compute
+              the checksum with. Defaults to MD5.
+
+        Returns:
+            :class:`~ethpm_types.source.Checksum`
         """
 
         # NOTE: Content-addressed URI schemes have checksum encoded directly in address.
@@ -95,7 +110,17 @@ class Source(BaseModel):
         )
 
     def content_is_valid(self) -> bool:
-        """Return if content is corrupted."""
+        """
+        Return if content is corrupted.
+        Will never be corrupted if content is locally available.
+        If content is referenced by content addressed identifier,
+        will not be corrupted either.
+        If referenced from a server URL,
+        then checksum must be present and will be validated against.
+
+        Returns:
+            bool
+        """
 
         # NOTE: Per EIP-2678, checksum is not needed if content does not need to be fetched
         if self.content:
