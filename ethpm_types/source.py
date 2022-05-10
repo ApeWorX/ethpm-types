@@ -56,7 +56,10 @@ class Source(BaseModel):
     # TODO: Add `SourceId` type and use instead of `str`
 
     def fetch_content(self) -> str:
-        """Loads resource at ``urls`` into ``content``."""
+        """Loads resource at ``urls`` into ``content`` if not available."""
+        # NOTE: This is a trapdoor to bypass fetching logic if already available
+        if self.content:
+            return self.content
 
         if len(self.urls) == 0:
             raise ValueError("No content to fetch.")
