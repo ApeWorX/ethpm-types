@@ -83,9 +83,8 @@ class Source(BaseModel):
             algorithm=algorithm,
         )
 
-    @property
-    def checksum_is_valid(self) -> bool:
-        """Return if checksum is valid or not."""
+    def content_is_valid(self) -> bool:
+        """Return if content is corrupted."""
 
         if self.checksum:
             checksum = self.calculate_checksum(algorithm=self.checksum.algorithm)
