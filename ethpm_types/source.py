@@ -1,10 +1,11 @@
 from typing import List, Optional
 
 import requests
+from cid import make_cid  # type: ignore
 from pydantic import AnyUrl
 
 from .base import BaseModel
-from .utils import Algorithm, Hex, compute_checksum
+from .utils import CONTENT_ADDRESSED_SCHEMES, Algorithm, Hex, compute_checksum
 
 
 class Compiler(BaseModel):
@@ -76,14 +77,15 @@ class Source(BaseModel):
         Compute the checksum of the ``Source`` object.
         Fails if ``content`` isn't available locally or by fetching.
         """
-        # TODO: If `self.urls` contains a content hash, return the decoded hash object (EIP-2678)
 
-        if self.content:
-            content = self.content
+        # NOTE: Content-addressed URI schemes have checksum encoded directly in address.
+        for url in self.urls:
+            if url.scheme in CONTENT_ADDRESSED_SCHEMES:
+                # TODO: Pull algorithm for checksum calc from codec
+                cid = make_cid(url.host)
+                return Checksum(hash=cid.multihash.hex(), algorithm=Algorithm.SHA256)
 
-        else:
-            content = self.fetch_content()
-
+        content = self.fetch_content()
         return Checksum(
             hash=compute_checksum(content.encode("utf8"), algorithm=algorithm),
             algorithm=algorithm,
@@ -92,9 +94,17 @@ class Source(BaseModel):
     def content_is_valid(self) -> bool:
         """Return if content is corrupted."""
 
-        if self.checksum:
-            checksum = self.calculate_checksum(algorithm=self.checksum.algorithm)
+        # NOTE: Per EIP-2678, checksum is not needed if content does not need to be fetched
+        if self.content:
+            return True
 
-            return checksum == self.checksum
+        # NOTE: Per EIP-2678, Checksum is not required if a URL is content addressed.
+        #       This is because the act of fetching the content validates the checksum.
+        for url in self.urls:
+            if url.scheme in CONTENT_ADDRESSED_SCHEMES:
+                return True
+
+        if self.checksum:
+            return self.checksum == self.calculate_checksum(algorithm=self.checksum.algorithm)
 
         return False

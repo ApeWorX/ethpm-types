@@ -1,6 +1,8 @@
 from enum import Enum
 from hashlib import md5, sha3_256, sha256
 
+CONTENT_ADDRESSED_SCHEMES = {"ipfs"}
+
 
 class Algorithm(str, Enum):
     MD5 = "md5"
