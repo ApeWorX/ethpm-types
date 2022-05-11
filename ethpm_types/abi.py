@@ -21,6 +21,7 @@ class ABIType(BaseModel):
 
     @property
     def canonical_type(self) -> str:
+        breakpoint()
         if "tuple" in self.type and self.components:  # NOTE: 2nd condition just to satisfy mypy
             return f"({','.join(m.canonical_type for m in self.components)})"
 
