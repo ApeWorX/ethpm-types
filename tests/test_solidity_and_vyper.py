@@ -34,8 +34,8 @@ def _get_contract(name: str) -> Dict:
 
 def _select_abi(contract_type: ContractType, name: str) -> ABI:
     for abi in contract_type.abi:
-        name = abi.name if hasattr(abi, "name") else None  # type: ignore
-        if name == name:
+        abi_name = abi.name if hasattr(abi, "name") else None  # type: ignore
+        if abi_name == name:
             return abi
 
     raise ValueError(f"No method found with name '{name}'.")
