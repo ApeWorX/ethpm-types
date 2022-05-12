@@ -62,18 +62,42 @@ def test_vyper_address_arrays(vyper_contract):
     assert array_output.canonical_type == "address[]"
 
 
-def test_solidity_struct_arrays(solidity_contract):
+def test_static_solidity_struct_arrays(solidity_contract):
     contract_type = ContractType.parse_obj(solidity_contract)
-    method_abi = _select_abi(contract_type, "getStructList")
+    method_abi = _select_abi(contract_type, "getStaticStructList")
     array_output = method_abi.outputs[0]
     assert array_output.type == "tuple[2]"
-    assert array_output.canonical_type == "((address,bytes32),uint256)[2]"
+    assert array_output.canonical_type == "(uint256,(address,bytes32))[2]"
 
 
-def test_vyper_struct_arrays(vyper_contract):
+def test_dynamic_solidity_struct_arrays(solidity_contract):
+    contract_type = ContractType.parse_obj(solidity_contract)
+    method_abi = _select_abi(contract_type, "getDynamicStructList")
+    array_output = method_abi.outputs[0]
+    assert array_output.type == "tuple[]"
+    assert array_output.canonical_type == "((address,bytes32),uint256)[]"
+
+
+def test_static_vyper_struct_arrays(vyper_contract):
+    # NOTE: Vyper struct arrays <=0.3.3 don't include struct info
     contract_type = ContractType.parse_obj(vyper_contract)
     method_abi = [
-        abi for abi in contract_type.abi if hasattr(abi, "name") and abi.name == "getStructList"
+        abi
+        for abi in contract_type.abi
+        if hasattr(abi, "name") and abi.name == "getStaticStructList"
+    ][0]
+    array_output = method_abi.outputs[0]
+    assert array_output.type == "(uint256,(address,bytes32))[2]"
+    assert array_output.canonical_type == "(uint256,(address,bytes32))[2]"
+
+
+def test_dynamic_vyper_struct_arrays(vyper_contract):
+    # NOTE: Vyper struct arrays <=0.3.3 don't include struct info
+    contract_type = ContractType.parse_obj(vyper_contract)
+    method_abi = [
+        abi
+        for abi in contract_type.abi
+        if hasattr(abi, "name") and abi.name == "getDynamicStructList"
     ][0]
     array_output = method_abi.outputs[0]
     assert array_output.type == "((address,bytes32),uint256)[]"
