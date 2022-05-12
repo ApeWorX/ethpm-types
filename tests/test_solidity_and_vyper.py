@@ -5,7 +5,7 @@ from typing import Dict
 import pytest
 
 from ethpm_types import ContractType
-from ethpm_types.abi import MethodABI
+from ethpm_types.abi import ABI
 
 CONTRACT_NAMES = ("SolidityContract.json", "VyperContract.json")
 DATA_FILES = {
@@ -32,10 +32,13 @@ def _get_contract(name: str) -> Dict:
     return json.loads(DATA_FILES[name].read_text())
 
 
-def _select_abi(contract_type: ContractType, name: str) -> MethodABI:
-    return [abi for abi in contract_type.abi if hasattr(abi, "name") and abi.name == name][
-        0
-    ]  # type: ignore
+def _select_abi(contract_type: ContractType, name: str) -> ABI:
+    for abi in contract_type.abi:
+        name = abi.name if hasattr(abi, "name") else None  # type: ignore
+        if name == name:
+            return abi
+
+    raise ValueError(f"No method found with name '{name}'.")
 
 
 def test_structs(contract):
