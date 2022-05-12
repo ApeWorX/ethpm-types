@@ -33,7 +33,9 @@ def _get_contract(name: str) -> Dict:
 
 
 def _select_abi(contract_type: ContractType, name: str) -> MethodABI:
-    return [abi for abi in contract_type.abi if hasattr(abi, "name") and abi.name == name][0]
+    return [abi for abi in contract_type.abi if hasattr(abi, "name") and abi.name == name][
+        0
+    ]  # type: ignore
 
 
 def test_structs(contract):
