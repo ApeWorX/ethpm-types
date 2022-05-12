@@ -59,6 +59,7 @@ def test_vyper_address_arrays(vyper_contract):
     assert len(method_abi.outputs) == 1
     array_output = method_abi.outputs[0]
     assert array_output.type == "address[]"
+    assert array_output.canonical_type == "address[]"
 
 
 def test_solidity_struct_arrays(solidity_contract):
@@ -66,7 +67,7 @@ def test_solidity_struct_arrays(solidity_contract):
     method_abi = _select_abi(contract_type, "getStructList")
     array_output = method_abi.outputs[0]
     assert array_output.type == "tuple[2]"
-    assert array_output.canonical_type == "((address,bytes32),uint256)"
+    assert array_output.canonical_type == "((address,bytes32),uint256)[2]"
 
 
 def test_vyper_struct_arrays(vyper_contract):
