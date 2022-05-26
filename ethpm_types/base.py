@@ -1,4 +1,8 @@
+from typing import Any, no_type_check
+
 from pydantic import BaseModel as _BaseModel
+
+from .utils import HexBytes
 
 
 class BaseModel(_BaseModel):
@@ -33,3 +37,31 @@ class BaseModel(_BaseModel):
             kwargs["exclude_none"] = True
 
         return super().json(*args, **kwargs)
+
+    @classmethod
+    @no_type_check
+    def _get_value(
+        cls,
+        v: Any,
+        to_dict: bool,
+        by_alias: bool,
+        include: Any,
+        exclude: Any,
+        exclude_unset: bool,
+        exclude_defaults: bool,
+        exclude_none: bool,
+    ) -> Any:
+
+        if isinstance(v, HexBytes):
+            return v.hex()
+
+        return super()._get_value(
+            v,
+            to_dict=to_dict,
+            by_alias=by_alias,
+            exclude_unset=exclude_unset,
+            exclude_defaults=exclude_defaults,
+            include=include,
+            exclude=exclude,
+            exclude_none=exclude_none,
+        )
