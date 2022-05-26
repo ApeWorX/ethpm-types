@@ -19,6 +19,10 @@ class TestModel(BaseModel):
 
 def test_hexbytes_dict():
     test_model = TestModel.parse_obj(TEST_MODEL_DICT)
+
+    for _, item in test_model.__fields__.items():
+        assert item.type_ == HexBytes
+
     test_dict = test_model.dict()
     assert len(test_dict) == 5
 
