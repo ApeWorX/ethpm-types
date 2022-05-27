@@ -43,13 +43,8 @@ class BaseModel(_BaseModel):
     def _get_value(
         cls,
         v: Any,
-        to_dict: bool,
-        by_alias: bool,
-        include: Any,
-        exclude: Any,
-        exclude_unset: bool,
-        exclude_defaults: bool,
-        exclude_none: bool,
+        *args,
+        **kwargs,
     ) -> Any:
 
         if isinstance(v, HexBytes):
@@ -57,11 +52,6 @@ class BaseModel(_BaseModel):
 
         return super()._get_value(
             v,
-            to_dict=to_dict,
-            by_alias=by_alias,
-            exclude_unset=exclude_unset,
-            exclude_defaults=exclude_defaults,
-            include=include,
-            exclude=exclude,
-            exclude_none=exclude_none,
+            *args,
+            **kwargs,
         )
