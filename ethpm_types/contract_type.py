@@ -1,6 +1,6 @@
-from typing import Iterator, List, Optional
+from typing import Iterator, List, Optional, Union
 
-from eth_utils import add_0x_prefix
+from eth_utils import add_0x_prefix, keccak
 from hexbytes import HexBytes
 from pydantic import Field, validator
 
@@ -129,6 +129,33 @@ class SourceMap(BaseModel):
             yield item
 
 
+class ABIList(list):
+    """
+    Adds selection by name, selector and keccak(selector).
+    """
+
+    def __init__(self, iterable=(), *, selector_size=32):
+        self._selector_size = selector_size
+        super().__init__(iterable)
+
+    def __getitem__(self, item: Union[str, bytes]):  # type: ignore
+        # selector
+        if isinstance(item, str) and "(" in item:
+            return next(abi for abi in self if abi.selector == item)
+        # name
+        elif isinstance(item, str):
+            return next(abi for abi in self if abi.name == item)
+        # keccak(selector)
+        elif isinstance(item, bytes):
+            return next(
+                abi
+                for abi in self
+                if keccak(text=abi.selector)[: self._selector_size] == item[: self._selector_size]
+            )
+
+        return super().__getitem__(item)
+
+
 class ContractType(BaseModel):
     """
     A serializable type representing the type of a contract.
@@ -196,7 +223,10 @@ class ContractType(BaseModel):
             List[:class:`~ethpm_types.abi.ABI`]
         """
 
-        return [abi for abi in self.abi if isinstance(abi, MethodABI) and not abi.is_stateful]
+        return ABIList(
+            [abi for abi in self.abi if isinstance(abi, MethodABI) and not abi.is_stateful],
+            selector_size=4,
+        )
 
     @property
     def mutable_methods(self) -> List[MethodABI]:
@@ -206,7 +236,10 @@ class ContractType(BaseModel):
             List[:class:`~ethpm_types.abi.ABI`]
         """
 
-        return [abi for abi in self.abi if isinstance(abi, MethodABI) and abi.is_stateful]
+        return ABIList(
+            [abi for abi in self.abi if isinstance(abi, MethodABI) and abi.is_stateful],
+            selector_size=4,
+        )
 
     @property
     def events(self) -> List[EventABI]:
@@ -216,7 +249,7 @@ class ContractType(BaseModel):
             List[:class:`~ethpm_types.abi.ABI`]
         """
 
-        return [abi for abi in self.abi if isinstance(abi, EventABI)]
+        return ABIList([abi for abi in self.abi if isinstance(abi, EventABI)])
 
 
 class BIP122_URI(str):
