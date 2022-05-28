@@ -145,7 +145,7 @@ class ABIList(list):
         self._selector_hash = selector_hash
         super().__init__(iterable)
 
-    def __getitem__(self, item: Union[str, bytes]):  # type: ignore
+    def __getitem__(self, item: Union[str, bytes, MethodABI, EventABI]):  # type: ignore
         try:
             # selector
             if isinstance(item, str) and "(" in item:
@@ -161,19 +161,21 @@ class ABIList(list):
                     if self._selector_hash(abi.selector)[: self._selector_size]
                     == item[: self._selector_size]
                 )
+            elif isinstance(item, (MethodABI, EventABI)):
+                return next(abi for abi in self if abi.selector == item.selector)
         except StopIteration:
             raise KeyError(item)
 
         return super().__getitem__(item)  # type: ignore
 
     def __contains__(self, item: Union[str, bytes]) -> bool:  # type: ignore
+        if isinstance(item, (int, slice)):
+            return False
         try:
             self[item]
             return True
-        except KeyError:
+        except (KeyError, IndexError):
             return False
-        
-        return super().__contains__(item)  # type: ignore
 
 
 class ContractType(BaseModel):
