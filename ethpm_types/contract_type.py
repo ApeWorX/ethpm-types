@@ -146,20 +146,23 @@ class ABIList(list):
         super().__init__(iterable)
 
     def __getitem__(self, item: Union[str, bytes]):  # type: ignore
-        # selector
-        if isinstance(item, str) and "(" in item:
-            return next(abi for abi in self if abi.selector == item)
-        # name, could be ambiguous
-        elif isinstance(item, str):
-            return next(abi for abi in self if abi.name == item)
-        # hashed selector, like log.topics[0] or a tx.data
-        elif isinstance(item, bytes) and self._selector_hash:
-            return next(
-                abi
-                for abi in self
-                if self._selector_hash(abi.selector)[: self._selector_size]
-                == item[: self._selector_size]
-            )
+        try:
+            # selector
+            if isinstance(item, str) and "(" in item:
+                return next(abi for abi in self if abi.selector == item)
+            # name, could be ambiguous
+            elif isinstance(item, str):
+                return next(abi for abi in self if abi.name == item)
+            # hashed selector, like log.topics[0] or a tx.data
+            elif isinstance(item, bytes) and self._selector_hash:
+                return next(
+                    abi
+                    for abi in self
+                    if self._selector_hash(abi.selector)[: self._selector_size]
+                    == item[: self._selector_size]
+                )
+        except StopIteration:
+            raise KeyError(item)
 
         return super().__getitem__(item)  # type: ignore
 
