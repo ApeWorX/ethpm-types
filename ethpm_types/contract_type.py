@@ -265,6 +265,7 @@ class ContractType(BaseModel):
         )
 
     def _selector_hash(self, selector: str) -> bytes:
+        # keccak is the default on most ecosystems, other ecosystems can subclass to override it
         return keccak(text=selector)
 
 
