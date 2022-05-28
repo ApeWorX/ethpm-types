@@ -228,7 +228,7 @@ class ContractType(BaseModel):
         return ABIList(
             [abi for abi in self.abi if isinstance(abi, MethodABI) and not abi.is_stateful],
             selector_size=4,
-            selector_hash=lambda selector: keccak(text=selector),
+            selector_hash=self._selector_hash,
         )
 
     @property
@@ -242,7 +242,7 @@ class ContractType(BaseModel):
         return ABIList(
             [abi for abi in self.abi if isinstance(abi, MethodABI) and abi.is_stateful],
             selector_size=4,
-            selector_hash=lambda selector: keccak(text=selector),
+            selector_hash=self._selector_hash,
         )
 
     @property
@@ -255,8 +255,11 @@ class ContractType(BaseModel):
 
         return ABIList(
             [abi for abi in self.abi if isinstance(abi, EventABI)],
-            selector_hash=lambda selector: keccak(text=selector),
+            selector_hash=self._selector_hash,
         )
+
+    def _selector_hash(self, selector):
+        return keccak(text=selector)
 
 
 class BIP122_URI(str):
