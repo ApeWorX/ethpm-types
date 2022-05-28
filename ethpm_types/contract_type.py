@@ -134,26 +134,28 @@ class ABIList(list):
     Adds selection by name, selector and keccak(selector).
     """
 
-    def __init__(self, iterable=(), *, selector_size=32):
+    def __init__(self, iterable=(), *, selector_size=32, selector_hash=None):
         self._selector_size = selector_size
+        self._selector_hash = selector_hash
         super().__init__(iterable)
 
     def __getitem__(self, item: Union[str, bytes]):  # type: ignore
         # selector
         if isinstance(item, str) and "(" in item:
             return next(abi for abi in self if abi.selector == item)
-        # name
+        # name, could be ambiguous
         elif isinstance(item, str):
             return next(abi for abi in self if abi.name == item)
-        # keccak(selector)
-        elif isinstance(item, bytes):
+        # hashed selector, like log.topics[0] or a tx.data
+        elif isinstance(item, bytes) and self._selector_hash:
             return next(
                 abi
                 for abi in self
-                if keccak(text=abi.selector)[: self._selector_size] == item[: self._selector_size]
+                if self._selector_hash(abi.selector)[: self._selector_size]
+                == item[: self._selector_size]
             )
 
-        return super().__getitem__(item)
+        return super().__getitem__(item)  # type: ignore
 
 
 class ContractType(BaseModel):
@@ -226,6 +228,7 @@ class ContractType(BaseModel):
         return ABIList(
             [abi for abi in self.abi if isinstance(abi, MethodABI) and not abi.is_stateful],
             selector_size=4,
+            selector_hash=lambda selector: keccak(text=selector),
         )
 
     @property
@@ -239,6 +242,7 @@ class ContractType(BaseModel):
         return ABIList(
             [abi for abi in self.abi if isinstance(abi, MethodABI) and abi.is_stateful],
             selector_size=4,
+            selector_hash=lambda selector: keccak(text=selector),
         )
 
     @property
@@ -249,7 +253,10 @@ class ContractType(BaseModel):
             List[:class:`~ethpm_types.abi.ABI`]
         """
 
-        return ABIList([abi for abi in self.abi if isinstance(abi, EventABI)])
+        return ABIList(
+            [abi for abi in self.abi if isinstance(abi, EventABI)],
+            selector_hash=lambda selector: keccak(text=selector),
+        )
 
 
 class BIP122_URI(str):
