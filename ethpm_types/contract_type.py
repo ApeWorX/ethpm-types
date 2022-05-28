@@ -166,6 +166,15 @@ class ABIList(list):
 
         return super().__getitem__(item)  # type: ignore
 
+    def __contains__(self, item: Union[str, bytes]) -> bool:  # type: ignore
+        try:
+            self[item]
+            return True
+        except KeyError:
+            return False
+        
+        return super().__contains__(item)  # type: ignore
+
 
 class ContractType(BaseModel):
     """
