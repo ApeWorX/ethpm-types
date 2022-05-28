@@ -1,4 +1,4 @@
-from typing import Iterator, List, Optional, Union
+from typing import Callable, Iterator, List, Optional, Union
 
 from eth_utils import add_0x_prefix, keccak
 from hexbytes import HexBytes
@@ -134,7 +134,13 @@ class ABIList(list):
     Adds selection by name, selector and keccak(selector).
     """
 
-    def __init__(self, iterable=(), *, selector_size=32, selector_hash=None):
+    def __init__(
+        self,
+        iterable=(),
+        *,
+        selector_size=32,
+        selector_hash: Optional[Callable[[str], bytes]] = None,
+    ):
         self._selector_size = selector_size
         self._selector_hash = selector_hash
         super().__init__(iterable)
@@ -258,7 +264,7 @@ class ContractType(BaseModel):
             selector_hash=self._selector_hash,
         )
 
-    def _selector_hash(self, selector):
+    def _selector_hash(self, selector: str) -> bytes:
         return keccak(text=selector)
 
 
