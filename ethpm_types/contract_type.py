@@ -138,11 +138,11 @@ class ABIList(list):
         self,
         iterable=(),
         *,
-        selector_size=32,
-        selector_hash: Optional[Callable[[str], bytes]] = None,
+        selector_id_size=32,
+        selector_hash_fn: Optional[Callable[[str], bytes]] = None,
     ):
-        self._selector_size = selector_size
-        self._selector_hash = selector_hash
+        self._selector_id_size = selector_id_size
+        self._selector_hash_fn = selector_hash_fn
         super().__init__(iterable)
 
     def __getitem__(self, item: Union[str, bytes, MethodABI, EventABI]):  # type: ignore
@@ -153,19 +153,20 @@ class ABIList(list):
             # name, could be ambiguous
             elif isinstance(item, str):
                 return next(abi for abi in self if abi.name == item)
-            # hashed selector, like log.topics[0] or a tx.data
-            elif isinstance(item, bytes) and self._selector_hash:
+            # hashed selector, like log.topics[0] or tx.data
+            elif isinstance(item, bytes) and self._selector_hash_fn:
                 return next(
                     abi
                     for abi in self
-                    if self._selector_hash(abi.selector)[: self._selector_size]
-                    == item[: self._selector_size]
+                    if self._selector_hash_fn(abi.selector)[: self._selector_id_size]
+                    == item[: self._selector_id_size]
                 )
             elif isinstance(item, (MethodABI, EventABI)):
                 return next(abi for abi in self if abi.selector == item.selector)
         except StopIteration:
             raise KeyError(item)
 
+        # handle int, slice
         return super().__getitem__(item)  # type: ignore
 
     def __contains__(self, item: Union[str, bytes]) -> bool:  # type: ignore
@@ -247,8 +248,8 @@ class ContractType(BaseModel):
 
         return ABIList(
             [abi for abi in self.abi if isinstance(abi, MethodABI) and not abi.is_stateful],
-            selector_size=4,
-            selector_hash=self._selector_hash,
+            selector_id_size=4,
+            selector_hash_fn=self._selector_hash_fn,
         )
 
     @property
@@ -261,8 +262,8 @@ class ContractType(BaseModel):
 
         return ABIList(
             [abi for abi in self.abi if isinstance(abi, MethodABI) and abi.is_stateful],
-            selector_size=4,
-            selector_hash=self._selector_hash,
+            selector_id_size=4,
+            selector_hash_fn=self._selector_hash_fn,
         )
 
     @property
@@ -275,10 +276,10 @@ class ContractType(BaseModel):
 
         return ABIList(
             [abi for abi in self.abi if isinstance(abi, EventABI)],
-            selector_hash=self._selector_hash,
+            selector_hash_fn=self._selector_hash_fn,
         )
 
-    def _selector_hash(self, selector: str) -> bytes:
+    def _selector_hash_fn(self, selector: str) -> bytes:
         # keccak is the default on most ecosystems, other ecosystems can subclass to override it
         return keccak(text=selector)
 
