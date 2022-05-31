@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Dict
 
 import pytest
+from eth_utils import keccak
 
 from ethpm_types import ContractType
 from ethpm_types.abi import ABI
@@ -107,3 +108,40 @@ def test_dynamic_vyper_struct_arrays(vyper_contract):
     array_output = method_abi.outputs[0]
     assert array_output.type == "((address,bytes32),uint256)[]"
     assert array_output.canonical_type == "((address,bytes32),uint256)[]"
+
+
+def test_select_by_name(vyper_contract):
+    contract_type = ContractType.parse_obj(vyper_contract)
+    assert (
+        contract_type.mutable_methods["setNumber"]
+        == contract_type.mutable_methods["setNumber(uint256)"]
+        == contract_type.mutable_methods[keccak(text="setNumber(uint256)")]
+    )
+    assert (
+        contract_type.view_methods["getStruct"]
+        == contract_type.view_methods["getStruct()"]
+        == contract_type.view_methods[keccak(text="getStruct()")]
+    )
+    assert (
+        contract_type.events["NumberChange"]
+        == contract_type.events["NumberChange(uint256,uint256)"]
+        == contract_type.events[keccak(text="NumberChange(uint256,uint256)")]
+    )
+
+
+def test_select_by_name_contains(vyper_contract):
+    contract_type = ContractType.parse_obj(vyper_contract)
+    assert "setNumber" in contract_type.mutable_methods
+    assert "setNumber(uint256)" in contract_type.mutable_methods
+    assert keccak(text="setNumber(uint256)") in contract_type.mutable_methods
+    assert "madeUpFunction" not in contract_type.mutable_methods
+
+    assert "getStruct" in contract_type.view_methods
+    assert "getStruct()" in contract_type.view_methods
+    assert keccak(text="getStruct()") in contract_type.view_methods
+    assert "madeUpFunction(uint64)" not in contract_type.view_methods
+
+    assert "NumberChange" in contract_type.events
+    assert "NumberChange(uint256,uint256)" in contract_type.events
+    assert keccak(text="NumberChange(uint256,uint256)") in contract_type.events
+    assert keccak(text="MadeUpEvent(uint64)") not in contract_type.events
