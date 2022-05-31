@@ -10,11 +10,12 @@ class Algorithm(str, Enum):
     SHA256 = "sha256"
 
 
-def is_valid_hex(data: str) -> bool:
+def is_valid_hex(data: str, additional_characters: str = "") -> bool:
     if not data.startswith("0x"):
         return False
 
-    if set(data[2:].lower()) > set("1234567890abcdef"):
+    if set(data[2:].lower()) > set(f"1234567890abcdef{additional_characters}"):
+        print(data)
         return False
 
     if len(data) % 2 != 0:

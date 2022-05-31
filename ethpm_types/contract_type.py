@@ -23,8 +23,17 @@ class LinkReference(BaseModel):
     name: Optional[str] = None
 
 
+class HexBin(Hex):
+    @classmethod
+    def validate_hex(cls, data: str) -> str:
+        if not is_valid_hex(data, additional_characters="$_"):
+            raise ValueError("Invalid Hex Value")
+
+        return data
+
+
 class Bytecode(BaseModel):
-    bytecode: Optional[Hex] = None
+    bytecode: Optional[HexBin] = None
     linkReferences: Optional[List[LinkReference]] = None
     linkDependencies: Optional[List[LinkDependency]] = None
 
