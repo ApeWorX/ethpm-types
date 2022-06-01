@@ -279,21 +279,11 @@ class ContractType(BaseModel):
             selector_hash_fn=self._selector_hash_fn,
         )
 
-    @cached_property
-    def _selector_hash_fn(self) -> Optional[Callable[[str], bytes]]:
-        try:
-            from eth_utils import keccak
-            
-            def hasher(selector: str) -> bytes:
-                # keccak is the default on most ecosystems, other ecosystems can subclass to override it
-                return keccak(text=selector)
-                
-            return hasher
-            
-        except ImportError
-            warnings.warn("No backend installed for `keccak`, functionality degraded.")
-            return None
-        
+    def _selector_hash_fn(self, selector: str) -> bytes:
+        # keccak is the default on most ecosystems, other ecosystems can subclass to override it
+        from eth_utils import keccak
+
+        return keccak(text=selector)
 
 
 class BIP122_URI(str):
