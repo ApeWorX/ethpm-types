@@ -1,6 +1,6 @@
 from typing import Callable, Iterator, List, Optional, Union
 
-from eth_utils import add_0x_prefix, keccak
+from eth_utils import add_0x_prefix
 from hexbytes import HexBytes
 from pydantic import Field, validator
 
