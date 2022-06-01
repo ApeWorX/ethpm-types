@@ -145,7 +145,7 @@ class ABIList(list):
         self._selector_hash_fn = selector_hash_fn
         super().__init__(iterable)
 
-    def __getitem__(self, item: Union[str, bytes, MethodABI, EventABI]):  # type: ignore
+    def __getitem__(self, item: Union[int, slice, str, bytes, MethodABI, EventABI]):  # type: ignore
         try:
             # selector
             if isinstance(item, str) and "(" in item:
