@@ -18,6 +18,7 @@ class ABIType(BaseModel):
 
     class Config:
         extra = Extra.allow
+        allow_mutation = False
 
     @property
     def canonical_type(self) -> str:
