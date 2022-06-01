@@ -6,7 +6,7 @@ import pytest
 from eth_utils import keccak
 
 from ethpm_types import ContractType
-from ethpm_types.abi import ABI
+from ethpm_types.abi import ABI, EventABI, MethodABI
 
 CONTRACT_NAMES = ("SolidityContract.json", "VyperContract.json")
 DATA_FILES = {
@@ -112,21 +112,24 @@ def test_dynamic_vyper_struct_arrays(vyper_contract):
 
 def test_select_by_name(vyper_contract):
     contract_type = ContractType.parse_obj(vyper_contract)
-    assert (
-        contract_type.mutable_methods["setNumber"]
-        == contract_type.mutable_methods["setNumber(uint256)"]
-        == contract_type.mutable_methods[keccak(text="setNumber(uint256)")]
-    )
-    assert (
-        contract_type.view_methods["getStruct"]
-        == contract_type.view_methods["getStruct()"]
-        == contract_type.view_methods[keccak(text="getStruct()")]
-    )
-    assert (
-        contract_type.events["NumberChange"]
-        == contract_type.events["NumberChange(uint256,uint256)"]
-        == contract_type.events[keccak(text="NumberChange(uint256,uint256)")]
-    )
+    for selector in ["setNumber", "setNumber(uint256)", keccak(text="setNumber(uint256)")]:
+        method = contract_type.mutable_methods[selector]
+        assert isinstance(method, MethodABI)
+        assert method.name == "setNumber"
+
+    for selector in ["getStruct", "getStruct()", keccak(text="getStruct()")]:
+        view = contract_type.view_methods[selector]
+        assert isinstance(view, MethodABI)
+        assert view.name == "getStruct"
+
+    for selector in [
+        "NumberChange",
+        "NumberChange(uint256,uint256)",
+        keccak(text="NumberChange(uint256,uint256)"),
+    ]:
+        event = contract_type.events[selector]
+        assert isinstance(event, EventABI)
+        assert event.name == "NumberChange"
 
 
 def test_select_by_name_contains(vyper_contract):
