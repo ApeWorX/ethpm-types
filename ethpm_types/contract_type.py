@@ -154,6 +154,7 @@ class ABIList(list):
             elif isinstance(item, str):
                 return next(abi for abi in self if abi.name == item)
             # hashed selector, like log.topics[0] or tx.data
+            # NOTE: Will fail with `ImportError` if `item` is `bytes` and `eth-hash` has no backend
             elif isinstance(item, bytes) and self._selector_hash_fn:
                 return next(
                     abi
