@@ -1,7 +1,19 @@
 from enum import Enum
 from hashlib import md5, sha3_256, sha256
 
+from hexbytes import HexBytes as BaseHexBytes
+
 CONTENT_ADDRESSED_SCHEMES = {"ipfs"}
+
+
+class HexBytes(BaseHexBytes):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, v):
+        return HexBytes(v)
 
 
 class Algorithm(str, Enum):
