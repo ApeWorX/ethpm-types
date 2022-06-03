@@ -1,4 +1,4 @@
-from typing import Iterator, List, Optional
+from typing import Callable, Iterator, List, Optional, Union
 
 from eth_utils import add_0x_prefix
 from hexbytes import HexBytes
@@ -129,6 +129,57 @@ class SourceMap(BaseModel):
             yield item
 
 
+class ABIList(list):
+    """
+    Adds selection by name, selector and keccak(selector).
+    """
+
+    def __init__(
+        self,
+        iterable=(),
+        *,
+        selector_id_size=32,
+        selector_hash_fn: Optional[Callable[[str], bytes]] = None,
+    ):
+        self._selector_id_size = selector_id_size
+        self._selector_hash_fn = selector_hash_fn
+        super().__init__(iterable)
+
+    def __getitem__(self, item: Union[int, slice, str, bytes, MethodABI, EventABI]):  # type: ignore
+        try:
+            # selector
+            if isinstance(item, str) and "(" in item:
+                return next(abi for abi in self if abi.selector == item)
+            # name, could be ambiguous
+            elif isinstance(item, str):
+                return next(abi for abi in self if abi.name == item)
+            # hashed selector, like log.topics[0] or tx.data
+            # NOTE: Will fail with `ImportError` if `item` is `bytes` and `eth-hash` has no backend
+            elif isinstance(item, bytes) and self._selector_hash_fn:
+                return next(
+                    abi
+                    for abi in self
+                    if self._selector_hash_fn(abi.selector)[: self._selector_id_size]
+                    == item[: self._selector_id_size]
+                )
+            elif isinstance(item, (MethodABI, EventABI)):
+                return next(abi for abi in self if abi.selector == item.selector)
+        except StopIteration:
+            raise KeyError(item)
+
+        # handle int, slice
+        return super().__getitem__(item)  # type: ignore
+
+    def __contains__(self, item: Union[str, bytes]) -> bool:  # type: ignore
+        if isinstance(item, (int, slice)):
+            return False
+        try:
+            self[item]
+            return True
+        except (KeyError, IndexError):
+            return False
+
+
 class ContractType(BaseModel):
     """
     A serializable type representing the type of a contract.
@@ -196,7 +247,11 @@ class ContractType(BaseModel):
             List[:class:`~ethpm_types.abi.ABI`]
         """
 
-        return [abi for abi in self.abi if isinstance(abi, MethodABI) and not abi.is_stateful]
+        return ABIList(
+            [abi for abi in self.abi if isinstance(abi, MethodABI) and not abi.is_stateful],
+            selector_id_size=4,
+            selector_hash_fn=self._selector_hash_fn,
+        )
 
     @property
     def mutable_methods(self) -> List[MethodABI]:
@@ -206,7 +261,11 @@ class ContractType(BaseModel):
             List[:class:`~ethpm_types.abi.ABI`]
         """
 
-        return [abi for abi in self.abi if isinstance(abi, MethodABI) and abi.is_stateful]
+        return ABIList(
+            [abi for abi in self.abi if isinstance(abi, MethodABI) and abi.is_stateful],
+            selector_id_size=4,
+            selector_hash_fn=self._selector_hash_fn,
+        )
 
     @property
     def events(self) -> List[EventABI]:
@@ -216,7 +275,16 @@ class ContractType(BaseModel):
             List[:class:`~ethpm_types.abi.ABI`]
         """
 
-        return [abi for abi in self.abi if isinstance(abi, EventABI)]
+        return ABIList(
+            [abi for abi in self.abi if isinstance(abi, EventABI)],
+            selector_hash_fn=self._selector_hash_fn,
+        )
+
+    def _selector_hash_fn(self, selector: str) -> bytes:
+        # keccak is the default on most ecosystems, other ecosystems can subclass to override it
+        from eth_utils import keccak
+
+        return keccak(text=selector)
 
 
 class BIP122_URI(str):

@@ -11,6 +11,7 @@ extras_require = {
         # Test-only deps
         "PyGithub>=1.54,<2.0",  # Necessary to pull official schema from github
         "hypothesis-jsonschema==0.19.0",  # Fuzzes based on a json schema
+        "pysha3>=1.0.2,<2.0.0",  # Backend for eth-hash
     ],
     "lint": [
         "black>=22.3.0,<23.0",  # auto-formatter and linter
