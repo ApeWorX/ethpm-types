@@ -219,11 +219,17 @@ class ContractType(BaseModel):
         a contract.
         """
 
+        constructor_abi: Optional[ConstructorABI] = None
         for abi in self.abi:
             if isinstance(abi, ConstructorABI):
-                return abi
+                constructor_abi = abi
+                break
 
-        return ConstructorABI(type="constructor")  # Use default constructor (no args)
+        constructor_abi = constructor_abi or ConstructorABI(
+            type="constructor"
+        )  # Use default constructor (no args)
+        constructor_abi.contract_type = self
+        return constructor_abi
 
     @property
     def fallback(self) -> FallbackABI:
@@ -233,11 +239,17 @@ class ContractType(BaseModel):
         when the user attempts to call a method that does not exist.
         """
 
+        fallback_abi: Optional[FallbackABI] = None
         for abi in self.abi:
             if isinstance(abi, FallbackABI):
-                return abi
+                fallback_abi = abi
+                break
 
-        return FallbackABI(type="fallback")  # Use default fallback (no args)
+        fallback_abi = fallback_abi or FallbackABI(
+            type="fallback"
+        )  # Use default fallback (no args)
+        fallback_abi.contract_type = self
+        return fallback_abi
 
     @property
     def view_methods(self) -> List[MethodABI]:
@@ -247,8 +259,14 @@ class ContractType(BaseModel):
             List[:class:`~ethpm_types.abi.ABI`]
         """
 
+        method_abis = [
+            abi for abi in self.abi if isinstance(abi, MethodABI) and not abi.is_stateful
+        ]
+        for abi in method_abis:
+            abi.contract_type = self
+
         return ABIList(
-            [abi for abi in self.abi if isinstance(abi, MethodABI) and not abi.is_stateful],
+            method_abis,
             selector_id_size=4,
             selector_hash_fn=self._selector_hash_fn,
         )
@@ -261,8 +279,12 @@ class ContractType(BaseModel):
             List[:class:`~ethpm_types.abi.ABI`]
         """
 
+        method_abis = [abi for abi in self.abi if isinstance(abi, MethodABI) and abi.is_stateful]
+        for abi in method_abis:
+            abi.contract_type = self
+
         return ABIList(
-            [abi for abi in self.abi if isinstance(abi, MethodABI) and abi.is_stateful],
+            method_abis,
             selector_id_size=4,
             selector_hash_fn=self._selector_hash_fn,
         )
@@ -275,8 +297,12 @@ class ContractType(BaseModel):
             List[:class:`~ethpm_types.abi.ABI`]
         """
 
+        event_abis = [abi for abi in self.abi if isinstance(abi, EventABI)]
+        for abi in event_abis:
+            abi.contract_type = self
+
         return ABIList(
-            [abi for abi in self.abi if isinstance(abi, EventABI)],
+            event_abis,
             selector_hash_fn=self._selector_hash_fn,
         )
 

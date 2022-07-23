@@ -1,6 +1,6 @@
-from typing import List, Optional, Union
+from typing import TYPE_CHECKING, List, Optional, Union
 
-from pydantic import Extra
+from pydantic import Extra, Field
 
 from .base import BaseModel
 
@@ -8,6 +8,9 @@ try:
     from typing import Literal  # type: ignore
 except ImportError:
     from typing_extensions import Literal  # type: ignore
+
+if TYPE_CHECKING:
+    from ethpm_types.contract_type import ContractType
 
 
 class ABIType(BaseModel):
@@ -60,6 +63,7 @@ class EventABIType(ABIType):
 
 class ConstructorABI(BaseModel):
     type: Literal["constructor"]
+    contract_type: Optional["ContractType"] = Field(None, exclude=True)
 
     # No `name` field
     stateMutability: str = "nonpayable"  # NOTE: Should be either "payable" or "nonpayable"
@@ -82,6 +86,7 @@ class ConstructorABI(BaseModel):
 
 class FallbackABI(BaseModel):
     type: Literal["fallback"]
+    contract_type: Optional["ContractType"] = Field(None, exclude=True)
 
     # No `name` field
     stateMutability: str = "nonpayable"  # NOTE: Should be either "payable" or "nonpayable"
@@ -100,6 +105,7 @@ class FallbackABI(BaseModel):
 
 class ReceiveABI(BaseModel):
     type: Literal["receive"]
+    contract_type: Optional["ContractType"] = Field(None, exclude=True)
 
     # No `name` field
     stateMutability: Literal["payable"]
@@ -118,6 +124,7 @@ class ReceiveABI(BaseModel):
 
 class MethodABI(BaseModel):
     type: Literal["function"]
+    contract_type: Optional["ContractType"] = Field(None, exclude=True)
 
     name: str
     stateMutability: str = "nonpayable"
@@ -164,6 +171,7 @@ class MethodABI(BaseModel):
 
 class EventABI(BaseModel):
     type: Literal["event"]
+    contract_type: Optional["ContractType"] = Field(None, exclude=True)
 
     name: str
     inputs: List[EventABIType] = []
@@ -190,6 +198,7 @@ class EventABI(BaseModel):
 
 class ErrorABI(BaseModel):
     type: Literal["error"]
+    contract_type: Optional["ContractType"] = Field(None, exclude=True)
 
     name: str
     inputs: List[ABIType] = []
@@ -215,6 +224,7 @@ class ErrorABI(BaseModel):
 
 class StructABI(BaseModel):
     type: Literal["struct"]
+    contract_type: Optional["ContractType"] = Field(None, exclude=True)
 
     name: str
     members: List[ABIType]
@@ -243,6 +253,7 @@ class StructABI(BaseModel):
 
 class UnprocessedABI(BaseModel):
     type: str
+    contract_type: Optional["ContractType"] = Field(None, exclude=True)
 
     class Config:
         extra = Extra.allow
