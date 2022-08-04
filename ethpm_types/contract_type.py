@@ -13,20 +13,64 @@ from .utils import Hex, is_valid_hex
 # Offsets are for dynamic links, e.g. EIP1167 proxy forwarder
 class LinkDependency(BaseModel):
     offsets: List[int]
+    """
+    The locations within the corresponding bytecode where the value for this
+    link value was written. These locations are 0-indexed from the beginning
+    of the bytes representation of the corresponding bytecode.
+    """
+
     type: str
+    """
+    The value type for determining what is encoded when linking the corresponding
+    bytecode.
+    """
+
     value: str
+    """
+    The value which should be written when linking the corresponding bytecode.
+    """
 
 
 class LinkReference(BaseModel):
     offsets: List[int]
+    """
+    An array of integers, corresponding to each of the start positions
+    where the link reference appears in the bytecode. Locations are 0-indexed
+    from the beginning of the bytes representation of the corresponding bytecode.
+    This field is invalid if it references a position that is beyond the end of
+    the bytecode.
+    """
+
     length: int
+    """
+    The length in bytes of the link reference.
+    This field is invalid if the end of the defined link reference exceeds the
+    end of the bytecode.
+    """
+
     name: Optional[str] = None
+    """
+    A valid identifier for the reference.
+    Any link references which should be linked with the same link value should
+    be given the same name.
+    """
 
 
 class Bytecode(BaseModel):
     bytecode: Optional[Hex] = None
+    """
+    A string containing the 0x prefixed hexadecimal representation of the bytecode.
+    """
+
     linkReferences: Optional[List[LinkReference]] = None
+    """
+    The locations in the corresponding bytecode which require linking.
+    """
+
     linkDependencies: Optional[List[LinkDependency]] = None
+    """
+    The link values that have been used to link the corresponding bytecode.
+    """
 
     @validator("bytecode", pre=True)
     def prefix_bytecode(cls, v):
@@ -55,10 +99,29 @@ class Bytecode(BaseModel):
 
 class ContractInstance(BaseModel):
     contract_type: str = Field(..., alias="contractType")
+    """
+    The :class:`~ethpm_types.contract_type.ContractType` of the contract.
+    """
+
     address: Hex
+    """The contract address."""
+
     transaction: Optional[Hex] = None
+    """The transaction hash from which the contract was created."""
+
     block: Optional[Hex] = None
+    """
+    The block hash in which this the transaction which created this
+    contract instance was mined.
+    """
+
     runtime_bytecode: Optional[Bytecode] = Field(None, alias="runtimeBytecode")
+    """
+    The runtime portion of bytecode for this Contract Instance.
+    When present, the value from this field supersedes the ``runtimeBytecode``
+    from the :class:`~ethpm_types.contract_type.ContractType` for this
+    ``ContractInstance``.
+    """
 
 
 class SourceMapItem(BaseModel):
@@ -71,6 +134,16 @@ class SourceMapItem(BaseModel):
 
 
 class SourceMap(BaseModel):
+    """
+    As part of the AST output, the compiler provides the range of the source code
+    that is represented by the respective node in the AST.
+    This can be used for various purposes ranging from static analysis tools that
+    report errors based on the AST and debugging tools that highlight local variables
+    and their uses.
+
+    `Solidity Doc<https://docs.soliditylang.org/en/v0.8.15/internals/source_mappings.html>`__.
+    """
+
     __root__: str
 
     def parse(self) -> Iterator[SourceMapItem]:
@@ -187,14 +260,31 @@ class ContractType(BaseModel):
     then ``MyContract`` would be the type.
     """
 
-    # NOTE: Field is optional if `ContractAlias` is the same as `ContractName`
     name: Optional[str] = Field(None, alias="contractName")
+    """
+    The name of the contract type. The field is optional if ``ContractAlias``
+    is the same as ``ContractName``.
+    """
+
     source_id: Optional[str] = Field(None, alias="sourceId")
+    """
+    The global source identifier for the source file from which this contract type was generated.
+    """
+
     deployment_bytecode: Optional[Bytecode] = Field(None, alias="deploymentBytecode")
+    """The bytecode for the ContractType."""
+
     runtime_bytecode: Optional[Bytecode] = Field(None, alias="runtimeBytecode")
-    # abi, userdoc and devdoc must conform to spec
+    """The unlinked 0x-prefixed runtime portion of bytecode for this ContractType."""
+
     abi: List[ABI] = []
+    """The application binary interface to the contract."""
+
     sourcemap: Optional[SourceMap] = None  # NOTE: Not a part of canonical EIP-2678 spec
+    """
+    **NOTE**: This is not part of the canonical EIP-2678 spec
+    """
+
     userdoc: Optional[dict] = None
     devdoc: Optional[dict] = None
 
