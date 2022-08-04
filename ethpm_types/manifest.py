@@ -137,7 +137,7 @@ class PackageManifest(BaseModel):
     dependencies: Optional[Dict[PackageName, AnyUrl]] = Field(None, alias="buildDependencies")
     """
     A mapping of EthPM packages that this project depends on.
-    The values must be content-addressable URIs that conformsto the same
+    The values must be content-addressable URIs that conforms to the same
     manifest version as ``manifest``.
     """
 
