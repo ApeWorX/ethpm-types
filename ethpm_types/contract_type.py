@@ -405,6 +405,17 @@ class ContractType(BaseModel):
 
 
 class BIP122_URI(str):
+    """
+    A URI scheme for looking up blocks, transactions and addresses on a
+    Blockchain explorer, or in general to make proper Blockchain references.
+    `BIP-122 <https://github.com/bitcoin/bips/blob/master/bip-0122.mediawiki>`__.
+
+    URI Format::
+
+        blockchain:[//<chain>]/<tx|block|address>/<hash>
+
+    """
+
     @classmethod
     def __modify_schema__(cls, field_schema):
         field_schema.update(
