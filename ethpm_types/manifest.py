@@ -100,6 +100,8 @@ class PackageManifest(BaseModel):
     """
     Important data that is not integral to installation
     but should be included when publishing.
+    **NOTE**: All published projects *should* include
+    ``meta``.
     """
 
     sources: Optional[Dict[str, Source]] = None
