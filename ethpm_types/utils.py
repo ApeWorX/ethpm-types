@@ -7,6 +7,10 @@ CONTENT_ADDRESSED_SCHEMES = {"ipfs"}
 
 
 class HexBytes(BaseHexBytes):
+    """
+    A class representing bytes as a hex-str.
+    """
+
     @classmethod
     def __get_validators__(cls):
         yield cls.validate
@@ -17,12 +21,20 @@ class HexBytes(BaseHexBytes):
 
 
 class Algorithm(str, Enum):
+    """
+    Algorithm enum options MD5, SHA3, and SHA256.
+    """
+
     MD5 = "md5"
     SHA3 = "sha3"
     SHA256 = "sha256"
 
 
 def is_valid_hex(data: str) -> bool:
+    """
+    Returns ``True`` if the given data is a valid hex str.
+    """
+
     if not data.startswith("0x"):
         return False
 
@@ -73,6 +85,17 @@ class Hex(str):
 
 
 def compute_checksum(content: bytes, algorithm: Algorithm = Algorithm.MD5) -> Hex:
+    """
+    Calculate the checksum of the given content.
+
+    Args:
+        content (bytes): Content to hash.
+        algorithm (:class:`~ethpm_types.utils.Algorithm`)" The algorithm to use.
+
+    Returns:
+        :class:`~ethpm_types.utils.Hex`
+    """
+
     if algorithm is Algorithm.MD5:
         return Hex.from_bytes(md5(content).digest())
 

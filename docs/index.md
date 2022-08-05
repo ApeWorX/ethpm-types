@@ -17,5 +17,7 @@
    methoddocs/contract_type.md
    methoddocs/manifest.md
    methoddocs/abi.md
+   methoddocs/source.md
+   methoddocs/utils.md
 
 ```
