@@ -141,7 +141,7 @@ class SourceMap(BaseModel):
     report errors based on the AST and debugging tools that highlight local variables
     and their uses.
 
-    `Solidity Doc<https://docs.soliditylang.org/en/v0.8.15/internals/source_mappings.html>`__.
+    `Solidity Doc <https://docs.soliditylang.org/en/v0.8.15/internals/source_mappings.html>`__.
     """
 
     __root__: str

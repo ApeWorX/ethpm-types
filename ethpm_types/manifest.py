@@ -84,7 +84,7 @@ class PackageManifest(BaseModel):
     """
     A data format describing a smart contract software package.
 
-    `EIP-2678<https://eips.ethereum.org/EIPS/eip-2678#ethpm-manifest-version>`__
+    `EIP-2678 <https://eips.ethereum.org/EIPS/eip-2678#ethpm-manifest-version>`__
     """
 
     manifest: str = "ethpm/3"
@@ -127,9 +127,9 @@ class PackageManifest(BaseModel):
     deployments: Optional[Dict[BIP122_URI, Dict[str, ContractInstance]]] = None
     """
     Information for the chains on which this release has
-    :class:`~ethpm_types.contract_type.ContractInstance`s as well as the
-    :class:`~ethpm_types.contract_type.ContractType`s and other deployment details
-    for those deployed contract instances.
+    :class:`~ethpm_types.contract_type.ContractInstance` references as well as the
+    :class:`~ethpm_types.contract_type.ContractType` definitions and other deployment
+    details for those deployed contract instances.
     The set of chains defined by the BIP122 URI keys for this object must be unique.
     There cannot be two different URI keys in a deployments field representing the same blockchain.
     """

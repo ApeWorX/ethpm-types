@@ -23,6 +23,13 @@ extras_require = {
         "flake8-print>=4.0.0",  # detect print statements left in code
         "isort>=5.10.1",  # Import sorting linter
     ],
+    "doc": [
+        "myst-parser>=0.17.0,<0.18",  # Tools for parsing markdown files in the docs
+        "sphinx-click>=3.1.0,<4.0",  # For documenting CLI
+        "Sphinx>=4.4.0,<5.0",  # Documentation generator
+        "sphinx_rtd_theme>=1.0.0,<2",  # Readthedocs.org theme
+        "sphinxcontrib-napoleon>=0.7",  # Allow Google-style documentation
+    ],
     "release": [  # `release` GitHub Action job uses this
         "setuptools",  # Installation tool
         "wheel",  # Packaging tool

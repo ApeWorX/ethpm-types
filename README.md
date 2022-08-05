@@ -1,4 +1,4 @@
-# EthPM v3 Implementation
+# Quick Start
 
 EthPM is an Ethereum package manifest containing data types for contracts, deployments,
 and source code using [EIP-2678](https://eips.ethereum.org/EIPS/eip-2678).
@@ -42,12 +42,3 @@ contract = ContractInstance(**contract_dict)
 
 print(contract.name)
 ```
-
-## Development
-
-Please see the [contributing guide](CONTRIBUTING.md) to learn more how to contribute to this project.
-Comments, questions, criticisms and pull requests are welcomed.
-
-## License
-
-This project is licensed under the [Apache 2.0](LICENSE).
