@@ -406,13 +406,12 @@ class ContractType(BaseModel):
 
 class BIP122_URI(str):
     """
-    A URI scheme for looking up blocks, transactions and addresses on a
-    Blockchain explorer, or in general to make proper Blockchain references.
+    A URI scheme for looking up blocks.
     `BIP-122 <https://github.com/bitcoin/bips/blob/master/bip-0122.mediawiki>`__.
 
     URI Format::
 
-        blockchain:[//<chain>]/<tx|block|address>/<hash>
+        blockchain://<chain>/<block>/<hash>
 
     """
 
