@@ -11,6 +11,10 @@ NUMBERS = set("0123456789")
 
 
 class PackageName(str):
+    """
+    A human readable name for this package.
+    """
+
     @classmethod
     def __modify_schema__(cls, field_schema):
         field_schema.update(
@@ -46,33 +50,100 @@ class PackageName(str):
 
 
 class PackageMeta(BaseModel):
+    """
+    Important data that is not integral to installation
+    but should be included when publishing.
+    """
+
     authors: Optional[List[str]] = None
+    """A list of human readable names for the authors of this package."""
+
     license: Optional[str] = None
+    """
+    The license associated with this package.
+    This value should conform to the SPDX format.
+    Packages should include this field.
+    If a file Source Object defines its own license, that license takes
+    precedence for that particular file over this package-scoped meta license.
+    """
+
     description: Optional[str] = None
+    """Additional detail that may be relevant for this package."""
+
     keywords: Optional[List[str]] = None
+    """Relevant keywords related to this package."""
+
     links: Optional[Dict[str, AnyUrl]] = None
+    """
+    URIs to relevant resources associated with this package.
+    When possible, authors should use the following keys for the following common resources.
+    """
 
 
 class PackageManifest(BaseModel):
+    """
+    A data format describing a smart contract software package.
+
+    `EIP-2678 <https://eips.ethereum.org/EIPS/eip-2678#ethpm-manifest-version>`__
+    """
+
     manifest: str = "ethpm/3"
+    """The specification version that the project conforms to."""
+
     name: Optional[PackageName] = None
-    # NOTE: ``version`` should be valid SemVer
+    """A human-readable name for the package."""
+
     version: Optional[str] = None
-    # NOTE: ``meta`` should be in all published packages
+    """The version of the release, which should be SemVer."""
+
     meta: Optional[PackageMeta] = None
-    # NOTE: ``sources`` source tree should be necessary and sufficient to compile
-    #       all ``ContractType``s in manifest
+    """
+    Important data that is not integral to installation
+    but should be included when publishing.
+    **NOTE**: All published projects *should* include
+    ``meta``.
+    """
+
     sources: Optional[Dict[str, Source]] = None
-    # NOTE: ``contractTypes`` should only include types directly computed from manifest
-    # NOTE: ``contractTypes`` should not include types from dependencies
-    # NOTE: ``contractTypes`` should not include abstracts
+    """
+    The sources field defines a source tree that should comprise the full source tree
+    necessary to recompile the contracts contained in this release.
+    """
+
     contract_types: Optional[Dict[str, ContractType]] = Field(None, alias="contractTypes")
+    """
+    :class:`~ethpm_types.contract_type.ContractType` objects that have been included
+    in this release.
+
+      * Should only include types that can be found in the sources.
+      * Should not include types from dependencies.
+      * Should not include abstracts.
+    """
+
     compilers: Optional[List[Compiler]] = None
-    # NOTE: ``str`` arg should be a valid ``contractType``, but this is not required.
+    """
+    Information about the compilers and their settings that have been
+    used to generate the various contractTypes included in this release.
+    """
+
     deployments: Optional[Dict[BIP122_URI, Dict[str, ContractInstance]]] = None
-    # NOTE: values must be a Content Addressible URI that conforms to the same manifest
-    #       version as ``manifest``
+    """
+    Information for the chains on which this release has
+    :class:`~ethpm_types.contract_type.ContractInstance` references as well as the
+    :class:`~ethpm_types.contract_type.ContractType` definitions and other deployment
+    details for those deployed contract instances. The set of chains defined by the BIP122
+    URI keys for this object must be unique. There cannot be two different URI keys in a
+    deployments field representing the same blockchain. The value of the URIs is a dictionary
+    mapping the contract instance names to the instance themselves. The contract instance names
+    must be unique across all other contract instances for the given chain.
+    """
+
     dependencies: Optional[Dict[PackageName, AnyUrl]] = Field(None, alias="buildDependencies")
+    """
+    A mapping of EthPM packages that this project depends on.
+    The values must be content-addressable URIs that conforms to the same
+    manifest version as ``manifest``.
+    """
 
     @root_validator
     def check_valid_manifest_version(cls, values):
