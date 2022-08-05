@@ -131,9 +131,11 @@ class PackageManifest(BaseModel):
     Information for the chains on which this release has
     :class:`~ethpm_types.contract_type.ContractInstance` references as well as the
     :class:`~ethpm_types.contract_type.ContractType` definitions and other deployment
-    details for those deployed contract instances.
-    The set of chains defined by the BIP122 URI keys for this object must be unique.
-    There cannot be two different URI keys in a deployments field representing the same blockchain.
+    details for those deployed contract instances. The set of chains defined by the BIP122
+    URI keys for this object must be unique. There cannot be two different URI keys in a
+    deployments field representing the same blockchain. The value of the URIs is a dictionary
+    mapping the contract instance names to the instance themselves. The contract instance names
+    must be unique across all other contract instances for the given chain.
     """
 
     dependencies: Optional[Dict[PackageName, AnyUrl]] = Field(None, alias="buildDependencies")

@@ -100,7 +100,9 @@ class Bytecode(BaseModel):
 class ContractInstance(BaseModel):
     contract_type: str = Field(..., alias="contractType")
     """
-    The :class:`~ethpm_types.contract_type.ContractType` of the contract.
+    Any of the contract type names included in this Package
+    or any of the contract type names found in any of the package dependencies
+    from the ``buildDependencies`` section of the Package Manifest.
     """
 
     address: Hex
