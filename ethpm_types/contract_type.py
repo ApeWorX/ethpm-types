@@ -280,9 +280,10 @@ class ContractType(BaseModel):
     abi: List[ABI] = []
     """The application binary interface to the contract."""
 
-    sourcemap: Optional[SourceMap] = None  # NOTE: Not a part of canonical EIP-2678 spec
+    sourcemap: Optional[SourceMap] = None
     """
-    **NOTE**: This is not part of the canonical EIP-2678 spec
+    The range of the source code that is represented by the respective node in the AST.
+    **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
     userdoc: Optional[dict] = None
