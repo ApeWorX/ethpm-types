@@ -1,4 +1,4 @@
-# Ape-Docs
+# EthPM Types Documentation
 
 ```{eval-rst}
 .. toctree::
