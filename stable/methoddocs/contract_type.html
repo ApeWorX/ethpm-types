@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contract Type &mdash; ethpm-types  documentation</title>
+  <link rel="stylesheet" href="/ethpm-types/latest/_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="/ethpm-types/latest/_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="/ethpm-types/latest/_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="/ethpm-types/latest/_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="/ethpm-types/latest/_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="/ethpm-types/latest/_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="canonical" href="/ethpm-types/methoddocs/contract_type.html" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <script src="../_static/custom.js"></script>
+  <script>
+      var PROJECT = "ethpm-types";
+  </script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Package Manifest" href="manifest.html" />
+    <link rel="prev" title="Quick Start" href="../userguides/quickstart.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> ethpm-types
+            <img src="../_static/logo.gif" class="logo" alt="Logo"/>
+          </a>
+
+          <div class="version">
+            <label for="version-picker" id="version-picker-label">Version:</label>
+            <select id="version-picker">
+              <option value="">Select version...</option>
+              <option value="latest">latest</option>
+              <option value="stable">stable</option>
+                <option value="v0.3.4">v0.3.4</option>
+            </select>
+          </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div>
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Main">
+              <p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../userguides/quickstart.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contract Type</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manifest.html">Package Manifest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi.html">ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source.html">Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" aria-label="Top" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ethpm-types</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Contract Type</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/methoddocs/contract_type.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ethpm_types.contract_type">
+<span id="contract-type"></span><h1>Contract Type<a class="headerlink" href="#module-ethpm_types.contract_type" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.ABIList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.contract_type.</span></span><span class="sig-name descname"><span class="pre">ABIList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selector_id_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selector_hash_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.contract_type.ABIList" title="Permalink to this definition"></a></dt>
+<dd><p>Adds selection by name, selector and keccak(selector).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.BIP122_URI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.contract_type.</span></span><span class="sig-name descname"><span class="pre">BIP122_URI</span></span><a class="headerlink" href="#ethpm_types.contract_type.BIP122_URI" title="Permalink to this definition"></a></dt>
+<dd><p>A URI scheme for looking up blocks.
+<a class="reference external" href="https://github.com/bitcoin/bips/blob/master/bip-0122.mediawiki">BIP-122</a>.</p>
+<p>URI Format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">blockchain</span><span class="p">:</span><span class="o">//&lt;</span><span class="n">chain</span><span class="o">&gt;/&lt;</span><span class="n">block</span><span class="o">&gt;/&lt;</span><span class="nb">hash</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.ContractType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.contract_type.</span></span><span class="sig-name descname"><span class="pre">ContractType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contractName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceId</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deploymentBytecode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ethpm_types.contract_type.Bytecode</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtimeBytecode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ethpm_types.contract_type.Bytecode</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="abi.html#ethpm_types.abi.ConstructorABI" title="ethpm_types.abi.ConstructorABI"><span class="pre">ethpm_types.abi.ConstructorABI</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="abi.html#ethpm_types.abi.FallbackABI" title="ethpm_types.abi.FallbackABI"><span class="pre">ethpm_types.abi.FallbackABI</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="abi.html#ethpm_types.abi.ReceiveABI" title="ethpm_types.abi.ReceiveABI"><span class="pre">ethpm_types.abi.ReceiveABI</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="abi.html#ethpm_types.abi.MethodABI" title="ethpm_types.abi.MethodABI"><span class="pre">ethpm_types.abi.MethodABI</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="abi.html#ethpm_types.abi.EventABI" title="ethpm_types.abi.EventABI"><span class="pre">ethpm_types.abi.EventABI</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="abi.html#ethpm_types.abi.ErrorABI" title="ethpm_types.abi.ErrorABI"><span class="pre">ethpm_types.abi.ErrorABI</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="abi.html#ethpm_types.abi.StructABI" title="ethpm_types.abi.StructABI"><span class="pre">ethpm_types.abi.StructABI</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="abi.html#ethpm_types.abi.UnprocessedABI" title="ethpm_types.abi.UnprocessedABI"><span class="pre">ethpm_types.abi.UnprocessedABI</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourcemap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.contract_type.SourceMap" title="ethpm_types.contract_type.SourceMap"><span class="pre">ethpm_types.contract_type.SourceMap</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userdoc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">devdoc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.contract_type.ContractType" title="Permalink to this definition"></a></dt>
+<dd><p>A serializable type representing the type of a contract.
+For example, if you define your contract as <code class="docutils literal notranslate"><span class="pre">contract</span> <span class="pre">MyContract</span></code> (in Solidity),
+then <code class="docutils literal notranslate"><span class="pre">MyContract</span></code> would be the type.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.ContractType.abi">
+<span class="sig-name descname"><span class="pre">abi</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="abi.html#ethpm_types.abi.ConstructorABI" title="ethpm_types.abi.ConstructorABI"><span class="pre">ethpm_types.abi.ConstructorABI</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="abi.html#ethpm_types.abi.FallbackABI" title="ethpm_types.abi.FallbackABI"><span class="pre">ethpm_types.abi.FallbackABI</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="abi.html#ethpm_types.abi.ReceiveABI" title="ethpm_types.abi.ReceiveABI"><span class="pre">ethpm_types.abi.ReceiveABI</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="abi.html#ethpm_types.abi.MethodABI" title="ethpm_types.abi.MethodABI"><span class="pre">ethpm_types.abi.MethodABI</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="abi.html#ethpm_types.abi.EventABI" title="ethpm_types.abi.EventABI"><span class="pre">ethpm_types.abi.EventABI</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="abi.html#ethpm_types.abi.ErrorABI" title="ethpm_types.abi.ErrorABI"><span class="pre">ethpm_types.abi.ErrorABI</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="abi.html#ethpm_types.abi.StructABI" title="ethpm_types.abi.StructABI"><span class="pre">ethpm_types.abi.StructABI</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="abi.html#ethpm_types.abi.UnprocessedABI" title="ethpm_types.abi.UnprocessedABI"><span class="pre">ethpm_types.abi.UnprocessedABI</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.contract_type.ContractType.abi" title="Permalink to this definition"></a></dt>
+<dd><p>The application binary interface to the contract.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.ContractType.constructor">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">constructor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="abi.html#ethpm_types.abi.ConstructorABI" title="ethpm_types.abi.ConstructorABI"><span class="pre">ethpm_types.abi.ConstructorABI</span></a></em><a class="headerlink" href="#ethpm_types.contract_type.ContractType.constructor" title="Permalink to this definition"></a></dt>
+<dd><p>The constructor of the contract, if it has one. For example,
+your smart-contract (in Solidity) may define a <code class="docutils literal notranslate"><span class="pre">constructor()</span> <span class="pre">public</span> <span class="pre">{}</span></code>.
+This property contains information about the parameters needed to initialize
+a contract.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.ContractType.deployment_bytecode">
+<span class="sig-name descname"><span class="pre">deployment_bytecode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ethpm_types.contract_type.Bytecode</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.contract_type.ContractType.deployment_bytecode" title="Permalink to this definition"></a></dt>
+<dd><p>The bytecode for the ContractType.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.ContractType.events">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">events</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="abi.html#ethpm_types.abi.EventABI" title="ethpm_types.abi.EventABI"><span class="pre">ethpm_types.abi.EventABI</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.contract_type.ContractType.events" title="Permalink to this definition"></a></dt>
+<dd><p>The events defined in a smart contract.
+:returns: List[<code class="xref py py-class docutils literal notranslate"><span class="pre">ABI</span></code>]</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.ContractType.fallback">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fallback</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="abi.html#ethpm_types.abi.FallbackABI" title="ethpm_types.abi.FallbackABI"><span class="pre">ethpm_types.abi.FallbackABI</span></a></em><a class="headerlink" href="#ethpm_types.contract_type.ContractType.fallback" title="Permalink to this definition"></a></dt>
+<dd><p>The fallback method of the contract, if it has one. A fallback method
+is external, has no name, arguments, or return value, and gets invoked
+when the user attempts to call a method that does not exist.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.ContractType.mutable_methods">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mutable_methods</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="abi.html#ethpm_types.abi.MethodABI" title="ethpm_types.abi.MethodABI"><span class="pre">ethpm_types.abi.MethodABI</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.contract_type.ContractType.mutable_methods" title="Permalink to this definition"></a></dt>
+<dd><p>The transaction-methods (stateful or payable methods) defined in a smart contract.
+:returns: List[<code class="xref py py-class docutils literal notranslate"><span class="pre">ABI</span></code>]</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.ContractType.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.contract_type.ContractType.name" title="Permalink to this definition"></a></dt>
+<dd><p>The name of the contract type. The field is optional if <code class="docutils literal notranslate"><span class="pre">ContractAlias</span></code>
+is the same as <code class="docutils literal notranslate"><span class="pre">ContractName</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.ContractType.runtime_bytecode">
+<span class="sig-name descname"><span class="pre">runtime_bytecode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ethpm_types.contract_type.Bytecode</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.contract_type.ContractType.runtime_bytecode" title="Permalink to this definition"></a></dt>
+<dd><p>The unlinked 0x-prefixed runtime portion of bytecode for this ContractType.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.ContractType.source_id">
+<span class="sig-name descname"><span class="pre">source_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.contract_type.ContractType.source_id" title="Permalink to this definition"></a></dt>
+<dd><p>The global source identifier for the source file from which this contract type was generated.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.ContractType.sourcemap">
+<span class="sig-name descname"><span class="pre">sourcemap</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.contract_type.SourceMap" title="ethpm_types.contract_type.SourceMap"><span class="pre">ethpm_types.contract_type.SourceMap</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.contract_type.ContractType.sourcemap" title="Permalink to this definition"></a></dt>
+<dd><p>The range of the source code that is represented by the respective node in the AST.
+<strong>NOTE</strong>: This is not part of the canonical EIP-2678 spec.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.ContractType.view_methods">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">view_methods</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="abi.html#ethpm_types.abi.MethodABI" title="ethpm_types.abi.MethodABI"><span class="pre">ethpm_types.abi.MethodABI</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.contract_type.ContractType.view_methods" title="Permalink to this definition"></a></dt>
+<dd><p>The call-methods (read-only method, non-payable methods) defined in a smart contract.
+:returns: List[<code class="xref py py-class docutils literal notranslate"><span class="pre">ABI</span></code>]</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.SourceMap">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.contract_type.</span></span><span class="sig-name descname"><span class="pre">SourceMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">__root__</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.contract_type.SourceMap" title="Permalink to this definition"></a></dt>
+<dd><p>As part of the AST output, the compiler provides the range of the source code
+that is represented by the respective node in the AST.
+This can be used for various purposes ranging from static analysis tools that
+report errors based on the AST and debugging tools that highlight local variables
+and their uses.</p>
+<p><a class="reference external" href="https://docs.soliditylang.org/en/v0.8.15/internals/source_mappings.html">Solidity Doc</a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.SourceMap.parse">
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">ethpm_types.contract_type.SourceMapItem</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ethpm_types.contract_type.SourceMap.parse" title="Permalink to this definition"></a></dt>
+<dd><p>Parses the source map string into a stream of <code class="docutils literal notranslate"><span class="pre">SourceMapItem</span></code> items.
+Useful for when parsing the map according to compiler-specific
+decompilation rules back to the source code language files.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../userguides/quickstart.html" class="btn btn-neutral float-left" title="Quick Start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="manifest.html" class="btn btn-neutral float-right" title="Package Manifest" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, ApeWorX LTD.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
