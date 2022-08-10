@@ -113,7 +113,7 @@ class ConstructorABI(BaseModel):
     type: Literal["constructor"]
     """The value ``"constructor"``."""
 
-    contract_type: Optional["ContractType"] = Field(None, exclude=True)
+    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
     """
     A reference to this ABI's contract type. This gets set during ``ContractType``
     deserialization.
@@ -158,7 +158,7 @@ class FallbackABI(BaseModel):
     type: Literal["fallback"]
     """The value ``"fallback"``."""
 
-    contract_type: Optional["ContractType"] = Field(None, exclude=True)
+    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
     """
     A reference to this ABI's contract type. This gets set during ``ContractType``
     deserialization.
@@ -196,7 +196,7 @@ class ReceiveABI(BaseModel):
     type: Literal["receive"]
     """The value ``"receive"``."""
 
-    contract_type: Optional["ContractType"] = Field(None, exclude=True)
+    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
     """
     A reference to this ABI's contract type. This gets set during ``ContractType``
     deserialization.
@@ -230,7 +230,7 @@ class MethodABI(BaseModel):
     type: Literal["function"]
     """The value ``"function"``."""
 
-    contract_type: Optional["ContractType"] = Field(None, exclude=True)
+    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
     """
     A reference to this ABI's contract type. This gets set during ``ContractType``
     deserialization.
@@ -309,7 +309,7 @@ class EventABI(BaseModel):
     type: Literal["event"]
     """The value ``"event"``."""
 
-    contract_type: Optional["ContractType"] = Field(None, exclude=True)
+    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
     """
     A reference to this ABI's contract type. This gets set during ``ContractType``
     deserialization.
@@ -353,7 +353,7 @@ class ErrorABI(BaseModel):
     type: Literal["error"]
     """The value ``"error"``."""
 
-    contract_type: Optional["ContractType"] = Field(None, exclude=True)
+    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
     """
     A reference to this ABI's contract type. This gets set during ``ContractType``
     deserialization.
@@ -395,7 +395,7 @@ class StructABI(BaseModel):
     type: Literal["struct"]
     """The value ``"struct"``."""
 
-    contract_type: Optional["ContractType"] = Field(None, exclude=True)
+    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
     """
     A reference to this ABI's contract type. This gets set during ``ContractType``
     deserialization.
@@ -440,7 +440,7 @@ class UnprocessedABI(BaseModel):
     type: str
     """The type name as a string."""
 
-    contract_type: Optional["ContractType"] = Field(None, exclude=True)
+    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
     """
     A reference to this ABI's contract type. This gets set during ``ContractType``
     deserialization.
