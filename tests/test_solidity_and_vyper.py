@@ -148,3 +148,15 @@ def test_select_by_name_contains(vyper_contract):
     assert "NumberChange(uint256,uint256)" in contract_type.events
     assert keccak(text="NumberChange(uint256,uint256)") in contract_type.events
     assert keccak(text="MadeUpEvent(uint64)") not in contract_type.events
+
+
+def test_contract_type_excluded_in_repr_abi(vyper_contract):
+    contract_type = ContractType.parse_obj(vyper_contract)
+    actual = repr(contract_type.events[0])
+    assert "contract_type" not in actual
+
+    actual = repr(contract_type.mutable_methods[0])
+    assert "contract_type" not in actual
+
+    actual = repr(contract_type.view_methods[0])
+    assert "contract_type" not in actual
