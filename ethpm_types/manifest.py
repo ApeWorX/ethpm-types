@@ -149,7 +149,7 @@ class PackageManifest(BaseModel):
     def check_valid_manifest_version(cls, values):
         # NOTE: We only support v3 (EIP-2678) of the ethPM spec currently
         if values["manifest"] != "ethpm/3":
-            raise ValueError("only ethPM v3 (EIP-2678) supported")
+            raise ValueError("Only ethPM V3 (EIP-2678) supported.")
 
         return values
 
@@ -158,7 +158,7 @@ class PackageManifest(BaseModel):
         if ("name" in values or "version" in values) and (
             "name" not in values or "version" not in values
         ):
-            raise ValueError("Both `name` and `version` must be present if either is specified")
+            raise ValueError("Both `name` and `version` must be present if either is specified.")
 
         return values
 
@@ -173,7 +173,7 @@ class PackageManifest(BaseModel):
             for alias in values["contract_types"]:
                 source_id = values["contract_types"][alias].source_id
                 if source_id and (source_id not in values["sources"]):
-                    raise ValueError(f"'{source_id}' missing from `sources`")
+                    raise ValueError(f"'{source_id}' missing from `sources`.")
 
         return values
 

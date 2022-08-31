@@ -72,7 +72,7 @@ class Hex(str):
     @classmethod
     def validate_hex(cls, data: str) -> str:
         if not is_valid_hex(data):
-            raise ValueError("Invalid Hex Value")
+            raise ValueError("Invalid Hex Value.")
 
         return data
 
@@ -109,4 +109,4 @@ def compute_checksum(content: bytes, algorithm: Algorithm = Algorithm.MD5) -> He
     # TODO: Support keccak256 (if even necessary, mentioned in EIP but not used)
     # TODO: Explore other algorithms needed
     else:
-        raise ValueError("Unsupported algorithm")
+        raise ValueError("Unsupported algorithm.")
