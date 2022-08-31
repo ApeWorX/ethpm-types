@@ -149,7 +149,7 @@ class PackageManifest(BaseModel):
     def check_valid_manifest_version(cls, values):
         # NOTE: We only support v3 (EIP-2678) of the ethPM spec currently
         if values["manifest"] != "ethpm/3":
-            raise ValueError("only ethPM v3 (EIP-2678) supported")
+            raise ValueError("Only ethPM v3 (EIP-2678) supported")
 
         return values
 
