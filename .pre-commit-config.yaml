@@ -1,6 +1,6 @@
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.2.0
     hooks:
     -   id: check-yaml
 
@@ -24,7 +24,7 @@ repos:
     rev: v0.971
     hooks:
     -   id: mypy
-        additional_dependencies: [types-requests]
+        additional_dependencies: [types-PyYAML, types-requests]
 
 
 default_language_version:

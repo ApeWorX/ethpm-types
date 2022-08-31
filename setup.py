@@ -36,7 +36,7 @@ extras_require = {
         "twine",  # Package upload tool
     ],
     "dev": [
-        "commitizen>=2.19,<2.20",  # Manage commits and publishing releases
+        "commitizen",  # Manage commits and publishing releases
         "pre-commit",  # Ensure that linters are run prior to committing
         "pytest-watch",  # `ptw` test watcher/runner
         "IPython",  # Console for interacting
@@ -76,7 +76,7 @@ setup(
         "py-cid>=0.3.0,<0.4",
         "requests>=2.28.1,<3",
     ],
-    python_requires=">=3.7.2,<3.11",
+    python_requires=">=3.7.2,<4",
     extras_require=extras_require,
     py_modules=["ethpm_types"],
     license="Apache-2.0",
