@@ -74,6 +74,7 @@ setup(
         "pydantic>=1.8.2,<2.0.0",
         "eth-utils>=1.10.0,<3.0",
         "py-cid>=0.3.0,<0.4.0",
+        "requests>=2.28.1,<3",
     ],
     python_requires=">=3.7.2,<3.11",
     extras_require=extras_require,
