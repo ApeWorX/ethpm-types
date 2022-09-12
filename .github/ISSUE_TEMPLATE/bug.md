@@ -5,7 +5,12 @@ labels: 'bug'
 ---
 ### Environment information
 
-* `ape` and plugin versions:
+* Python Version: x.x.x
+* OS: macOS/linux/win
+
+If `ape` is installed:
+
+* `ape` and plugin versions
 
 ```
 $ ape --version
@@ -14,9 +19,6 @@ $ ape --version
 $ ape plugins list
 # ...copy and paste result of above command here...
 ```
-
-* Python Version: x.x.x
-* OS: macOS/linux/win
 
 ### What went wrong?
 
