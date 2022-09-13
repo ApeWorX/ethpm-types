@@ -220,7 +220,9 @@ class ABIList(list):
         self._selector_hash_fn = selector_hash_fn
         super().__init__(iterable)
 
-    def __getitem__(self, item: Union[int, slice, str, bytes, MethodABI, EventABI]):  # type: ignore
+    def __getitem__(  # type: ignore
+        self, item: Union[int, slice, str, HexBytes, bytes, MethodABI, EventABI]
+    ):
         try:
             # selector
             if isinstance(item, str) and "(" in item:
@@ -230,7 +232,7 @@ class ABIList(list):
                 return next(abi for abi in self if abi.name == item)
             # hashed selector, like log.topics[0] or tx.data
             # NOTE: Will fail with `ImportError` if `item` is `bytes` and `eth-hash` has no backend
-            elif isinstance(item, bytes) and self._selector_hash_fn:
+            elif isinstance(item, (bytes, HexBytes)) and self._selector_hash_fn:
                 return next(
                     abi
                     for abi in self
