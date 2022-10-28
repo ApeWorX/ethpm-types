@@ -20,6 +20,16 @@ def bad_checksum() -> Source:
     )
 
 
+@pytest.fixture
+def empty_source() -> Source:
+    return Source.parse_obj({"content": ""})
+
+
 def test_corrupt_source(bad_checksum, no_checksum):
     assert not no_checksum.content_is_valid()
     assert not bad_checksum.content_is_valid()
+
+
+def test_empty_source(empty_source):
+    assert empty_source.fetch_content() == ""
+    assert empty_source.content_is_valid()
