@@ -102,7 +102,7 @@ class Source(BaseModel):
         """
 
         # NOTE: This is a trapdoor to bypass fetching logic if already available
-        if self.content:
+        if self.content is not None:
             return self.content
 
         if len(self.urls) == 0:
@@ -160,7 +160,7 @@ class Source(BaseModel):
         """
 
         # NOTE: Per EIP-2678, checksum is not needed if content does not need to be fetched
-        if self.content:
+        if self.content is not None:
             return True
 
         # NOTE: Per EIP-2678, Checksum is not required if a URL is content addressed.
