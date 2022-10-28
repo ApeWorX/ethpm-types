@@ -139,6 +139,7 @@ class SourceMap(BaseModel):
     """
     As part of the AST output, the compiler provides the range of the source code
     that is represented by the respective node in the AST.
+
     This can be used for various purposes ranging from static analysis tools that
     report errors based on the AST and debugging tools that highlight local variables
     and their uses.
@@ -205,7 +206,6 @@ class SourceMap(BaseModel):
 
 
 class PCMapItem(BaseModel):
-    pc: int
     line_start: Optional[int]
     column_start: Optional[int]
     line_end: Optional[int]
@@ -213,9 +213,25 @@ class PCMapItem(BaseModel):
 
 
 class PCMap(BaseModel):
+    """
+    As part of the source output, the compiler provides the a map of program counter values to the
+    spans of source code that
+
+    This can be used for various purposes ranging from static analysis tools that
+    report errors based on the program counter value and debugging tools that highlight local
+    variables and their uses.
+    """
+
     __root__: Dict[str, List[int]]
 
     def parse(self) -> Dict[int, PCMapItem]:
+        """
+        Parses the pc map string into a map of ``PCMapItem`` items, using integer pc values as keys.
+
+        The format from the compiler will have numeric string keys with lists of ints for values.
+        These integers represent (in order) the starting line, starting column, ending line, and
+        ending column numbers.
+        """
         return {
             int(key): PCMapItem.construct(
                 line_start=value[0],
@@ -317,16 +333,6 @@ class ContractType(BaseModel):
     """
     The program counter map representing which lines in the source code account for which
     instructions in the bytecode.
-
-    The compiler returns the information as string PC keys with list values. The values in the list
-    represent the starting line, starting column, ending line, and ending column of the relevant
-    statement in the source code.
-
-    Format Example::
-            {
-                "123": [1, 2, 1, 4],
-                ...,
-            }
 
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
