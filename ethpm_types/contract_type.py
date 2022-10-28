@@ -214,8 +214,8 @@ class PCMapItem(BaseModel):
 
 class PCMap(BaseModel):
     """
-    As part of the source output, the compiler provides the a map of program counter values to the
-    spans of source code that
+    As part of the source output, the compiler provides a map of program counter values to
+    statements in the source code that the instructions were compiled from.
 
     This can be used for various purposes ranging from static analysis tools that
     report errors based on the program counter value and debugging tools that highlight local
