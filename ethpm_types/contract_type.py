@@ -1,4 +1,4 @@
-from typing import Callable, Iterator, List, Optional, Union
+from typing import Callable, Dict, Iterator, List, Optional, Union
 
 from eth_utils import add_0x_prefix
 from hexbytes import HexBytes
@@ -213,9 +213,9 @@ class PCMapItem(BaseModel):
 
 
 class PCMap(BaseModel):
-    __root__: dict[str, list[int]]
+    __root__: Dict[str, List[int]]
 
-    def parse(self) -> dict[int, PCMapItem]:
+    def parse(self) -> Dict[int, PCMapItem]:
         return {
             int(key): PCMapItem.construct(
                 line_start=value[0],
