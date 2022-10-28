@@ -204,6 +204,29 @@ class SourceMap(BaseModel):
             yield item
 
 
+class PCMapItem(BaseModel):
+    pc: int
+    line_start: Optional[int]
+    column_start: Optional[int]
+    line_end: Optional[int]
+    column_end: Optional[int]
+
+
+class PCMap(BaseModel):
+    __root__: dict[str, list[int]]
+
+    def parse(self) -> dict[int, PCMapItem]:
+        return {
+            int(key): PCMapItem.construct(
+                line_start=value[0],
+                column_start=value[1],
+                line_end=value[2],
+                column_end=value[3],
+            )
+            for key, value in self.__root__.items()
+        }
+
+
 class ABIList(list):
     """
     Adds selection by name, selector and keccak(selector).
@@ -290,10 +313,21 @@ class ContractType(BaseModel):
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
-    pcmap: Optional[dict] = None
+    pcmap: Optional[PCMap] = None
     """
     The program counter map representing which lines in the source code account for which
     instructions in the bytecode.
+
+    The compiler returns the information as string PC keys with list values. The values in the list
+    represent the starting line, starting column, ending line, and ending column of the relevant
+    statement in the source code.
+
+    Format Example::
+            {
+                "123": [1, 2, 1, 4],
+                ...,
+            }
+
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
