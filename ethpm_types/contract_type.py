@@ -206,10 +206,10 @@ class SourceMap(BaseModel):
 
 
 class PCMapItem(BaseModel):
-    line_start: Optional[int]
-    column_start: Optional[int]
-    line_end: Optional[int]
-    column_end: Optional[int]
+    line_start: Optional[int] = None
+    column_start: Optional[int] = None
+    line_end: Optional[int] = None
+    column_end: Optional[int] = None
 
 
 class PCMap(BaseModel):
@@ -232,15 +232,22 @@ class PCMap(BaseModel):
         These integers represent (in order) the starting line, starting column, ending line, and
         ending column numbers.
         """
-        return {
-            int(key): PCMapItem.construct(
-                line_start=value[0],
-                column_start=value[1],
-                line_end=value[2],
-                column_end=value[3],
-            )
-            for key, value in self.__root__.items()
-        }
+        results = {}
+
+        for key, value in self.__root__.items():
+            if value is not None:
+                result = PCMapItem(
+                    line_start=value[0],
+                    column_start=value[1],
+                    line_end=value[2],
+                    column_end=value[3],
+                )
+            else:
+                result = PCMapItem()
+
+            results[int(key)] = result
+
+        return result
 
 
 class ABIList(list):
@@ -329,7 +336,7 @@ class ContractType(BaseModel):
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
-    pcmap: Optional[PCMap] = None
+    pcmap: Optional[Dict[str, PCMapItem]] = None
     """
     The program counter map representing which lines in the source code account for which
     instructions in the bytecode.
