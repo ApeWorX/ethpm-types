@@ -206,6 +206,13 @@ class SourceMap(BaseModel):
 
 
 class PCMapItem(BaseModel):
+    """
+    Line information for a given EVM instruction.
+
+    These are utilized in the pc-map by which the compiler generates source code spans for given
+    program counter positions.
+    """
+
     line_start: Optional[int] = None
     column_start: Optional[int] = None
     line_end: Optional[int] = None
@@ -222,7 +229,7 @@ class PCMap(BaseModel):
     variables and their uses.
     """
 
-    __root__: Dict[str, List[int]]
+    __root__: Dict[str, Optional[List[Optional[int]]]]
 
     def parse(self) -> Dict[int, PCMapItem]:
         """
