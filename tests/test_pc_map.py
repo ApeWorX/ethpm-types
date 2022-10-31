@@ -17,11 +17,7 @@ def test_pc_map_valid():
 def test_pc_map_empty_line_info():
     """
     Test the parsing of a pc-map from a compiler's output that has empty line
-    information:
-
-            {
-                    "186": [None, None, None, None],
-            }
+    information.
     """
     pcmap = PCMap.parse_obj({"186": [None, None, None, None]}).parse()
 
@@ -37,11 +33,7 @@ def test_pc_map_empty_line_info():
 def test_pc_map_missing_line_info():
     """
     Test the parsing of a pc-map from a compiler's output that is entirely missing line
-    information:
-
-            {
-                    "186": None,
-            }
+    information.
     """
     pcmap = PCMap.parse_obj({"186": None}).parse()
 
