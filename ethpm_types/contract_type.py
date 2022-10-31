@@ -247,7 +247,7 @@ class PCMap(BaseModel):
 
             results[int(key)] = result
 
-        return result
+        return results
 
 
 class ABIList(list):
