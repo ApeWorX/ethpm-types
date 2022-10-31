@@ -1,5 +1,3 @@
-import pytest
-
 from ethpm_types.contract_type import PCMap, PCMapItem
 
 
