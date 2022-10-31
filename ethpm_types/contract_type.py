@@ -1,4 +1,4 @@
-from typing import Callable, Iterator, List, Optional, Union
+from typing import Callable, Dict, Iterator, List, Optional, Union
 
 from eth_utils import add_0x_prefix
 from hexbytes import HexBytes
@@ -139,6 +139,7 @@ class SourceMap(BaseModel):
     """
     As part of the AST output, the compiler provides the range of the source code
     that is represented by the respective node in the AST.
+
     This can be used for various purposes ranging from static analysis tools that
     report errors based on the AST and debugging tools that highlight local variables
     and their uses.
@@ -202,6 +203,58 @@ class SourceMap(BaseModel):
 
             # NOTE: If row is empty, just yield previous step
             yield item
+
+
+class PCMapItem(BaseModel):
+    """
+    Line information for a given EVM instruction.
+
+    These are utilized in the pc-map by which the compiler generates source code spans for given
+    program counter positions.
+    """
+
+    line_start: Optional[int] = None
+    column_start: Optional[int] = None
+    line_end: Optional[int] = None
+    column_end: Optional[int] = None
+
+
+class PCMap(BaseModel):
+    """
+    As part of the source output, the compiler provides a map of program counter values to
+    statements in the source code that the instructions were compiled from.
+
+    This can be used for various purposes ranging from static analysis tools that
+    report errors based on the program counter value and debugging tools that highlight local
+    variables and their uses.
+    """
+
+    __root__: Dict[str, Optional[List[Optional[int]]]]
+
+    def parse(self) -> Dict[int, PCMapItem]:
+        """
+        Parses the pc map string into a map of ``PCMapItem`` items, using integer pc values as keys.
+
+        The format from the compiler will have numeric string keys with lists of ints for values.
+        These integers represent (in order) the starting line, starting column, ending line, and
+        ending column numbers.
+        """
+        results = {}
+
+        for key, value in self.__root__.items():
+            if value is not None:
+                result = PCMapItem(
+                    line_start=value[0],
+                    column_start=value[1],
+                    line_end=value[2],
+                    column_end=value[3],
+                )
+            else:
+                result = PCMapItem()
+
+            results[int(key)] = result
+
+        return results
 
 
 class ABIList(list):
@@ -287,6 +340,14 @@ class ContractType(BaseModel):
     sourcemap: Optional[SourceMap] = None
     """
     The range of the source code that is represented by the respective node in the AST.
+    **NOTE**: This is not part of the canonical EIP-2678 spec.
+    """
+
+    pcmap: Optional[Dict[str, PCMapItem]] = None
+    """
+    The program counter map representing which lines in the source code account for which
+    instructions in the bytecode.
+
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
