@@ -343,7 +343,7 @@ class ContractType(BaseModel):
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
-    pcmap: Optional[Dict[str, PCMapItem]] = None
+    pcmap: Optional[PCMap] = None
     """
     The program counter map representing which lines in the source code account for which
     instructions in the bytecode.
