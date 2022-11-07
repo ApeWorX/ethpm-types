@@ -351,6 +351,13 @@ class ContractType(BaseModel):
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
+    dev_messages: Optional[Dict[int, str]] = None
+    """
+    A map of dev-message comments in the source contract by their starting line number.
+
+    **NOTE**: This is not part of the canonical EIP-2678 spec.
+    """
+
     userdoc: Optional[dict] = None
     devdoc: Optional[dict] = None
 
