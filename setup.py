@@ -15,7 +15,7 @@ extras_require = {
     ],
     "lint": [
         "black>=22.6.0",  # auto-formatter and linter
-        "mypy>=0.971",  # Static type analyzer
+        "mypy==0.982",  # Static type analyzer
         "types-PyYAML",  # NOTE: Needed due to mypy typeshed
         "types-requests",  # NOTE: Needed due to mypy typeshed
         "flake8>=<4.0.1",  # Style linter
