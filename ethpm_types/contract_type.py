@@ -259,7 +259,6 @@ class PCMap(BaseModel):
 
 
 T = TypeVar("T", bound=Union[MethodABI, EventABI])
-Selector = Union[int, slice, str, HexBytes, bytes, MethodABI, EventABI]
 
 
 class ABIList(List[T]):
@@ -332,11 +331,29 @@ class ABIList(List[T]):
     def __getitem_event_abi(self, selector: EventABI):
         return self.__getitem__(selector.selector)
 
-    def __contains__(self, item: Union[str, bytes]) -> bool:  # type: ignore
-        if isinstance(item, (int, slice)):
-            return False
+    @singledispatchmethod
+    def __contains__(self, selector):
+        raise NotImplementedError(f"Cannot use {type(selector)} as a selector.")
+
+    @__contains__.register
+    def __contains_str(self, selector: str) -> bool:
+        return self._contains(selector)
+
+    @__contains__.register
+    def __contains_bytes(self, selector: bytes) -> bool:
+        return self._contains(selector)
+
+    @__contains__.register
+    def __contains_method_abi(self, selector: MethodABI) -> bool:
+        return self._contains(selector)
+
+    @__contains__.register
+    def __contains_event_abi(self, selector: EventABI) -> bool:
+        return self._contains(selector)
+
+    def _contains(self, selector: Union[str, bytes, MethodABI, EventABI]) -> bool:
         try:
-            _ = self[item]
+            _ = self[selector]
             return True
         except (KeyError, IndexError):
             return False
