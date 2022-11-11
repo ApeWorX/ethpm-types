@@ -5,7 +5,7 @@ from eth_utils import add_0x_prefix, is_0x_prefixed
 from hexbytes import HexBytes
 from pydantic import Field, validator
 
-from .abi import ABI, ConstructorABI, EventABI, FallbackABI, MethodABI
+from .abi import ABI, ConstructorABI, ErrorABI, EventABI, FallbackABI, MethodABI, StructABI
 from .base import BaseModel
 from .utils import Hex, is_valid_hex
 
@@ -258,7 +258,7 @@ class PCMap(BaseModel):
         return results
 
 
-T = TypeVar("T", bound=Union[MethodABI, EventABI])
+T = TypeVar("T", bound=Union[MethodABI, EventABI, StructABI, ErrorABI])
 
 
 class ABIList(List[T]):
