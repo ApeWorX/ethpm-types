@@ -12,6 +12,9 @@ CONTRACT_NAMES = ("SolidityContract.json", "VyperContract.json")
 DATA_FILES = {
     p.name: p for p in (Path(__file__).parent / "data").iterdir() if p.name in CONTRACT_NAMES
 }
+MUTABLE_METHOD_SELECTOR_BYTES = keccak(text="setNumber(uint256)")
+VIEW_METHOD_SELECTOR_BYTES = keccak(text="getStruct()")
+EVENT_SELECTOR_BYTES = keccak(text="NumberChange(uint256,uint256)")
 
 
 @pytest.fixture
@@ -110,44 +113,83 @@ def test_dynamic_vyper_struct_arrays(vyper_contract):
     assert array_output.canonical_type == "((address,bytes32),uint256)[]"
 
 
-def test_select_by_name(vyper_contract):
+@pytest.mark.parametrize(
+    "selector",
+    (
+        "setNumber",
+        "setNumber(uint256)",
+        MUTABLE_METHOD_SELECTOR_BYTES,
+        MUTABLE_METHOD_SELECTOR_BYTES[:32],
+        f"0x{MUTABLE_METHOD_SELECTOR_BYTES.hex()}",
+        f"0x{MUTABLE_METHOD_SELECTOR_BYTES[:32].hex()}",
+    ),
+)
+def test_select_mutable_method_by_name_and_selectors(selector, vyper_contract):
     contract_type = ContractType.parse_obj(vyper_contract)
-    for selector in ["setNumber", "setNumber(uint256)", keccak(text="setNumber(uint256)")]:
-        method = contract_type.mutable_methods[selector]
-        assert isinstance(method, MethodABI)
-        assert method.name == "setNumber"
+    assert selector in contract_type.mutable_methods
+    method = contract_type.mutable_methods[selector]
+    assert isinstance(method, MethodABI)
+    assert method.name == "setNumber"
 
-    for selector in ["getStruct", "getStruct()", keccak(text="getStruct()")]:
-        view = contract_type.view_methods[selector]
-        assert isinstance(view, MethodABI)
-        assert view.name == "getStruct"
 
-    for selector in [
+@pytest.mark.parametrize(
+    "selector",
+    (
+        "getStruct",
+        "getStruct()",
+        VIEW_METHOD_SELECTOR_BYTES,
+        VIEW_METHOD_SELECTOR_BYTES[:32],
+        f"0x{VIEW_METHOD_SELECTOR_BYTES.hex()}",
+        f"0x{VIEW_METHOD_SELECTOR_BYTES[:32].hex()}",
+    ),
+)
+def test_select_view_method_by_name_and_selectors(selector, vyper_contract):
+    contract_type = ContractType.parse_obj(vyper_contract)
+    assert selector in contract_type.view_methods
+    view = contract_type.view_methods[selector]
+    assert isinstance(view, MethodABI)
+    assert view.name == "getStruct"
+
+
+@pytest.mark.parametrize(
+    "selector",
+    (
         "NumberChange",
         "NumberChange(uint256,uint256)",
-        keccak(text="NumberChange(uint256,uint256)"),
-    ]:
-        event = contract_type.events[selector]
-        assert isinstance(event, EventABI)
-        assert event.name == "NumberChange"
-
-
-def test_select_by_name_contains(vyper_contract):
+        EVENT_SELECTOR_BYTES,
+        EVENT_SELECTOR_BYTES[:32],
+        f"0x{EVENT_SELECTOR_BYTES.hex()}",
+        f"0x{EVENT_SELECTOR_BYTES[:32].hex()}",
+    ),
+)
+def test_select_and_contains_event_by_name_and_selectors(selector, vyper_contract):
     contract_type = ContractType.parse_obj(vyper_contract)
-    assert "setNumber" in contract_type.mutable_methods
-    assert "setNumber(uint256)" in contract_type.mutable_methods
-    assert keccak(text="setNumber(uint256)") in contract_type.mutable_methods
-    assert "madeUpFunction" not in contract_type.mutable_methods
+    assert selector in contract_type.events
+    event = contract_type.events[selector]
+    assert isinstance(event, EventABI)
+    assert event.name == "NumberChange"
 
-    assert "getStruct" in contract_type.view_methods
-    assert "getStruct()" in contract_type.view_methods
-    assert keccak(text="getStruct()") in contract_type.view_methods
-    assert "madeUpFunction(uint64)" not in contract_type.view_methods
 
-    assert "NumberChange" in contract_type.events
-    assert "NumberChange(uint256,uint256)" in contract_type.events
-    assert keccak(text="NumberChange(uint256,uint256)") in contract_type.events
-    assert keccak(text="MadeUpEvent(uint64)") not in contract_type.events
+def test_select_and_contains_by_abi(vyper_contract):
+    contract_type = ContractType.parse_obj(vyper_contract)
+    event = contract_type.events[0]
+    view = contract_type.view_methods[0]
+    mutable = contract_type.mutable_methods[0]
+    assert contract_type.events[event] == event
+    assert contract_type.view_methods[view] == view
+    assert contract_type.mutable_methods[mutable] == mutable
+    assert event in contract_type.events
+    assert view in contract_type.view_methods
+    assert mutable in contract_type.mutable_methods
+
+
+def test_select_by_slice(oz_contract_type):
+    events = [x.name for x in oz_contract_type.events[:2]]
+    views = [x.name for x in oz_contract_type.view_methods[:2]]
+    mutables = [x.name for x in oz_contract_type.mutable_methods[:2]]
+    assert events == ["RoleAdminChanged", "RoleGranted"]
+    assert views == ["DEFAULT_ADMIN_ROLE", "getRoleAdmin"]
+    assert mutables == ["grantRole", "renounceRole"]
 
 
 def test_contract_type_excluded_in_repr_abi(vyper_contract):
@@ -160,3 +202,15 @@ def test_contract_type_excluded_in_repr_abi(vyper_contract):
 
     actual = repr(contract_type.view_methods[0])
     assert "contract_type" not in actual
+
+
+def test_contract_type_backrefs(oz_contract_type):
+    assert oz_contract_type.events, "setup: Test contract should have events"
+    assert oz_contract_type.view_methods, "setup: Test contract should have view methods"
+    assert oz_contract_type.mutable_methods, "setup: Test contract should have mutable methods"
+
+    assert oz_contract_type.constructor.contract_type == oz_contract_type
+    assert oz_contract_type.fallback.contract_type == oz_contract_type
+    assert all(e.contract_type == oz_contract_type for e in oz_contract_type.events)
+    assert all(m.contract_type == oz_contract_type for m in oz_contract_type.mutable_methods)
+    assert all(m.contract_type == oz_contract_type for m in oz_contract_type.view_methods)

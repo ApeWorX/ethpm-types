@@ -1,6 +1,7 @@
-from typing import Callable, Dict, Iterator, List, Optional, Union
+from functools import singledispatchmethod
+from typing import Callable, Dict, Iterable, Iterator, List, Optional, TypeVar, Union
 
-from eth_utils import add_0x_prefix
+from eth_utils import add_0x_prefix, is_0x_prefixed
 from hexbytes import HexBytes
 from pydantic import Field, validator
 
@@ -257,54 +258,85 @@ class PCMap(BaseModel):
         return results
 
 
-class ABIList(list):
+T = TypeVar("T", bound=Union[MethodABI, EventABI])
+Selector = Union[int, slice, str, HexBytes, bytes, MethodABI, EventABI]
+
+
+class ABIList(List[T]):
     """
     Adds selection by name, selector and keccak(selector).
     """
 
     def __init__(
         self,
-        iterable=(),
+        iterable: Optional[Iterable[T]] = None,
         *,
         selector_id_size=32,
         selector_hash_fn: Optional[Callable[[str], bytes]] = None,
     ):
         self._selector_id_size = selector_id_size
         self._selector_hash_fn = selector_hash_fn
-        super().__init__(iterable)
+        super().__init__(iterable or ())
 
-    def __getitem__(  # type: ignore
-        self, item: Union[int, slice, str, HexBytes, bytes, MethodABI, EventABI]
-    ):
+    @singledispatchmethod
+    def __getitem__(self, selector):
+        raise NotImplementedError(f"Cannot use {type(selector)} as a selector.")
+
+    @__getitem__.register
+    def __getitem_int(self, selector: int):
+        return super().__getitem__(selector)
+
+    @__getitem__.register
+    def __getitem_slice(self, selector: slice):
+        return super().__getitem__(selector)
+
+    @__getitem__.register
+    def __getitem_str(self, selector: str):
         try:
-            # selector
-            if isinstance(item, str) and "(" in item:
-                return next(abi for abi in self if abi.selector == item)
-            # name, could be ambiguous
-            elif isinstance(item, str):
-                return next(abi for abi in self if abi.name == item)
-            # hashed selector, like log.topics[0] or tx.data
-            # NOTE: Will fail with `ImportError` if `item` is `bytes` and `eth-hash` has no backend
-            elif isinstance(item, (bytes, HexBytes)) and self._selector_hash_fn:
+            if "(" in selector:
+                # String-style selector e.g. `method(arg0)`.
+                return next(abi for abi in self if abi.selector == selector)
+
+            elif is_0x_prefixed(selector):
+                # Hashed bytes selector, but as a hex str.
+                return self.__getitem__(HexBytes(selector))
+
+            # Search by name (could be ambiguous()
+            return next(abi for abi in self if abi.name == selector)
+
+        except StopIteration:
+            raise KeyError(selector)
+
+    @__getitem__.register
+    def __getitem_bytes(self, selector: bytes):
+        try:
+            if self._selector_hash_fn:
                 return next(
                     abi
                     for abi in self
                     if self._selector_hash_fn(abi.selector)[: self._selector_id_size]
-                    == item[: self._selector_id_size]
+                    == selector[: self._selector_id_size]
                 )
-            elif isinstance(item, (MethodABI, EventABI)):
-                return next(abi for abi in self if abi.selector == item.selector)
-        except StopIteration:
-            raise KeyError(item)
 
-        # handle int, slice
-        return super().__getitem__(item)  # type: ignore
+            else:
+                raise KeyError(selector)
+
+        except StopIteration:
+            raise KeyError(selector)
+
+    @__getitem__.register
+    def __getitem_method_abi(self, selector: MethodABI):
+        return self.__getitem__(selector.selector)
+
+    @__getitem__.register
+    def __getitem_event_abi(self, selector: EventABI):
+        return self.__getitem__(selector.selector)
 
     def __contains__(self, item: Union[str, bytes]) -> bool:  # type: ignore
         if isinstance(item, (int, slice)):
             return False
         try:
-            self[item]
+            _ = self[item]
             return True
         except (KeyError, IndexError):
             return False
@@ -408,7 +440,7 @@ class ContractType(BaseModel):
         return fallback_abi
 
     @property
-    def view_methods(self) -> List[MethodABI]:
+    def view_methods(self) -> ABIList[MethodABI]:
         """
         The call-methods (read-only method, non-payable methods) defined in a smart contract.
         Returns:
@@ -428,7 +460,7 @@ class ContractType(BaseModel):
         )
 
     @property
-    def mutable_methods(self) -> List[MethodABI]:
+    def mutable_methods(self) -> ABIList[MethodABI]:
         """
         The transaction-methods (stateful or payable methods) defined in a smart contract.
         Returns:
@@ -446,7 +478,7 @@ class ContractType(BaseModel):
         )
 
     @property
-    def events(self) -> List[EventABI]:
+    def events(self) -> ABIList[EventABI]:
         """
         The events defined in a smart contract.
         Returns:
