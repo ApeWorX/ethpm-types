@@ -143,6 +143,14 @@ class ConstructorABI(BaseModel):
         input_args = ", ".join(i.signature for i in self.inputs)
         return f"constructor({input_args})"
 
+    def selector(self) -> str:
+        """
+        String representing the constructor selector.
+        """
+
+        input_names = ",".join(i.canonical_type for i in self.inputs)
+        return f"constructor({input_names})"
+
 
 class FallbackABI(BaseModel):
     """
