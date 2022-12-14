@@ -6,4 +6,4 @@ def test_constructor_selector():
         type="constructor",
         inputs=[ABIType(name="contract_address", type="address", internalType="address")],
     )
-    assert constructor.selector() == "constructor(address)"
+    assert constructor.selector == "constructor(address)"

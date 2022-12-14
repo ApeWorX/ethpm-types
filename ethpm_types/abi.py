@@ -143,6 +143,7 @@ class ConstructorABI(BaseModel):
         input_args = ", ".join(i.signature for i in self.inputs)
         return f"constructor({input_args})"
 
+    @property
     def selector(self) -> str:
         """
         String representing the constructor selector.
