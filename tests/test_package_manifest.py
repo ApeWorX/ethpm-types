@@ -47,3 +47,10 @@ def test_open_zeppelin_contracts(oz_package, oz_package_manifest_dict):
         # NOTE: Per EIP-2678, "Checksum is only required if content is missing"
         if not source.content:
             assert source.content_is_valid(), f"Invalid checksum for '{source_name}'"
+
+
+def test_file_bases_dependency_url():
+    manifest = PackageManifest(
+        buildDependencies={"test-package": "file:///path/to/manifest/test-package.json"}
+    )
+    assert manifest.dependencies["test-package"] == "file:///path/to/manifest/test-package.json"
