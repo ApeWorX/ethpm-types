@@ -2,10 +2,9 @@ from typing import List, Optional
 
 import requests
 from cid import make_cid  # type: ignore
-from pydantic import AnyUrl
 
 from .base import BaseModel
-from .utils import CONTENT_ADDRESSED_SCHEMES, Algorithm, Hex, compute_checksum
+from .utils import CONTENT_ADDRESSED_SCHEMES, Algorithm, AnyUrl, Hex, compute_checksum
 
 
 class Compiler(BaseModel):

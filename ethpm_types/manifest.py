@@ -1,10 +1,11 @@
 from typing import Dict, List, Optional
 
-from pydantic import AnyUrl, Field, root_validator, validator
+from pydantic import Field, root_validator, validator
 
 from .base import BaseModel
 from .contract_type import BIP122_URI, ContractInstance, ContractType
 from .source import Compiler, Source
+from .utils import AnyUrl
 
 ALPHABET = set("abcdefghijklmnopqrstuvwxyz")
 NUMBERS = set("0123456789")

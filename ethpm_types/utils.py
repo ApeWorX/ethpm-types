@@ -1,9 +1,13 @@
 from enum import Enum
 from hashlib import md5, sha3_256, sha256
+from typing import Union
 
 from hexbytes import HexBytes as BaseHexBytes
+from pydantic import AnyUrl as _AnyUrl
+from pydantic import FileUrl
 
 CONTENT_ADDRESSED_SCHEMES = {"ipfs"}
+AnyUrl = Union[_AnyUrl, FileUrl]
 
 
 class HexBytes(BaseHexBytes):
