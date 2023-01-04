@@ -518,6 +518,24 @@ class ContractType(BaseModel):
             selector_hash_fn=self._selector_hash_fn,
         )
 
+    def get_method(self, selector: Union[int, str, bytes]) -> Optional[MethodABI]:
+        """
+        Get the method from this contract type with the given selector.
+
+        Args:
+            selector (Union[int, str, bytes]): The method ID selector.
+
+        Returns:
+            Optional[MethodABI]: The method, if found. Else ``None``.
+        """
+
+        if selector in self.mutable_methods:
+            return self.mutable_methods[selector]
+        elif selector in self.view_methods:
+            return self.view_methods[selector]
+
+        return None
+
     def _selector_hash_fn(self, selector: str) -> bytes:
         # keccak is the default on most ecosystems, other ecosystems can subclass to override it
         from eth_utils import keccak

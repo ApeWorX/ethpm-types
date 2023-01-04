@@ -17,6 +17,41 @@ VIEW_METHOD_SELECTOR_BYTES = keccak(text="getStruct()")
 EVENT_SELECTOR_BYTES = keccak(text="NumberChange(uint256,uint256)")
 
 
+view_selector_parametrization = pytest.mark.parametrize(
+    "selector",
+    (
+        "getStruct",
+        "getStruct()",
+        VIEW_METHOD_SELECTOR_BYTES,
+        VIEW_METHOD_SELECTOR_BYTES[:32],
+        f"0x{VIEW_METHOD_SELECTOR_BYTES.hex()}",
+        f"0x{VIEW_METHOD_SELECTOR_BYTES[:32].hex()}",
+    ),
+)
+mutable_selector_parametrization = pytest.mark.parametrize(
+    "selector",
+    (
+        "setNumber",
+        "setNumber(uint256)",
+        MUTABLE_METHOD_SELECTOR_BYTES,
+        MUTABLE_METHOD_SELECTOR_BYTES[:32],
+        f"0x{MUTABLE_METHOD_SELECTOR_BYTES.hex()}",
+        f"0x{MUTABLE_METHOD_SELECTOR_BYTES[:32].hex()}",
+    ),
+)
+event_selector_parametrization = pytest.mark.parametrize(
+    "selector",
+    (
+        "NumberChange",
+        "NumberChange(uint256,uint256)",
+        EVENT_SELECTOR_BYTES,
+        EVENT_SELECTOR_BYTES[:32],
+        f"0x{EVENT_SELECTOR_BYTES.hex()}",
+        f"0x{EVENT_SELECTOR_BYTES[:32].hex()}",
+    ),
+)
+
+
 @pytest.fixture
 def solidity_contract():
     return _get_contract(CONTRACT_NAMES[0])
@@ -113,17 +148,7 @@ def test_dynamic_vyper_struct_arrays(vyper_contract):
     assert array_output.canonical_type == "((address,bytes32),uint256)[]"
 
 
-@pytest.mark.parametrize(
-    "selector",
-    (
-        "setNumber",
-        "setNumber(uint256)",
-        MUTABLE_METHOD_SELECTOR_BYTES,
-        MUTABLE_METHOD_SELECTOR_BYTES[:32],
-        f"0x{MUTABLE_METHOD_SELECTOR_BYTES.hex()}",
-        f"0x{MUTABLE_METHOD_SELECTOR_BYTES[:32].hex()}",
-    ),
-)
+@mutable_selector_parametrization
 def test_select_mutable_method_by_name_and_selectors(selector, vyper_contract):
     contract_type = ContractType.parse_obj(vyper_contract)
     assert selector in contract_type.mutable_methods
@@ -132,17 +157,7 @@ def test_select_mutable_method_by_name_and_selectors(selector, vyper_contract):
     assert method.name == "setNumber"
 
 
-@pytest.mark.parametrize(
-    "selector",
-    (
-        "getStruct",
-        "getStruct()",
-        VIEW_METHOD_SELECTOR_BYTES,
-        VIEW_METHOD_SELECTOR_BYTES[:32],
-        f"0x{VIEW_METHOD_SELECTOR_BYTES.hex()}",
-        f"0x{VIEW_METHOD_SELECTOR_BYTES[:32].hex()}",
-    ),
-)
+@view_selector_parametrization
 def test_select_view_method_by_name_and_selectors(selector, vyper_contract):
     contract_type = ContractType.parse_obj(vyper_contract)
     assert selector in contract_type.view_methods
@@ -151,17 +166,7 @@ def test_select_view_method_by_name_and_selectors(selector, vyper_contract):
     assert view.name == "getStruct"
 
 
-@pytest.mark.parametrize(
-    "selector",
-    (
-        "NumberChange",
-        "NumberChange(uint256,uint256)",
-        EVENT_SELECTOR_BYTES,
-        EVENT_SELECTOR_BYTES[:32],
-        f"0x{EVENT_SELECTOR_BYTES.hex()}",
-        f"0x{EVENT_SELECTOR_BYTES[:32].hex()}",
-    ),
-)
+@event_selector_parametrization
 def test_select_and_contains_event_by_name_and_selectors(selector, vyper_contract):
     contract_type = ContractType.parse_obj(vyper_contract)
     assert selector in contract_type.events
@@ -214,3 +219,17 @@ def test_contract_type_backrefs(oz_contract_type):
     assert all(e.contract_type == oz_contract_type for e in oz_contract_type.events)
     assert all(m.contract_type == oz_contract_type for m in oz_contract_type.mutable_methods)
     assert all(m.contract_type == oz_contract_type for m in oz_contract_type.view_methods)
+
+
+@view_selector_parametrization
+def test_get_view_method(selector, vyper_contract):
+    contract_type = ContractType.parse_obj(vyper_contract)
+    method_abi = contract_type.get_method(selector)
+    assert method_abi.selector == "getStruct()"
+
+
+@mutable_selector_parametrization
+def test_get_mutable_method(selector, vyper_contract):
+    contract_type = ContractType.parse_obj(vyper_contract)
+    method_abi = contract_type.get_method(selector)
+    assert method_abi.selector == "setNumber(uint256)"
