@@ -222,14 +222,14 @@ def test_contract_type_backrefs(oz_contract_type):
 
 
 @view_selector_parametrization
-def test_get_view_method(selector, vyper_contract):
+def test_select_view_method_from_all_methods(selector, vyper_contract):
     contract_type = ContractType.parse_obj(vyper_contract)
     method_abi = contract_type.methods[selector]
     assert method_abi.selector == "getStruct()"
 
 
 @mutable_selector_parametrization
-def test_get_mutable_method(selector, vyper_contract):
+def test_select_mutable_method_from_all_methods(selector, vyper_contract):
     contract_type = ContractType.parse_obj(vyper_contract)
     method_abi = contract_type.methods[selector]
     assert method_abi.selector == "setNumber(uint256)"
