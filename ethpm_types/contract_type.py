@@ -518,6 +518,18 @@ class ContractType(BaseModel):
             selector_hash_fn=self._selector_hash_fn,
         )
 
+    @property
+    def methods(self) -> ABIList:
+        method_abis = [abi for abi in self.abi if isinstance(abi, MethodABI)]
+        for abi in method_abis:
+            abi.contract_type = self
+
+        return ABIList(
+            method_abis,
+            selector_id_size=4,
+            selector_hash_fn=self._selector_hash_fn,
+        )
+
     def _selector_hash_fn(self, selector: str) -> bytes:
         # keccak is the default on most ecosystems, other ecosystems can subclass to override it
         from eth_utils import keccak
