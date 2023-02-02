@@ -73,7 +73,7 @@ def _get_contract(name: str) -> Dict:
 
 def _select_abi(contract_type: ContractType, name: str) -> ABI:
     for abi in contract_type.abi:
-        abi_name = abi.name if hasattr(abi, "name") else None  # type: ignore
+        abi_name = abi.name if hasattr(abi, "name") else None
         if abi_name == name:
             return abi
 
