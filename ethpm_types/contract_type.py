@@ -159,12 +159,11 @@ class SourceMap(BaseModel):
 
         item = None
 
-        def extract_sourcemap_item(expanded_row, item_idx, previous_val=None):
-            if len(expanded_row) > item_idx and expanded_row[item_idx] != "":
-                return expanded_row[item_idx]
+        def extract_sourcemap_item(_expanded_row, item_idx, previous_val=None):
+            if len(_expanded_row) > item_idx and _expanded_row[item_idx] != "":
+                return _expanded_row[item_idx]
 
-            else:
-                return previous_val  # Use previous item (or None if no previous item)
+            return previous_val  # Use previous item (or None if no previous item)
 
         for i, row in enumerate(self.__root__.strip().split(";")):
 
