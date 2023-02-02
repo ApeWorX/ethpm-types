@@ -174,8 +174,8 @@ class SourceMap(BaseModel):
     def __repr__(self) -> str:
         return self.__root__
 
-    # def __str__(self) -> str:
-    #     return self.__root__
+    def __str__(self) -> str:
+        return self.__root__
 
     def parse(self) -> Iterator[SourceMapItem]:
         """
