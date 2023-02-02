@@ -158,9 +158,13 @@ class SourceMap(BaseModel):
 
     def parse(self) -> Iterator[SourceMapItem]:
         """
-        Parses the source map string into a stream of ``SourceMapItem`` items.
+        Parses the source map string into a stream of
+        :class:`~ethpm_types.contract_type.SourceMapItem` items.
         Useful for when parsing the map according to compiler-specific
         decompilation rules back to the source code language files.
+
+        Returns:
+            Iterator[:class:`~ethpm_types.contract_type.SourceMapItem`]
         """
 
         item = None
