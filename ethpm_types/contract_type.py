@@ -139,7 +139,7 @@ class SourceMapItem(BaseModel):
     The byte-offset start of the range in the source file.
     """
 
-    stop: Optional[int]
+    length: Optional[int]
     """
     The byte-offset length.
     """
@@ -206,13 +206,13 @@ class SourceMap(BaseModel):
 
                 if item is None:
                     start = int(extract_sourcemap_item(expanded_row, 0) or -1)
-                    stop = int(extract_sourcemap_item(expanded_row, 1) or -1)
+                    length = int(extract_sourcemap_item(expanded_row, 1) or -1)
                     contract_id = int(extract_sourcemap_item(expanded_row, 2) or -1)
                     jump_code = extract_sourcemap_item(expanded_row, 3) or ""
 
                 else:
                     start = int(extract_sourcemap_item(expanded_row, 0, item.start or -1))
-                    stop = int(extract_sourcemap_item(expanded_row, 1, item.stop or -1))
+                    length = int(extract_sourcemap_item(expanded_row, 1, item.length or -1))
                     contract_id = int(
                         extract_sourcemap_item(expanded_row, 2, item.contract_id or -1)
                     )
@@ -221,7 +221,7 @@ class SourceMap(BaseModel):
                 item = SourceMapItem.construct(
                     # NOTE: `-1` for these three entries means `None`
                     start=start if start != -1 else None,
-                    stop=stop if stop != -1 else None,
+                    length=length if length != -1 else None,
                     contract_id=contract_id if contract_id != -1 else None,
                     jump_code=jump_code,
                 )

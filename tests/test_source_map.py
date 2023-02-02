@@ -17,7 +17,7 @@ def serialize(sourcemap: Iterator[SourceMapItem]) -> str:
             continue
 
         skip_start = previous_item and item.start == previous_item.start
-        skip_stop = previous_item and item.stop == previous_item.stop
+        skip_stop = previous_item and item.length == previous_item.length
         skip_contract_id = previous_item and item.contract_id == previous_item.contract_id
         skip_jump_code = previous_item and item.jump_code == previous_item.jump_code
 
@@ -32,7 +32,7 @@ def serialize(sourcemap: Iterator[SourceMapItem]) -> str:
             if not skip_start:
                 result += str(item.start) if item.start is not None else "-1"
             result += ":"
-            result += str(item.stop) if item.stop is not None else "-1"
+            result += str(item.length) if item.length is not None else "-1"
             result += ";"
 
         elif skip_jump_code:
@@ -40,7 +40,7 @@ def serialize(sourcemap: Iterator[SourceMapItem]) -> str:
                 result += str(item.start) if item.start is not None else "-1"
             result += ":"
             if not skip_stop:
-                result += str(item.stop) if item.stop is not None else "-1"
+                result += str(item.length) if item.length is not None else "-1"
             result += ":"
             result += str(item.contract_id) if item.contract_id is not None else "-1"
             result += ";"
@@ -50,7 +50,7 @@ def serialize(sourcemap: Iterator[SourceMapItem]) -> str:
                 result += str(item.start) if item.start is not None else "-1"
             result += ":"
             if not skip_stop:
-                result += str(item.stop) if item.stop is not None else "-1"
+                result += str(item.length) if item.length is not None else "-1"
             result += ":"
             if not skip_contract_id:
                 result += str(item.contract_id) if item.contract_id is not None else "-1"
