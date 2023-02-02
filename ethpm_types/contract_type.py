@@ -128,11 +128,32 @@ class ContractInstance(BaseModel):
 
 
 class SourceMapItem(BaseModel):
+    """
+    An object modeling a node in a source map; useful for mapping
+    the source map string back to source code.
+    """
+
     # NOTE: `None` entry means this path was inserted by the compiler during codegen
     start: Optional[int]
+    """
+    The byte-offset start of the range in the source file.
+    """
+
     stop: Optional[int]
+    """
+    The byte-offset length.
+    """
+
     contract_id: Optional[int]
+    """
+    The source identifier.
+    """
+
     jump_code: str
+    """
+    An identifier indicating whether a jump indicator goes into a function,
+    returns from a function, or is part of a loop.
+    """
     # NOTE: ignore "modifier_depth" keyword introduced in solidity >0.6.x
 
 
@@ -173,7 +194,10 @@ class SourceMap(BaseModel):
             if len(_expanded_row) > item_idx and _expanded_row[item_idx] != "":
                 return _expanded_row[item_idx]
 
-            return previous_val  # Use previous item (or None if no previous item)
+            # Use previous item (or None if no previous item).
+            # This is because sourcemaps are compressed to save space,
+            # and this is one of the compression-rules.
+            return previous_val
 
         for i, row in enumerate(self.__root__.strip().split(";")):
 
