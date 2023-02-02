@@ -138,8 +138,8 @@ class SourceMapItem(BaseModel):
 
 class SourceMap(BaseModel):
     """
-    As part of the AST output, the compiler provides the range of the source code
-    that is represented by the respective node in the AST.
+    As part of the Abstract Syntax Tree (AST) output, the compiler provides the range
+    of the source code that is represented by the respective node in the AST.
 
     This can be used for various purposes ranging from static analysis tools that
     report errors based on the AST and debugging tools that highlight local variables
