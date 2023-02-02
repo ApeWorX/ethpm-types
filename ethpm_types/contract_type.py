@@ -171,16 +171,16 @@ class SourceMap(BaseModel):
                 expanded_row = row.split(":")
 
                 if item is None:
-                    start = int(extract_sourcemap_item(expanded_row, 0) or "-1")
-                    stop = int(extract_sourcemap_item(expanded_row, 1) or "-1")
-                    contract_id = int(extract_sourcemap_item(expanded_row, 2) or "-1")
+                    start = int(extract_sourcemap_item(expanded_row, 0) or -1)
+                    stop = int(extract_sourcemap_item(expanded_row, 1) or -1)
+                    contract_id = int(extract_sourcemap_item(expanded_row, 2) or -1)
                     jump_code = extract_sourcemap_item(expanded_row, 3) or ""
 
                 else:
-                    start = int(extract_sourcemap_item(expanded_row, 0, item.start or "-1"))
-                    stop = int(extract_sourcemap_item(expanded_row, 1, item.stop or "-1"))
+                    start = int(extract_sourcemap_item(expanded_row, 0, item.start or -1))
+                    stop = int(extract_sourcemap_item(expanded_row, 1, item.stop or -1))
                     contract_id = int(
-                        extract_sourcemap_item(expanded_row, 2, item.contract_id or "-1")
+                        extract_sourcemap_item(expanded_row, 2, item.contract_id or -1)
                     )
                     jump_code = extract_sourcemap_item(expanded_row, 3, item.jump_code or "")
 
