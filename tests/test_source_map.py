@@ -66,6 +66,14 @@ def serialize(sourcemap: Iterator[SourceMapItem]) -> str:
 @pytest.mark.parametrize("sourcemap_filename", SOURCE_MAP_FILES)
 def test_source_map(sourcemap_filename):
     sourcemap = SOURCE_MAP_FILES[sourcemap_filename].read_text().strip()
-    sm = SourceMap.construct(__root__=sourcemap)
+    sourcemap_obj = SourceMap.construct(__root__=sourcemap)
     # Serialize back to the sourcemap to make sure we decoded it properly
-    assert serialize(sm.parse()) == sourcemap
+    assert serialize(sourcemap_obj.parse()) == sourcemap
+
+
+def test_repr_and_str():
+    key = list(SOURCE_MAP_FILES.keys())[0]
+    sourcemap = SOURCE_MAP_FILES[key].read_text().strip()
+    sourcemap_obj = SourceMap(__root__=sourcemap)
+    assert repr(sourcemap_obj) == sourcemap
+    assert str(sourcemap_obj) == sourcemap

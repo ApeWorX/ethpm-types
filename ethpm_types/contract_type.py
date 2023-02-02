@@ -150,6 +150,12 @@ class SourceMap(BaseModel):
 
     __root__: str
 
+    def __repr__(self) -> str:
+        return self.__root__
+
+    def __str__(self) -> str:
+        return self.__root__
+
     def parse(self) -> Iterator[SourceMapItem]:
         """
         Parses the source map string into a stream of ``SourceMapItem`` items.
