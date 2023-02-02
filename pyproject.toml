@@ -3,7 +3,6 @@ requires = ["setuptools>=51.1.1", "wheel", "setuptools_scm[toml]>=5.0"]
 
 [tool.setuptools_scm]
 write_to = "ethpm_types/version.py"
-plugins = ["pydantic.mypy"]
 
 # NOTE: you have to use single-quoted strings in TOML for regular expressions.
 # It's the equivalent of r-strings in Python.  Multiline strings are treated as
@@ -37,3 +36,4 @@ use_parentheses = true
 
 [tool.mypy]
 exclude = "build"
+plugins = ["pydantic.mypy"]
