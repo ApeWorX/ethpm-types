@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from pathlib import Path
+
 from setuptools import find_packages, setup
+
+here = Path(__file__).parent.absolute()
 
 extras_require = {
     "test": [  # `test` GitHub Action jobs uses this
@@ -14,8 +18,8 @@ extras_require = {
         "pysha3>=1.0.2,<2.0.0",  # Backend for eth-hash
     ],
     "lint": [
-        "black>=22.12.0",  # auto-formatter and linter
-        "mypy==0.991",  # Static type analyzer
+        "black>=22.12.0,<23",  # auto-formatter and linter
+        "mypy=>=0.991",  # Static type analyzer
         "types-setuptools",  # Needed due to mypy typeshed
         "types-requests",  # Needed due to mypy typeshed
         "flake8>=5.0.4",  # Style linter
@@ -36,7 +40,8 @@ extras_require = {
         "twine",  # Package upload tool
     ],
     "dev": [
-        "commitizen",  # Manage commits and publishing releases
+        # commitizen: Manage commits and publishing releases
+        (here / "cz-requirement.txt").read_text().strip(),
         "pre-commit",  # Ensure that linters are run prior to committing
         "pytest-watch",  # `ptw` test watcher/runner
         "IPython",  # Console for interacting

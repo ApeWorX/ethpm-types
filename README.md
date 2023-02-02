@@ -5,7 +5,7 @@ The library validates and serializes contract related data and provides JSON sch
 
 ## Dependencies
 
-* [python3](https://www.python.org/downloads) version 3.8 or greater, python3-dev
+- [python3](https://www.python.org/downloads) version 3.8 or greater, python3-dev
 
 ## Installation
 
