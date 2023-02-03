@@ -151,7 +151,7 @@ class SourceMapItem(BaseModel):
 
     jump_code: str
     """
-    An identifier for whether a jump goes into a function, returns from a function, 
+    An identifier for whether a jump goes into a function, returns from a function,
     or is part of a loop.
     """
     # NOTE: ignore "modifier_depth" keyword introduced in solidity >0.6.x
