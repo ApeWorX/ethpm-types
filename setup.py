@@ -19,13 +19,13 @@ extras_require = {
     ],
     "lint": [
         "black>=22.12.0,<23",  # auto-formatter and linter
-        "mypy>=0.991",  # Static type analyzer
+        "mypy>=0.991,<1",  # Static type analyzer
         "types-setuptools",  # Needed due to mypy typeshed
         "types-requests",  # Needed due to mypy typeshed
-        "flake8>=5.0.4",  # Style linter
+        "flake8>=5.0.4,<6",  # Style linter
         "flake8-breakpoint>=1.1.0",  # detect breakpoints left in code
         "flake8-print>=4.0.0",  # detect print statements left in code
-        "isort>=5.10.1",  # Import sorting linter
+        "isort>=5.10.1,<5.11",  # Import sorting linter
     ],
     "doc": [
         "myst-parser>=0.17.0,<0.18",  # Tools for parsing markdown files in the docs

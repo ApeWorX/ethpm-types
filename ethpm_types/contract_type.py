@@ -128,18 +128,39 @@ class ContractInstance(BaseModel):
 
 
 class SourceMapItem(BaseModel):
+    """
+    An object modeling a node in a source map; useful for mapping
+    the source map string back to source code.
+    """
+
     # NOTE: `None` entry means this path was inserted by the compiler during codegen
     start: Optional[int]
-    stop: Optional[int]
+    """
+    The byte-offset start of the range in the source file.
+    """
+
+    length: Optional[int]
+    """
+    The byte-offset length.
+    """
+
     contract_id: Optional[int]
+    """
+    The source identifier.
+    """
+
     jump_code: str
+    """
+    An identifier for whether a jump goes into a function, returns from a function,
+    or is part of a loop.
+    """
     # NOTE: ignore "modifier_depth" keyword introduced in solidity >0.6.x
 
 
 class SourceMap(BaseModel):
     """
-    As part of the AST output, the compiler provides the range of the source code
-    that is represented by the respective node in the AST.
+    As part of the Abstract Syntax Tree (AST) output, the compiler provides the range
+    of the source code that is represented by the respective node in the AST.
 
     This can be used for various purposes ranging from static analysis tools that
     report errors based on the AST and debugging tools that highlight local variables
@@ -150,21 +171,33 @@ class SourceMap(BaseModel):
 
     __root__: str
 
+    def __repr__(self) -> str:
+        return self.__root__
+
+    def __str__(self) -> str:
+        return self.__root__
+
     def parse(self) -> Iterator[SourceMapItem]:
         """
-        Parses the source map string into a stream of ``SourceMapItem`` items.
+        Parses the source map string into a stream of
+        :class:`~ethpm_types.contract_type.SourceMapItem` items.
         Useful for when parsing the map according to compiler-specific
         decompilation rules back to the source code language files.
+
+        Returns:
+            Iterator[:class:`~ethpm_types.contract_type.SourceMapItem`]
         """
 
         item = None
 
-        def extract_sourcemap_item(expanded_row, item_idx, previous_val=None):
-            if len(expanded_row) > item_idx and expanded_row[item_idx] != "":
-                return expanded_row[item_idx]
+        def extract_sourcemap_item(_expanded_row, item_idx, previous_val=None):
+            if len(_expanded_row) > item_idx and _expanded_row[item_idx] != "":
+                return _expanded_row[item_idx]
 
-            else:
-                return previous_val  # Use previous item (or None if no previous item)
+            # Use previous item (or None if no previous item).
+            # This is because sourcemaps are compressed to save space,
+            # and this is one of the compression-rules.
+            return previous_val
 
         for i, row in enumerate(self.__root__.strip().split(";")):
 
@@ -172,23 +205,23 @@ class SourceMap(BaseModel):
                 expanded_row = row.split(":")
 
                 if item is None:
-                    start = int(extract_sourcemap_item(expanded_row, 0) or "-1")
-                    stop = int(extract_sourcemap_item(expanded_row, 1) or "-1")
-                    contract_id = int(extract_sourcemap_item(expanded_row, 2) or "-1")
+                    start = int(extract_sourcemap_item(expanded_row, 0) or -1)
+                    length = int(extract_sourcemap_item(expanded_row, 1) or -1)
+                    contract_id = int(extract_sourcemap_item(expanded_row, 2) or -1)
                     jump_code = extract_sourcemap_item(expanded_row, 3) or ""
 
                 else:
-                    start = int(extract_sourcemap_item(expanded_row, 0, item.start or "-1"))
-                    stop = int(extract_sourcemap_item(expanded_row, 1, item.stop or "-1"))
+                    start = int(extract_sourcemap_item(expanded_row, 0, item.start or -1))
+                    length = int(extract_sourcemap_item(expanded_row, 1, item.length or -1))
                     contract_id = int(
-                        extract_sourcemap_item(expanded_row, 2, item.contract_id or "-1")
+                        extract_sourcemap_item(expanded_row, 2, item.contract_id or -1)
                     )
                     jump_code = extract_sourcemap_item(expanded_row, 3, item.jump_code or "")
 
                 item = SourceMapItem.construct(
                     # NOTE: `-1` for these three entries means `None`
                     start=start if start != -1 else None,
-                    stop=stop if stop != -1 else None,
+                    length=length if length != -1 else None,
                     contract_id=contract_id if contract_id != -1 else None,
                     jump_code=jump_code,
                 )

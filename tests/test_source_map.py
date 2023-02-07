@@ -17,7 +17,7 @@ def serialize(sourcemap: Iterator[SourceMapItem]) -> str:
             continue
 
         skip_start = previous_item and item.start == previous_item.start
-        skip_stop = previous_item and item.stop == previous_item.stop
+        skip_stop = previous_item and item.length == previous_item.length
         skip_contract_id = previous_item and item.contract_id == previous_item.contract_id
         skip_jump_code = previous_item and item.jump_code == previous_item.jump_code
 
@@ -32,7 +32,7 @@ def serialize(sourcemap: Iterator[SourceMapItem]) -> str:
             if not skip_start:
                 result += str(item.start) if item.start is not None else "-1"
             result += ":"
-            result += str(item.stop) if item.stop is not None else "-1"
+            result += str(item.length) if item.length is not None else "-1"
             result += ";"
 
         elif skip_jump_code:
@@ -40,7 +40,7 @@ def serialize(sourcemap: Iterator[SourceMapItem]) -> str:
                 result += str(item.start) if item.start is not None else "-1"
             result += ":"
             if not skip_stop:
-                result += str(item.stop) if item.stop is not None else "-1"
+                result += str(item.length) if item.length is not None else "-1"
             result += ":"
             result += str(item.contract_id) if item.contract_id is not None else "-1"
             result += ";"
@@ -50,7 +50,7 @@ def serialize(sourcemap: Iterator[SourceMapItem]) -> str:
                 result += str(item.start) if item.start is not None else "-1"
             result += ":"
             if not skip_stop:
-                result += str(item.stop) if item.stop is not None else "-1"
+                result += str(item.length) if item.length is not None else "-1"
             result += ":"
             if not skip_contract_id:
                 result += str(item.contract_id) if item.contract_id is not None else "-1"
@@ -66,6 +66,14 @@ def serialize(sourcemap: Iterator[SourceMapItem]) -> str:
 @pytest.mark.parametrize("sourcemap_filename", SOURCE_MAP_FILES)
 def test_source_map(sourcemap_filename):
     sourcemap = SOURCE_MAP_FILES[sourcemap_filename].read_text().strip()
-    sm = SourceMap.construct(__root__=sourcemap)
+    sourcemap_obj = SourceMap.construct(__root__=sourcemap)
     # Serialize back to the sourcemap to make sure we decoded it properly
-    assert serialize(sm.parse()) == sourcemap
+    assert serialize(sourcemap_obj.parse()) == sourcemap
+
+
+def test_repr_and_str():
+    key = list(SOURCE_MAP_FILES.keys())[0]
+    sourcemap = SOURCE_MAP_FILES[key].read_text().strip()
+    sourcemap_obj = SourceMap(__root__=sourcemap)
+    assert repr(sourcemap_obj) == sourcemap
+    assert str(sourcemap_obj) == sourcemap

@@ -7,7 +7,7 @@ from .utils import HexBytes
 
 class BaseModel(_BaseModel):
     def dict(self, *args, **kwargs) -> dict:
-        # NOTE: We do this to accomodate the aliases needed for EIP-2678 compatibility
+        # NOTE: We do this to accommodate the aliases needed for EIP-2678 compatibility
         if "by_alias" not in kwargs:
             kwargs["by_alias"] = True
 
@@ -28,7 +28,7 @@ class BaseModel(_BaseModel):
         if "sort_keys" not in kwargs:
             kwargs["sort_keys"] = True
 
-        # NOTE: We do this to accomodate the aliases needed for EIP-2678 compatibility
+        # NOTE: We do this to accommodate the aliases needed for EIP-2678 compatibility
         if "by_alias" not in kwargs:
             kwargs["by_alias"] = True
 
