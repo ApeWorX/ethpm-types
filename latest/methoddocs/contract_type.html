@@ -51,7 +51,7 @@
           </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -85,7 +85,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Contract Type</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/methoddocs/contract_type.md.txt" rel="nofollow"> View page source</a>
@@ -244,18 +244,56 @@ program counter positions.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethpm_types.contract_type.SourceMap">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.contract_type.</span></span><span class="sig-name descname"><span class="pre">SourceMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">__root__</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.contract_type.SourceMap" title="Permalink to this definition"></a></dt>
-<dd><p>As part of the AST output, the compiler provides the range of the source code
-that is represented by the respective node in the AST.</p>
+<dd><p>As part of the Abstract Syntax Tree (AST) output, the compiler provides the range
+of the source code that is represented by the respective node in the AST.</p>
 <p>This can be used for various purposes ranging from static analysis tools that
 report errors based on the AST and debugging tools that highlight local variables
 and their uses.</p>
 <p><a class="reference external" href="https://docs.soliditylang.org/en/v0.8.15/internals/source_mappings.html">Solidity Doc</a>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethpm_types.contract_type.SourceMap.parse">
-<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">ethpm_types.contract_type.SourceMapItem</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ethpm_types.contract_type.SourceMap.parse" title="Permalink to this definition"></a></dt>
-<dd><p>Parses the source map string into a stream of <code class="docutils literal notranslate"><span class="pre">SourceMapItem</span></code> items.
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.contract_type.SourceMapItem" title="ethpm_types.contract_type.SourceMapItem"><span class="pre">ethpm_types.contract_type.SourceMapItem</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ethpm_types.contract_type.SourceMap.parse" title="Permalink to this definition"></a></dt>
+<dd><p>Parses the source map string into a stream of
+<a class="reference internal" href="#ethpm_types.contract_type.SourceMapItem" title="ethpm_types.contract_type.SourceMapItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceMapItem</span></code></a> items.
 Useful for when parsing the map according to compiler-specific
 decompilation rules back to the source code language files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Iterator[<a class="reference internal" href="#ethpm_types.contract_type.SourceMapItem" title="ethpm_types.contract_type.SourceMapItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceMapItem</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.SourceMapItem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.contract_type.</span></span><span class="sig-name descname"><span class="pre">SourceMapItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contract_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jump_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.contract_type.SourceMapItem" title="Permalink to this definition"></a></dt>
+<dd><p>An object modeling a node in a source map; useful for mapping
+the source map string back to source code.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.SourceMapItem.contract_id">
+<span class="sig-name descname"><span class="pre">contract_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.contract_type.SourceMapItem.contract_id" title="Permalink to this definition"></a></dt>
+<dd><p>The source identifier.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.SourceMapItem.jump_code">
+<span class="sig-name descname"><span class="pre">jump_code</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.contract_type.SourceMapItem.jump_code" title="Permalink to this definition"></a></dt>
+<dd><p>An identifier for whether a jump goes into a function, returns from a function,
+or is part of a loop.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.SourceMapItem.length">
+<span class="sig-name descname"><span class="pre">length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.contract_type.SourceMapItem.length" title="Permalink to this definition"></a></dt>
+<dd><p>The byte-offset length.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.SourceMapItem.start">
+<span class="sig-name descname"><span class="pre">start</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.contract_type.SourceMapItem.start" title="Permalink to this definition"></a></dt>
+<dd><p>The byte-offset start of the range in the source file.</p>
 </dd></dl>
 
 </dd></dl>
