@@ -233,3 +233,11 @@ def test_select_mutable_method_from_all_methods(selector, vyper_contract):
     contract_type = ContractType.parse_obj(vyper_contract)
     method_abi = contract_type.methods[selector]
     assert method_abi.selector == "setNumber(uint256)"
+
+
+def test_repr(vyper_contract):
+    contract = ContractType.parse_obj(vyper_contract)
+    assert repr(contract) == "<ContractType TestContractVy>"
+
+    contract.name = None
+    assert repr(contract) == "<ContractType>"

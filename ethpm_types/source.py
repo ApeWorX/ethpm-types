@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 
 import requests
 from cid import make_cid  # type: ignore
@@ -90,6 +90,24 @@ class Source(BaseModel):
     **NOTE**: Not a part of canonical EIP-2678 spec.
     """
     # TODO: Add `SourceId` type and use instead of `str`
+
+    def __repr__(self) -> str:
+        repr_id = "Source"
+        if self.checksum:
+            repr_id = f"{repr_id} {self.checksum.hash}"
+
+        return f"<{repr_id}>"
+
+    def __getitem__(self, number: Union[int, slice]) -> Union[str, List[str]]:
+        """
+        Get a line from ``content``.
+
+        Args:
+            number (int): The line number.
+        """
+
+        lines = self.fetch_content().splitlines()
+        return lines[number]
 
     def fetch_content(self) -> str:
         """
