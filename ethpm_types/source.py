@@ -106,17 +106,17 @@ class Source(BaseModel):
             number (int, slice): The line index.
         """
 
-        content = self.fetch_content()
-        lines = content.splitlines()
+        self.content = self.fetch_content()
+        lines = self.content.splitlines()
         return lines[number]
 
     def __iter__(self) -> Iterator[str]:  # type: ignore
-        content = self.fetch_content()
-        return iter(content.splitlines())
+        self.content = self.fetch_content()
+        return iter(self.content.splitlines())
 
     def __len__(self) -> int:
-        content = self.fetch_content()
-        return len(content.splitlines())
+        self.content = self.fetch_content()
+        return len(self.content.splitlines())
 
     def fetch_content(self) -> str:
         """
