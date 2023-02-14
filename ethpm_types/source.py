@@ -95,7 +95,7 @@ class Source(BaseModel):
         repr_id = "Source"
 
         if self.urls:
-            # Favor use of FileURI when available.
+            # Favor URI when available.
             primary_uri = self.urls[0]
             repr_id = f"{repr_id} {primary_uri}"
 
