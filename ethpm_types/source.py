@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import Iterator, List, Optional, Union
 
 import requests
 from cid import make_cid  # type: ignore
@@ -106,11 +106,17 @@ class Source(BaseModel):
             number (int, slice): The line index.
         """
 
-        lines = self.fetch_content().splitlines()
+        content = self.fetch_content()
+        lines = content.splitlines()
         return lines[number]
 
-    def __iter__(self):
-        return iter(self.content.splitlines())
+    def __iter__(self) -> Iterator[str]:  # type: ignore
+        content = self.fetch_content()
+        return iter(content.splitlines())
+
+    def __len__(self) -> int:
+        content = self.fetch_content()
+        return len(content.splitlines())
 
     def fetch_content(self) -> str:
         """

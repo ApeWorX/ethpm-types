@@ -74,3 +74,7 @@ def test_enumerate(source):
     for line_idx, line in enumerate(source):
         assert isinstance(line_idx, int)
         assert isinstance(line, str)
+
+
+def test_len(source):
+    assert len(source) == len(SOURCE_CONTENT.lstrip().splitlines())
