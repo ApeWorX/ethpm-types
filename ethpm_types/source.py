@@ -106,16 +106,22 @@ class Source(BaseModel):
             number (int, slice): The line index.
         """
 
-        self.content = self.fetch_content()
+        if self.content is None:
+            raise IndexError("Source has no fetched content.")
+
         lines = self.content.splitlines()
         return lines[number]
 
     def __iter__(self) -> Iterator[str]:  # type: ignore
-        self.content = self.fetch_content()
+        if self.content is None:
+            raise ValueError("Source has no fetched content.")
+
         return iter(self.content.splitlines())
 
     def __len__(self) -> int:
-        self.content = self.fetch_content()
+        if self.content is None:
+            raise ValueError("Source has no fetched content.")
+
         return len(self.content.splitlines())
 
     def fetch_content(self) -> str:
