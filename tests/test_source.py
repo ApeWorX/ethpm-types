@@ -68,3 +68,9 @@ def test_source_line_access(source):
     assert source[2] == "import interfaces.IRegistry as IRegistry"
     assert source[-1] == "    self.registry = registry"
     assert source[3:5] == ["", "registry: public(IRegistry)"]
+
+
+def test_enumerate(source):
+    for line_idx, line in enumerate(source):
+        assert isinstance(line_idx, int)
+        assert isinstance(line, str)

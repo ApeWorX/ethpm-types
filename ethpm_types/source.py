@@ -109,6 +109,9 @@ class Source(BaseModel):
         lines = self.fetch_content().splitlines()
         return lines[number]
 
+    def __iter__(self):
+        return iter(self.content.splitlines())
+
     def fetch_content(self) -> str:
         """
         Fetch the content for the given Source object.
