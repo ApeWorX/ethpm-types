@@ -17,7 +17,7 @@ registry: public(IRegistry)
 @external
 def __init__(registry: IRegistry):
     self.registry = registry
-"""
+""".lstrip()  # Remove \n prefix
 
 
 @pytest.fixture
@@ -43,7 +43,7 @@ def empty_source() -> Source:
 
 @pytest.fixture
 def source() -> Source:
-    return Source.parse_obj({"source_id": SOURCE_ID, "content": SOURCE_CONTENT.lstrip()})
+    return Source.parse_obj({"source_id": SOURCE_ID, "content": SOURCE_CONTENT})
 
 
 def test_corrupt_source(bad_checksum, no_checksum):
@@ -77,4 +77,4 @@ def test_enumerate(source):
 
 
 def test_len(source):
-    assert len(source) == len(SOURCE_CONTENT.lstrip().splitlines())
+    assert len(source) == len(SOURCE_CONTENT.splitlines())
