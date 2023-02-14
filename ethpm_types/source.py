@@ -98,7 +98,7 @@ class Source(BaseModel):
 
         return f"<{repr_id}>"
 
-    def __getitem__(self, number: Union[int, slice]) -> Union[str, List[str]]:
+    def __getitem__(self, number: Union[int, slice]):
         """
         Get a line or slice of lines from ``content``.
 
