@@ -1,4 +1,5 @@
 import pytest
+from pydantic import FileUrl
 
 from ethpm_types.source import Source
 
@@ -57,8 +58,22 @@ def test_empty_source(empty_source):
 
 
 def test_source_repr(source):
+    # Test default case.
+    assert repr(source) == "<Source>"
+
+    # Test that uses file URI when available.
+    raw_uri = "file://path/to/file.vy"
+    uri = FileUrl(raw_uri, scheme="file")
+    source.urls = [uri]
+    assert repr(source) == f"<Source {raw_uri}>"
+
+    # Test that favors URI over checksum.
     checksum = source.calculate_checksum()
     source.checksum = checksum
+    assert repr(source) == f"<Source {uri}>"
+
+    # Test that uses checksum if available and no URI.
+    source.urls = []
     assert repr(source) == f"<Source {checksum.hash}>"
 
 
