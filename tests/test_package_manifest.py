@@ -16,7 +16,7 @@ EXAMPLES_RAW_URL = "https://raw.githubusercontent.com/ethpm/ethpm-spec/master/ex
 
 @pytest.mark.parametrize(
     "example_name",
-    [f.name for f in ETHPM_SPEC_REPO.get_contents("examples")],
+    [f.name for f in ETHPM_SPEC_REPO.get_contents("examples")],  # type: ignore[union-attr]
 )
 def test_examples(example_name):
     example = requests.get(f"{EXAMPLES_RAW_URL}/{example_name}/v3.json")
