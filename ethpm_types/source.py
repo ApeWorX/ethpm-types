@@ -100,10 +100,10 @@ class Source(BaseModel):
 
     def __getitem__(self, number: Union[int, slice]) -> Union[str, List[str]]:
         """
-        Get a line from ``content``.
+        Get a line or slice of lines from ``content``.
 
         Args:
-            number (int): The line number.
+            number (int, slice): The line index.
         """
 
         lines = self.fetch_content().splitlines()
