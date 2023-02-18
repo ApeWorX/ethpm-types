@@ -233,7 +233,7 @@ class SourceMap(BaseModel):
             if not item:
                 # NOTE: This should only be true if there is no entry for the
                 #       first step, which is illegal syntax for the sourcemap.
-                raise Exception("Corrupted SourceMap")
+                raise ValueError("Corrupted SourceMap")
 
             # NOTE: If row is empty, just yield previous step
             yield item
@@ -264,6 +264,9 @@ class PCMap(BaseModel):
     """
 
     __root__: Dict[str, Optional[List[Optional[int]]]]
+
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__}>"
 
     def parse(self) -> Dict[int, PCMapItem]:
         """
@@ -443,6 +446,13 @@ class ContractType(BaseModel):
     userdoc: Optional[dict] = None
     devdoc: Optional[dict] = None
 
+    def __repr__(self) -> str:
+        repr_id = self.__class__.__name__
+        if self.name:
+            repr_id = f"{repr_id} {self.name}"
+
+        return f"<{repr_id}>"
+
     def get_runtime_bytecode(self) -> Optional[HexBytes]:
         if self.runtime_bytecode:
             return self.runtime_bytecode.to_bytes()
@@ -490,9 +500,8 @@ class ContractType(BaseModel):
                 fallback_abi = abi
                 break
 
-        fallback_abi = fallback_abi or FallbackABI(
-            type="fallback"
-        )  # Use default fallback (no args)
+        # Use default fallback (no args) if not defined
+        fallback_abi = fallback_abi or FallbackABI(type="fallback")
         fallback_abi.contract_type = self
         return fallback_abi
 
@@ -500,6 +509,7 @@ class ContractType(BaseModel):
     def view_methods(self) -> ABIList[MethodABI]:
         """
         The call-methods (read-only method, non-payable methods) defined in a smart contract.
+
         Returns:
             List[:class:`~ethpm_types.abi.ABI`]
         """
@@ -520,6 +530,7 @@ class ContractType(BaseModel):
     def mutable_methods(self) -> ABIList[MethodABI]:
         """
         The transaction-methods (stateful or payable methods) defined in a smart contract.
+
         Returns:
             List[:class:`~ethpm_types.abi.ABI`]
         """
@@ -538,6 +549,7 @@ class ContractType(BaseModel):
     def events(self) -> ABIList[EventABI]:
         """
         The events defined in a smart contract.
+
         Returns:
             List[:class:`~ethpm_types.abi.ABI`]
         """

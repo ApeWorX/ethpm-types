@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Iterator, List, Optional, Union
 
 import requests
 from cid import make_cid  # type: ignore
@@ -90,6 +90,45 @@ class Source(BaseModel):
     **NOTE**: Not a part of canonical EIP-2678 spec.
     """
     # TODO: Add `SourceId` type and use instead of `str`
+
+    def __repr__(self) -> str:
+        repr_id = "Source"
+
+        if self.urls:
+            # Favor URI when available.
+            primary_uri = self.urls[0]
+            repr_id = f"{repr_id} {primary_uri}"
+
+        elif self.checksum:
+            repr_id = f"{repr_id} {self.checksum.hash}"
+
+        return f"<{repr_id}>"
+
+    def __getitem__(self, number: Union[int, slice]):
+        """
+        Get a line or slice of lines from ``content``.
+
+        Args:
+            number (int, slice): The line index.
+        """
+
+        if self.content is None:
+            raise IndexError("Source has no fetched content.")
+
+        lines = self.content.splitlines()
+        return lines[number]
+
+    def __iter__(self) -> Iterator[str]:  # type: ignore
+        if self.content is None:
+            raise ValueError("Source has no fetched content.")
+
+        return iter(self.content.splitlines())
+
+    def __len__(self) -> int:
+        if self.content is None:
+            raise ValueError("Source has no fetched content.")
+
+        return len(self.content.splitlines())
 
     def fetch_content(self) -> str:
         """
