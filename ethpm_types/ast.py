@@ -53,20 +53,28 @@ class ASTNode(BaseModel):
         if src and isinstance(src, str):
             src = SourceMapItem.parse_str(src)
 
-        children = []
-        for value in val.values():
-            if isinstance(value, dict) and "ast_type" in value:
-                child = ASTNode.parse_obj(value)
+        def find_children(node):
+            children = []
+
+            def add_child(data):
+                data["children"] = find_children(data)
+                child = ASTNode.parse_obj(data)
                 children.append(child)
-            elif isinstance(value, list):
-                for _val in value:
-                    if isinstance(_val, dict) and "ast_type" in _val:
-                        child = ASTNode.parse_obj(_val)
-                        children.append(child)
+
+            for value in node.values():
+                if isinstance(value, dict) and "ast_type" in value:
+                    add_child(value)
+
+                elif isinstance(value, list):
+                    for _val in value:
+                        if isinstance(_val, dict) and "ast_type" in _val:
+                            add_child(_val)
+
+            return children
 
         return {
             "doc_str": val.get("doc_string"),
-            "children": children,
+            "children": find_children(val),
             **val,
             "src": src,
         }
@@ -79,23 +87,13 @@ class ASTNode(BaseModel):
 
         return self.lineno, self.col_offset, self.end_lineno, self.end_col_offset
 
-    @property
-    def statements(self):
-        """
-        All children nodes, flattened to a list.
-        """
+    def get_statement(self, src: SourceMapItem) -> Optional["ASTNode"]:
+        if self.src.start == src.start and self.src.length == src.length:
+            return self
 
-        stmts: List["ASTNode"] = [self]
         for child in self.children:
-            stmts.extend(child.statements)
+            statement = child.get_statement(src)
+            if statement:
+                return statement
 
-        return stmts
-
-    def get_statement(self, src: SourceMapItem) -> "ASTNode":
-        matches = [
-            s for s in self.statements if src.start == s.src.start and src.length == s.src.length
-        ]
-        if len(matches) == 1:
-            return matches[0]
-
-        raise IndexError("Unable to find exact statement.")
+        return None
