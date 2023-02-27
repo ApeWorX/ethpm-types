@@ -140,7 +140,7 @@ AST_JSON = {
 def test_ast():
     node = ASTNode.parse_obj(AST_JSON)
     idx = SourceMapItem.parse_str("104:8:0")
-    stmt = node.get_source_node(idx)
+    stmt = node.get_node(idx)
     stmts = node.get_nodes_at_line((6, 14, 6, 26))
     assert stmt.ast_type == "Compare"
     assert stmt.line_numbers == (7, 11, 7, 19)

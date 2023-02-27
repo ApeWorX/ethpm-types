@@ -88,12 +88,12 @@ class ASTNode(BaseModel):
 
         return self.lineno, self.col_offset, self.end_lineno, self.end_col_offset
 
-    def get_source_node(self, src: SourceMapItem) -> Optional["ASTNode"]:
+    def get_node(self, src: SourceMapItem) -> Optional["ASTNode"]:
         if self.src.start == src.start and self.src.length == src.length:
             return self
 
         for child in self.children:
-            node = child.get_source_node(src)
+            node = child.get_node(src)
             if node:
                 return node
 
