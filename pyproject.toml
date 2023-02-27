@@ -36,5 +36,4 @@ use_parentheses = true
 
 [tool.mypy]
 exclude = "build"
-check_untyped_defs = false
 plugins = ["pydantic.mypy"]
