@@ -53,3 +53,9 @@ def test_pc_map_empty():
     pcmap = PCMap.parse_obj({}).parse()
 
     assert pcmap == {}
+
+
+def test_pc_map_access_by_pc():
+    pcmap = PCMap.parse_obj({"186": [10, 20, 10, 40]})
+    assert pcmap[186] == [10, 20, 10, 40]
+    assert pcmap["186"] == [10, 20, 10, 40]

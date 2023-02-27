@@ -135,6 +135,9 @@ class PCMap(BaseModel):
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__}>"
 
+    def __getitem__(self, pc: Union[int, str]) -> Optional[List[Optional[int]]]:
+        return self.__root__[str(pc)]
+
     def parse(self) -> Dict[int, PCMapItem]:
         """
         Parses the pc map string into a map of ``PCMapItem`` items, using integer pc values as keys.
