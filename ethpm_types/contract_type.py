@@ -1,13 +1,23 @@
 from functools import singledispatchmethod
-from typing import Callable, Dict, Iterable, Iterator, List, Optional, TypeVar, Union
+from typing import Callable, Dict, Iterable, List, Optional, TypeVar, Union
 
 from eth_utils import add_0x_prefix, is_0x_prefixed
 from hexbytes import HexBytes
 from pydantic import Field, validator
 
-from .abi import ABI, ConstructorABI, ErrorABI, EventABI, FallbackABI, MethodABI, StructABI
-from .base import BaseModel
-from .utils import Hex, is_valid_hex
+from ethpm_types.abi import (
+    ABI,
+    ConstructorABI,
+    ErrorABI,
+    EventABI,
+    FallbackABI,
+    MethodABI,
+    StructABI,
+)
+from ethpm_types.ast import ASTNode
+from ethpm_types.base import BaseModel
+from ethpm_types.sourcemap import PCMap, SourceMap
+from ethpm_types.utils import Hex, is_valid_hex
 
 
 # TODO link references & link values are for solidity, not used with Vyper
@@ -125,173 +135,6 @@ class ContractInstance(BaseModel):
     from the :class:`~ethpm_types.contract_type.ContractType` for this
     ``ContractInstance``.
     """
-
-
-class SourceMapItem(BaseModel):
-    """
-    An object modeling a node in a source map; useful for mapping
-    the source map string back to source code.
-    """
-
-    # NOTE: `None` entry means this path was inserted by the compiler during codegen
-    start: Optional[int]
-    """
-    The byte-offset start of the range in the source file.
-    """
-
-    length: Optional[int]
-    """
-    The byte-offset length.
-    """
-
-    contract_id: Optional[int]
-    """
-    The source identifier.
-    """
-
-    jump_code: str
-    """
-    An identifier for whether a jump goes into a function, returns from a function,
-    or is part of a loop.
-    """
-    # NOTE: ignore "modifier_depth" keyword introduced in solidity >0.6.x
-
-
-class SourceMap(BaseModel):
-    """
-    As part of the Abstract Syntax Tree (AST) output, the compiler provides the range
-    of the source code that is represented by the respective node in the AST.
-
-    This can be used for various purposes ranging from static analysis tools that
-    report errors based on the AST and debugging tools that highlight local variables
-    and their uses.
-
-    `Solidity Doc <https://docs.soliditylang.org/en/v0.8.15/internals/source_mappings.html>`__.
-    """
-
-    __root__: str
-
-    def __repr__(self) -> str:
-        return self.__root__
-
-    def __str__(self) -> str:
-        return self.__root__
-
-    def parse(self) -> Iterator[SourceMapItem]:
-        """
-        Parses the source map string into a stream of
-        :class:`~ethpm_types.contract_type.SourceMapItem` items.
-        Useful for when parsing the map according to compiler-specific
-        decompilation rules back to the source code language files.
-
-        Returns:
-            Iterator[:class:`~ethpm_types.contract_type.SourceMapItem`]
-        """
-
-        item = None
-
-        def extract_sourcemap_item(_expanded_row, item_idx, previous_val=None):
-            if len(_expanded_row) > item_idx and _expanded_row[item_idx] != "":
-                return _expanded_row[item_idx]
-
-            # Use previous item (or None if no previous item).
-            # This is because sourcemaps are compressed to save space,
-            # and this is one of the compression-rules.
-            return previous_val
-
-        for i, row in enumerate(self.__root__.strip().split(";")):
-
-            if row != "":
-                expanded_row = row.split(":")
-
-                if item is None:
-                    start = int(extract_sourcemap_item(expanded_row, 0) or -1)
-                    length = int(extract_sourcemap_item(expanded_row, 1) or -1)
-                    contract_id = int(extract_sourcemap_item(expanded_row, 2) or -1)
-                    jump_code = extract_sourcemap_item(expanded_row, 3) or ""
-
-                else:
-                    start = int(extract_sourcemap_item(expanded_row, 0, item.start or -1))
-                    length = int(extract_sourcemap_item(expanded_row, 1, item.length or -1))
-                    contract_id = int(
-                        extract_sourcemap_item(expanded_row, 2, item.contract_id or -1)
-                    )
-                    jump_code = extract_sourcemap_item(expanded_row, 3, item.jump_code or "")
-
-                item = SourceMapItem.construct(
-                    # NOTE: `-1` for these three entries means `None`
-                    start=start if start != -1 else None,
-                    length=length if length != -1 else None,
-                    contract_id=contract_id if contract_id != -1 else None,
-                    jump_code=jump_code,
-                )
-
-            # else: use previous `item`
-            # NOTE: Format of SourceMap is like `1:2:3:a;;4:5:6:b;;;`
-            #       where an empty entry means to copy the previous step.
-
-            if not item:
-                # NOTE: This should only be true if there is no entry for the
-                #       first step, which is illegal syntax for the sourcemap.
-                raise ValueError("Corrupted SourceMap")
-
-            # NOTE: If row is empty, just yield previous step
-            yield item
-
-
-class PCMapItem(BaseModel):
-    """
-    Line information for a given EVM instruction.
-
-    These are utilized in the pc-map by which the compiler generates source code spans for given
-    program counter positions.
-    """
-
-    line_start: Optional[int] = None
-    column_start: Optional[int] = None
-    line_end: Optional[int] = None
-    column_end: Optional[int] = None
-
-
-class PCMap(BaseModel):
-    """
-    As part of the source output, the compiler provides a map of program counter values to
-    statements in the source code that the instructions were compiled from.
-
-    This can be used for various purposes ranging from static analysis tools that
-    report errors based on the program counter value and debugging tools that highlight local
-    variables and their uses.
-    """
-
-    __root__: Dict[str, Optional[List[Optional[int]]]]
-
-    def __repr__(self) -> str:
-        return f"<{self.__class__.__name__}>"
-
-    def parse(self) -> Dict[int, PCMapItem]:
-        """
-        Parses the pc map string into a map of ``PCMapItem`` items, using integer pc values as keys.
-
-        The format from the compiler will have numeric string keys with lists of ints for values.
-        These integers represent (in order) the starting line, starting column, ending line, and
-        ending column numbers.
-        """
-        results = {}
-
-        for key, value in self.__root__.items():
-            if value is not None:
-                result = PCMapItem(
-                    line_start=value[0],
-                    column_start=value[1],
-                    line_end=value[2],
-                    column_end=value[3],
-                )
-            else:
-                result = PCMapItem()
-
-            results[int(key)] = result
-
-        return results
 
 
 T = TypeVar("T", bound=Union[MethodABI, EventABI, StructABI, ErrorABI])
@@ -439,6 +282,13 @@ class ContractType(BaseModel):
     dev_messages: Optional[Dict[int, str]] = None
     """
     A map of dev-message comments in the source contract by their starting line number.
+
+    **NOTE**: This is not part of the canonical EIP-2678 spec.
+    """
+
+    ast: Optional[ASTNode] = None
+    """
+    The contract's root abstract syntax tree node.
 
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
