@@ -92,9 +92,26 @@ class ASTNode(BaseModel):
 
     @property
     def functions(self) -> List["ASTNode"]:
+        """
+        All function nodes defined at this level.
+
+        **NOTE**: This is only populated on a ``Module`` AST node.
+        """
+
         return [n for n in self.children if n.ast_type == "FunctionDef"]
 
     def get_node(self, src: SourceMapItem) -> Optional["ASTNode"]:
+        """
+        Get a node by source.
+
+        Args:
+            src (:class:`~ethpm_types.sourcemap.SourceMapItem`): The source map
+              item to seek in the AST.
+
+        Returns:
+            Optional[``ASTNode``]: The matching node, if found, else ``None``.
+        """
+
         if self.src.start == src.start and self.src.length == src.length:
             return self
 
@@ -108,8 +125,13 @@ class ASTNode(BaseModel):
     def get_nodes_at_line(self, line_numbers: SourceLocation) -> List["ASTNode"]:
         """
         Get the AST nodes for the given line number combination
-        :param line_numbers:
-        :return:
+
+        Args:
+            line_numbers (``SourceLocation``): A tuple in the form of
+              [lineno, col_offset, end_lineno, end_col_offset].
+
+        Returns:
+            List[``ASTNode``]: All matching nodes.
         """
 
         nodes = []
@@ -125,6 +147,14 @@ class ASTNode(BaseModel):
     def get_defining_function(self, line_numbers: SourceLocation) -> Optional["ASTNode"]:
         """
         Get the function that defines the given line numbers.
+
+        Args:
+            line_numbers (``SourceLocation``): A tuple in the form of
+              [lineno, col_offset, end_lineno, end_col_offset].
+
+        Returns:
+            Optional[``ASTNode``]: The function definition AST node if found,
+              else ``None``.
         """
 
         for function in self.functions:
