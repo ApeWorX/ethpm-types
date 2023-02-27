@@ -1,4 +1,4 @@
-from ethpm_types.contract_type import PCMap, PCMapItem
+from ethpm_types.sourcemap import PCMap, PCMapItem
 
 
 def test_pc_map_valid():

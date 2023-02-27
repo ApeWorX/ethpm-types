@@ -3,7 +3,7 @@ from typing import Iterator
 
 import pytest
 
-from ethpm_types.contract_type import SourceMap, SourceMapItem
+from ethpm_types.sourcemap import SourceMap, SourceMapItem
 
 SOURCE_MAP_FILES = {p.stem: p for p in sorted(Path("tests/data").glob("*.srcmap"))}
 
