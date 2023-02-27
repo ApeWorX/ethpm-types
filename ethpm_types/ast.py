@@ -90,3 +90,12 @@ class ASTNode(BaseModel):
             stmts.extend(child.statements)
 
         return stmts
+
+    def get_statement(self, src: SourceMapItem) -> "ASTNode":
+        matches = [
+            s for s in self.statements if src.start == s.src.start and src.length == s.src.length
+        ]
+        if len(matches) == 1:
+            return matches[0]
+
+        raise IndexError("Unable to find exact statement")
