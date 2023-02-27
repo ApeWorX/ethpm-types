@@ -73,10 +73,18 @@ class ASTNode(BaseModel):
 
     @property
     def pcmap(self) -> Tuple[int, int, int, int]:
+        """
+        The values needed for constructing the PCMap for this node.
+        """
+
         return self.lineno, self.col_offset, self.end_lineno, self.end_col_offset
 
     @property
     def statements(self):
+        """
+        All children nodes, flattened to a list.
+        """
+
         stmts: List["ASTNode"] = [self]
         for child in self.children:
             stmts.extend(child.statements)
