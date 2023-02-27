@@ -57,8 +57,15 @@ def test_pc_map_empty():
 
 def test_pc_map_getting_and_setting():
     pcmap = PCMap.parse_obj({"186": [10, 20, 10, 40]})
+
+    # Test __contains__
+    assert "186" in pcmap
+    assert 186 in pcmap
+
+    # Test __getitem__
     assert pcmap[186] == [10, 20, 10, 40]
     assert pcmap["186"] == [10, 20, 10, 40]
 
+    # Test __setitem__
     pcmap[184] = [5, 20, 10, 40]
     assert pcmap["184"] == [5, 20, 10, 40]
