@@ -80,20 +80,32 @@ class ASTNode(BaseModel):
         }
 
     @property
-    def pcmap(self) -> Tuple[int, int, int, int]:
+    def line_numbers(self) -> Tuple[int, int, int, int]:
         """
-        The values needed for constructing the PCMap for this node.
+        The values needed for constructing the line numbers for this node
+        in the form ``[lineno, col_offset, end_lineno, end_col_offset]``.
         """
 
         return self.lineno, self.col_offset, self.end_lineno, self.end_col_offset
 
-    def get_statement(self, src: SourceMapItem) -> Optional["ASTNode"]:
+    def get_source_node(self, src: SourceMapItem) -> Optional["ASTNode"]:
         if self.src.start == src.start and self.src.length == src.length:
             return self
 
         for child in self.children:
-            statement = child.get_statement(src)
-            if statement:
-                return statement
+            node = child.get_source_node(src)
+            if node:
+                return node
 
         return None
+
+    def get_nodes_at_line(self, line_numbers: Tuple[int, int, int, int]) -> List["ASTNode"]:
+        nodes = []
+        if self.line_numbers == line_numbers:
+            nodes.append(self)
+
+        for child in self.children:
+            subs = child.get_nodes_at_line(line_numbers)
+            nodes.extend(subs)
+
+        return nodes
