@@ -98,4 +98,4 @@ class ASTNode(BaseModel):
         if len(matches) == 1:
             return matches[0]
 
-        raise IndexError("Unable to find exact statement")
+        raise IndexError("Unable to find exact statement.")
