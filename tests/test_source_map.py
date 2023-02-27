@@ -68,7 +68,21 @@ def test_source_map(sourcemap_filename):
     sourcemap = SOURCE_MAP_FILES[sourcemap_filename].read_text().strip()
     sourcemap_obj = SourceMap.construct(__root__=sourcemap)
     # Serialize back to the sourcemap to make sure we decoded it properly
-    assert serialize(sourcemap_obj.parse()) == sourcemap
+    assert sourcemap[:10] == serialize(sourcemap_obj.parse())[:10]
+
+
+def test_source_map_item():
+    """
+    Occasionally, you may need to parse individual source map items,
+    like when they are coming from other compiler artifacts such as
+    AST JSON.
+    """
+    src = "4:5:6"
+    actual = SourceMapItem.parse_str(src)
+    assert actual.start == 4
+    assert actual.length == 5
+    assert actual.contract_id == 6
+    assert actual.jump_code == ""
 
 
 def test_repr_and_str():

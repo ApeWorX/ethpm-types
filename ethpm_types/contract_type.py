@@ -156,6 +156,39 @@ class SourceMapItem(BaseModel):
     """
     # NOTE: ignore "modifier_depth" keyword introduced in solidity >0.6.x
 
+    @classmethod
+    def parse_str(cls, src_str: str, previous: Optional["SourceMapItem"] = None) -> "SourceMapItem":
+        row: List[Union[int, str]] = [int(i) if i.isnumeric() else i for i in src_str.split(":")]
+
+        if previous is None:
+            start = int(cls._extract_value(row, 0) or -1)
+            length = int(cls._extract_value(row, 1) or -1)
+            contract_id = int(cls._extract_value(row, 2) or -1)
+            jump_code = cls._extract_value(row, 3) or ""
+
+        else:
+            start = int(cls._extract_value(row, 0, previous=previous.start or -1))
+            length = int(cls._extract_value(row, 1, previous=previous.length or -1))
+            contract_id = int(cls._extract_value(row, 2, previous=previous.contract_id or -1))
+            jump_code = cls._extract_value(row, 3, previous=previous.jump_code or "")
+
+        return SourceMapItem.construct(
+            # NOTE: `-1` for these three entries means `None`
+            start=start if start != -1 else None,
+            length=length if length != -1 else None,
+            contract_id=contract_id if contract_id != -1 else None,
+            jump_code=jump_code,
+        )
+
+    @staticmethod
+    def _extract_value(
+        row: List[Union[str, int]], item_idx: int, previous: Optional[Union[int, str]] = None
+    ):
+        if len(row) > item_idx and row[item_idx] != "":
+            return row[item_idx]
+
+        return previous
+
 
 class SourceMap(BaseModel):
     """
@@ -190,52 +223,11 @@ class SourceMap(BaseModel):
 
         item = None
 
-        def extract_sourcemap_item(_expanded_row, item_idx, previous_val=None):
-            if len(_expanded_row) > item_idx and _expanded_row[item_idx] != "":
-                return _expanded_row[item_idx]
-
-            # Use previous item (or None if no previous item).
-            # This is because sourcemaps are compressed to save space,
-            # and this is one of the compression-rules.
-            return previous_val
-
+        # NOTE: Format of SourceMap is like `1:2:3:a;;4:5:6:b;;;`
+        #       where an empty entry means to copy the previous step.
+        #       This is because sourcemaps are compressed to save space.
         for i, row in enumerate(self.__root__.strip().split(";")):
-
-            if row != "":
-                expanded_row = row.split(":")
-
-                if item is None:
-                    start = int(extract_sourcemap_item(expanded_row, 0) or -1)
-                    length = int(extract_sourcemap_item(expanded_row, 1) or -1)
-                    contract_id = int(extract_sourcemap_item(expanded_row, 2) or -1)
-                    jump_code = extract_sourcemap_item(expanded_row, 3) or ""
-
-                else:
-                    start = int(extract_sourcemap_item(expanded_row, 0, item.start or -1))
-                    length = int(extract_sourcemap_item(expanded_row, 1, item.length or -1))
-                    contract_id = int(
-                        extract_sourcemap_item(expanded_row, 2, item.contract_id or -1)
-                    )
-                    jump_code = extract_sourcemap_item(expanded_row, 3, item.jump_code or "")
-
-                item = SourceMapItem.construct(
-                    # NOTE: `-1` for these three entries means `None`
-                    start=start if start != -1 else None,
-                    length=length if length != -1 else None,
-                    contract_id=contract_id if contract_id != -1 else None,
-                    jump_code=jump_code,
-                )
-
-            # else: use previous `item`
-            # NOTE: Format of SourceMap is like `1:2:3:a;;4:5:6:b;;;`
-            #       where an empty entry means to copy the previous step.
-
-            if not item:
-                # NOTE: This should only be true if there is no entry for the
-                #       first step, which is illegal syntax for the sourcemap.
-                raise ValueError("Corrupted SourceMap")
-
-            # NOTE: If row is empty, just yield previous step
+            item = SourceMapItem.parse_str(row, previous=item)
             yield item
 
 
