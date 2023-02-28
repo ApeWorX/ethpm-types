@@ -141,7 +141,7 @@ class ASTNode(BaseModel):
                 "`(lineno, col_offset, end_lineno, end_coloffset)`"
             )
 
-        if all([x == y for x, y in zip(self.line_numbers, line_numbers)]):
+        if all(x == y for x, y in zip(self.line_numbers, line_numbers)):
             nodes.append(self)
 
         for child in self.children:
