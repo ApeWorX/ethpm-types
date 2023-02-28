@@ -142,8 +142,12 @@ def test_ast():
     idx = SourceMapItem.parse_str("104:8:0")
     stmt = node.get_node(idx)
     stmts = node.get_nodes_at_line((6, 14, 6, 26))
+    funcs = node.functions
     assert stmt.ast_type == "Compare"
     assert stmt.line_numbers == (7, 11, 7, 19)
     assert len(stmts) == 2
     assert stmts[0].ast_type == "arguments"
     assert stmts[1].ast_type == "arg"
+    assert len(funcs) == 1
+    assert node.get_defining_function((7, 11, 7, 14)) == funcs[0]
+    assert node.get_defining_function((55, 11, 56, 14)) is None
