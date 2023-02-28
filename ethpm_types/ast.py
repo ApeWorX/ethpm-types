@@ -135,7 +135,13 @@ class ASTNode(BaseModel):
         """
 
         nodes = []
-        if self.line_numbers == line_numbers:
+        if len(line_numbers) != 4:
+            raise ValueError(
+                "Line numbers should given in form "
+                "`(lineno, col_offset, end_lineno, end_coloffset)`"
+            )
+
+        if all([x == y for x, y in zip(self.line_numbers, line_numbers)]):
             nodes.append(self)
 
         for child in self.children:
