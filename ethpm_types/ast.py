@@ -137,7 +137,7 @@ class ASTNode(BaseModel):
         nodes = []
         if len(line_numbers) != 4:
             raise ValueError(
-                "Line numbers should given in form "
+                "Line numbers should be given in form of "
                 "`(lineno, col_offset, end_lineno, end_coloffset)`"
             )
 
