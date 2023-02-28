@@ -150,4 +150,5 @@ def test_ast():
     assert stmts[1].ast_type == "arg"
     assert len(funcs) == 1
     assert node.get_defining_function((7, 11, 7, 14)) == funcs[0]
+    assert node.get_defining_function([7, 11, 7, 14]) == funcs[0]
     assert node.get_defining_function((55, 11, 56, 14)) is None
