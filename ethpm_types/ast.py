@@ -1,4 +1,4 @@
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Union
 
 from pydantic import root_validator
 
@@ -14,7 +14,7 @@ class ASTNode(BaseModel):
     The type of AST node this is, such as ``FunctionDef``.
     """
 
-    doc_str: Optional[str] = None
+    doc_str: Optional[Union[str, "ASTNode"]] = None
     """
     Documentation for the node.
     """
