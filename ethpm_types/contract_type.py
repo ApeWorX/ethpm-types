@@ -2,7 +2,6 @@ from functools import singledispatchmethod
 from typing import Callable, Dict, Iterable, List, Optional, TypeVar, Union
 
 from eth_utils import add_0x_prefix, is_0x_prefixed
-from hexbytes import HexBytes
 from pydantic import Field, validator
 
 from ethpm_types.abi import (
@@ -17,7 +16,7 @@ from ethpm_types.abi import (
 from ethpm_types.ast import ASTNode
 from ethpm_types.base import BaseModel
 from ethpm_types.sourcemap import PCMap, SourceMap
-from ethpm_types.utils import Hex, is_valid_hex
+from ethpm_types.utils import Hex, HexBytes, is_valid_hex
 
 
 # TODO link references & link values are for solidity, not used with Vyper
