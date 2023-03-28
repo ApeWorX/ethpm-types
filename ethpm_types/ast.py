@@ -16,9 +16,6 @@ class ASTClassification(Enum):
     FUNCTION_DEF = 1
     """ASTTypes related to defining a function."""
 
-    CONTENT = 2
-    """ASTTypes related to the content within a function."""
-
     COMPILER = 3
     """ASTTypes related content injected by the compiler."""
 
