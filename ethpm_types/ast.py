@@ -20,7 +20,7 @@ class ASTClassification(Enum):
 class ASTNode(BaseModel):
     ast_type: str
     """
-    The compiler-given AST node type this is, such as ``FunctionDef``.
+    The compiler-given AST node type, such as ``FunctionDef``.
     """
 
     classification: ASTClassification = ASTClassification.UNCLASSIFIED
