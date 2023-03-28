@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import List, Optional, Tuple, Union
 
 from pydantic import root_validator
@@ -8,10 +9,29 @@ from ethpm_types.sourcemap import SourceMapItem
 SourceLocation = Tuple[int, int, int, int]
 
 
+class ASTClassification(Enum):
+    UNCLASSIFIED = 0
+    """Unclassified AST type (default)."""
+
+    FUNCTION_DEF = 1
+    """ASTTypes related to defining a function."""
+
+    CONTENT = 2
+    """ASTTypes related to the content within a function."""
+
+    COMPILER = 3
+    """ASTTypes related content injected by the compiler."""
+
+
 class ASTNode(BaseModel):
     ast_type: str
     """
-    The type of AST node this is, such as ``FunctionDef``.
+    The compiler-given AST node type this is, such as ``FunctionDef``.
+    """
+
+    classification: ASTClassification = ASTClassification.UNCLASSIFIED
+    """
+    A generic classification of what type of AST this is.
     """
 
     doc_str: Optional[Union[str, "ASTNode"]] = None
