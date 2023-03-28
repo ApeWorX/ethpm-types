@@ -16,9 +16,6 @@ class ASTClassification(Enum):
     FUNCTION_DEF = 1
     """ASTTypes related to defining a function."""
 
-    COMPILER = 3
-    """ASTTypes related content injected by the compiler."""
-
 
 class ASTNode(BaseModel):
     ast_type: str
