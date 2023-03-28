@@ -13,7 +13,7 @@ class ASTClassification(Enum):
     UNCLASSIFIED = 0
     """Unclassified AST type (default)."""
 
-    FUNCTION_DEF = 1
+    FUNCTION = 1
     """ASTTypes related to defining a function."""
 
 
