@@ -1,5 +1,7 @@
 from typing import Dict, Iterator, List, Optional, Union
 
+from pydantic import root_validator
+
 from ethpm_types.base import BaseModel
 
 
@@ -119,6 +121,11 @@ class PCMapItem(BaseModel):
     column_start: Optional[int] = None
     line_end: Optional[int] = None
     column_end: Optional[int] = None
+    dev: Optional[str] = None
+
+
+_RawPCMapItem = Dict[str, Optional[Union[str, List[Optional[int]]]]]
+_RawPCMap = Dict[str, _RawPCMapItem]
 
 
 class PCMap(BaseModel):
@@ -130,15 +137,32 @@ class PCMap(BaseModel):
     variables and their uses.
     """
 
-    __root__: Dict[str, Optional[List[Optional[int]]]]
+    __root__: _RawPCMap
+
+    @root_validator(pre=True)
+    def validate_full(cls, value):
+        # * Allows list values; turns them to {"location": value}.
+        # * Allows `None`; turns it to {"location": None}
+        # Else, expects dictionaries. This allows starting with a simple
+        # location data but allowing compilers to enrich fields.
+
+        return {
+            "__root__": {
+                k: ({"location": v} if isinstance(v, list) else v or {"location": None})
+                for k, v in ((value or {}).get("__root__", value) or {}).items()
+            }
+        }
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__}>"
 
-    def __getitem__(self, pc: Union[int, str]) -> Optional[List[Optional[int]]]:
+    def __getitem__(self, pc: Union[int, str]) -> _RawPCMapItem:
         return self.__root__[str(pc)]
 
-    def __setitem__(self, pc: Union[int, str], value: Optional[List[Optional[int]]]):
+    def __setitem__(self, pc: Union[int, str], value: _RawPCMapItem):
+        if isinstance(value, list):
+            value = {"location": value}
+
         self.__root__[str(pc)] = value
 
     def __contains__(self, pc: Union[int, str]) -> bool:
@@ -155,15 +179,16 @@ class PCMap(BaseModel):
         results = {}
 
         for key, value in self.__root__.items():
-            if value is not None:
+            if value["location"] is not None:
                 result = PCMapItem(
-                    line_start=value[0],
-                    column_start=value[1],
-                    line_end=value[2],
-                    column_end=value[3],
+                    line_start=value["location"][0],
+                    column_start=value["location"][1],
+                    line_end=value["location"][2],
+                    column_end=value["location"][3],
+                    dev=value.get("dev"),
                 )
             else:
-                result = PCMapItem()
+                result = PCMapItem(dev=value.get("dev"))
 
             results[int(key)] = result
 

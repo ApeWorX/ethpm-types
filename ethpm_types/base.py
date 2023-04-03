@@ -46,7 +46,6 @@ class BaseModel(_BaseModel):
         *args,
         **kwargs,
     ) -> Any:
-
         if isinstance(v, HexBytes):
             return v.hex()
 
