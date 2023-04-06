@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List, Optional, Tuple, Union
+from typing import Iterator, List, Optional, Tuple, Union
 
 from pydantic import root_validator
 
@@ -113,6 +113,23 @@ class ASTNode(BaseModel):
         """
 
         return [n for n in self.children if n.ast_type == "FunctionDef"]
+
+    def __repr__(self) -> str:
+        return str(self)
+
+    def __str__(self):
+        num_children = len(self.children)
+        stats = "leaf" if num_children == 0 else f"children={num_children}"
+        return f"<{self.ast_type}Node {stats}>"
+
+    def iter_nodes(self) -> Iterator["ASTNode"]:
+        """
+        Yield through all nodes in the tree, including this one.
+        """
+
+        yield self
+        for node in self.children:
+            yield from node.iter_nodes()
 
     def get_node(self, src: SourceMapItem) -> Optional["ASTNode"]:
         """
