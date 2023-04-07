@@ -6,7 +6,7 @@ import pytest
 from eth_utils import keccak
 
 from ethpm_types import ContractType
-from ethpm_types.abi import ABI, EventABI, MethodABI
+from ethpm_types.abi import ABI, ErrorABI, EventABI, MethodABI
 
 CONTRACT_NAMES = ("SolidityContract.json", "VyperContract.json")
 DATA_FILES = {
@@ -15,6 +15,7 @@ DATA_FILES = {
 MUTABLE_METHOD_SELECTOR_BYTES = keccak(text="setNumber(uint256)")
 VIEW_METHOD_SELECTOR_BYTES = keccak(text="getStruct()")
 EVENT_SELECTOR_BYTES = keccak(text="NumberChange(uint256,uint256)")
+ERROR_SELECTOR_BYTES = keccak(text="FooError(address,uint256)")
 
 
 view_selector_parametrization = pytest.mark.parametrize(
@@ -48,6 +49,17 @@ event_selector_parametrization = pytest.mark.parametrize(
         EVENT_SELECTOR_BYTES[:32],
         f"0x{EVENT_SELECTOR_BYTES.hex()}",
         f"0x{EVENT_SELECTOR_BYTES[:32].hex()}",
+    ),
+)
+error_selector_parametrization = pytest.mark.parametrize(
+    "selector",
+    (
+        "FooError",
+        "FooError(address,uint256)",
+        ERROR_SELECTOR_BYTES,
+        ERROR_SELECTOR_BYTES[:32],
+        f"0x{ERROR_SELECTOR_BYTES.hex()}",
+        f"0x{ERROR_SELECTOR_BYTES[:32].hex()}",
     ),
 )
 
@@ -173,6 +185,15 @@ def test_select_and_contains_event_by_name_and_selectors(selector, vyper_contrac
     event = contract_type.events[selector]
     assert isinstance(event, EventABI)
     assert event.name == "NumberChange"
+
+
+@error_selector_parametrization
+def test_elect_and_contains_error_by_name_and_selectors(selector, solidity_contract):
+    contract_type = ContractType.parse_obj(solidity_contract)
+    assert selector in contract_type.errors
+    event = contract_type.errors[selector]
+    assert isinstance(event, ErrorABI)
+    assert event.name == "FooError"
 
 
 def test_select_and_contains_by_abi(vyper_contract):
