@@ -25,6 +25,22 @@
       "type": "event"
     },
     {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "addr",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "counter",
+          "type": "uint256"
+        }
+      ],
+      "name":"FooError",
+      "type":"error"
+    },
+    {
       "inputs": [],
       "name": "getAddressList",
       "outputs": [

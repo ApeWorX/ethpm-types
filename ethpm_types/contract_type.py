@@ -362,17 +362,8 @@ class ContractType(BaseModel):
         Returns:
             List[:class:`~ethpm_types.abi.ABI`]
         """
-
-        method_abis = [
-            abi for abi in self.abi if isinstance(abi, MethodABI) and not abi.is_stateful
-        ]
-        for abi in method_abis:
-            abi.contract_type = self
-
-        return ABIList(
-            method_abis,
-            selector_id_size=4,
-            selector_hash_fn=self._selector_hash_fn,
+        return self._get_abis(
+            selector_id_size=4, filter_fn=lambda x: isinstance(x, MethodABI) and not x.is_stateful
         )
 
     @property
@@ -383,15 +374,8 @@ class ContractType(BaseModel):
         Returns:
             List[:class:`~ethpm_types.abi.ABI`]
         """
-
-        method_abis = [abi for abi in self.abi if isinstance(abi, MethodABI) and abi.is_stateful]
-        for abi in method_abis:
-            abi.contract_type = self
-
-        return ABIList(
-            method_abis,
-            selector_id_size=4,
-            selector_hash_fn=self._selector_hash_fn,
+        return self._get_abis(
+            selector_id_size=4, filter_fn=lambda x: isinstance(x, MethodABI) and x.is_stateful
         )
 
     @property
@@ -400,35 +384,54 @@ class ContractType(BaseModel):
         The events defined in a smart contract.
 
         Returns:
-            List[:class:`~ethpm_types.abi.ABI`]
+            :class:`~ethpm_types.contract_type.ABIList`
         """
+        return self._get_abis(filter_fn=lambda a: isinstance(a, EventABI))
 
-        event_abis = [abi for abi in self.abi if isinstance(abi, EventABI)]
-        for abi in event_abis:
-            abi.contract_type = self
+    @property
+    def errors(self) -> ABIList[ErrorABI]:
+        """
+        The errors defined in a smart contract.
 
-        return ABIList(
-            event_abis,
-            selector_hash_fn=self._selector_hash_fn,
-        )
+        Returns:
+            :class:`~ethpm_types.contract_type.ABIList`
+        """
+        return self._get_abis(filter_fn=lambda a: isinstance(a, ErrorABI))
 
     @property
     def methods(self) -> ABIList:
-        method_abis = [abi for abi in self.abi if isinstance(abi, MethodABI)]
-        for abi in method_abis:
-            abi.contract_type = self
+        """
+        All methods defined in a smart contract.
 
-        return ABIList(
-            method_abis,
-            selector_id_size=4,
-            selector_hash_fn=self._selector_hash_fn,
-        )
+        Returns:
+            :class:`~ethpm_types.contract_type.ABIList`
+        """
+        return self._get_abis(selector_id_size=4, filter_fn=lambda a: isinstance(a, MethodABI))
 
     def _selector_hash_fn(self, selector: str) -> bytes:
         # keccak is the default on most ecosystems, other ecosystems can subclass to override it
         from eth_utils import keccak
 
         return keccak(text=selector)
+
+    def _get_abis(
+        self,
+        selector_id_size: int = 32,
+        filter_fn: Optional[Callable[[ABI], bool]] = None,
+    ):
+        def noop(a: ABI) -> bool:
+            return True
+
+        filter_fn = filter_fn or noop
+        method_abis = [abi for abi in self.abi if filter_fn(abi)]
+        for abi in method_abis:
+            abi.contract_type = self
+
+        return ABIList(
+            method_abis,
+            selector_id_size=selector_id_size,
+            selector_hash_fn=self._selector_hash_fn,
+        )
 
 
 class BIP122_URI(str):
