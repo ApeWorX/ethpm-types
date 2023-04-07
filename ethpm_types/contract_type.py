@@ -148,7 +148,7 @@ class ABIList(List[T]):
         self,
         iterable: Optional[Iterable[T]] = None,
         *,
-        selector_id_size=32,
+        selector_id_size: int = 32,
         selector_hash_fn: Optional[Callable[[str], bytes]] = None,
     ):
         self._selector_id_size = selector_id_size
@@ -396,7 +396,7 @@ class ContractType(BaseModel):
         Returns:
             :class:`~ethpm_types.contract_type.ABIList`
         """
-        return self._get_abis(filter_fn=lambda a: isinstance(a, ErrorABI))
+        return self._get_abis(selector_id_size=4, filter_fn=lambda a: isinstance(a, ErrorABI))
 
     @property
     def methods(self) -> ABIList:
