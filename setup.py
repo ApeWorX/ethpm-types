@@ -74,10 +74,10 @@ setup(
     include_package_data=True,
     install_requires=[
         "hexbytes>=0.3.0,<1",
-        "pydantic>=1.10.1,<2",
-        "eth-utils>=2.0.0,<3",
+        "pydantic>=1.10.7,<2",
+        "eth-utils>=2.1.0,<3",
         "py-cid>=0.3.0,<0.4",
-        "requests>=2.28.1,<3",
+        "requests>=2.29.0,<3",
     ],
     python_requires=">=3.8,<4",
     extras_require=extras_require,
