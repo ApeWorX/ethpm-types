@@ -1,3 +1,5 @@
+import pytest
+
 from ethpm_types import SourceMapItem
 from ethpm_types.ast import ASTNode
 
@@ -95,7 +97,7 @@ AST_JSON = {
                             "end_lineno": 7,
                             "lineno": 7,
                             "node_id": 13,
-                            "src": "111:1:0",
+                            "src": "111:0:0",
                             "value": 5,
                         },
                         "src": "104:8:0",
@@ -152,3 +154,11 @@ def test_ast():
     assert node.get_defining_function((7, 11, 7, 14)) == funcs[0]
     assert node.get_defining_function([7, 11, 7, 14]) == funcs[0]
     assert node.get_defining_function((55, 11, 56, 14)) is None
+
+
+@pytest.mark.parametrize("length", (0, None))
+def test_ast_get_node_no_length(length):
+    node = ASTNode.parse_obj(AST_JSON)
+    idx = SourceMapItem(start=111, length=length, contract_id=None, jump_code="-")
+    actual = node.get_node(idx)
+    assert actual.ast_type == "Int"
