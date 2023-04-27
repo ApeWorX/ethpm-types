@@ -143,7 +143,7 @@ class ASTNode(BaseModel):
             Optional[``ASTNode``]: The matching node, if found, else ``None``.
         """
 
-        if self.src.start == src.start and self.src.length == src.length:
+        if self.src.start == src.start and (self.src.length or 0) == (src.length or 0):
             return self
 
         for child in self.children:
