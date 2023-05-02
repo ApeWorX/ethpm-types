@@ -22,7 +22,7 @@ extras_require = {
         "mypy>=0.991,<1",  # Static type analyzer
         "types-setuptools",  # Needed due to mypy typeshed
         "types-requests",  # Needed due to mypy typeshed
-        "flake8>=5.0.4,<6",  # Style linter
+        "flake8>=6.0.0,<7",  # Style linter
         "flake8-breakpoint>=1.1.0",  # detect breakpoints left in code
         "flake8-print>=4.0.0",  # detect print statements left in code
         "isort>=5.10.1,<5.11",  # Import sorting linter
@@ -74,12 +74,12 @@ setup(
     include_package_data=True,
     install_requires=[
         "hexbytes>=0.3.0,<1",
-        "pydantic>=1.10.1,<2",
-        "eth-utils>=2.0.0,<3",
+        "pydantic>=1.10.7,<2",
+        "eth-utils>=2.1.0,<3",
         "py-cid>=0.3.0,<0.4",
-        "requests>=2.28.1,<3",
+        "requests>=2.29.0,<3",
     ],
-    python_requires=">=3.8,<3.11",
+    python_requires=">=3.8,<4",
     extras_require=extras_require,
     py_modules=["ethpm_types"],
     license="Apache-2.0",
@@ -98,5 +98,6 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
     ],
 )
