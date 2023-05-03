@@ -1,21 +1,15 @@
-import json
-from pathlib import Path
-from typing import Dict
-
 import pytest
 from eth_utils import keccak
 
 from ethpm_types import ContractType
 from ethpm_types.abi import ABI, ErrorABI, EventABI, MethodABI
 
-CONTRACT_NAMES = ("SolidityContract.json", "VyperContract.json")
-DATA_FILES = {
-    p.name: p for p in (Path(__file__).parent / "data").iterdir() if p.name in CONTRACT_NAMES
-}
 MUTABLE_METHOD_SELECTOR_BYTES = keccak(text="setNumber(uint256)")
 VIEW_METHOD_SELECTOR_BYTES = keccak(text="getStruct()")
-EVENT_SELECTOR_BYTES = keccak(text="NumberChange(uint256,uint256)")
-ERROR_SELECTOR_BYTES = keccak(text="FooError(address,uint256)")
+EVENT_SELECTOR_STRING = "NumberChange(bytes32,uint256,string,uint256,string)"
+EVENT_SELECTOR_BYTES = keccak(text=EVENT_SELECTOR_STRING)
+ERROR_SELECTOR_STRING = "Unauthorized(address,uint256)"
+ERROR_SELECTOR_BYTES = keccak(text=ERROR_SELECTOR_STRING)
 
 
 view_selector_parametrization = pytest.mark.parametrize(
@@ -44,7 +38,7 @@ event_selector_parametrization = pytest.mark.parametrize(
     "selector",
     (
         "NumberChange",
-        "NumberChange(uint256,uint256)",
+        EVENT_SELECTOR_STRING,
         EVENT_SELECTOR_BYTES,
         EVENT_SELECTOR_BYTES[:32],
         f"0x{EVENT_SELECTOR_BYTES.hex()}",
@@ -54,8 +48,8 @@ event_selector_parametrization = pytest.mark.parametrize(
 error_selector_parametrization = pytest.mark.parametrize(
     "selector",
     (
-        "FooError",
-        "FooError(address,uint256)",
+        "Unauthorized",
+        ERROR_SELECTOR_STRING,
         ERROR_SELECTOR_BYTES,
         ERROR_SELECTOR_BYTES[:32],
         f"0x{ERROR_SELECTOR_BYTES.hex()}",
@@ -64,37 +58,17 @@ error_selector_parametrization = pytest.mark.parametrize(
 )
 
 
-@pytest.fixture
-def solidity_contract():
-    return _get_contract(CONTRACT_NAMES[0])
-
-
-@pytest.fixture
-def vyper_contract():
-    return _get_contract(CONTRACT_NAMES[1])
-
-
-@pytest.fixture(params=CONTRACT_NAMES)
-def contract(request):
-    yield _get_contract(request.param)
-
-
-def _get_contract(name: str) -> Dict:
-    return json.loads(DATA_FILES[name].read_text())
-
-
 def _select_abi(contract_type: ContractType, name: str) -> ABI:
     for abi in contract_type.abi:
         abi_name = abi.name if hasattr(abi, "name") else None
         if abi_name == name:
             return abi
 
-    raise ValueError(f"No method found with name '{name}'.")
+    raise AssertionError(f"No method found with name '{name}'.")
 
 
 def test_structs(contract):
-    contract_type = ContractType.parse_obj(contract)
-    method_abi = _select_abi(contract_type, "getStruct")
+    method_abi = _select_abi(contract, "getStruct")
     assert len(method_abi.outputs) == 1
     output = method_abi.outputs[0]
     assert output.type == "tuple"
@@ -102,16 +76,14 @@ def test_structs(contract):
 
 
 def test_solidity_address_arrays(solidity_contract):
-    contract_type = ContractType.parse_obj(solidity_contract)
-    method_abi = _select_abi(contract_type, "getAddressList")
+    method_abi = _select_abi(solidity_contract, "getAddressArray")
     assert len(method_abi.outputs) == 1
     array_output = method_abi.outputs[0]
     assert array_output.type == "address[2]"
 
 
 def test_vyper_address_arrays(vyper_contract):
-    contract_type = ContractType.parse_obj(vyper_contract)
-    method_abi = _select_abi(contract_type, "getAddressList")
+    method_abi = _select_abi(vyper_contract, "getAddressArray")
     assert len(method_abi.outputs) == 1
     array_output = method_abi.outputs[0]
     assert array_output.type == "address[]"
@@ -119,16 +91,14 @@ def test_vyper_address_arrays(vyper_contract):
 
 
 def test_static_solidity_struct_arrays(solidity_contract):
-    contract_type = ContractType.parse_obj(solidity_contract)
-    method_abi = _select_abi(contract_type, "getStaticStructList")
+    method_abi = _select_abi(solidity_contract, "getStaticStructArray")
     array_output = method_abi.outputs[0]
-    assert array_output.type == "tuple[2]"
-    assert array_output.canonical_type == "(uint256,(address,bytes32))[2]"
+    assert array_output.type == "tuple[3]"
+    assert array_output.canonical_type == "(uint256,(address,bytes32))[3]"
 
 
 def test_dynamic_solidity_struct_arrays(solidity_contract):
-    contract_type = ContractType.parse_obj(solidity_contract)
-    method_abi = _select_abi(contract_type, "getDynamicStructList")
+    method_abi = _select_abi(solidity_contract, "getDynamicStructArray")
     array_output = method_abi.outputs[0]
     assert array_output.type == "tuple[]"
     assert array_output.canonical_type == "((address,bytes32),uint256)[]"
@@ -136,77 +106,70 @@ def test_dynamic_solidity_struct_arrays(solidity_contract):
 
 def test_static_vyper_struct_arrays(vyper_contract):
     # NOTE: Vyper struct arrays <=0.3.3 don't include struct info
-    contract_type = ContractType.parse_obj(vyper_contract)
     method_abi = [
         abi
-        for abi in contract_type.abi
-        if hasattr(abi, "name") and abi.name == "getStaticStructList"
+        for abi in vyper_contract.abi
+        if hasattr(abi, "name") and abi.name == "getStaticStructArray"
     ][0]
     array_output = method_abi.outputs[0]
-    assert array_output.type == "(uint256,(address,bytes32))[2]"
+    assert array_output.type == "tuple[2]"
     assert array_output.canonical_type == "(uint256,(address,bytes32))[2]"
 
 
 def test_dynamic_vyper_struct_arrays(vyper_contract):
     # NOTE: Vyper struct arrays <=0.3.3 don't include struct info
-    contract_type = ContractType.parse_obj(vyper_contract)
     method_abi = [
         abi
-        for abi in contract_type.abi
-        if hasattr(abi, "name") and abi.name == "getDynamicStructList"
+        for abi in vyper_contract.abi
+        if hasattr(abi, "name") and abi.name == "getDynamicStructArray"
     ][0]
     array_output = method_abi.outputs[0]
-    assert array_output.type == "((address,bytes32),uint256)[]"
+    assert array_output.type == "tuple[]"
     assert array_output.canonical_type == "((address,bytes32),uint256)[]"
 
 
 @mutable_selector_parametrization
 def test_select_mutable_method_by_name_and_selectors(selector, vyper_contract):
-    contract_type = ContractType.parse_obj(vyper_contract)
-    assert selector in contract_type.mutable_methods
-    method = contract_type.mutable_methods[selector]
+    assert selector in vyper_contract.mutable_methods
+    method = vyper_contract.mutable_methods[selector]
     assert isinstance(method, MethodABI)
     assert method.name == "setNumber"
 
 
 @view_selector_parametrization
 def test_select_view_method_by_name_and_selectors(selector, vyper_contract):
-    contract_type = ContractType.parse_obj(vyper_contract)
-    assert selector in contract_type.view_methods
-    view = contract_type.view_methods[selector]
+    assert selector in vyper_contract.view_methods
+    view = vyper_contract.view_methods[selector]
     assert isinstance(view, MethodABI)
     assert view.name == "getStruct"
 
 
 @event_selector_parametrization
 def test_select_and_contains_event_by_name_and_selectors(selector, vyper_contract):
-    contract_type = ContractType.parse_obj(vyper_contract)
-    assert selector in contract_type.events
-    event = contract_type.events[selector]
+    assert selector in vyper_contract.events
+    event = vyper_contract.events[selector]
     assert isinstance(event, EventABI)
     assert event.name == "NumberChange"
 
 
 @error_selector_parametrization
-def test_elect_and_contains_error_by_name_and_selectors(selector, solidity_contract):
-    contract_type = ContractType.parse_obj(solidity_contract)
-    assert selector in contract_type.errors
-    event = contract_type.errors[selector]
+def test_select_and_contains_error_by_name_and_selectors(selector, contract_with_error):
+    assert selector in contract_with_error.errors
+    event = contract_with_error.errors[selector]
     assert isinstance(event, ErrorABI)
-    assert event.name == "FooError"
+    assert event.name == "Unauthorized"
 
 
 def test_select_and_contains_by_abi(vyper_contract):
-    contract_type = ContractType.parse_obj(vyper_contract)
-    event = contract_type.events[0]
-    view = contract_type.view_methods[0]
-    mutable = contract_type.mutable_methods[0]
-    assert contract_type.events[event] == event
-    assert contract_type.view_methods[view] == view
-    assert contract_type.mutable_methods[mutable] == mutable
-    assert event in contract_type.events
-    assert view in contract_type.view_methods
-    assert mutable in contract_type.mutable_methods
+    event = vyper_contract.events[0]
+    view = vyper_contract.view_methods[0]
+    mutable = vyper_contract.mutable_methods[0]
+    assert vyper_contract.events[event] == event
+    assert vyper_contract.view_methods[view] == view
+    assert vyper_contract.mutable_methods[mutable] == mutable
+    assert event in vyper_contract.events
+    assert view in vyper_contract.view_methods
+    assert mutable in vyper_contract.mutable_methods
 
 
 def test_select_by_slice(oz_contract_type):
@@ -219,14 +182,13 @@ def test_select_by_slice(oz_contract_type):
 
 
 def test_contract_type_excluded_in_repr_abi(vyper_contract):
-    contract_type = ContractType.parse_obj(vyper_contract)
-    actual = repr(contract_type.events[0])
+    actual = repr(vyper_contract.events[0])
     assert "contract_type" not in actual
 
-    actual = repr(contract_type.mutable_methods[0])
+    actual = repr(vyper_contract.mutable_methods[0])
     assert "contract_type" not in actual
 
-    actual = repr(contract_type.view_methods[0])
+    actual = repr(vyper_contract.view_methods[0])
     assert "contract_type" not in actual
 
 
@@ -244,21 +206,18 @@ def test_contract_type_backrefs(oz_contract_type):
 
 @view_selector_parametrization
 def test_select_view_method_from_all_methods(selector, vyper_contract):
-    contract_type = ContractType.parse_obj(vyper_contract)
-    method_abi = contract_type.methods[selector]
+    method_abi = vyper_contract.methods[selector]
     assert method_abi.selector == "getStruct()"
 
 
 @mutable_selector_parametrization
 def test_select_mutable_method_from_all_methods(selector, vyper_contract):
-    contract_type = ContractType.parse_obj(vyper_contract)
-    method_abi = contract_type.methods[selector]
+    method_abi = vyper_contract.methods[selector]
     assert method_abi.selector == "setNumber(uint256)"
 
 
 def test_repr(vyper_contract):
-    contract = ContractType.parse_obj(vyper_contract)
-    assert repr(contract) == "<ContractType TestContractVy>"
+    assert repr(vyper_contract) == "<ContractType VyperContract>"
 
-    contract.name = None
-    assert repr(contract) == "<ContractType>"
+    vyper_contract.name = None
+    assert repr(vyper_contract) == "<ContractType>"

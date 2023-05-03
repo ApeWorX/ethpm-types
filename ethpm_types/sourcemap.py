@@ -3,6 +3,7 @@ from typing import Dict, Iterator, List, Optional, Union
 from pydantic import root_validator
 
 from ethpm_types.base import BaseModel
+from ethpm_types.utils import SourceLocation
 
 
 class SourceMapItem(BaseModel):
@@ -122,6 +123,15 @@ class PCMapItem(BaseModel):
     line_end: Optional[int] = None
     column_end: Optional[int] = None
     dev: Optional[str] = None
+
+    @property
+    def location(self) -> SourceLocation:
+        return (
+            (self.line_start or -1),
+            (self.column_start or -1),
+            (self.line_end or -1),
+            (self.column_end or -1),
+        )
 
 
 _RawPCMapItem = Dict[str, Optional[Union[str, List[Optional[int]]]]]

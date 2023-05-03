@@ -2,7 +2,7 @@ from typing import Any, no_type_check
 
 from pydantic import BaseModel as _BaseModel
 
-from .utils import HexBytes
+from ethpm_types.utils import HexBytes
 
 
 class BaseModel(_BaseModel):

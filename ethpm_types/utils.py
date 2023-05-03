@@ -1,6 +1,6 @@
 from enum import Enum
 from hashlib import md5, sha3_256, sha256
-from typing import Union
+from typing import Tuple, Union
 
 from hexbytes import HexBytes as BaseHexBytes
 from pydantic import AnyUrl as _AnyUrl
@@ -114,3 +114,6 @@ def compute_checksum(content: bytes, algorithm: Algorithm = Algorithm.MD5) -> He
     # TODO: Explore other algorithms needed
     else:
         raise ValueError("Unsupported algorithm.")
+
+
+SourceLocation = Tuple[int, int, int, int]
