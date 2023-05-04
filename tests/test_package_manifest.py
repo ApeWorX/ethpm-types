@@ -41,7 +41,8 @@ def test_examples(example_name):
 
 
 def test_open_zeppelin_contracts(oz_package, oz_package_manifest_dict):
-    assert oz_package.dict() == oz_package_manifest_dict
+    actual = oz_package.dict()
+    assert actual == oz_package_manifest_dict
 
     for source_name, source in oz_package.sources.items():
         # NOTE: Per EIP-2678, "Checksum is only required if content is missing"

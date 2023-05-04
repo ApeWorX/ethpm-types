@@ -1,12 +1,11 @@
 from enum import Enum
-from typing import Iterator, List, Optional, Tuple, Union
+from typing import Iterator, List, Optional, Union
 
 from pydantic import root_validator
 
 from ethpm_types.base import BaseModel
 from ethpm_types.sourcemap import SourceMapItem
-
-SourceLocation = Tuple[int, int, int, int]
+from ethpm_types.utils import SourceLocation
 
 
 class ASTClassification(Enum):

@@ -5,7 +5,7 @@ from pydantic import Field, root_validator, validator
 from .base import BaseModel
 from .contract_type import BIP122_URI, ContractInstance, ContractType
 from .source import Compiler, Source
-from .utils import AnyUrl
+from .utils import Algorithm, AnyUrl
 
 ALPHABET = set("abcdefghijklmnopqrstuvwxyz")
 NUMBERS = set("0123456789")
@@ -165,11 +165,12 @@ class PackageManifest(BaseModel):
 
     @root_validator
     def check_contract_source_ids(cls, values):
-        if values.get("contract_types") is not None and values.get("sources") is not None:
-            for alias in values["contract_types"]:
-                source_id = values["contract_types"][alias].source_id
-                if source_id and (source_id not in values["sources"]):
-                    raise ValueError(f"'{source_id}' missing from `sources`.")
+        contract_types = values.get("contract_types", {}) or {}
+        for alias in contract_types:
+            source_id = values["contract_types"][alias].source_id
+            sources = values.get("sources", {}) or {}
+            if source_id and (source_id not in sources):
+                raise ValueError(f"'{source_id}' missing from `sources`.")
 
         return values
 
@@ -191,3 +192,26 @@ class PackageManifest(BaseModel):
 
         else:
             raise AttributeError(f"{self.__class__.__name__} has no contract type '{attr_name}'")
+
+    def dict(self, *args, **kwargs) -> Dict:
+        res = super().dict()
+        sources = res.get("sources", {})
+        for source_id, src in sources.items():
+            if "content" in src and isinstance(src["content"], dict):
+                content = "\n".join(src["content"].values())
+                if content and not content.endswith("\n"):
+                    content = f"{content}\n"
+
+                src["content"] = content
+
+            elif "content" in src and src["content"] is None:
+                src["content"] = ""
+
+            if (
+                "checksum" in src
+                and "algorithm" in src["checksum"]
+                and isinstance(src["checksum"]["algorithm"], Algorithm)
+            ):
+                src["checksum"]["algorithm"] = src["checksum"]["algorithm"].value
+
+        return res
