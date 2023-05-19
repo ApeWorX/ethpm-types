@@ -406,6 +406,16 @@ class Statement(BaseModel):
     """
 
     type: str
+    """
+    The type of statement it is, such as `source` or a virtual identifier.
+    """
+
+    # TODO: Make required in 0.6
+    pc: int = -1
+    """
+    The PC value for the statement.
+    Defaults to -1 for backwards compatibility but should always be present.
+    """
 
     def __repr__(self) -> str:
         return f"<Statement type={self.type}>"
