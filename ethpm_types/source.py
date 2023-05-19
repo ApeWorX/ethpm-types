@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, Iterator, List, Optional, Tuple, Union
+from typing import Dict, Iterator, List, Optional, Set, Tuple, Union
 
 import requests
 from cid import make_cid  # type: ignore
@@ -410,11 +410,9 @@ class Statement(BaseModel):
     The type of statement it is, such as `source` or a virtual identifier.
     """
 
-    # TODO: Make required in 0.6
-    pc: int = -1
+    pcs: Set[int] = set()
     """
     The PC value for the statement.
-    Defaults to -1 for backwards compatibility but should always be present.
     """
 
     def __repr__(self) -> str:
