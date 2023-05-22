@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, Iterator, List, Optional, Tuple, Union
+from typing import Dict, Iterator, List, Optional, Set, Tuple, Union
 
 import requests
 from cid import make_cid  # type: ignore
@@ -406,6 +406,14 @@ class Statement(BaseModel):
     """
 
     type: str
+    """
+    The type of statement it is, such as `source` or a virtual identifier.
+    """
+
+    pcs: Set[int] = set()
+    """
+    The PC value for the statement.
+    """
 
     def __repr__(self) -> str:
         return f"<Statement type={self.type}>"
