@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Iterator, List, Optional, Union
+from typing import Dict, Iterator, List, Optional, Union
 
 from pydantic import root_validator
 
@@ -37,22 +37,22 @@ class ASTNode(BaseModel):
     The source offset item.
     """
 
-    lineno: int
+    lineno: int = -1
     """
     The start line number in the source.
     """
 
-    end_lineno: int
+    end_lineno: int = -1
     """
     The line number where the AST node ends.
     """
 
-    col_offset: int
+    col_offset: int = -1
     """
     The offset of the column start.
     """
 
-    end_col_offset: int
+    end_col_offset: int = -1
     """
     The offset when the column ends.
     """
@@ -63,36 +63,50 @@ class ASTNode(BaseModel):
     """
 
     @root_validator(pre=True)
-    def validate_src(cls, val):
+    def validate_node(cls, val):
+        src = cls._validate_src(val)
+
+        # Handle `ast_type`.
+        if "nodeType" in val and "ast_type" not in val:
+            val["ast_type"] = val.pop("nodeType")
+
+        return {
+            "doc_str": val.get("doc_string"),
+            "children": cls.find_children(val),
+            **val,
+            "src": src,
+        }
+
+    @classmethod
+    def _validate_src(cls, val: Dict) -> SourceMapItem:
         src = val.get("src")
         if src and isinstance(src, str):
             src = SourceMapItem.parse_str(src)
 
-        def find_children(node):
-            children = []
+        elif not isinstance(src, SourceMapItem):
+            raise TypeError(type(src))
 
-            def add_child(data):
-                data["children"] = find_children(data)
-                child = ASTNode.parse_obj(data)
-                children.append(child)
+        return src
 
-            for value in node.values():
-                if isinstance(value, dict) and "ast_type" in value:
-                    add_child(value)
+    @classmethod
+    def find_children(cls, node) -> List["ASTNode"]:
+        children = []
 
-                elif isinstance(value, list):
-                    for _val in value:
-                        if isinstance(_val, dict) and "ast_type" in _val:
-                            add_child(_val)
+        def add_child(data):
+            data["children"] = cls.find_children(data)
+            child = cls.parse_obj(data)
+            children.append(child)
 
-            return children
+        for value in node.values():
+            if isinstance(value, dict) and ("ast_type" in value or "nodeType" in value):
+                add_child(value)
 
-        return {
-            "doc_str": val.get("doc_string"),
-            "children": find_children(val),
-            **val,
-            "src": src,
-        }
+            elif isinstance(value, list):
+                for _val in value:
+                    if isinstance(_val, dict) and ("ast_type" in _val or "nodeType" in _val):
+                        add_child(_val)
+
+        return children
 
     @property
     def line_numbers(self) -> SourceLocation:
