@@ -83,6 +83,9 @@ class ASTNode(BaseModel):
         if src and isinstance(src, str):
             src = SourceMapItem.parse_str(src)
 
+        elif isinstance(src, dict):
+            src = SourceMapItem.parse_obj(src)
+
         elif not isinstance(src, SourceMapItem):
             raise TypeError(type(src))
 
