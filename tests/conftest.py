@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 
 import pytest
@@ -20,14 +19,13 @@ def get_contract_type():
 
 
 @pytest.fixture
-def oz_package_manifest_dict():
-    oz_manifest_file = COMPILED_BASE / "OpenZeppelinContracts.json"
-    return json.loads(oz_manifest_file.read_text())
+def oz_package_manifest_path():
+    return COMPILED_BASE / "OpenZeppelinContracts.json"
 
 
 @pytest.fixture
-def oz_package(oz_package_manifest_dict):
-    return PackageManifest.parse_obj(oz_package_manifest_dict)
+def oz_package(oz_package_manifest_path):
+    return PackageManifest.parse_file(oz_package_manifest_path)
 
 
 @pytest.fixture
@@ -74,3 +72,19 @@ def contract_with_error(get_contract_type):
 @pytest.fixture(params=("Vyper", "Solidity"))
 def contract(request, get_contract_type):
     yield get_contract_type(f"{request.param}Contract")
+
+
+@pytest.fixture
+def solidity_fallback_and_receive_contract(get_contract_type):
+    return get_contract_type("SolFallbackAndReceive")
+
+
+@pytest.fixture
+def vyper_default_contract(get_contract_type):
+    return get_contract_type("VyDefault")
+
+
+@pytest.fixture(params=("Vyper", "Solidity"))
+def fallback_contract(request, get_contract_type):
+    key = "VyDefault" if request.param == "Vyper" else "SolFallbackAndReceive"
+    return get_contract_type(key)
