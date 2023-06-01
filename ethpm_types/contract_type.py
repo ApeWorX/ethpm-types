@@ -351,9 +351,7 @@ class ContractType(BaseModel):
         The ``receive()`` method of the contract, if it has one. A contract may
         have 0-1 ``receive()`` methods defined. It gets executed when calling
         the contract with empty calldata. The method is not allowed any arguments
-        and cannot return anything. This property is always available, even if your
-        contract doesn't have a receive method. If you call this method without
-        defining a ``receive()``, it will likely use the ``fallback()`` method.
+        and cannot return anything.
         """
 
         return self._get_first_instance(ReceiveABI)
