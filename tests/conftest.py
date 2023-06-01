@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 
 import pytest
@@ -20,14 +19,13 @@ def get_contract_type():
 
 
 @pytest.fixture
-def oz_package_manifest_dict():
-    oz_manifest_file = COMPILED_BASE / "OpenZeppelinContracts.json"
-    return json.loads(oz_manifest_file.read_text())
+def oz_package_manifest_path():
+    return COMPILED_BASE / "OpenZeppelinContracts.json"
 
 
 @pytest.fixture
-def oz_package(oz_package_manifest_dict):
-    return PackageManifest.parse_obj(oz_package_manifest_dict)
+def oz_package(oz_package_manifest_path):
+    return PackageManifest.parse_file(oz_package_manifest_path)
 
 
 @pytest.fixture
