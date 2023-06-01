@@ -2,7 +2,7 @@ import pytest
 from eth_utils import keccak
 
 from ethpm_types import ContractType
-from ethpm_types.abi import ABI, ErrorABI, EventABI, MethodABI
+from ethpm_types.abi import ABI, ErrorABI, EventABI, MethodABI, ReceiveABI
 
 MUTABLE_METHOD_SELECTOR_BYTES = keccak(text="setNumber(uint256)")
 VIEW_METHOD_SELECTOR_BYTES = keccak(text="getStruct()")
@@ -221,3 +221,9 @@ def test_repr(vyper_contract):
 
     vyper_contract.name = None
     assert repr(vyper_contract) == "<ContractType>"
+
+
+def test_receive(vyper_contract):
+    assert vyper_contract.receive is not None
+    assert isinstance(vyper_contract.receive, ReceiveABI)
+    assert vyper_contract.receive.type == "receive"

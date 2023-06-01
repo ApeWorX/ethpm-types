@@ -278,4 +278,9 @@ contract SolidityContract {
     function setStructArray(MyStruct[2] memory _my_struct_array) public pure {
 
     }
+
+    event Received(address, uint);
+    receive() external payable {
+        emit Received(msg.sender, msg.value);
+    }
 }

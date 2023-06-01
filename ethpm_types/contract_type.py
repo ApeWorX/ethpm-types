@@ -11,6 +11,7 @@ from ethpm_types.abi import (
     EventABI,
     FallbackABI,
     MethodABI,
+    ReceiveABI,
     StructABI,
 )
 from ethpm_types.ast import ASTNode
@@ -353,6 +354,19 @@ class ContractType(BaseModel):
         fallback_abi = fallback_abi or FallbackABI(type="fallback")
         fallback_abi.contract_type = self
         return fallback_abi
+
+    @property
+    def receive(self) -> ReceiveABI:
+        """
+        The ``receive()`` method of the contract, if it has one. A contract may
+        have 0-1 ``receive()`` methods defined. It gets executed when calling
+        the contract with empty calldata. The method is not allowed any arguments
+        and cannot return anything. This property is always available, even if your
+        contract doesn't have a receive method. If you call this method without
+        defining a ``receive()``, it will likely use the ``fallback()`` method.
+        """
+
+        return ReceiveABI(type="receive", stateMutability="payable")
 
     @property
     def view_methods(self) -> ABIList[MethodABI]:
