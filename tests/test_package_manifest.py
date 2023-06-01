@@ -40,7 +40,7 @@ def test_examples(example_name):
             PackageManifest.parse_obj(example_json).dict()
 
 
-def test_open_zeppelin_contracts(oz_package, oz_package_manifest_path):
+def test_open_zeppelin_contracts(oz_package):
     for source_name, source in oz_package.sources.items():
         # NOTE: Per EIP-2678, "Checksum is only required if content is missing"
         if not source.content:
