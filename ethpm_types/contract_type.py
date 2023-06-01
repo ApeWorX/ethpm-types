@@ -19,8 +19,14 @@ from ethpm_types.base import BaseModel
 from ethpm_types.sourcemap import PCMap, SourceMap
 from ethpm_types.utils import Hex, HexBytes, is_valid_hex
 
-T1 = TypeVar("T1", bound=Union[MethodABI, EventABI, StructABI, ErrorABI])
-T2 = TypeVar("T2", bound=Union[FallbackABI, ConstructorABI, ReceiveABI])
+ABILIST_T = TypeVar("ABILIST_T", bound=Union[MethodABI, EventABI, StructABI, ErrorABI])
+"""The generic used for the ABIList class. Only for type-checking."""
+
+ABI_SINGLETON_T = TypeVar("ABI_SINGLETON_T", bound=Union[FallbackABI, ConstructorABI, ReceiveABI])
+"""
+The generic used for discovering the unique ABIs from the list.
+Only for type-checking.
+"""
 
 
 # TODO link references & link values are for solidity, not used with Vyper
@@ -140,14 +146,14 @@ class ContractInstance(BaseModel):
     """
 
 
-class ABIList(List[T1]):
+class ABIList(List[ABILIST_T]):
     """
     Adds selection by name, selector and keccak(selector).
     """
 
     def __init__(
         self,
-        iterable: Optional[Iterable[T1]] = None,
+        iterable: Optional[Iterable[ABILIST_T]] = None,
         *,
         selector_id_size: int = 32,
         selector_hash_fn: Optional[Callable[[str], bytes]] = None,
@@ -431,7 +437,7 @@ class ContractType(BaseModel):
             selector_hash_fn=self._selector_hash_fn,
         )
 
-    def _get_first_instance(self, _type: Type[T2]) -> Optional[T2]:
+    def _get_first_instance(self, _type: Type[ABI_SINGLETON_T]) -> Optional[ABI_SINGLETON_T]:
         for abi in self.abi:
             if not isinstance(abi, _type):
                 continue
