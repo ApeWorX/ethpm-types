@@ -74,3 +74,19 @@ def contract_with_error(get_contract_type):
 @pytest.fixture(params=("Vyper", "Solidity"))
 def contract(request, get_contract_type):
     yield get_contract_type(f"{request.param}Contract")
+
+
+@pytest.fixture
+def solidity_fallback_and_receive_contract(get_contract_type):
+    return get_contract_type("SolFallbackAndReceive")
+
+
+@pytest.fixture
+def vyper_default_contract(get_contract_type):
+    return get_contract_type("VyDefault")
+
+
+@pytest.fixture(params=("Vyper", "Solidity"))
+def fallback_contract(request, get_contract_type):
+    key = "VyDefault" if request.param == "Vyper" else "SolFallbackAndReceive"
+    return get_contract_type(key)

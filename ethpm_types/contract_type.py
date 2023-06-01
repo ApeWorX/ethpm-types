@@ -1,5 +1,5 @@
 from functools import singledispatchmethod
-from typing import Callable, Dict, Iterable, List, Optional, TypeVar, Union
+from typing import Callable, Dict, Iterable, List, Optional, Type, TypeVar, Union
 
 from eth_utils import add_0x_prefix, is_0x_prefixed
 from pydantic import Field, validator
@@ -18,6 +18,9 @@ from ethpm_types.ast import ASTNode
 from ethpm_types.base import BaseModel
 from ethpm_types.sourcemap import PCMap, SourceMap
 from ethpm_types.utils import Hex, HexBytes, is_valid_hex
+
+T1 = TypeVar("T1", bound=Union[MethodABI, EventABI, StructABI, ErrorABI])
+T2 = TypeVar("T2", bound=Union[FallbackABI, ConstructorABI, ReceiveABI])
 
 
 # TODO link references & link values are for solidity, not used with Vyper
@@ -137,17 +140,14 @@ class ContractInstance(BaseModel):
     """
 
 
-T = TypeVar("T", bound=Union[MethodABI, EventABI, StructABI, ErrorABI])
-
-
-class ABIList(List[T]):
+class ABIList(List[T1]):
     """
     Adds selection by name, selector and keccak(selector).
     """
 
     def __init__(
         self,
-        iterable: Optional[Iterable[T]] = None,
+        iterable: Optional[Iterable[T1]] = None,
         *,
         selector_id_size: int = 32,
         selector_hash_fn: Optional[Callable[[str], bytes]] = None,
@@ -324,39 +324,23 @@ class ContractType(BaseModel):
         a contract.
         """
 
-        constructor_abi: Optional[ConstructorABI] = None
-        for abi in self.abi:
-            if isinstance(abi, ConstructorABI):
-                constructor_abi = abi
-                break
-
-        constructor_abi = constructor_abi or ConstructorABI(
-            type="constructor"
-        )  # Use default constructor (no args)
-        constructor_abi.contract_type = self
-        return constructor_abi
+        # Use default constructor (no args) when no defined.
+        abi = self._get_first_instance(ConstructorABI) or ConstructorABI(type="constructor")
+        abi.contract_type = self
+        return abi
 
     @property
-    def fallback(self) -> FallbackABI:
+    def fallback(self) -> Optional[FallbackABI]:
         """
         The fallback method of the contract, if it has one. A fallback method
         is external, has no name, arguments, or return value, and gets invoked
         when the user attempts to call a method that does not exist.
         """
 
-        fallback_abi: Optional[FallbackABI] = None
-        for abi in self.abi:
-            if isinstance(abi, FallbackABI):
-                fallback_abi = abi
-                break
-
-        # Use default fallback (no args) if not defined
-        fallback_abi = fallback_abi or FallbackABI(type="fallback")
-        fallback_abi.contract_type = self
-        return fallback_abi
+        return self._get_first_instance(FallbackABI)
 
     @property
-    def receive(self) -> ReceiveABI:
+    def receive(self) -> Optional[ReceiveABI]:
         """
         The ``receive()`` method of the contract, if it has one. A contract may
         have 0-1 ``receive()`` methods defined. It gets executed when calling
@@ -366,7 +350,7 @@ class ContractType(BaseModel):
         defining a ``receive()``, it will likely use the ``fallback()`` method.
         """
 
-        return ReceiveABI(type="receive", stateMutability="payable")
+        return self._get_first_instance(ReceiveABI)
 
     @property
     def view_methods(self) -> ABIList[MethodABI]:
@@ -446,6 +430,19 @@ class ContractType(BaseModel):
             selector_id_size=selector_id_size,
             selector_hash_fn=self._selector_hash_fn,
         )
+
+    def _get_first_instance(self, _type: Type[T2]) -> Optional[T2]:
+        for abi in self.abi:
+            if not isinstance(abi, _type):
+                continue
+
+            # TODO: Figure out better way than type ignore.
+            #  getting `<nothing> has no attribute contract_type`.
+            #  probably using generics wrong but not sure how else to do it.
+            abi.contract_type = self  # type: ignore[attr-defined]
+            return abi
+
+        return None
 
 
 class BIP122_URI(str):

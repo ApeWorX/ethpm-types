@@ -2,7 +2,7 @@ import pytest
 from eth_utils import keccak
 
 from ethpm_types import ContractType
-from ethpm_types.abi import ABI, ErrorABI, EventABI, MethodABI, ReceiveABI
+from ethpm_types.abi import ABI, ErrorABI, EventABI, MethodABI
 
 MUTABLE_METHOD_SELECTOR_BYTES = keccak(text="setNumber(uint256)")
 VIEW_METHOD_SELECTOR_BYTES = keccak(text="getStruct()")
@@ -198,7 +198,6 @@ def test_contract_type_backrefs(oz_contract_type):
     assert oz_contract_type.mutable_methods, "setup: Test contract should have mutable methods"
 
     assert oz_contract_type.constructor.contract_type == oz_contract_type
-    assert oz_contract_type.fallback.contract_type == oz_contract_type
     assert all(e.contract_type == oz_contract_type for e in oz_contract_type.events)
     assert all(m.contract_type == oz_contract_type for m in oz_contract_type.mutable_methods)
     assert all(m.contract_type == oz_contract_type for m in oz_contract_type.view_methods)
@@ -223,7 +222,28 @@ def test_repr(vyper_contract):
     assert repr(vyper_contract) == "<ContractType>"
 
 
-def test_receive(vyper_contract):
-    assert vyper_contract.receive is not None
-    assert isinstance(vyper_contract.receive, ReceiveABI)
-    assert vyper_contract.receive.type == "receive"
+def test_solidity_fallback_and_receive(solidity_fallback_and_receive_contract):
+    """
+    Ensure we can detect the fallback and receive methods when they are defined.
+    For solidity, you can define both.
+    """
+    assert solidity_fallback_and_receive_contract.fallback.type == "fallback"
+    assert solidity_fallback_and_receive_contract.receive.type == "receive"
+
+
+def test_vyper_default(vyper_default_contract):
+    """
+    Ensure the Vyper default method shows up as the fallback method in the contract.
+    """
+    assert vyper_default_contract.fallback.type == "fallback"
+
+
+def test_fallback_and_receive_not_defined(contract):
+    """
+    Ensure that when the fallback method is not defined, in a Solidity contract,
+    it is None. Same with the receive method. Runs for both Solidity and Vyper.
+    """
+
+    # Both `VyperContract` and `SolidityContract` do not define these.
+    assert contract.receive is None
+    assert contract.fallback is None
