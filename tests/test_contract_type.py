@@ -230,6 +230,10 @@ def test_solidity_fallback_and_receive(solidity_fallback_and_receive_contract):
     assert solidity_fallback_and_receive_contract.fallback.type == "fallback"
     assert solidity_fallback_and_receive_contract.receive.type == "receive"
 
+    # Typically, if receive is defined, fallback is non-payable.
+    # Though, that is not always the case.
+    assert solidity_fallback_and_receive_contract.fallback.stateMutability == "nonpayable"
+
 
 def test_vyper_default(vyper_default_contract):
     """
