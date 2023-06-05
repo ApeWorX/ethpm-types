@@ -625,8 +625,13 @@ class ContractSource(BaseModel):
             name = method.name
             self._function_ast_cache[method_id.hex()] = ast
 
+        elif ast.name is not None:
+            # Use the AST name.
+            name = ast.name
+
         if name is None:
             # This method is not present in the ABI, maybe because it is internal.
+            # Also, the name is missing from the AST node.
             # Combine the signature lines into a single string.
             name = "".join([x.strip() for x in signature_lines]).rstrip()
 

@@ -17,6 +17,11 @@ class ASTClassification(Enum):
 
 
 class ASTNode(BaseModel):
+    name: Optional[str] = None
+    """
+    The node's name if it has one, such as a function name.
+    """
+
     ast_type: str
     """
     The compiler-given AST node type, such as ``FunctionDef``.
