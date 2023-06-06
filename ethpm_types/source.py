@@ -379,7 +379,7 @@ class Function(Closure):
             ``ethpm_types.source.Content``
         """
 
-        start = max(location[0], self.offset)
+        start = max(location[0], self.content.begin_lineno)
         stop = location[2] + 1
         content = {n: self.content[n] for n in range(start, stop) if n in self.content.line_numbers}
         return Content(__root__=content)
@@ -607,7 +607,8 @@ class ContractSource(BaseModel):
         if not signature_lines or not content_lines:
             return None
 
-        offset = ast.lineno + len(signature_lines)
+        signature_start = ast.lineno
+        offset = signature_start + len(signature_lines)
 
         # Check if method ID points to a calling method.
         name = None
@@ -652,8 +653,9 @@ class ContractSource(BaseModel):
             ):
                 name = full_name.split("(")[0]
 
+        signature_dict = {signature_start + i: ln for i, ln in enumerate(signature_lines)}
         content_dict = {offset + i: ln for i, ln in enumerate(content_lines)}
-        content = Content(__root__=content_dict)
+        content = Content(__root__={**signature_dict, **content_dict})
         Function.update_forward_refs()
 
         return Function(

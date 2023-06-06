@@ -133,6 +133,8 @@ def test_contract_source(vyper_contract, source, source_base):
         == "getEmptyTupleOfDynArrayStructs() -> (DynArray[MyStruct, 10], DynArray[MyStruct, 10])"
     )
     assert repr(function) == "<Function getEmptyTupleOfDynArrayStructs>"
+    # Ensure signature lines are also in content.
+    assert str(function.content).splitlines()[0].startswith("def getEmptyTupleOfDynArrayStructs()")
 
 
 def test_contract_source_use_method_id(vyper_contract, source, source_base):
