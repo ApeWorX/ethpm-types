@@ -128,4 +128,8 @@ def test_contract_source(vyper_contract, source, source_base):
     function = actual.lookup_function(location)
     # Tests ``Function`` class here.
     assert function.name == "getEmptyTupleOfDynArrayStructs"
+    assert (
+        function.full_name
+        == "getEmptyTupleOfDynArrayStructs() -> (DynArray[MyStruct, 10], DynArray[MyStruct, 10])"
+    )
     assert repr(function) == "<Function getEmptyTupleOfDynArrayStructs>"
