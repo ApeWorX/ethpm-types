@@ -622,13 +622,13 @@ class ContractSource(BaseModel):
                 # Is the same function. It's safe to use the method ABI name.
                 method = self.contract_type.methods[method_id]
                 name = method.name
-                full_name = method.signature
+                full_name = method.selector
 
         elif method_id and method_id in self.contract_type.methods:
             # Not in cache yet. Assume is calling.
             method = self.contract_type.methods[method_id]
             name = method.name
-            full_name = method.signature
+            full_name = method.selector
             self._function_ast_cache[method_id.hex()] = ast
 
         elif ast.name is not None:

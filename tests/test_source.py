@@ -133,3 +133,14 @@ def test_contract_source(vyper_contract, source, source_base):
         == "getEmptyTupleOfDynArrayStructs() -> (DynArray[MyStruct, 10], DynArray[MyStruct, 10])"
     )
     assert repr(function) == "<Function getEmptyTupleOfDynArrayStructs>"
+
+
+def test_contract_source_use_method_id(vyper_contract, source, source_base):
+    actual = ContractSource.create(vyper_contract, source, source_base)
+    location = (121, 4, 121, 46)
+    method_id = vyper_contract._selector_hash_fn(
+        vyper_contract.methods["getEmptyTupleOfDynArrayStructs"].selector
+    )
+    function = actual.lookup_function(location, method_id=method_id)
+    assert function.name == "getEmptyTupleOfDynArrayStructs"
+    assert function.full_name == "getEmptyTupleOfDynArrayStructs()"
