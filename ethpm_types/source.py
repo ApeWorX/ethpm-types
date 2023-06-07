@@ -328,6 +328,9 @@ class Closure(BaseModel):
     name: str
     """The name of the definition."""
 
+    full_name: Optional[str] = None
+    """This is a unique name of the definition."""
+
 
 class Function(Closure):
     """
@@ -376,7 +379,7 @@ class Function(Closure):
             ``ethpm_types.source.Content``
         """
 
-        start = max(location[0], self.offset)
+        start = max(location[0], self.content.begin_lineno)
         stop = location[2] + 1
         content = {n: self.content[n] for n in range(start, stop) if n in self.content.line_numbers}
         return Content(__root__=content)
@@ -604,10 +607,12 @@ class ContractSource(BaseModel):
         if not signature_lines or not content_lines:
             return None
 
-        offset = ast.lineno + len(signature_lines)
+        signature_start = ast.lineno
+        offset = signature_start + len(signature_lines)
 
         # Check if method ID points to a calling method.
         name = None
+        full_name = None
         if method_id and method_id.hex() in self._function_ast_cache:
             cached_fn = self._function_ast_cache[method_id.hex()]
             if (
@@ -618,45 +623,47 @@ class ContractSource(BaseModel):
                 # Is the same function. It's safe to use the method ABI name.
                 method = self.contract_type.methods[method_id]
                 name = method.name
+                full_name = method.selector
 
         elif method_id and method_id in self.contract_type.methods:
             # Not in cache yet. Assume is calling.
             method = self.contract_type.methods[method_id]
             name = method.name
+            full_name = method.selector
             self._function_ast_cache[method_id.hex()] = ast
+
+        elif ast.name is not None:
+            # Use the AST name.
+            name = ast.name
+            full_name = _strip_function(signature_lines)
 
         if name is None:
             # This method is not present in the ABI, maybe because it is internal.
+            # Also, the name is missing from the AST node.
             # Combine the signature lines into a single string.
-            name = "".join([x.strip() for x in signature_lines]).rstrip()
-
-            # Strip off any common function definition prefixes, if found.
-            # def my_method -> my_method
-            common_prefixes = ("def ", "function ", "fn ", "func ")
-            for prefix in common_prefixes:
-                if not name.startswith(prefix):
-                    continue
-
-                name = name.split(prefix)[-1]
+            full_name = _strip_function(signature_lines)
+            name = full_name
 
             # If it looks like arguments are defined in parenthesis, remove those.
             # my_method(123) -> my_method
             if (
                 "(" in name
                 and ")" in name
-                and name.index("(") < len(name) - 1 - name[::-1].index(")")
+                and full_name.index("(") < len(name) - 1 - name[::-1].index(")")
             ):
-                name = name.split("(")[0]
+                name = full_name.split("(")[0]
 
+        signature_dict = {signature_start + i: ln for i, ln in enumerate(signature_lines)}
         content_dict = {offset + i: ln for i, ln in enumerate(content_lines)}
-        content = Content(__root__=content_dict)
+        content = Content(__root__={**signature_dict, **content_dict})
         Function.update_forward_refs()
 
         return Function(
             ast=ast,
+            content=content,
+            full_name=full_name,
             name=name,
             offset=offset,
-            content=content,
         )
 
     def _parse_function(self, function: ASTNode) -> Tuple[List[str], List[str]]:
@@ -686,3 +693,18 @@ class ContractSource(BaseModel):
 
         offset = content_start - function.lineno
         return lines[:offset], lines[offset:]
+
+
+def _strip_function(signature_lines: List[str]) -> str:
+    name = "".join([x.strip() for x in signature_lines]).rstrip()
+
+    # Strip off any common function definition prefixes, if found.
+    # def my_method -> my_method
+    common_prefixes = ("def ", "function ", "fn ", "func ")
+    for prefix in common_prefixes:
+        if not name.startswith(prefix):
+            continue
+
+        name = name.split(prefix)[-1]
+
+    return name.rstrip(":{ \n")
