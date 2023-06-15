@@ -165,10 +165,10 @@ class PackageManifest(BaseModel):
 
     @root_validator
     def check_contract_source_ids(cls, values):
+        sources = values.get("sources", {}) or {}
         contract_types = values.get("contract_types", {}) or {}
         for alias in contract_types:
             source_id = values["contract_types"][alias].source_id
-            sources = values.get("sources", {}) or {}
             if source_id and (source_id not in sources):
                 raise ValueError(f"'{source_id}' missing from `sources`.")
 
