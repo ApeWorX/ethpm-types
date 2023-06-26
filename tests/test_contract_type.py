@@ -251,3 +251,9 @@ def test_fallback_and_receive_not_defined(contract):
     # Both `VyperContract` and `SolidityContract` do not define these.
     assert contract.receive is None
     assert contract.fallback is None
+
+
+def test_init_using_bytes(contract):
+    raw_bytes = contract.deployment_bytecode.bytecode
+    new_contract = ContractType(abi=[], deploymentBytecode=raw_bytes)
+    assert new_contract.deployment_bytecode.bytecode == raw_bytes

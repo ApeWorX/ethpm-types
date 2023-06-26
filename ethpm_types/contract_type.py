@@ -321,6 +321,13 @@ class ContractType(BaseModel):
 
         return None
 
+    @validator("deployment_bytecode", "runtime_bytecode", pre=True)
+    def validate_bytecode(cls, value):
+        if not isinstance(value, dict):
+            return {"bytecode": value}
+
+        return value
+
     @property
     def constructor(self) -> ConstructorABI:
         """
