@@ -78,6 +78,7 @@ def test_cairo_abi():
 
     assert len(contract_type.structs) == 1
     assert contract_type.structs[0].name == "MyStruct"
+    assert contract_type.structs["MyStruct"].name == "MyStruct"
 
     abi = contract_type.abi
 
