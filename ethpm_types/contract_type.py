@@ -417,6 +417,16 @@ class ContractType(BaseModel):
         """
         return self._get_abis(selector_id_size=4, filter_fn=lambda a: isinstance(a, MethodABI))
 
+    @property
+    def structs(self) -> ABIList:
+        """
+        All structs defined in this contract.
+
+        Returns:
+            class:`~ethpm_types.contract_type.ABIList`
+        """
+        return self._get_abis(filter_fn=lambda a: isinstance(a, StructABI))
+
     def _selector_hash_fn(self, selector: str) -> bytes:
         # keccak is the default on most ecosystems, other ecosystems can subclass to override it
         from eth_utils import keccak
