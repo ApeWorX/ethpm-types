@@ -75,6 +75,11 @@ CAIRO_ABI = [
 
 def test_cairo_abi():
     contract_type = ContractType.parse_obj({"abi": CAIRO_ABI})
+
+    assert len(contract_type.structs) == 1
+    assert contract_type.structs[0].name == "MyStruct"
+    assert contract_type.structs["MyStruct"].name == "MyStruct"
+
     abi = contract_type.abi
 
     # Verify struct

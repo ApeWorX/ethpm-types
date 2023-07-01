@@ -69,6 +69,7 @@ def _select_abi(contract_type: ContractType, name: str) -> ABI:
 
 def test_structs(contract):
     method_abi = _select_abi(contract, "getStruct")
+    assert contract.structs == []
     assert len(method_abi.outputs) == 1
     output = method_abi.outputs[0]
     assert output.type == "tuple"
