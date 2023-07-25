@@ -88,9 +88,9 @@ def test_hexbytes_as_key():
     """
 
     class Model(BaseModel):
-        key: HexBytes
-        keys: List[HexBytes]
-        sub_dict: Dict[HexBytes, HexBytes]
+        key: HexBytes  # type: ignore[annotation-unchecked]
+        keys: List[HexBytes]  # type: ignore[annotation-unchecked]
+        sub_dict: Dict[HexBytes, HexBytes]  # type: ignore[annotation-unchecked]
 
     sub_dict = {HexBytes(3): HexBytes(4)}
     model = Model(key=HexBytes(1), keys=[HexBytes(2)], sub_dict=sub_dict)

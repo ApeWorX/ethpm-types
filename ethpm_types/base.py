@@ -15,6 +15,8 @@ def _fix_key(val: Any) -> Any:
 
 def ethpm_dumps(obj: Dict, **kwargs) -> str:
     res = {}
+    key_fixed: Any
+    val_fixed: Any
     for key, val in obj.items():
         key_fixed = _fix_key(key)
 
