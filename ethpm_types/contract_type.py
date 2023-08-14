@@ -338,9 +338,7 @@ class ContractType(BaseModel):
         """
 
         # Use default constructor (no args) when no defined.
-        abi = self._get_first_instance(ConstructorABI) or ConstructorABI(type="constructor")
-        abi.contract_type = self
-        return abi
+        return self._get_first_instance(ConstructorABI) or ConstructorABI(type="constructor")
 
     @property
     def fallback(self) -> Optional[FallbackABI]:
@@ -443,8 +441,6 @@ class ContractType(BaseModel):
 
         filter_fn = filter_fn or noop
         method_abis = [abi for abi in self.abi if filter_fn(abi)]
-        for abi in method_abis:
-            abi.contract_type = self
 
         return ABIList(
             method_abis,
@@ -454,14 +450,8 @@ class ContractType(BaseModel):
 
     def _get_first_instance(self, _type: Type[ABI_SINGLETON_T]) -> Optional[ABI_SINGLETON_T]:
         for abi in self.abi:
-            if not isinstance(abi, _type):
-                continue
-
-            # TODO: Figure out better way than type ignore.
-            #  getting `<nothing> has no attribute contract_type`.
-            #  probably using generics wrong but not sure how else to do it.
-            abi.contract_type = self  # type: ignore[attr-defined]
-            return abi
+            if isinstance(abi, _type):
+                return abi
 
         return None
 

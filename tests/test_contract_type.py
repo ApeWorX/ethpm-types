@@ -193,17 +193,6 @@ def test_contract_type_excluded_in_repr_abi(vyper_contract):
     assert "contract_type" not in actual
 
 
-def test_contract_type_backrefs(oz_contract_type):
-    assert oz_contract_type.events, "setup: Test contract should have events"
-    assert oz_contract_type.view_methods, "setup: Test contract should have view methods"
-    assert oz_contract_type.mutable_methods, "setup: Test contract should have mutable methods"
-
-    assert oz_contract_type.constructor.contract_type == oz_contract_type
-    assert all(e.contract_type == oz_contract_type for e in oz_contract_type.events)
-    assert all(m.contract_type == oz_contract_type for m in oz_contract_type.mutable_methods)
-    assert all(m.contract_type == oz_contract_type for m in oz_contract_type.view_methods)
-
-
 @view_selector_parametrization
 def test_select_view_method_from_all_methods(selector, vyper_contract):
     method_abi = vyper_contract.methods[selector]

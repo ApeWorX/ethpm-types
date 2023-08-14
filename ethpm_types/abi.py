@@ -4,9 +4,6 @@ from pydantic import Extra, Field
 
 from .base import BaseModel
 
-if TYPE_CHECKING:
-    from ethpm_types.contract_type import ContractType
-
 
 class ABIType(BaseModel):
     name: Optional[str] = None
@@ -108,12 +105,6 @@ class ConstructorABI(BaseModel):
     type: Literal["constructor"]
     """The value ``"constructor"``."""
 
-    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
-
     stateMutability: str = "nonpayable"
     """
     Can be either ``"payable"`` or ``"nonpayable"``.
@@ -162,12 +153,6 @@ class FallbackABI(BaseModel):
     type: Literal["fallback"]
     """The value ``"fallback"``."""
 
-    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
-
     stateMutability: str = "nonpayable"
     """
     Can be either ``"payable"`` or ``"nonpayable"``.
@@ -200,12 +185,6 @@ class ReceiveABI(BaseModel):
     type: Literal["receive"]
     """The value ``"receive"``."""
 
-    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
-
     stateMutability: Literal["payable"]
     """The value ``"payable"``."""
 
@@ -233,12 +212,6 @@ class MethodABI(BaseModel):
 
     type: Literal["function"]
     """The value ``"function"``."""
-
-    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
 
     name: str
     """The name of the method."""
@@ -313,12 +286,6 @@ class EventABI(BaseModel):
     type: Literal["event"]
     """The value ``"event"``."""
 
-    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
-
     name: str
     """The name of the event."""
 
@@ -357,12 +324,6 @@ class ErrorABI(BaseModel):
     type: Literal["error"]
     """The value ``"error"``."""
 
-    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
-
     name: str
     """The name of the error."""
 
@@ -398,12 +359,6 @@ class StructABI(BaseModel):
 
     type: Literal["struct"]
     """The value ``"struct"``."""
-
-    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
 
     name: str
     """The name of the struct."""
@@ -443,12 +398,6 @@ class UnprocessedABI(BaseModel):
 
     type: str
     """The type name as a string."""
-
-    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
 
     class Config:
         extra = Extra.allow
