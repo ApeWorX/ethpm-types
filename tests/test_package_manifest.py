@@ -14,6 +14,10 @@ ETHPM_SPEC_REPO = github.Github(os.environ.get("GITHUB_ACCESS_TOKEN", None)).get
 EXAMPLES_RAW_URL = "https://raw.githubusercontent.com/ethpm/ethpm-spec/master/examples"
 
 
+def test_can_generate_schema():
+    PackageManifest.schema()
+
+
 @pytest.mark.parametrize(
     "example_name",
     [f.name for f in ETHPM_SPEC_REPO.get_contents("examples")],  # type: ignore[union-attr]
