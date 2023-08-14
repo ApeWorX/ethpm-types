@@ -1,6 +1,6 @@
-from typing import TYPE_CHECKING, List, Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
-from pydantic import Extra, Field
+from pydantic import Extra
 
 from .base import BaseModel
 
