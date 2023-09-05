@@ -3,8 +3,13 @@ from hashlib import md5, sha3_256, sha256
 from typing import Tuple, Union
 
 from hexbytes import HexBytes as BaseHexBytes
-from pydantic import AnyUrl as _AnyUrl
-from pydantic import FileUrl
+
+try:
+    from pydantic.v1 import AnyUrl as _AnyUrl
+    from pydantic.v1 import FileUrl
+except ImportError:
+    from pydantic import AnyUrl as _AnyUrl
+    from pydantic import FileUrl
 
 CONTENT_ADDRESSED_SCHEMES = {"ipfs"}
 AnyUrl = Union[_AnyUrl, FileUrl]

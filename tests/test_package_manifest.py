@@ -3,7 +3,11 @@ import os
 import github
 import pytest
 import requests
-from pydantic import ValidationError
+
+try:
+    from pydantic.v1 import ValidationError
+except ImportError:
+    from pydantic import ValidationError
 
 from ethpm_types import PackageManifest
 

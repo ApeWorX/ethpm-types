@@ -1,7 +1,11 @@
 from typing import Dict, List, Optional
 
 from hexbytes import HexBytes as OriginalHexBytes
-from pydantic import Field
+
+try:
+    from pydantic.v1 import Field
+except ImportError:
+    from pydantic import Field
 
 from ethpm_types import BaseModel, HexBytes
 

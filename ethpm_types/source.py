@@ -3,7 +3,11 @@ from typing import Dict, Iterator, List, Optional, Set, Tuple, Union
 
 import requests
 from cid import make_cid  # type: ignore
-from pydantic import root_validator, validator
+
+try:
+    from pydantic.v1 import root_validator, validator
+except ImportError:
+    from pydantic import root_validator, validator
 
 from ethpm_types.ast import ASTClassification, ASTNode, SourceLocation
 from ethpm_types.base import BaseModel

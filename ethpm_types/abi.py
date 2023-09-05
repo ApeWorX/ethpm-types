@@ -1,6 +1,9 @@
 from typing import TYPE_CHECKING, List, Literal, Optional, Union
 
-from pydantic import Extra, Field
+try:
+    from pydantic.v1 import Extra, Field
+except ImportError:
+    from pydantic import Extra, Field
 
 from .base import BaseModel
 

@@ -1,7 +1,10 @@
 from enum import Enum
 from typing import Dict, Iterator, List, Optional, Union
 
-from pydantic import root_validator
+try:
+    from pydantic.v1 import root_validator
+except ImportError:
+    from pydantic import root_validator
 
 from ethpm_types.base import BaseModel
 from ethpm_types.sourcemap import SourceMapItem

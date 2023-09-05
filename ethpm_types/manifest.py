@@ -1,6 +1,9 @@
 from typing import Dict, List, Optional
 
-from pydantic import Field, root_validator, validator
+try:
+    from pydantic.v1 import Field, root_validator, validator
+except ImportError:
+    from pydantic import Field, root_validator, validator
 
 from .base import BaseModel
 from .contract_type import BIP122_URI, ContractInstance, ContractType
