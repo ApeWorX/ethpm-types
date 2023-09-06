@@ -1,11 +1,46 @@
-from typing import Any, no_type_check
+import json
+from typing import Any, Dict, no_type_check
 
 from pydantic import BaseModel as _BaseModel
 
 from ethpm_types.utils import HexBytes
 
 
+def ethpm_dumps(obj: Dict, **kwargs) -> str:
+    json_dict = _dict_to_json_dict(obj)
+    return json.dumps(json_dict, **kwargs)
+
+
+def _dict_to_json_dict(obj: Dict) -> Dict:
+    json_dict = {}
+    key_fixed: Any
+    val_fixed: Any
+    for key, val in obj.items():
+        key_fixed = _to_json_key(key)
+
+        if isinstance(val, dict):
+            val_fixed = _dict_to_json_dict(val)
+        elif isinstance(val, list):
+            val_fixed = [_to_json_key(x) for x in val]
+        else:
+            val_fixed = _to_json_key(val)
+
+        json_dict[key_fixed] = val_fixed
+
+    return json_dict
+
+
+def _to_json_key(val: Any) -> Any:
+    if isinstance(val, HexBytes):
+        return val.hex()
+
+    return val
+
+
 class BaseModel(_BaseModel):
+    class Config:
+        json_dumps = ethpm_dumps
+
     def dict(self, *args, **kwargs) -> dict:
         # NOTE: We do this to accommodate the aliases needed for EIP-2678 compatibility
         if "by_alias" not in kwargs:

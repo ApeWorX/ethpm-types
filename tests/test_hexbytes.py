@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Dict, List, Optional
 
 from hexbytes import HexBytes as OriginalHexBytes
 from pydantic import Field
@@ -78,3 +78,21 @@ def test_realistic_model():
         f'"parentHash":"{EMPTY_BYTES.hex()}"}}'
     )
     assert actual == expected
+
+
+def test_hexbytes_as_key():
+    """
+    Tests against a condition where we could not use
+    HexBytes as keys. Sometimes, this is needed such as
+    in low-level objects such as struct logs.
+    """
+
+    class Model(BaseModel):
+        key: HexBytes  # type: ignore[annotation-unchecked]
+        keys: List[HexBytes]  # type: ignore[annotation-unchecked]
+        sub_dict: Dict[HexBytes, HexBytes]  # type: ignore[annotation-unchecked]
+
+    sub_dict = {HexBytes(3): HexBytes(4)}
+    model = Model(key=HexBytes(1), keys=[HexBytes(2)], sub_dict=sub_dict)
+    actual = model.json()
+    assert isinstance(actual, str)

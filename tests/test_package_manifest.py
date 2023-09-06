@@ -31,7 +31,24 @@ def test_examples(example_name):
         assert package.dict() == example_json
 
         # NOTE: Also make sure that the encoding is exactly the same (per EIP-2678)
-        assert package.json() == example.text
+        actual = package.json()
+        expected = example.text
+        for idx, (c1, c2) in enumerate(zip(actual, expected)):
+            # The following logic is because the strings being compared
+            # are very long and this more accurately pinpoints
+            # the failing section of the string, even on lower verbosity.
+            buffer = 20
+            start = max(0, idx - 10)
+            actual_end = min(idx + buffer, len(actual))
+            expected_end = min(idx + buffer, len(expected))
+            actual_prefix = actual[start:actual_end]
+            expected_prefix = expected[start:expected_end]
+            fail_msg = (
+                f"Differs at index: {idx}, "
+                f"Actual: '{actual_prefix}', "
+                f"Expected: '{expected_prefix}'"
+            )
+            assert c1 == c2, fail_msg
 
         if package.sources:
             for source_name, source in package.sources.items():
