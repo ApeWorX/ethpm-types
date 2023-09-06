@@ -6,30 +6,35 @@ from pydantic import BaseModel as _BaseModel
 from ethpm_types.utils import HexBytes
 
 
-def _fix_key(val: Any) -> Any:
+def ethpm_dumps(obj: Dict, **kwargs) -> str:
+    json_dict = _dict_to_json_dict(obj)
+    return json.dumps(json_dict, **kwargs)
+
+
+def _dict_to_json_dict(obj: Dict) -> Dict:
+    json_dict = {}
+    key_fixed: Any
+    val_fixed: Any
+    for key, val in obj.items():
+        key_fixed = _to_json_key(key)
+
+        if isinstance(val, dict):
+            val_fixed = _dict_to_json_dict(val)
+        elif isinstance(val, list):
+            val_fixed = [_to_json_key(x) for x in val]
+        else:
+            val_fixed = _to_json_key(val)
+
+        json_dict[key_fixed] = val_fixed
+
+    return json_dict
+
+
+def _to_json_key(val: Any) -> Any:
     if isinstance(val, HexBytes):
         return val.hex()
 
     return val
-
-
-def ethpm_dumps(obj: Dict, **kwargs) -> str:
-    res = {}
-    key_fixed: Any
-    val_fixed: Any
-    for key, val in obj.items():
-        key_fixed = _fix_key(key)
-
-        if isinstance(val, dict):
-            val_fixed = ethpm_dumps(val)
-        elif isinstance(val, list):
-            val_fixed = [_fix_key(x) for x in val]
-        else:
-            val_fixed = _fix_key(val)
-
-        res[key_fixed] = val_fixed
-
-    return json.dumps(res, **kwargs)
 
 
 class BaseModel(_BaseModel):

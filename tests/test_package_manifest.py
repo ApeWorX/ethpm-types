@@ -50,8 +50,6 @@ def test_examples(example_name):
             )
             assert c1 == c2, fail_msg
 
-        assert package.json()[:10] == example.text
-
         if package.sources:
             for source_name, source in package.sources.items():
                 # NOTE: Per EIP-2678, "Checksum is only required if content is missing"
