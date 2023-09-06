@@ -381,7 +381,9 @@ class Function(Closure):
 
         start = max(location[0], self.content.begin_lineno)
         stop = location[2] + 1
-        content = {n: self.content[n] for n in range(start, stop) if n in self.content.line_numbers}
+        content = {
+            n: str(self.content[n]) for n in range(start, stop) if n in self.content.line_numbers
+        }
         return Content(__root__=content)
 
     def get_content_asts(self, location: SourceLocation) -> List[ASTNode]:

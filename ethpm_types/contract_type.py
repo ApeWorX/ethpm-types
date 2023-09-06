@@ -338,9 +338,9 @@ class ContractType(BaseModel):
         """
 
         # Use default constructor (no args) when no defined.
-        abi = self._get_first_instance(ConstructorABI) or ConstructorABI(type="constructor")
-        abi.contract_type = self
-        return abi
+        return self._get_first_instance(ConstructorABI) or ConstructorABI(
+            type="constructor", contract_type=self
+        )
 
     @property
     def fallback(self) -> Optional[FallbackABI]:
