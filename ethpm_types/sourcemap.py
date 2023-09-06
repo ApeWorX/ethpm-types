@@ -189,16 +189,17 @@ class PCMap(BaseModel):
 
         for key, value in self.__root__.items():
             location = value["location"]
+            dev = str(value["dev"]) if "dev" in value and value["dev"] is not None else None
             if location is not None:
                 result = PCMapItem(
                     line_start=int(location[0]) if location[0] is not None else None,
                     column_start=int(location[1]) if location[1] is not None else None,
                     line_end=int(location[2]) if location[2] is not None else None,
                     column_end=int(location[3]) if location[3] is not None else None,
-                    dev=str(value.get("dev", "")),
+                    dev=dev,
                 )
             else:
-                result = PCMapItem(dev=str(value.get("dev", "")))
+                result = PCMapItem(dev=dev)
 
             results[int(key)] = result
 
