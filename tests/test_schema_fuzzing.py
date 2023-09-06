@@ -3,13 +3,8 @@ import requests
 from hypothesis import HealthCheck, given, settings
 from hypothesis_jsonschema import from_schema
 
-try:
-    from pydantic.v1 import ValidationError
-except ImportError:
-    from pydantic import ValidationError
-
-
 from ethpm_types import PackageManifest
+from ethpm_types._pydantic_v1 import ValidationError
 
 ETHPM_SCHEMA = "https://raw.githubusercontent.com/ethpm/ethpm-spec/master/spec/v3.spec.json"
 

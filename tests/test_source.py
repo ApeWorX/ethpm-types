@@ -1,11 +1,6 @@
 import pytest
 
-try:
-    from pydantic.v1 import FileUrl
-except ImportError:
-    from pydantic import FileUrl
-
-
+from ethpm_types._pydantic_v1 import FileUrl
 from ethpm_types.source import Content, ContractSource, Source
 
 SOURCE_LOCATION = (

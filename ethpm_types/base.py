@@ -1,11 +1,7 @@
 import json
 from typing import Any, Dict, no_type_check
 
-try:
-    from pydantic.v1 import BaseModel as _BaseModel
-except ImportError:
-    from pydantic import BaseModel as _BaseModel
-
+from ethpm_types._pydantic_v1 import _BaseModel
 from ethpm_types.utils import HexBytes
 
 

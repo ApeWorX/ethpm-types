@@ -1,11 +1,7 @@
 from typing import TYPE_CHECKING, List, Literal, Optional, Union
 
-try:
-    from pydantic.v1 import Extra, Field
-except ImportError:
-    from pydantic import Extra, Field
-
-from .base import BaseModel
+from ethpm_types._pydantic_v1 import Extra, Field
+from ethpm_types.base import BaseModel
 
 if TYPE_CHECKING:
     from ethpm_types.contract_type import ContractType

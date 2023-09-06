@@ -1,10 +1,6 @@
 from typing import Dict, Iterator, List, Optional, Union
 
-try:
-    from pydantic.v1 import root_validator
-except ImportError:
-    from pydantic import root_validator
-
+from ethpm_types._pydantic_v1 import root_validator
 from ethpm_types.base import BaseModel
 from ethpm_types.utils import SourceLocation
 

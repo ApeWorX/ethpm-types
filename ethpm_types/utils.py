@@ -4,12 +4,7 @@ from typing import Tuple, Union
 
 from hexbytes import HexBytes as BaseHexBytes
 
-try:
-    from pydantic.v1 import AnyUrl as _AnyUrl
-    from pydantic.v1 import FileUrl
-except ImportError:
-    from pydantic import AnyUrl as _AnyUrl
-    from pydantic import FileUrl
+from ethpm_types._pydantic_v1 import FileUrl, _AnyUrl
 
 CONTENT_ADDRESSED_SCHEMES = {"ipfs"}
 AnyUrl = Union[_AnyUrl, FileUrl]

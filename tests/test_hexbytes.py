@@ -2,12 +2,8 @@ from typing import Dict, List, Optional
 
 from hexbytes import HexBytes as OriginalHexBytes
 
-try:
-    from pydantic.v1 import Field
-except ImportError:
-    from pydantic import Field
-
 from ethpm_types import BaseModel, HexBytes
+from ethpm_types._pydantic_v1 import Field
 
 TEST_MODEL_DICT = {
     "byte_bytes": b"\x00",

@@ -1,14 +1,10 @@
 from typing import Dict, List, Optional
 
-try:
-    from pydantic.v1 import Field, root_validator, validator
-except ImportError:
-    from pydantic import Field, root_validator, validator
-
-from .base import BaseModel
-from .contract_type import BIP122_URI, ContractInstance, ContractType
-from .source import Compiler, Source
-from .utils import Algorithm, AnyUrl
+from ethpm_types._pydantic_v1 import Field, root_validator, validator
+from ethpm_types.base import BaseModel
+from ethpm_types.contract_type import BIP122_URI, ContractInstance, ContractType
+from ethpm_types.source import Compiler, Source
+from ethpm_types.utils import Algorithm, AnyUrl
 
 ALPHABET = set("abcdefghijklmnopqrstuvwxyz")
 NUMBERS = set("0123456789")

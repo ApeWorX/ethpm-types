@@ -3,11 +3,7 @@ from typing import Callable, Dict, Iterable, List, Optional, Type, TypeVar, Unio
 
 from eth_utils import add_0x_prefix, is_0x_prefixed
 
-try:
-    from pydantic.v1 import Field, validator
-except ImportError:
-    from pydantic import Field, validator
-
+from ethpm_types._pydantic_v1 import Field, validator
 from ethpm_types.abi import (
     ABI,
     ConstructorABI,
