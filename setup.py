@@ -18,11 +18,11 @@ extras_require = {
         "pysha3>=1.0.2,<2.0.0",  # Backend for eth-hash
     ],
     "lint": [
-        "black>=23.3.0,<24",  # auto-formatter and linter
-        "mypy>=0.991,<1",  # Static type analyzer
+        "black>=23.7.0,<24",  # auto-formatter and linter
+        "mypy>=1.5.1,<2",  # Static type analyzer
         "types-setuptools",  # Needed due to mypy typeshed
         "types-requests",  # Needed due to mypy typeshed
-        "flake8>=6.0.0,<7",  # Style linter
+        "flake8>=6.1.0,<7",  # Style linter
         "flake8-breakpoint>=1.1.0",  # detect breakpoints left in code
         "flake8-print>=4.0.0",  # detect print statements left in code
         "isort>=5.10.1,<5.11",  # Import sorting linter
