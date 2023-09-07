@@ -88,3 +88,14 @@ def vyper_default_contract(get_contract_type):
 def fallback_contract(request, get_contract_type):
     key = "VyDefault" if request.param == "Vyper" else "SolFallbackAndReceive"
     return get_contract_type(key)
+
+
+@pytest.fixture
+def package_manifest(solidity_contract, vyper_contract):
+    return PackageManifest(
+        contractTypes={
+            solidity_contract.name: solidity_contract,
+            vyper_contract.name: vyper_contract,
+        },
+        sources={solidity_contract.source_id: "", vyper_contract.source_id: ""},
+    )

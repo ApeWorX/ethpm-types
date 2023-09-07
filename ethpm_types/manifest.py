@@ -186,12 +186,34 @@ class PackageManifest(BaseModel):
         return values
 
     def __getattr__(self, attr_name: str):
-        # NOTE: **must** raise `AttributeError` or return here, or else Python breaks
-        if self.contract_types and attr_name in self.contract_types:
-            return self.contract_types[attr_name]
+        try:
+            # Check if regular attribute.
+            return self.__getattribute__(attr_name)
+        except AttributeError:
+            # Check if contract type name.
+            contract_type = self.get_contract_Type(attr_name)
+            if contract_type:
+                return contract_type
 
-        else:
-            raise AttributeError(f"{self.__class__.__name__} has no contract type '{attr_name}'")
+        # NOTE: **must** raise `AttributeError` or return here, or else Python breaks
+        raise AttributeError(
+            f"{self.__class__.__name__} has no attribute or contract type named '{attr_name}'."
+        )
+
+    def get_contract_type(self, name: str) -> Optional[ContractType]:
+        """
+        Get a contract type by name, if it exists. Else, returns ``None``.
+
+        Args: name (str): The name of the contract type.
+
+        Returns:
+          Optional[:class:`~ethpm_types.contract_type.ContractType`]
+        """
+        return (
+            self.contract_types[name]
+            if self.contract_types and name in self.contract_types
+            else None
+        )
 
     def dict(self, *args, **kwargs) -> Dict:
         res = super().dict()
