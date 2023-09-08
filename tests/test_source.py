@@ -1,6 +1,6 @@
 import pytest
-from pydantic import FileUrl
 
+from ethpm_types._pydantic_v1 import FileUrl
 from ethpm_types.source import Content, ContractSource, Source
 
 SOURCE_LOCATION = (

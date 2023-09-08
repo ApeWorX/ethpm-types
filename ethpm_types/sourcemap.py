@@ -1,7 +1,6 @@
 from typing import Dict, Iterator, List, Optional, Union
 
-from pydantic import root_validator
-
+from ethpm_types._pydantic_v1 import root_validator
 from ethpm_types.base import BaseModel
 from ethpm_types.utils import SourceLocation
 
@@ -189,16 +188,18 @@ class PCMap(BaseModel):
         results = {}
 
         for key, value in self.__root__.items():
-            if value["location"] is not None:
+            location = value["location"]
+            dev = str(value["dev"]) if "dev" in value and value["dev"] is not None else None
+            if location is not None:
                 result = PCMapItem(
-                    line_start=value["location"][0],
-                    column_start=value["location"][1],
-                    line_end=value["location"][2],
-                    column_end=value["location"][3],
-                    dev=value.get("dev"),
+                    line_start=int(location[0]) if location[0] is not None else None,
+                    column_start=int(location[1]) if location[1] is not None else None,
+                    line_end=int(location[2]) if location[2] is not None else None,
+                    column_end=int(location[3]) if location[3] is not None else None,
+                    dev=dev,
                 )
             else:
-                result = PCMapItem(dev=value.get("dev"))
+                result = PCMapItem(dev=dev)
 
             results[int(key)] = result
 

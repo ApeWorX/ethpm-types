@@ -2,8 +2,8 @@ from functools import singledispatchmethod
 from typing import Callable, Dict, Iterable, List, Optional, Type, TypeVar, Union
 
 from eth_utils import add_0x_prefix, is_0x_prefixed
-from pydantic import Field, validator
 
+from ethpm_types._pydantic_v1 import Field, validator
 from ethpm_types.abi import (
     ABI,
     ConstructorABI,
@@ -338,9 +338,9 @@ class ContractType(BaseModel):
         """
 
         # Use default constructor (no args) when no defined.
-        abi = self._get_first_instance(ConstructorABI) or ConstructorABI(type="constructor")
-        abi.contract_type = self
-        return abi
+        return self._get_first_instance(ConstructorABI) or ConstructorABI(
+            type="constructor", contract_type=self
+        )
 
     @property
     def fallback(self) -> Optional[FallbackABI]:

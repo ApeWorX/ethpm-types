@@ -74,7 +74,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "hexbytes>=0.3.0,<1",
-        "pydantic>=1.10.7,<2",
+        "pydantic>=1.10.7,!=2.0.*,!=2.1.*,!=2.2.*,<3",
         "eth-utils>=2.1.0,<3",
         "py-cid>=0.3.0,<0.4",
         "requests>=2.29.0,<3",

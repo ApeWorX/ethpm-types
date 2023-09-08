@@ -3,9 +3,9 @@ import os
 import github
 import pytest
 import requests
-from pydantic import ValidationError
 
-from ethpm_types import PackageManifest
+from ethpm_types._pydantic_v1 import ValidationError
+from ethpm_types.manifest import PackageManifest
 
 ETHPM_SPEC_REPO = github.Github(os.environ.get("GITHUB_ACCESS_TOKEN", None)).get_repo(
     "ethpm/ethpm-spec"
