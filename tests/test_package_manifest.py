@@ -1,4 +1,6 @@
 import os
+import tempfile
+from pathlib import Path
 
 import github
 import pytest
@@ -6,6 +8,7 @@ import requests
 
 from ethpm_types._pydantic_v1 import ValidationError
 from ethpm_types.manifest import PackageManifest
+from ethpm_types.source import Content, Source
 
 ETHPM_SPEC_REPO = github.Github(os.environ.get("GITHUB_ACCESS_TOKEN", None)).get_repo(
     "ethpm/ethpm-spec"
@@ -85,3 +88,21 @@ def test_get_contract_type(package_manifest, solidity_contract):
     actual = package_manifest.get_contract_type("SolidityContract")
     expected = solidity_contract
     assert actual == expected
+
+
+def test_unpack_sources():
+    foo_txt = Content(__root__={0: "line 0 in foo.txt"})
+    baz_txt = Content(__root__={1: "line 1 in baz.txt"})
+    sources = {"foo.txt": Source(content=foo_txt), "bar/nested/baz.txt": Source(content=baz_txt)}
+    manifest = PackageManifest(sources=sources)
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        destination = Path(temp_dir) / "src"
+        manifest.unpack_sources(destination)
+        foo_expected = destination / "foo.txt"
+        baz_expected = destination / "bar" / "nested" / "baz.txt"
+
+        assert foo_expected.is_file()
+        assert baz_expected.is_file()
+        assert foo_expected.read_text() == str(foo_txt)
+        assert baz_expected.read_text() == str(baz_txt)

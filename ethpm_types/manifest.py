@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Dict, List, Optional
 
 from ethpm_types._pydantic_v1 import Field, root_validator, validator
@@ -236,3 +237,29 @@ class PackageManifest(BaseModel):
                 src["checksum"]["algorithm"] = src["checksum"]["algorithm"].value
 
         return res
+
+    def unpack_sources(self, destination: Path):
+        """
+        Unpack a package manifest's content sources into
+        the given directory.
+
+        Args:
+            destination (pathlib.Path): The destination where to unpack.
+        """
+        if not (sources := (self.sources or None)):
+            return
+
+        elif not destination.parent.is_dir():
+            raise ValueError("Destination parent path does not exist.")
+
+        # It is okay if the destination does not exist yet.
+        destination.mkdir(exist_ok=True)
+
+        for source_id, source_obj in sources.items():
+            content = str(source_obj.content or "")
+            source_path = (destination / source_id).absolute()
+
+            # Create nested directories as needed.
+            source_path.parent.mkdir(parents=True, exist_ok=True)
+
+            source_path.write_text(content)
