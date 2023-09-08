@@ -73,3 +73,15 @@ def test_file_bases_dependency_url():
         buildDependencies={"test-package": "file:///path/to/manifest/test-package.json"}
     )
     assert manifest.dependencies["test-package"] == "file:///path/to/manifest/test-package.json"
+
+
+def test_getattr(package_manifest, solidity_contract):
+    actual = package_manifest.SolidityContract
+    expected = solidity_contract
+    assert actual == expected
+
+
+def test_get_contract_type(package_manifest, solidity_contract):
+    actual = package_manifest.get_contract_type("SolidityContract")
+    expected = solidity_contract
+    assert actual == expected
