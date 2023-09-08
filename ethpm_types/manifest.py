@@ -191,7 +191,7 @@ class PackageManifest(BaseModel):
             return self.__getattribute__(attr_name)
         except AttributeError:
             # Check if contract type name.
-            contract_type = self.get_contract_Type(attr_name)
+            contract_type = self.get_contract_type(attr_name)
             if contract_type:
                 return contract_type
 
