@@ -323,10 +323,15 @@ class ContractType(BaseModel):
 
     @validator("deployment_bytecode", "runtime_bytecode", pre=True)
     def validate_bytecode(cls, value):
-        if not isinstance(value, dict):
-            return {"bytecode": value}
+        if isinstance(value, dict):
+            rest_attributes = value
+            code = value["bytecode"]
+        else:
+            rest_attributes = {}
+            code = value
 
-        return value
+        code_bytes = code if isinstance(code, bytes) else HexBytes(code)
+        return {**rest_attributes, "bytecode": code_bytes.hex()}
 
     @property
     def constructor(self) -> ConstructorABI:

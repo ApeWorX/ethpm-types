@@ -1,7 +1,7 @@
 import pytest
 from eth_utils import keccak
 
-from ethpm_types import ContractType
+from ethpm_types import ContractType, HexBytes
 from ethpm_types.abi import ABI, ErrorABI, EventABI, MethodABI
 
 MUTABLE_METHOD_SELECTOR_BYTES = keccak(text="setNumber(uint256)")
@@ -255,6 +255,6 @@ def test_fallback_and_receive_not_defined(contract):
 
 
 def test_init_using_bytes(contract):
-    raw_bytes = contract.deployment_bytecode.bytecode
+    raw_bytes = HexBytes(contract.deployment_bytecode.bytecode)
     new_contract = ContractType(abi=[], deploymentBytecode=raw_bytes)
-    assert new_contract.deployment_bytecode.bytecode == raw_bytes
+    assert new_contract.deployment_bytecode.bytecode == raw_bytes.hex()
