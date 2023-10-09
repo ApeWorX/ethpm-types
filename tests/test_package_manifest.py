@@ -7,7 +7,7 @@ import pytest
 import requests
 
 from ethpm_types._pydantic_v1 import ValidationError
-from ethpm_types.manifest import PackageManifest
+from ethpm_types.manifest import ALPHABET, NUMBERS, PackageManifest
 from ethpm_types.source import Content, Source
 
 ETHPM_SPEC_REPO = github.Github(os.environ.get("GITHUB_ACCESS_TOKEN", None)).get_repo(
@@ -106,3 +106,14 @@ def test_unpack_sources():
         assert baz_expected.is_file()
         assert foo_expected.read_text() == str(foo_txt)
         assert baz_expected.read_text() == str(baz_txt)
+
+
+def test_package_name_using_all_valid_characters():
+    """
+    Tests against a bug where we were unable to create a
+    package manifest who's name contained all the valid
+    characters.
+    """
+    name = "a" + "".join(list(ALPHABET.union(NUMBERS).union({"-"})))
+    manifest = PackageManifest(name=name, version="0.1.0")
+    assert manifest.name == name

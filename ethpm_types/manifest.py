@@ -41,7 +41,7 @@ class PackageName(str):
 
     @classmethod
     def check_valid_characters(cls, value):
-        assert set(value) < ALPHABET.union(NUMBERS).union(
+        assert set(value) <= ALPHABET.union(NUMBERS).union(
             "-"
         ), "Characters in name must be one of a-z or 0-9 or '-'"
         return value
