@@ -323,9 +323,13 @@ class ContractType(BaseModel):
 
     @validator("deployment_bytecode", "runtime_bytecode", pre=True)
     def validate_bytecode(cls, value):
-        if isinstance(value, dict):
+        if not value:
+            return {}
+
+        elif isinstance(value, dict):
             rest_attributes = value
             code = value["bytecode"]
+
         else:
             rest_attributes = {}
             code = value

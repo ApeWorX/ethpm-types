@@ -254,7 +254,12 @@ def test_fallback_and_receive_not_defined(contract):
     assert contract.fallback is None
 
 
-def test_init_using_bytes(contract):
+def test_init_bytecode_using_bytes(contract):
     raw_bytes = HexBytes(contract.deployment_bytecode.bytecode)
     new_contract = ContractType(abi=[], deploymentBytecode=raw_bytes)
     assert new_contract.deployment_bytecode.bytecode == raw_bytes.hex()
+
+
+def test_init_bytecode_using_empty_dict(contract):
+    new_contract = ContractType(abi=[], deploymentBytecode={})
+    assert new_contract.deployment_bytecode.bytecode is None
