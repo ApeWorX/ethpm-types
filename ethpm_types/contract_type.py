@@ -1,7 +1,7 @@
 from functools import singledispatchmethod
 from typing import Callable, Dict, Iterable, List, Optional, Type, TypeVar, Union
 
-from eth_pydantic_types import Address, HexBytes, HexStr
+from eth_pydantic_types import Address, HashStr32, HexBytes, HexStr
 from eth_utils import is_0x_prefixed
 from pydantic import Field, field_validator
 
@@ -119,10 +119,10 @@ class ContractInstance(BaseModel):
     address: Address
     """The contract address."""
 
-    transaction: Optional[HexStr] = None
+    transaction: Optional[HashStr32] = None
     """The transaction hash from which the contract was created."""
 
-    block: Optional[HexStr] = None
+    block: Optional[HashStr32] = None
     """
     The block hash in which this the transaction which created this
     contract instance was mined.
