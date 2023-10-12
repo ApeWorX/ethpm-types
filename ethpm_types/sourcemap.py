@@ -152,7 +152,7 @@ class PCMap(RootModel[RawPCMap]):
         # location data but allowing compilers to enrich fields.
 
         return {
-            k: ({"location": v} if isinstance(v, list) else v or {"location": None})
+            f"{k}": ({"location": v} if isinstance(v, list) else v or {"location": None})
             for k, v in ((value or {}).get("root", value) or {}).items()
         }
 

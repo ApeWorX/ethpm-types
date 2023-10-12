@@ -1,11 +1,14 @@
+import pytest
+
 from ethpm_types.sourcemap import PCMap, PCMapItem
 
 
-def test_pc_map_valid():
+@pytest.mark.parametrize("key", (186, "186"))
+def test_pc_map_valid(key):
     """
     Test the parsing of a valid pc-map from a compiler's output.
     """
-    pcmap = PCMap.model_validate({"186": [10, 20, 10, 40]}).parse()
+    pcmap = PCMap.model_validate({key: [10, 20, 10, 40]}).parse()
 
     keys = list(pcmap.keys())
 
