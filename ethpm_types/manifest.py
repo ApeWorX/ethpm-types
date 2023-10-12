@@ -1,53 +1,60 @@
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from ethpm_types._pydantic_v1 import Field, root_validator, validator
+from eth_pydantic_types import Bip122Uri
+from pydantic import (
+    AnyUrl,
+    BeforeValidator,
+    Field,
+    WithJsonSchema,
+    field_validator,
+    model_validator,
+)
+from pydantic_core import PydanticCustomError
+
 from ethpm_types.base import BaseModel
-from ethpm_types.contract_type import BIP122_URI, ContractInstance, ContractType
+from ethpm_types.contract_type import ContractInstance, ContractType
 from ethpm_types.source import Compiler, Source
-from ethpm_types.utils import Algorithm, AnyUrl
+from ethpm_types.utils import Algorithm, Annotated
 
 ALPHABET = set("abcdefghijklmnopqrstuvwxyz")
 NUMBERS = set("0123456789")
 
 
-class PackageName(str):
-    """
-    A human readable name for this package.
-    """
+def PackageNameError(name: str, message: str) -> PydanticCustomError:
+    error_name = f"{PackageName.__name__}Error"
+    return PydanticCustomError(error_name, message, {"name": name})
 
-    @classmethod
-    def __modify_schema__(cls, field_schema):
-        field_schema.update(
-            pattern="^[a-z][-a-z0-9]{0,254}$",
-            examples=["my-token", "safe-math", "nft"],
-        )
 
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.check_length
-        yield cls.check_first_character
-        yield cls.check_valid_characters
+def validate_package_name(name: str) -> str:
+    if not isinstance(name, str):
+        # NOTE: Don't raise TypeError here.
+        # Those no longer turn to ValidationError in Pydantic.
+        raise PackageNameError(name, "`name` element must be a `str`")
 
-    @classmethod
-    def check_length(cls, value):
-        assert 0 < len(value) < 256, "Length must be between 1 and 255"
-        return value
+    elif not (0 < len(name) < 256):
+        raise PackageNameError(name, "Length must be between 1 and 255")
 
-    @classmethod
-    def check_first_character(cls, value):
-        assert value[0] in ALPHABET, "First character in name must be a-z"
-        return value
+    elif name[0] not in ALPHABET:
+        raise PackageNameError(name, "First character in name must be a-z")
 
-    @classmethod
-    def check_valid_characters(cls, value):
-        assert set(value) <= ALPHABET.union(NUMBERS).union(
-            "-"
-        ), "Characters in name must be one of a-z or 0-9 or '-'"
-        return value
+    elif set(name) > ALPHABET.union(NUMBERS).union("-"):
+        raise PackageNameError(name, "Characters in name must be one of a-z or 0-9 or '-'")
 
-    def __repr__(self):
-        return f"{self.__class__.__name__}({super().__repr__()})"
+    return name
+
+
+PackageName = Annotated[
+    str,
+    WithJsonSchema(
+        {
+            "type": "string",
+            "pattern": "^[a-z][-a-z0-9]{0,254}$",
+            "examples": ["my-token", "safe-math", "nft"],
+        }
+    ),
+    BeforeValidator(validate_package_name),
+]
 
 
 class PackageMeta(BaseModel):
@@ -127,7 +134,7 @@ class PackageManifest(BaseModel):
     used to generate the various contractTypes included in this release.
     """
 
-    deployments: Optional[Dict[BIP122_URI, Dict[str, ContractInstance]]] = None
+    deployments: Optional[Dict[Bip122Uri, Dict[str, ContractInstance]]] = None
     """
     Information for the chains on which this release has
     :class:`~ethpm_types.contract_type.ContractInstance` references as well as the
@@ -146,35 +153,59 @@ class PackageManifest(BaseModel):
     manifest version as ``manifest``.
     """
 
-    @root_validator
+    @model_validator(mode="after")
     def check_valid_manifest_version(cls, values):
         # NOTE: We only support v3 (EIP-2678) of the ethPM spec currently
-        if values["manifest"] != "ethpm/3":
-            raise ValueError("Only ethPM V3 (EIP-2678) supported.")
+        if values.manifest != "ethpm/3":
+            raise PydanticCustomError(
+                f"{PackageManifest.__name__}Error",
+                "Only ethPM V3 (EIP-2678) supported.",
+                {"version": values.manifest},
+            )
 
         return values
 
-    @root_validator
+    @model_validator(mode="before")
     def check_both_version_and_name(cls, values):
         if ("name" in values or "version" in values) and (
             "name" not in values or "version" not in values
         ):
-            raise ValueError("Both `name` and `version` must be present if either is specified.")
+            raise PydanticCustomError(
+                f"{PackageManifest.__name__}Error",
+                "Both `name` and `version` must be present if either is specified.",
+            )
 
         return values
 
-    @root_validator
+    @model_validator(mode="before")
     def check_contract_source_ids(cls, values):
         sources = values.get("sources", {}) or {}
+
+        sources_fixed = {}
+        for src_id, source_obj in sources.items():
+            if isinstance(source_obj, str):
+                # Backwards compat: Allow str-based sources.
+                sources_fixed[src_id] = Source.model_validate({"content": source_obj})
+            elif isinstance(source_obj, dict):
+                sources_fixed[src_id] = Source.model_validate(source_obj)
+            else:
+                sources_fixed[src_id] = source_obj
+
         contract_types = values.get("contract_types", {}) or {}
         for alias in contract_types:
             source_id = values["contract_types"][alias].source_id
-            if source_id and (source_id not in sources):
-                raise ValueError(f"'{source_id}' missing from `sources`.")
+            if source_id and (source_id not in sources_fixed):
+                raise PydanticCustomError(
+                    f"{PackageManifest.__name__}Error",
+                    f"'{source_id}' missing from `sources`.",
+                    {"source_id": source_id},
+                )
 
-        return values
+        # NOTE: This MUST return a new dictionary here or else we end up
+        #  modifying the original model dict (passed to `model_validate()`).
+        return {**values, "sources": sources_fixed or None}
 
-    @validator("contract_types")
+    @field_validator("contract_types")
     def add_name_to_contract_types(cls, values):
         aliases = list(values.keys())
         # NOTE: Must manually inject names to types here
@@ -191,8 +222,7 @@ class PackageManifest(BaseModel):
             return self.__getattribute__(attr_name)
         except AttributeError:
             # Check if contract type name.
-            contract_type = self.get_contract_type(attr_name)
-            if contract_type:
+            if contract_type := self.get_contract_type(attr_name):
                 return contract_type
 
         # NOTE: **must** raise `AttributeError` or return here, or else Python breaks
@@ -215,8 +245,8 @@ class PackageManifest(BaseModel):
             else None
         )
 
-    def dict(self, *args, **kwargs) -> Dict:
-        res = super().dict()
+    def model_dump(self, *args, **kwargs) -> Dict:
+        res = super().model_dump(*args, **kwargs)
         sources = res.get("sources", {})
         for source_id, src in sources.items():
             if "content" in src and isinstance(src["content"], dict):

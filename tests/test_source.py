@@ -1,6 +1,6 @@
 import pytest
+from pydantic import FileUrl
 
-from ethpm_types._pydantic_v1 import FileUrl
 from ethpm_types.source import Content, ContractSource, Source
 
 SOURCE_LOCATION = (
@@ -11,12 +11,12 @@ SOURCE_LOCATION = (
 
 @pytest.fixture
 def no_checksum() -> Source:
-    return Source.parse_obj({"source_id": "Foo.txt", "urls": [SOURCE_LOCATION]})
+    return Source.model_validate({"source_id": "Foo.txt", "urls": [SOURCE_LOCATION]})
 
 
 @pytest.fixture
 def bad_checksum() -> Source:
-    return Source.parse_obj(
+    return Source.model_validate(
         {
             "source_id": "Foo.txt",
             "urls": [SOURCE_LOCATION],
@@ -27,7 +27,7 @@ def bad_checksum() -> Source:
 
 @pytest.fixture
 def empty_source() -> Source:
-    return Source.parse_obj({"source_id": "Foo.txt", "content": ""})
+    return Source.model_validate({"source_id": "Foo.txt", "content": ""})
 
 
 def test_corrupt_source(bad_checksum, no_checksum):
@@ -46,7 +46,7 @@ def test_source_repr(source):
 
     # Test that uses file URI when available.
     raw_uri = "file://path/to/file.vy"
-    uri = FileUrl(raw_uri, scheme="file")
+    uri = FileUrl(raw_uri)
     source.urls = [uri]
     assert repr(source) == f"<Source {raw_uri}>"
 
@@ -84,7 +84,7 @@ def test_content(content, content_raw):
     assert str(content) == content_raw
     # `__getitem__` works off linenos
     assert content[1] == "# @version 0.3.7"
-    # slices are lineno-based from `content` because `__root__` is a dict.
+    # slices are lineno-based from `content` because `root` is a dict.
     # Sometimes, like when building source tracebacks, not all lines are present.
     # In the `Source` object, for its content, all lines are always there.
     # Thus, its `__getitem__` is index based.
@@ -111,7 +111,7 @@ def test_content_chunk(content_raw):
     """
     chunk = content_raw.splitlines()[6:9]
     data = {7: chunk[0], 8: chunk[1], 9: chunk[2]}
-    content = Content.parse_obj(data)
+    content = Content.model_validate(data)
     assert content.begin_lineno == 7
     assert content.end_lineno == 9
     assert len(content) == 3

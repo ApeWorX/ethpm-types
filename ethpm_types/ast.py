@@ -1,7 +1,8 @@
 from enum import Enum
 from typing import Dict, Iterator, List, Optional, Union
 
-from ethpm_types._pydantic_v1 import root_validator
+from pydantic import model_validator
+
 from ethpm_types.base import BaseModel
 from ethpm_types.sourcemap import SourceMapItem
 from ethpm_types.utils import SourceLocation
@@ -66,7 +67,7 @@ class ASTNode(BaseModel):
     All sub-AST nodes within this one.
     """
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     def validate_node(cls, val):
         src = cls._validate_src(val)
 
@@ -88,7 +89,7 @@ class ASTNode(BaseModel):
             src = SourceMapItem.parse_str(src)
 
         elif isinstance(src, dict):
-            src = SourceMapItem.parse_obj(src)
+            src = SourceMapItem.model_validate(src)
 
         elif not isinstance(src, SourceMapItem):
             raise TypeError(type(src))
@@ -101,7 +102,7 @@ class ASTNode(BaseModel):
 
         def add_child(data):
             data["children"] = cls.find_children(data)
-            child = cls.parse_obj(data)
+            child = cls.model_validate(data)
             children.append(child)
 
         for value in node.values():
@@ -167,8 +168,7 @@ class ASTNode(BaseModel):
             return self
 
         for child in self.children:
-            node = child.get_node(src)
-            if node:
+            if node := child.get_node(src):
                 return node
 
         return None

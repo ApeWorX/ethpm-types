@@ -1,7 +1,8 @@
 import pytest
+from eth_pydantic_types import HexBytes
 from eth_utils import keccak
 
-from ethpm_types import ContractType, HexBytes
+from ethpm_types import ContractType
 from ethpm_types.abi import ABI, ErrorABI, EventABI, MethodABI
 
 MUTABLE_METHOD_SELECTOR_BYTES = keccak(text="setNumber(uint256)")
@@ -263,3 +264,9 @@ def test_init_bytecode_using_bytes(contract):
 def test_init_bytecode_using_empty_dict(contract):
     new_contract = ContractType(abi=[], deploymentBytecode={})
     assert new_contract.deployment_bytecode.bytecode is None
+
+
+def test_init_using_bytecode(contract):
+    obj = contract.deployment_bytecode
+    new_contract = ContractType(abi=[], deploymentBytecode=obj)
+    assert new_contract.deployment_bytecode.bytecode == obj.bytecode

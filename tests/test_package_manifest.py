@@ -5,8 +5,8 @@ from pathlib import Path
 import github
 import pytest
 import requests
+from pydantic import ValidationError
 
-from ethpm_types._pydantic_v1 import ValidationError
 from ethpm_types.manifest import ALPHABET, NUMBERS, PackageManifest
 from ethpm_types.source import Content, Source
 
@@ -18,7 +18,11 @@ EXAMPLES_RAW_URL = "https://raw.githubusercontent.com/ethpm/ethpm-spec/master/ex
 
 
 def test_can_generate_schema():
-    PackageManifest.schema()
+    actual = PackageManifest.model_json_schema()
+    assert "A data format describing a smart contract software package." in actual["description"]
+    assert actual["type"] == "object"
+    assert "$defs" in actual
+    assert "ABIType" in actual["$defs"]
 
 
 @pytest.mark.parametrize(
@@ -30,12 +34,14 @@ def test_examples(example_name):
     example_json = example.json()
 
     if "invalid" not in example_name:
-        package = PackageManifest.parse_obj(example_json)
-        assert package.dict() == example_json
+        package = PackageManifest.model_validate(example_json)
+        actual = package.model_dump(mode="json")
+        assert actual == example_json
 
         # NOTE: Also make sure that the encoding is exactly the same (per EIP-2678)
-        actual = package.json()
+        actual = package.model_dump_json()
         expected = example.text
+
         for idx, (c1, c2) in enumerate(zip(actual, expected)):
             # The following logic is because the strings being compared
             # are very long and this more accurately pinpoints
@@ -61,7 +67,7 @@ def test_examples(example_name):
 
     else:
         with pytest.raises(ValidationError):
-            PackageManifest.parse_obj(example_json).dict()
+            PackageManifest.model_validate(example_json).model_dump()
 
 
 def test_open_zeppelin_contracts(oz_package):
@@ -75,7 +81,9 @@ def test_file_bases_dependency_url():
     manifest = PackageManifest(
         buildDependencies={"test-package": "file:///path/to/manifest/test-package.json"}
     )
-    assert manifest.dependencies["test-package"] == "file:///path/to/manifest/test-package.json"
+    assert (
+        f"{manifest.dependencies['test-package']}" == "file:///path/to/manifest/test-package.json"
+    )
 
 
 def test_getattr(package_manifest, solidity_contract):
@@ -91,8 +99,8 @@ def test_get_contract_type(package_manifest, solidity_contract):
 
 
 def test_unpack_sources():
-    foo_txt = Content(__root__={0: "line 0 in foo.txt"})
-    baz_txt = Content(__root__={1: "line 1 in baz.txt"})
+    foo_txt = Content(root={0: "line 0 in foo.txt"})
+    baz_txt = Content(root={1: "line 1 in baz.txt"})
     sources = {"foo.txt": Source(content=foo_txt), "bar/nested/baz.txt": Source(content=baz_txt)}
     manifest = PackageManifest(sources=sources)
 

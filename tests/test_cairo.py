@@ -74,7 +74,7 @@ CAIRO_ABI = [
 
 
 def test_cairo_abi():
-    contract_type = ContractType.parse_obj({"abi": CAIRO_ABI})
+    contract_type = ContractType.model_validate({"abi": CAIRO_ABI})
 
     assert len(contract_type.structs) == 1
     assert contract_type.structs[0].name == "MyStruct"
@@ -84,14 +84,14 @@ def test_cairo_abi():
 
     # Verify struct
     struct = abi[0]
-    raw_struct = struct.dict()
+    raw_struct = struct.model_dump()
     assert struct.type == raw_struct["type"] == "struct"
     assert struct.size == raw_struct["size"] == 2
 
     struct_member_0 = struct.members[0]
-    raw_struct_member_0 = struct_member_0.dict()
+    raw_struct_member_0 = struct_member_0.model_dump()
     struct_member_1 = struct.members[1]
-    raw_struct_member_1 = struct_member_1.dict()
+    raw_struct_member_1 = struct_member_1.model_dump()
     assert struct_member_0.name == raw_struct_member_0["name"] == "foo"
     assert struct_member_0.offset == raw_struct_member_0["offset"] == 0
     assert struct_member_1.name == raw_struct_member_1["name"] == "bar"
@@ -99,16 +99,16 @@ def test_cairo_abi():
 
     # Verify event
     event = abi[1]
-    event_raw = event.dict()
+    event_raw = event.model_dump()
     assert event.name == event_raw["name"] == "Upgraded"
 
     # Verify constructor
     constructor = abi[2]
-    constructor_raw = constructor.dict()
+    constructor_raw = constructor.model_dump()
     assert constructor.type == constructor_raw["type"] == "constructor"
 
     # Verify L1 handler
     l1_handler = abi[-1]
-    l1_handler_raw = l1_handler.dict()
+    l1_handler_raw = l1_handler.model_dump()
     assert l1_handler.type == l1_handler_raw["type"] == "l1_handler"
     assert l1_handler.name == l1_handler_raw["name"] == "__l1_default__"

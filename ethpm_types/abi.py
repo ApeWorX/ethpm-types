@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, List, Literal, Optional, Union
 
-from ethpm_types._pydantic_v1 import Extra, Field
+from pydantic import ConfigDict, Field
+
 from ethpm_types.base import BaseModel
 
 if TYPE_CHECKING:
@@ -25,15 +26,13 @@ class ABIType(BaseModel):
     Tuples and structs tend to have this field.
     """
 
-    internalType: Optional[str] = None
+    internal_type: Optional[str] = Field(None, alias="internalType")
     """
     Another name for the type. Sometimes, compilers are able to populate
     this field with the struct or enum name.
     """
 
-    class Config:
-        extra = Extra.allow
-        allow_mutation = False
+    model_config = ConfigDict(frozen=True, extra="allow")
 
     @property
     def canonical_type(self) -> str:
@@ -64,10 +63,7 @@ class ABIType(BaseModel):
         Else, returns ``"<canonical_type>"``.
         """
 
-        if self.name:
-            return f"{self.canonical_type} {self.name}"
-        else:
-            return self.canonical_type
+        return f"{self.canonical_type} {self.name}" if self.name else self.canonical_type
 
 
 class EventABIType(ABIType):
@@ -90,11 +86,13 @@ class EventABIType(ABIType):
         """
 
         sig = self.canonical_type
+
         # For events (handles both None and False conditions)
         if self.indexed:
             sig += " indexed"
         if self.name:
             sig += f" {self.name}"
+
         return sig
 
 
@@ -410,8 +408,7 @@ class StructABI(BaseModel):
     members: List[ABIType]
     """The properties that compose the struct."""
 
-    class Config:
-        extra = Extra.allow
+    model_config = ConfigDict(extra="allow")
 
     @property
     def selector(self) -> str:
@@ -449,8 +446,7 @@ class UnprocessedABI(BaseModel):
     deserialization.
     """
 
-    class Config:
-        extra = Extra.allow
+    model_config = ConfigDict(extra="allow")
 
     @property
     def signature(self) -> str:
@@ -459,7 +455,7 @@ class UnprocessedABI(BaseModel):
         a more useful-looking signature.
         """
 
-        return self.json()
+        return self.model_dump_json()
 
 
 ABI = Union[

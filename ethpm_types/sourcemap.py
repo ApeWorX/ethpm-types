@@ -1,6 +1,7 @@
 from typing import Dict, Iterator, List, Optional, Union
 
-from ethpm_types._pydantic_v1 import root_validator
+from pydantic import RootModel, model_validator
+
 from ethpm_types.base import BaseModel
 from ethpm_types.utils import SourceLocation
 
@@ -12,17 +13,17 @@ class SourceMapItem(BaseModel):
     """
 
     # NOTE: `None` entry means this path was inserted by the compiler during codegen
-    start: Optional[int]
+    start: Optional[int] = None
     """
     The byte-offset start of the range in the source file.
     """
 
-    length: Optional[int]
+    length: Optional[int] = None
     """
     The byte-offset length.
     """
 
-    contract_id: Optional[int]
+    contract_id: Optional[int] = None
     """
     The source identifier.
     """
@@ -50,7 +51,7 @@ class SourceMapItem(BaseModel):
             contract_id = int(cls._extract_value(row, 2, previous=previous.contract_id or -1))
             jump_code = cls._extract_value(row, 3, previous=previous.jump_code or "")
 
-        return SourceMapItem.construct(
+        return SourceMapItem.model_construct(
             # NOTE: `-1` for these three entries means `None`
             start=start if start != -1 else None,
             length=length if length != -1 else None,
@@ -68,7 +69,7 @@ class SourceMapItem(BaseModel):
         return previous
 
 
-class SourceMap(BaseModel):
+class SourceMap(RootModel[str]):
     """
     As part of the Abstract Syntax Tree (AST) output, the compiler provides the range
     of the source code that is represented by the respective node in the AST.
@@ -80,13 +81,11 @@ class SourceMap(BaseModel):
     `Solidity Doc <https://docs.soliditylang.org/en/v0.8.15/internals/source_mappings.html>`__.
     """
 
-    __root__: str
-
     def __repr__(self) -> str:
-        return self.__root__
+        return self.root
 
     def __str__(self) -> str:
-        return self.__root__
+        return self.root
 
     def parse(self) -> Iterator[SourceMapItem]:
         """
@@ -104,9 +103,8 @@ class SourceMap(BaseModel):
         # NOTE: Format of SourceMap is like `1:2:3:a;;4:5:6:b;;;`
         #       where an empty entry means to copy the previous step.
         #       This is because sourcemaps are compressed to save space.
-        for i, row in enumerate(self.__root__.strip().split(";")):
-            item = SourceMapItem.parse_str(row, previous=item)
-            yield item
+        for i, row in enumerate(self.root.strip().split(";")):
+            yield SourceMapItem.parse_str(row, previous=item)
 
 
 class PCMapItem(BaseModel):
@@ -133,11 +131,11 @@ class PCMapItem(BaseModel):
         )
 
 
-_RawPCMapItem = Dict[str, Optional[Union[str, List[Optional[int]]]]]
-_RawPCMap = Dict[str, _RawPCMapItem]
+RawPCMapItem = Dict[str, Optional[Union[str, List[Optional[int]]]]]
+RawPCMap = Dict[str, RawPCMapItem]
 
 
-class PCMap(BaseModel):
+class PCMap(RootModel[RawPCMap]):
     """
     A map of program counter values to statements in the source code.
 
@@ -146,9 +144,7 @@ class PCMap(BaseModel):
     variables and their uses.
     """
 
-    __root__: _RawPCMap
-
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     def validate_full(cls, value):
         # * Allows list values; turns them to {"location": value}.
         # * Allows `None`; turns it to {"location": None}
@@ -156,26 +152,22 @@ class PCMap(BaseModel):
         # location data but allowing compilers to enrich fields.
 
         return {
-            "__root__": {
-                k: ({"location": v} if isinstance(v, list) else v or {"location": None})
-                for k, v in ((value or {}).get("__root__", value) or {}).items()
-            }
+            k: ({"location": v} if isinstance(v, list) else v or {"location": None})
+            for k, v in ((value or {}).get("root", value) or {}).items()
         }
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__}>"
 
-    def __getitem__(self, pc: Union[int, str]) -> _RawPCMapItem:
-        return self.__root__[str(pc)]
+    def __getitem__(self, pc: Union[int, str]) -> RawPCMapItem:
+        return self.root[str(pc)]
 
-    def __setitem__(self, pc: Union[int, str], value: _RawPCMapItem):
-        if isinstance(value, list):
-            value = {"location": value}
-
-        self.__root__[str(pc)] = value
+    def __setitem__(self, pc: Union[int, str], value: RawPCMapItem):
+        value_dict: Dict = {"location": value} if isinstance(value, list) else value
+        self.root[str(pc)] = value_dict
 
     def __contains__(self, pc: Union[int, str]) -> bool:
-        return str(pc) in self.__root__
+        return str(pc) in self.root
 
     def parse(self) -> Dict[int, PCMapItem]:
         """
@@ -187,7 +179,7 @@ class PCMap(BaseModel):
         """
         results = {}
 
-        for key, value in self.__root__.items():
+        for key, value in self.root.items():
             location = value["location"]
             dev = str(value["dev"]) if "dev" in value and value["dev"] is not None else None
             if location is not None:
