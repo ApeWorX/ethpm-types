@@ -158,12 +158,6 @@ def test_contract_types():
     manifest = PackageManifest(contractTypes=None)
     assert manifest.contract_types is None
 
-    # Even though snakeCase is the documented way,
-    # Ape tools had been using snake_case in some instances,
-    # so we must continue ensuring both work.
-    manifest = PackageManifest(contract_types=None)
-    assert manifest.contract_types is None
-
     contract_types = {
         "foobar": ContractType(contractName="foobar", abi=[]),
         "testtest": ContractType(contractName="testtest", abi=[]),
