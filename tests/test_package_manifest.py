@@ -84,6 +84,10 @@ def test_getattr(package_manifest, solidity_contract):
     expected = solidity_contract
     assert actual == expected
 
+    # Show when not an attribute or contract type.
+    with pytest.raises(AttributeError):
+        _ = package_manifest.contractTypes
+
 
 def test_get_contract_type(package_manifest, solidity_contract):
     actual = package_manifest.get_contract_type("SolidityContract")
