@@ -144,3 +144,12 @@ def test_update_compilers():
     ]
     manifest.update_compilers(new_compilers)
     assert len(manifest.compilers) == 2
+
+
+def test_none_contract_types():
+    """
+    Tests against a bug where validators would fail because
+    they tried iterating None.
+    """
+    manifest = PackageManifest(contractTypes=None)
+    assert manifest.contract_types is None

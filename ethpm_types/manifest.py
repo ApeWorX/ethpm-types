@@ -176,7 +176,7 @@ class PackageManifest(BaseModel):
 
     @validator("contract_types")
     def add_name_to_contract_types(cls, values):
-        aliases = list(values.keys())
+        aliases = list((values or {}).keys())
         # NOTE: Must manually inject names to types here
         for alias in aliases:
             if not values[alias]:
