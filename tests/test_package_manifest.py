@@ -146,10 +146,24 @@ def test_update_compilers():
     assert len(manifest.compilers) == 2
 
 
-def test_none_contract_types():
+def test_contract_types():
     """
     Tests against a bug where validators would fail because
     they tried iterating None.
     """
     manifest = PackageManifest(contractTypes=None)
     assert manifest.contract_types is None
+
+    # Even though snakeCase is the documented way,
+    # Ape tools had been using snake_case in some instances,
+    # so we must continue ensuring both work.
+    manifest = PackageManifest(contract_types=None)
+    assert manifest.contract_types is None
+
+    contract_types = {
+        "foobar": ContractType(contractName="foobar", abi=[]),
+        "testtest": ContractType(contractName="testtest", abi=[]),
+    }
+
+    manifest = PackageManifest(contractTypes=contract_types)
+    assert manifest.contract_types == contract_types
