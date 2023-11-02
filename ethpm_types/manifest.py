@@ -282,13 +282,13 @@ class PackageManifest(BaseModel):
 
     def update_compilers(self, compilers: List[Compiler]):
         """
-        Update compilers in the manifest. Any compiler that has
-        different name, version, and settings combination will
-        be appended to this manifest's compilers list.
+        Update compilers in the manifest. This method appends any
+        given compiler with a a different name, version, and settings
+        combination.
 
         Args:
             compilers (List[`~ethpm_types.source.Compiler]`): A list of
-              compilers to add.
+              compilers.
         """
 
         updated_compilers = [*compilers]

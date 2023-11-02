@@ -163,5 +163,5 @@ def test_contract_types():
         "testtest": ContractType(contractName="testtest", abi=[]),
     }
 
-    manifest = PackageManifest(contractTypes=contract_types)
+    manifest = PackageManifest(contractTypes=contrac
     assert manifest.contract_types == contract_types
