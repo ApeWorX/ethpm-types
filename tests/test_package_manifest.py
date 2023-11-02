@@ -6,9 +6,10 @@ import github
 import pytest
 import requests
 
+from ethpm_types import ContractType
 from ethpm_types._pydantic_v1 import ValidationError
 from ethpm_types.manifest import ALPHABET, NUMBERS, PackageManifest
-from ethpm_types.source import Content, Source
+from ethpm_types.source import Compiler, Content, Source
 
 ETHPM_SPEC_REPO = github.Github(os.environ.get("GITHUB_ACCESS_TOKEN", None)).get_repo(
     "ethpm/ethpm-spec"
@@ -117,3 +118,29 @@ def test_package_name_using_all_valid_characters():
     name = "a" + "".join(list(ALPHABET.union(NUMBERS).union({"-"})))
     manifest = PackageManifest(name=name, version="0.1.0")
     assert manifest.name == name
+
+
+def test_get_contract_compiler():
+    compiler = Compiler(name="vyper", version="0.3.7", settings={}, contractTypes=["foobar"])
+    manifest = PackageManifest(
+        compilers=[compiler], contractTypes={"foobar": ContractType(contractNam="foobar")}
+    )
+    assert manifest.get_contract_compiler("foobar") == compiler
+    assert manifest.get_contract_compiler("yoyoyo") is None
+
+
+def test_update_compilers():
+    compiler = Compiler(name="vyper", version="0.3.7", settings={}, contractTypes=["foobar"])
+    manifest = PackageManifest(
+        compilers=[compiler],
+        contractTypes={
+            "foobar": ContractType(contractName="foobar", abi=[]),
+            "testtest": ContractType(contractName="testtest", abi=[]),
+        },
+    )
+    new_compilers = [
+        Compiler(name="vyper", version="0.3.7", settings={}, contractTypes=["foobar", "testtest"]),
+        Compiler(name="vyper", version="0.3.10", settings={}, contractTypes=["yoyo"]),
+    ]
+    manifest.update_compilers(new_compilers)
+    assert len(manifest.compilers) == 2

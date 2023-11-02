@@ -263,3 +263,27 @@ class PackageManifest(BaseModel):
             source_path.parent.mkdir(parents=True, exist_ok=True)
 
             source_path.write_text(content)
+
+    def get_contract_compiler(self, contract_type_name: str) -> Optional[Compiler]:
+        """
+        Get the compiler used to compile the contract type, if it exists.
+
+        Args:
+            contract_type_name (str): The name of the compiled contract.
+
+        Returns:
+            Optional[`~ethpm_types.source.Compiler`]
+        """
+        for compiler in self.compilers or []:
+            if contract_type_name in (compiler.contractTypes or []):
+                return compiler
+
+        return None
+
+    def update_compilers(self, compilers: List[Compiler]):
+        updated_compilers = [*compilers]
+        for prior_compiler in self.compilers or []:
+            if prior_compiler not in updated_compilers:
+                updated_compilers.append(prior_compiler)
+
+        self.compilers = updated_compilers
