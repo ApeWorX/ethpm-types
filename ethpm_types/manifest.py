@@ -291,9 +291,6 @@ class PackageManifest(BaseModel):
               compilers.
         """
 
-        full_list: List[Compiler] = self.compilers or []
-        for compiler in compilers:
-            if compiler not in full_list:
-                full_list.append(compiler)
-
-        self.compilers = full_list
+        start = self.compilers or []
+        start.extend([c for c in compilers if c not in start])
+        self.compilers = start
