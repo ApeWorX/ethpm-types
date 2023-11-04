@@ -146,7 +146,7 @@ def test_add_compilers():
         Compiler(name="vyper", version="0.3.7", settings={}, contractTypes=["foobar", "testtest"]),
         Compiler(name="vyper", version="0.3.10", settings={}, contractTypes=["yoyo"]),
     ]
-    manifest.update_compilers(*new_compilers)
+    manifest.add_compilers(*new_compilers)
     assert len(manifest.compilers) == 2
 
 
