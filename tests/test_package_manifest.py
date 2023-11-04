@@ -133,7 +133,7 @@ def test_get_contract_compiler():
     assert manifest.get_contract_compiler("yoyoyo") is None
 
 
-def test_update_compilers():
+def test_add_compilers():
     compiler = Compiler(name="vyper", version="0.3.7", settings={}, contractTypes=["foobar"])
     manifest = PackageManifest(
         compilers=[compiler],
@@ -146,7 +146,7 @@ def test_update_compilers():
         Compiler(name="vyper", version="0.3.7", settings={}, contractTypes=["foobar", "testtest"]),
         Compiler(name="vyper", version="0.3.10", settings={}, contractTypes=["yoyo"]),
     ]
-    manifest.update_compilers(new_compilers)
+    manifest.update_compilers(*new_compilers)
     assert len(manifest.compilers) == 2
 
 
