@@ -280,7 +280,7 @@ class PackageManifest(BaseModel):
 
         return None
 
-    def add_compilers(self, *compilers: List[Compiler]):
+    def add_compilers(self, *compilers: Compiler):
         """
         Update compilers in the manifest. This method appends any
         given compiler with a a different name, version, and settings
@@ -291,9 +291,9 @@ class PackageManifest(BaseModel):
               compilers.
         """
 
-        if self.compilers is None:
-            self.compilers = []
-
+        full_list: List[Compiler] = self.compilers or []
         for compiler in compilers:
-            if compiler not in self.compilers:
-                self.compilers.append(compiler)
+            if compiler not in full_list:
+                full_list.append(compiler)
+
+        self.compilers = full_list
