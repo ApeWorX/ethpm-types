@@ -176,7 +176,7 @@ class PackageManifest(BaseModel):
 
     @validator("contract_types")
     def add_name_to_contract_types(cls, values):
-        aliases = list(values.keys())
+        aliases = list((values or {}).keys())
         # NOTE: Must manually inject names to types here
         for alias in aliases:
             if not values[alias]:
@@ -263,3 +263,34 @@ class PackageManifest(BaseModel):
             source_path.parent.mkdir(parents=True, exist_ok=True)
 
             source_path.write_text(content)
+
+    def get_contract_compiler(self, contract_type_name: str) -> Optional[Compiler]:
+        """
+        Get the compiler used to compile the contract type, if it exists.
+
+        Args:
+            contract_type_name (str): The name of the compiled contract.
+
+        Returns:
+            Optional[`~ethpm_types.source.Compiler`]
+        """
+        for compiler in self.compilers or []:
+            if contract_type_name in (compiler.contractTypes or []):
+                return compiler
+
+        return None
+
+    def add_compilers(self, *compilers: Compiler):
+        """
+        Update compilers in the manifest. This method appends any
+        given compiler with a a different name, version, and settings
+        combination.
+
+        Args:
+            compilers (List[`~ethpm_types.source.Compiler]`): A list of
+              compilers.
+        """
+
+        start = self.compilers or []
+        start.extend([c for c in compilers if c not in start])
+        self.compilers = start

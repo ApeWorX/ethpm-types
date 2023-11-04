@@ -44,6 +44,20 @@ class Compiler(BaseModel):
     that used this compiler to generate its outputs.
     """
 
+    def __eq__(self, other) -> bool:
+        if (
+            not hasattr(other, "name")
+            and not hasattr(other, "version")
+            and not hasattr(other, "settings")
+        ):
+            return NotImplemented
+
+        return (
+            self.name == other.name
+            and self.version == other.version
+            and self.settings == other.settings
+        )
+
 
 class Checksum(BaseModel):
     """Checksum information about the contents of a source file."""
@@ -58,6 +72,15 @@ class Checksum(BaseModel):
     """
     The hash of a source files contents generated with the corresponding algorithm.
     """
+
+    @classmethod
+    def from_file(cls, file: Union[Path, str], algorithm: Algorithm = Algorithm.MD5) -> "Checksum":
+        source_path = file if isinstance(file, Path) else Path(file)
+        return cls.from_bytes(source_path.read_bytes(), algorithm=algorithm)
+
+    @classmethod
+    def from_bytes(cls, data: bytes, algorithm: Algorithm = Algorithm.MD5) -> "Checksum":
+        return cls(algorithm=algorithm, hash=compute_checksum(data, algorithm=algorithm))
 
 
 class Content(BaseModel):
