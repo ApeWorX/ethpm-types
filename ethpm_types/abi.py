@@ -109,8 +109,13 @@ class BaseABI(BaseModel):
     def schema(cls, *args, **kwargs) -> Dict[str, Any]:
         result = super().schema(*args, **kwargs)
 
-        # Remove ContractType. It's meant to be excluded from the schema.
-        del result["definitions"]["ContractType"]
+        # Remove definitions ContractType and all its sub-components.
+        # The backref to contract_type is internal to Python applications.
+        valid_types = ["ABIType", cls.__name__]
+        if cls.__name__ == "EventABI":
+            valid_types.append("EventABIType")
+
+        result["definitions"] = {n: d for n, d in result["definitions"].items() if n in valid_types}
 
         return result
 
@@ -121,7 +126,7 @@ class ConstructorABI(BaseABI):
     **NOTE**: The constructor ABI does not have a ``name`` property.
     """
 
-    type: Literal["constructor"]
+    type: Literal["constructor"] = "constructor"
     """The value ``"constructor"``."""
 
     stateMutability: str = "nonpayable"
@@ -169,7 +174,7 @@ class FallbackABI(BaseABI):
     **NOTE**: The fallback ABI does not have a name property.
     """
 
-    type: Literal["fallback"]
+    type: Literal["fallback"] = "fallback"
     """The value ``"fallback"``."""
 
     stateMutability: str = "nonpayable"
@@ -201,7 +206,7 @@ class ReceiveABI(BaseABI):
     **NOTE**: The receive ABI does not have name field.
     """
 
-    type: Literal["receive"]
+    type: Literal["receive"] = "receive"
     """The value ``"receive"``."""
 
     stateMutability: Literal["payable"]
@@ -229,7 +234,7 @@ class MethodABI(BaseABI):
     An ABI representing a method you can invoke from a contact.
     """
 
-    type: Literal["function"]
+    type: Literal["function"] = "function"
     """The value ``"function"``."""
 
     name: str
@@ -302,7 +307,7 @@ class EventABI(BaseABI):
     An ABI describing an event-type defined in a contract.
     """
 
-    type: Literal["event"]
+    type: Literal["event"] = "event"
     """The value ``"event"``."""
 
     name: str
@@ -340,7 +345,7 @@ class ErrorABI(BaseABI):
     An ABI describing an error-type defined in a contract.
     """
 
-    type: Literal["error"]
+    type: Literal["error"] = "error"
     """The value ``"error"``."""
 
     name: str
@@ -376,7 +381,7 @@ class StructABI(BaseABI):
     An ABI describing a struct-type defined in a contract.
     """
 
-    type: Literal["struct"]
+    type: Literal["struct"] = "struct"
     """The value ``"struct"``."""
 
     name: str
