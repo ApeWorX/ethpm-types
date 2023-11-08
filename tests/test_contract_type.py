@@ -67,6 +67,15 @@ def _select_abi(contract_type: ContractType, name: str) -> ABI:
     raise AssertionError(f"No method found with name '{name}'.")
 
 
+def test_schema():
+    actual = ContractType.schema()
+    assert actual["$ref"] == "#/definitions/ContractType"
+
+    definitions = {d for d in actual["definitions"]}
+    expected = {"ABIType", "ASTClassification", "ASTNode", "Bytecode", "ConstructorABI"}
+    assert expected.issubset(definitions)
+
+
 def test_structs(contract):
     method_abi = _select_abi(contract, "getStruct")
     assert contract.structs == []

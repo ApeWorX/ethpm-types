@@ -47,3 +47,8 @@ If you are opening a work-in-progress pull request to verify that it passes CI t
 [marking it as a draft](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests#draft-pull-requests).
 
 Join the ApeWorX [Discord](https://discord.gg/apeworx) if you have any questions.
+
+## Note About Docs
+
+The documentation for the models in ths project cannot contain markdown or RST syntax and should be raw-strings.
+This is because model doc-strings are part of Pydantic's OpenAPI schema generation and may appear in platforms that don't render any markup.
