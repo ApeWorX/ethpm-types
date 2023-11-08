@@ -27,8 +27,7 @@ def test_schema():
     )
     assert actual["type"] == "object"
 
-    actual = {d for d in actual["definitions"]}
-    expected = {
+    expected_definitions = {
         "ABIType",
         "Algorithm",
         "Compiler",
@@ -36,7 +35,7 @@ def test_schema():
         "LinkReference",
         "PackageMeta",
     }
-    assert expected.issubset(actual)
+    assert expected_definitions.issubset({d for d in actual["definitions"]})
 
 
 def test_package_name_schema():

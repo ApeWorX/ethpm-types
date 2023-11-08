@@ -34,6 +34,10 @@ def test_constructor_abi_schema():
     assert actual["$ref"] == "#/definitions/ConstructorABI"
     assert "ABIType" in actual["definitions"]
 
+    # contract_type backrefs MUST be internal constructs
+    # for FastAPI integration to work properly.
+    assert "ContractType" not in actual["definitions"]
+
 
 def test_constructor_selector():
     constructor = ConstructorABI(
