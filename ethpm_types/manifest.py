@@ -11,10 +11,12 @@ ALPHABET = set("abcdefghijklmnopqrstuvwxyz")
 NUMBERS = set("0123456789")
 
 
-class PackageName(str):
+class PackageName(BaseModel):
     """
     A human readable name for this package.
     """
+
+    __root__ = str
 
     @classmethod
     def __modify_schema__(cls, field_schema):
@@ -84,8 +86,7 @@ class PackageMeta(BaseModel):
 class PackageManifest(BaseModel):
     """
     A data format describing a smart contract software package.
-
-    `EIP-2678 <https://eips.ethereum.org/EIPS/eip-2678#ethpm-manifest-version>`__
+    `EIP-2678 <https://eips.ethereum.org/EIPS/eip-2678#ethpm-manifest-version>`__.
     """
 
     manifest: str = "ethpm/3"
