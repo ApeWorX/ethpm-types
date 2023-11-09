@@ -82,7 +82,7 @@ class Bytecode(BaseModel):
     A string containing the 0x prefixed hexadecimal representation of the bytecode.
     """
 
-    linkReferences: Optional[List[LinkReference]] = Field(None, alias="linkReferences")
+    link_references: Optional[List[LinkReference]] = Field(None, alias="linkReferences")
     """
     The locations in the corresponding bytecode which require linking.
     """
