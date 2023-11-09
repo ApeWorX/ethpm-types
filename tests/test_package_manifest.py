@@ -23,7 +23,7 @@ def test_schema():
     assert actual["title"] == "PackageManifest"
     assert actual["description"] == (
         "A data format describing a smart contract software package."
-        "\nEIP-2678: https://eips.ethereum.org/EIPS/eip-2678#ethpm-manifest-version."
+        "\n`EIP-2678 <https://eips.ethereum.org/EIPS/eip-2678#ethpm-manifest-version>`__."
     )
     assert actual["type"] == "object"
 
