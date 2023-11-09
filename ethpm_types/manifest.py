@@ -85,8 +85,8 @@ class PackageMeta(BaseModel):
 
 class PackageManifest(BaseModel):
     """
-    A data format describing a smart contract software package.
-    EIP-2678: https://eips.ethereum.org/EIPS/eip-2678#ethpm-manifest-version.
+        A data format describing a smart contract software package.
+    `   EIP-2678 <https://eips.ethereum.org/EIPS/eip-2678#ethpm-manifest-version>`__.
     """
 
     manifest: str = "ethpm/3"
