@@ -1,7 +1,12 @@
+import tempfile
+from pathlib import Path
+
 import pytest
 from pydantic import FileUrl
 
-from ethpm_types.source import Content, ContractSource, Source
+from ethpm_types._pydantic_v1 import FileUrl
+from ethpm_types.source import Checksum, Compiler, Content, ContractSource, Source
+from ethpm_types.utils import Algorithm, compute_checksum
 
 SOURCE_LOCATION = (
     "https://github.com/OpenZeppelin/openzeppelin-contracts"
@@ -146,3 +151,36 @@ def test_contract_source_use_method_id(vyper_contract, source, source_base):
     function = actual.lookup_function(location, method_id=method_id)
     assert function.name == "getEmptyTupleOfDynArrayStructs"
     assert function.full_name == "getEmptyTupleOfDynArrayStructs()"
+
+
+def test_compiler_equality():
+    compiler_1 = Compiler(
+        name="yo", version="0.1.0", settings={"foo": "bar"}, contractType=["test1"]
+    )
+    compiler_2 = Compiler(
+        name="yo", version="0.1.0", settings={"foo": "bar"}, contractType=["test1", "test2"]
+    )
+    assert compiler_1 == compiler_2
+
+    compiler_1.name = "yo2"
+    assert compiler_1 != compiler_2
+    compiler_1.name = compiler_2.name
+
+    compiler_1.version = "0.100000.0"
+    assert compiler_1 != compiler_2
+    compiler_1.version = compiler_2.version
+
+    compiler_1.settings["test"] = "123"
+    assert compiler_1 != compiler_2
+    compiler_1.settings = compiler_2.settings
+
+
+def test_checksum_from_file():
+    file = Path(tempfile.mktemp())
+    file.write_text("foobartest123")
+    actual = Checksum.from_file(file)
+    expected = Checksum(
+        algorithm=Algorithm.MD5,
+        hash=compute_checksum(file.read_bytes()),
+    )
+    assert actual == expected

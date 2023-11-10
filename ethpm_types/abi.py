@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, List, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Union
 
 from pydantic import ConfigDict, Field
 
@@ -96,20 +96,36 @@ class EventABIType(ABIType):
         return sig
 
 
-class ConstructorABI(BaseModel):
-    """
-    An ABI describing a contract constructor.
-    **NOTE**: The constructor ABI does not have a ``name`` property.
-    """
-
-    type: Literal["constructor"]
-    """The value ``"constructor"``."""
-
+class BaseABI(BaseModel):
     contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
     """
     A reference to this ABI's contract type. This gets set during ``ContractType``
     deserialization.
     """
+
+    @classmethod
+    def schema(cls, *args, **kwargs) -> Dict[str, Any]:
+        result = super().schema(*args, **kwargs)
+
+        # Remove definitions ContractType and all its sub-components.
+        # The backref to contract_type is internal to Python applications.
+        valid_types = ["ABIType", cls.__name__]
+        if cls.__name__ == "EventABI":
+            valid_types.append("EventABIType")
+
+        result["definitions"] = {n: d for n, d in result["definitions"].items() if n in valid_types}
+
+        return result
+
+
+class ConstructorABI(BaseABI):
+    """
+    An ABI describing a contract constructor.
+    **NOTE**: The constructor ABI does not have a ``name`` property.
+    """
+
+    type: Literal["constructor"] = "constructor"
+    """The value ``"constructor"``."""
 
     stateMutability: str = "nonpayable"
     """
@@ -150,20 +166,14 @@ class ConstructorABI(BaseModel):
         return f"constructor({input_names})"
 
 
-class FallbackABI(BaseModel):
+class FallbackABI(BaseABI):
     """
     An ABI dedicated to receiving unknown method selectors.
     **NOTE**: The fallback ABI does not have a name property.
     """
 
-    type: Literal["fallback"]
+    type: Literal["fallback"] = "fallback"
     """The value ``"fallback"``."""
-
-    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
 
     stateMutability: str = "nonpayable"
     """
@@ -187,21 +197,15 @@ class FallbackABI(BaseModel):
         return "fallback()"
 
 
-class ReceiveABI(BaseModel):
+class ReceiveABI(BaseABI):
     """
     An ABI dedicated to receiving currency from transactions with unknown
     method selectors.
     **NOTE**: The receive ABI does not have name field.
     """
 
-    type: Literal["receive"]
+    type: Literal["receive"] = "receive"
     """The value ``"receive"``."""
-
-    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
 
     stateMutability: Literal["payable"]
     """The value ``"payable"``."""
@@ -223,19 +227,13 @@ class ReceiveABI(BaseModel):
         return "receive()"
 
 
-class MethodABI(BaseModel):
+class MethodABI(BaseABI):
     """
     An ABI representing a method you can invoke from a contact.
     """
 
-    type: Literal["function"]
+    type: Literal["function"] = "function"
     """The value ``"function"``."""
-
-    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
 
     name: str
     """The name of the method."""
@@ -302,19 +300,13 @@ class MethodABI(BaseModel):
         return f"{self.name}({input_args}){output_args}"
 
 
-class EventABI(BaseModel):
+class EventABI(BaseABI):
     """
     An ABI describing an event-type defined in a contract.
     """
 
-    type: Literal["event"]
+    type: Literal["event"] = "event"
     """The value ``"event"``."""
-
-    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
 
     name: str
     """The name of the event."""
@@ -346,19 +338,13 @@ class EventABI(BaseModel):
         return f"{self.name}({input_args})"
 
 
-class ErrorABI(BaseModel):
+class ErrorABI(BaseABI):
     """
     An ABI describing an error-type defined in a contract.
     """
 
-    type: Literal["error"]
+    type: Literal["error"] = "error"
     """The value ``"error"``."""
-
-    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
 
     name: str
     """The name of the error."""
@@ -388,19 +374,13 @@ class ErrorABI(BaseModel):
         return f"{self.name}({input_args})"
 
 
-class StructABI(BaseModel):
+class StructABI(BaseABI):
     """
     An ABI describing a struct-type defined in a contract.
     """
 
-    type: Literal["struct"]
+    type: Literal["struct"] = "struct"
     """The value ``"struct"``."""
-
-    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
 
     name: str
     """The name of the struct."""
@@ -429,7 +409,7 @@ class StructABI(BaseModel):
         return f"{self.name}({members_str})"
 
 
-class UnprocessedABI(BaseModel):
+class UnprocessedABI(BaseABI):
     """
     An ABI representing an unknown entity.
     This is useful for supporting custom compiler types,
@@ -439,14 +419,6 @@ class UnprocessedABI(BaseModel):
 
     type: str
     """The type name as a string."""
-
-    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
-
-    model_config = ConfigDict(extra="allow")
 
     @property
     def signature(self) -> str:

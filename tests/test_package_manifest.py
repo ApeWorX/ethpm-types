@@ -7,8 +7,10 @@ import pytest
 import requests
 from pydantic import ValidationError
 
-from ethpm_types.manifest import ALPHABET, NUMBERS, PackageManifest
-from ethpm_types.source import Content, Source
+from ethpm_types import ContractType
+from ethpm_types._pydantic_v1 import ValidationError
+from ethpm_types.manifest import ALPHABET, NUMBERS, PackageManifest, PackageMeta, PackageName
+from ethpm_types.source import Compiler, Content, Source
 
 ETHPM_SPEC_REPO = github.Github(os.environ.get("GITHUB_ACCESS_TOKEN", None)).get_repo(
     "ethpm/ethpm-spec"
@@ -17,12 +19,52 @@ ETHPM_SPEC_REPO = github.Github(os.environ.get("GITHUB_ACCESS_TOKEN", None)).get
 EXAMPLES_RAW_URL = "https://raw.githubusercontent.com/ethpm/ethpm-spec/master/examples"
 
 
-def test_can_generate_schema():
-    actual = PackageManifest.model_json_schema()
-    assert "A data format describing a smart contract software package." in actual["description"]
+def test_schema():
+    actual = PackageManifest.schema()
+    assert actual["title"] == "PackageManifest"
+    assert actual["description"] == (
+        "A data format describing a smart contract software package."
+        "\n`EIP-2678 <https://eips.ethereum.org/EIPS/eip-2678#ethpm-manifest-version>`__."
+    )
     assert actual["type"] == "object"
-    assert "$defs" in actual
-    assert "ABIType" in actual["$defs"]
+
+    expected_definitions = {
+        "ABIType",
+        "Algorithm",
+        "Compiler",
+        "ContractInstance",
+        "LinkReference",
+        "PackageMeta",
+    }
+    assert expected_definitions.issubset({d for d in actual["definitions"]})
+
+
+def test_package_name_schema():
+    actual = PackageName.schema()
+    expected = {
+        "description": "A human readable name for this package.",
+        "properties": {},
+        "title": "PackageName",
+        "type": "object",
+    }
+    assert actual == expected
+
+
+def test_package_meta_schema():
+    actual = PackageMeta.schema()
+    assert actual["title"] == "PackageMeta"
+    assert actual["description"] == (
+        "Important data that is not integral to installation\n"
+        "but should be included when publishing."
+    )
+    assert actual["properties"]["authors"] == {
+        "items": {"type": "string"},
+        "title": "Authors",
+        "type": "array",
+    }
+    assert actual["properties"]["description"] == {"title": "Description", "type": "string"}
+    assert "license" in actual["properties"]
+    assert "keywords" in actual["properties"]
 
 
 @pytest.mark.parametrize(
@@ -91,6 +133,10 @@ def test_getattr(package_manifest, solidity_contract):
     expected = solidity_contract
     assert actual == expected
 
+    # Show when not an attribute or contract type.
+    with pytest.raises(AttributeError):
+        _ = package_manifest.contractTypes
+
 
 def test_get_contract_type(package_manifest, solidity_contract):
     actual = package_manifest.get_contract_type("SolidityContract")
@@ -125,3 +171,46 @@ def test_package_name_using_all_valid_characters():
     name = "a" + "".join(list(ALPHABET.union(NUMBERS).union({"-"})))
     manifest = PackageManifest(name=name, version="0.1.0")
     assert manifest.name == name
+
+
+def test_get_contract_compiler():
+    compiler = Compiler(name="vyper", version="0.3.7", settings={}, contractTypes=["foobar"])
+    manifest = PackageManifest(
+        compilers=[compiler], contractTypes={"foobar": ContractType(contractNam="foobar")}
+    )
+    assert manifest.get_contract_compiler("foobar") == compiler
+    assert manifest.get_contract_compiler("yoyoyo") is None
+
+
+def test_add_compilers():
+    compiler = Compiler(name="vyper", version="0.3.7", settings={}, contractTypes=["foobar"])
+    manifest = PackageManifest(
+        compilers=[compiler],
+        contractTypes={
+            "foobar": ContractType(contractName="foobar", abi=[]),
+            "testtest": ContractType(contractName="testtest", abi=[]),
+        },
+    )
+    new_compilers = [
+        Compiler(name="vyper", version="0.3.7", settings={}, contractTypes=["foobar", "testtest"]),
+        Compiler(name="vyper", version="0.3.10", settings={}, contractTypes=["yoyo"]),
+    ]
+    manifest.add_compilers(*new_compilers)
+    assert len(manifest.compilers) == 2
+
+
+def test_contract_types():
+    """
+    Tests against a bug where validators would fail because
+    they tried iterating None.
+    """
+    manifest = PackageManifest(contractTypes=None)
+    assert manifest.contract_types is None
+
+    contract_types = {
+        "foobar": ContractType(contractName="foobar", abi=[]),
+        "testtest": ContractType(contractName="testtest", abi=[]),
+    }
+
+    manifest = PackageManifest(contractTypes=contract_types)
+    assert manifest.contract_types == contract_types

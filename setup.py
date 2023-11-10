@@ -18,7 +18,7 @@ extras_require = {
         "pysha3>=1.0.2,<2.0.0",  # Backend for eth-hash
     ],
     "lint": [
-        "black>=23.9.1,<24",  # auto-formatter and linter
+        "black>=23.11.0,<24",  # auto-formatter and linter
         "mypy>=1.5.1,<2",  # Static type analyzer
         "types-setuptools",  # Needed due to mypy typeshed
         "types-requests",  # Needed due to mypy typeshed
