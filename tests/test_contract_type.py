@@ -69,7 +69,7 @@ def _select_abi(contract_type: ContractType, name: str) -> ABI:
 
 
 def test_schema():
-    actual = ContractType.schema()
+    actual = ContractType.model_json_schema()
     assert actual["$ref"] == "#/definitions/ContractType"
 
     definitions = {d for d in actual["definitions"]}

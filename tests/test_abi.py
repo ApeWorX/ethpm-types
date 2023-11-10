@@ -22,22 +22,33 @@ class TestABIType:
         assert abi.canonical_type == "(string)"
 
     def test_schema(self):
-        actual = ABIType.schema()
+        actual = ABIType.model_json_schema()
         expected = {
-            "$ref": "#/definitions/ABIType",
-            "definitions": {
+            "$defs": {
                 "ABIType": {
+                    "additionalProperties": True,
                     "properties": {
-                        "components": {
-                            "items": {"$ref": "#/definitions/ABIType"},
-                            "title": "Components",
-                            "type": "array",
+                        "name": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "default": None,
+                            "title": "Name",
                         },
-                        "internalType": {"title": "Internaltype", "type": "string"},
-                        "name": {"title": "Name", "type": "string"},
                         "type": {
-                            "anyOf": [{"type": "string"}, {"$ref": "#/definitions/ABIType"}],
+                            "anyOf": [{"type": "string"}, {"$ref": "#/$defs/ABIType"}],
                             "title": "Type",
+                        },
+                        "components": {
+                            "anyOf": [
+                                {"items": {"$ref": "#/$defs/ABIType"}, "type": "array"},
+                                {"type": "null"},
+                            ],
+                            "default": None,
+                            "title": "Components",
+                        },
+                        "internalType": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "default": None,
+                            "title": "Internaltype",
                         },
                     },
                     "required": ["type"],
@@ -45,15 +56,16 @@ class TestABIType:
                     "type": "object",
                 }
             },
+            "allOf": [{"$ref": "#/$defs/ABIType"}],
         }
         assert actual == expected
 
 
 class TestConstructorABI:
     def test_schema(self):
-        actual = ConstructorABI.schema()
-        assert actual["$ref"] == "#/definitions/ConstructorABI"
-        assert len(actual["definitions"]) == 2
+        actual = ConstructorABI.model_json_schema()
+        assert actual["$defs"] == "#/definitions/ConstructorABI"
+        assert len(actual["$defs"]) == 2
         assert ABIType.__name__ in actual["definitions"]
         assert ConstructorABI.__name__ in actual["definitions"]
 
@@ -66,7 +78,7 @@ class TestConstructorABI:
 
 class TestEventABI:
     def test_schema(self):
-        actual = EventABI.schema()
+        actual = EventABI.model_json_schema()
         assert actual["$ref"] == "#/definitions/EventABI"
         assert len(actual["definitions"]) == 3
         assert ABIType.__name__ in actual["definitions"]
@@ -87,7 +99,7 @@ class TestFallbackABI:
         assert abi.is_payable == expected
 
     def test_schema(self):
-        actual = FallbackABI.schema()
+        actual = FallbackABI.model_json_schema()
         assert actual["$ref"] == "#/definitions/FallbackABI"
         assert len(actual["definitions"]) == 2
         assert ABIType.__name__ in actual["definitions"]
@@ -96,7 +108,7 @@ class TestFallbackABI:
 
 class TestMethodABI:
     def test_schema(self):
-        actual = MethodABI.schema()
+        actual = MethodABI.model_json_schema()
         assert actual["$ref"] == "#/definitions/MethodABI"
         assert len(actual["definitions"]) == 2
         assert ABIType.__name__ in actual["definitions"]
@@ -120,7 +132,7 @@ class TestReceiveABI:
         assert receive.stateMutability == "payable"
 
     def test_schema(self):
-        actual = ReceiveABI.schema()
+        actual = ReceiveABI.model_json_schema()
         assert actual["$ref"] == "#/definitions/ReceiveABI"
         assert len(actual["definitions"]) == 2
         assert ABIType.__name__ in actual["definitions"]
@@ -129,7 +141,7 @@ class TestReceiveABI:
 
 class TestUnprocessedABI:
     def test_schema(self):
-        actual = UnprocessedABI.schema()
+        actual = UnprocessedABI.model_json_schema()
         assert actual["$ref"] == "#/definitions/UnprocessedABI"
         assert len(actual["definitions"]) == 2
         assert ABIType.__name__ in actual["definitions"]

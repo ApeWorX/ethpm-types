@@ -1,6 +1,14 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, List, Literal, Optional, Type, Union
 
 from pydantic import ConfigDict, Field
+from pydantic.json_schema import (
+    DEFAULT_REF_TEMPLATE,
+    GenerateJsonSchema,
+    JsonRef,
+    JsonSchemaMode,
+    JsonSchemaValue,
+)
+from pydantic_core.core_schema import CoreSchema, GeneratorSchema
 
 from ethpm_types.base import BaseModel
 
@@ -96,6 +104,24 @@ class EventABIType(ABIType):
         return sig
 
 
+class GenerateABISchema(GenerateJsonSchema):
+    def generate(self, schema: CoreSchema, mode: JsonSchemaMode = "validation") -> JsonSchemaValue:
+        schema["definitions"] = [
+            d for d in schema["definitions"] if "contract_type" not in d["ref"]
+        ]
+
+
+        return super().generate(sched, mode=mode)
+
+    def get_schema_from_definitions(self, json_ref: JsonRef) -> JsonSchemaValue | None:
+        if "__contract_type__" in json_ref:
+            # Ignore anything related the contract type back-ref.
+            # That is meant to be a Python-only construct.
+            return None
+
+        return super().get_schema_from_definitions(json_ref)
+
+
 class BaseABI(BaseModel):
     contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
     """
@@ -104,18 +130,27 @@ class BaseABI(BaseModel):
     """
 
     @classmethod
-    def schema(cls, *args, **kwargs) -> Dict[str, Any]:
-        result = super().schema(*args, **kwargs)
+    def model_json_schema(
+        cls,
+        by_alias: bool = True,
+        ref_template: str = DEFAULT_REF_TEMPLATE,
+        schema_generator: Type[GenerateJsonSchema] = GenerateABISchema,
+        mode: JsonSchemaMode = "validation",
+    ) -> dict[str, Any]:
+        """
+        Overridden to change the default value of ``schema_generator`` to
+        our  custom type.
+        """
+        return super().model_json_schema(
+            by_alias=by_alias,
+            ref_template=ref_template,
+            schema_generator=schema_generator,
+            mode=mode,
+        )
 
-        # Remove definitions ContractType and all its sub-components.
-        # The backref to contract_type is internal to Python applications.
-        valid_types = ["ABIType", cls.__name__]
-        if cls.__name__ == "EventABI":
-            valid_types.append("EventABIType")
-
-        result["definitions"] = {n: d for n, d in result["definitions"].items() if n in valid_types}
-
-        return result
+    @classmethod
+    def __get_pydantic_json_schema__(cls, *args, **kwargs):
+        breakpoint()
 
 
 class ConstructorABI(BaseABI):

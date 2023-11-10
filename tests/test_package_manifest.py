@@ -7,7 +7,7 @@ import pytest
 import requests
 from pydantic import ValidationError
 
-from ethpm_types import ContractType
+from ethpm_types import BaseModel, ContractType
 from ethpm_types.manifest import ALPHABET, NUMBERS, PackageManifest, PackageMeta, PackageName
 from ethpm_types.source import Compiler, Content, Source
 
@@ -19,7 +19,7 @@ EXAMPLES_RAW_URL = "https://raw.githubusercontent.com/ethpm/ethpm-spec/master/ex
 
 
 def test_schema():
-    actual = PackageManifest.schema()
+    actual = PackageManifest.model_json_schema()
     assert actual["title"] == "PackageManifest"
     assert actual["description"] == (
         "A data format describing a smart contract software package."
@@ -38,28 +38,18 @@ def test_schema():
     assert expected_definitions.issubset({d for d in actual["definitions"]})
 
 
-def test_package_name_schema():
-    actual = PackageName.schema()
-    expected = {
-        "description": "A human readable name for this package.",
-        "properties": {},
-        "title": "PackageName",
-        "type": "object",
-    }
-    assert actual == expected
-
-
 def test_package_meta_schema():
-    actual = PackageMeta.schema()
+    actual = PackageMeta.model_json_schema()
+    # TODO: Add PackageName assertion here (required being on a model now)
     assert actual["title"] == "PackageMeta"
     assert actual["description"] == (
         "Important data that is not integral to installation\n"
         "but should be included when publishing."
     )
     assert actual["properties"]["authors"] == {
-        "items": {"type": "string"},
+        "anyOf": [{"items": {"type": "string"}, "type": "array"}, {"type": "null"}],
+        "default": None,
         "title": "Authors",
-        "type": "array",
     }
     assert actual["properties"]["description"] == {"title": "Description", "type": "string"}
     assert "license" in actual["properties"]
