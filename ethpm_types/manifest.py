@@ -26,21 +26,6 @@ def PackageNameError(name: str, message: str) -> PydanticCustomError:
     return PydanticCustomError(error_name, message, {"name": name})
 
 
-class PackageName(BaseModel):
-    """
-    A human readable name for this package.
-    """
-
-    __root__ = str
-
-    @classmethod
-    def __modify_schema__(cls, field_schema):
-        field_schema.update(
-            pattern="^[a-z][-a-z0-9]{0,254}$",
-            examples=["my-token", "safe-math", "nft"],
-        )
-
-
 def validate_package_name(name: str) -> str:
     if not isinstance(name, str):
         # NOTE: Don't raise TypeError here.

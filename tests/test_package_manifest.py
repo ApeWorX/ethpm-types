@@ -8,7 +8,6 @@ import requests
 from pydantic import ValidationError
 
 from ethpm_types import ContractType
-from ethpm_types._pydantic_v1 import ValidationError
 from ethpm_types.manifest import ALPHABET, NUMBERS, PackageManifest, PackageMeta, PackageName
 from ethpm_types.source import Compiler, Content, Source
 

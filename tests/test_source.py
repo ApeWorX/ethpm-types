@@ -4,7 +4,6 @@ from pathlib import Path
 import pytest
 from pydantic import FileUrl
 
-from ethpm_types._pydantic_v1 import FileUrl
 from ethpm_types.source import Checksum, Compiler, Content, ContractSource, Source
 from ethpm_types.utils import Algorithm, compute_checksum
 
