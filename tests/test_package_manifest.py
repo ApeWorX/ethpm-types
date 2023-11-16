@@ -7,8 +7,8 @@ import pytest
 import requests
 from pydantic import ValidationError
 
-from ethpm_types import BaseModel, ContractType
-from ethpm_types.manifest import ALPHABET, NUMBERS, PackageManifest, PackageMeta, PackageName
+from ethpm_types import ContractType
+from ethpm_types.manifest import ALPHABET, NUMBERS, PackageManifest, PackageMeta
 from ethpm_types.source import Compiler, Content, Source
 
 ETHPM_SPEC_REPO = github.Github(os.environ.get("GITHUB_ACCESS_TOKEN", None)).get_repo(
@@ -35,7 +35,7 @@ def test_schema():
         "LinkReference",
         "PackageMeta",
     }
-    assert expected_definitions.issubset({d for d in actual["definitions"]})
+    assert expected_definitions.issubset({d for d in actual["$defs"]})
 
 
 def test_package_meta_schema():
@@ -51,7 +51,11 @@ def test_package_meta_schema():
         "default": None,
         "title": "Authors",
     }
-    assert actual["properties"]["description"] == {"title": "Description", "type": "string"}
+    assert actual["properties"]["description"] == {
+        "anyOf": [{"type": "string"}, {"type": "null"}],
+        "default": None,
+        "title": "Description",
+    }
     assert "license" in actual["properties"]
     assert "keywords" in actual["properties"]
 

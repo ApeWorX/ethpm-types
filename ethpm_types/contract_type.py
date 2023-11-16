@@ -342,9 +342,7 @@ class ContractType(BaseModel):
         """
 
         # Use default constructor (no args) when no defined.
-        return self._get_first_instance(ConstructorABI) or ConstructorABI(
-            type="constructor", contract_type=self
-        )
+        return self._get_first_instance(ConstructorABI) or ConstructorABI(type="constructor")
 
     @property
     def fallback(self) -> Optional[FallbackABI]:
@@ -445,8 +443,6 @@ class ContractType(BaseModel):
 
         filter_fn = filter_fn or noop
         method_abis = [abi for abi in self.abi if filter_fn(abi)]
-        for abi in method_abis:
-            abi.contract_type = self
 
         return ABIList(
             method_abis,
@@ -459,8 +455,6 @@ class ContractType(BaseModel):
             if not isinstance(abi, _type):
                 continue
 
-            # NOTE: Using `setattr` to avoid mypy complaint.
-            setattr(abi, "contract_type", self)
             return abi
 
         return None

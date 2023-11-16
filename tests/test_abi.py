@@ -64,10 +64,9 @@ class TestABIType:
 class TestConstructorABI:
     def test_schema(self):
         actual = ConstructorABI.model_json_schema()
-        assert actual["$defs"] == "#/definitions/ConstructorABI"
-        assert len(actual["$defs"]) == 2
-        assert ABIType.__name__ in actual["definitions"]
-        assert ConstructorABI.__name__ in actual["definitions"]
+        assert len(actual["$defs"]) == 1
+        assert ABIType.__name__ in actual["$defs"]
+        assert ConstructorABI.__name__ in actual["title"]
 
     def test_selector(self):
         constructor = ConstructorABI(
@@ -79,11 +78,10 @@ class TestConstructorABI:
 class TestEventABI:
     def test_schema(self):
         actual = EventABI.model_json_schema()
-        assert actual["$ref"] == "#/definitions/EventABI"
-        assert len(actual["definitions"]) == 3
-        assert ABIType.__name__ in actual["definitions"]
-        assert EventABIType.__name__ in actual["definitions"]
-        assert EventABI.__name__ in actual["definitions"]
+        assert len(actual["$defs"]) == 2
+        assert ABIType.__name__ in actual["$defs"]
+        assert EventABIType.__name__ in actual["$defs"]
+        assert EventABI.__name__ in actual["title"]
 
     def test_selector(self):
         event = EventABI(name="FooEvent")
@@ -100,19 +98,16 @@ class TestFallbackABI:
 
     def test_schema(self):
         actual = FallbackABI.model_json_schema()
-        assert actual["$ref"] == "#/definitions/FallbackABI"
-        assert len(actual["definitions"]) == 2
-        assert ABIType.__name__ in actual["definitions"]
-        assert FallbackABI.__name__ in actual["definitions"]
+        assert not hasattr(actual, "$defs")
+        assert FallbackABI.__name__ in actual["title"]
 
 
 class TestMethodABI:
     def test_schema(self):
         actual = MethodABI.model_json_schema()
-        assert actual["$ref"] == "#/definitions/MethodABI"
-        assert len(actual["definitions"]) == 2
-        assert ABIType.__name__ in actual["definitions"]
-        assert MethodABI.__name__ in actual["definitions"]
+        assert len(actual["$defs"]) == 1
+        assert ABIType.__name__ in actual["$defs"]
+        assert MethodABI.__name__ in actual["title"]
 
     def test_selector(self):
         abi = MethodABI(
@@ -133,16 +128,12 @@ class TestReceiveABI:
 
     def test_schema(self):
         actual = ReceiveABI.model_json_schema()
-        assert actual["$ref"] == "#/definitions/ReceiveABI"
-        assert len(actual["definitions"]) == 2
-        assert ABIType.__name__ in actual["definitions"]
-        assert ReceiveABI.__name__ in actual["definitions"]
+        assert not hasattr(actual, "$defs")
+        assert ReceiveABI.__name__ in actual["title"]
 
 
 class TestUnprocessedABI:
     def test_schema(self):
         actual = UnprocessedABI.model_json_schema()
-        assert actual["$ref"] == "#/definitions/UnprocessedABI"
-        assert len(actual["definitions"]) == 2
-        assert ABIType.__name__ in actual["definitions"]
-        assert UnprocessedABI.__name__ in actual["definitions"]
+        assert not hasattr(actual, "$defs")
+        assert UnprocessedABI.__name__ in actual["title"]

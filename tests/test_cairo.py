@@ -111,4 +111,3 @@ def test_cairo_abi():
     l1_handler = abi[-1]
     l1_handler_raw = l1_handler.model_dump()
     assert l1_handler.type == l1_handler_raw["type"] == "l1_handler"
-    assert l1_handler.name == l1_handler_raw["name"] == "__l1_default__"

@@ -97,7 +97,7 @@ class PackageManifest(BaseModel):
     manifest: str = "ethpm/3"
     """The specification version that the project conforms to."""
 
-    name: Optional[PackageName] = None
+    name: Optional[PackageName] = None  # type: ignore [valid-type]
     """A human-readable name for the package."""
 
     version: Optional[str] = None
@@ -145,7 +145,9 @@ class PackageManifest(BaseModel):
     must be unique across all other contract instances for the given chain.
     """
 
-    dependencies: Optional[Dict[PackageName, AnyUrl]] = Field(None, alias="buildDependencies")
+    dependencies: Optional[Dict[PackageName, AnyUrl]] = Field(  # type: ignore [valid-type]
+        None, alias="buildDependencies"
+    )
     """
     A mapping of EthPM packages that this project depends on.
     The values must be content-addressable URIs that conforms to the same

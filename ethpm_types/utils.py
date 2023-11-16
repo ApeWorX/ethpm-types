@@ -5,7 +5,7 @@ from typing import Tuple
 from eth_pydantic_types import HexStr
 
 try:
-    from typing import Annotated
+    from typing import Annotated  # type: ignore
 except ImportError:
     from typing_extensions import Annotated  # type: ignore
 

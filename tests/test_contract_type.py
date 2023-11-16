@@ -70,9 +70,8 @@ def _select_abi(contract_type: ContractType, name: str) -> ABI:
 
 def test_schema():
     actual = ContractType.model_json_schema()
-    assert actual["$ref"] == "#/definitions/ContractType"
 
-    definitions = {d for d in actual["definitions"]}
+    definitions = {d for d in actual["$defs"]}
     expected = {"ABIType", "ASTClassification", "ASTNode", "Bytecode", "ConstructorABI"}
     assert expected.issubset(definitions)
 
@@ -207,11 +206,6 @@ def test_contract_type_backrefs(oz_contract_type):
     assert oz_contract_type.events, "setup: Test contract should have events"
     assert oz_contract_type.view_methods, "setup: Test contract should have view methods"
     assert oz_contract_type.mutable_methods, "setup: Test contract should have mutable methods"
-
-    assert oz_contract_type.constructor.contract_type == oz_contract_type
-    assert all(e.contract_type == oz_contract_type for e in oz_contract_type.events)
-    assert all(m.contract_type == oz_contract_type for m in oz_contract_type.mutable_methods)
-    assert all(m.contract_type == oz_contract_type for m in oz_contract_type.view_methods)
 
 
 @view_selector_parametrization
