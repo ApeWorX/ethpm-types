@@ -94,10 +94,7 @@ class EventABIType(ABIType):
 
 
 class BaseABI(BaseModel):
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
+    ...
 
 
 class ConstructorABI(BaseABI):
