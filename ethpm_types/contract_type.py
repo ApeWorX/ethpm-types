@@ -2,7 +2,6 @@ from functools import singledispatchmethod
 from typing import Callable, Dict, Iterable, List, Optional, Type, TypeVar, Union
 
 from eth_utils import add_0x_prefix, is_0x_prefixed
-from pydantic import root_validator
 
 from ethpm_types._pydantic_v1 import Field, root_validator, validator
 from ethpm_types.abi import (
