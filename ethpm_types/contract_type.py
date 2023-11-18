@@ -2,6 +2,7 @@ from functools import singledispatchmethod
 from typing import Callable, Dict, Iterable, List, Optional, Type, TypeVar, Union
 
 from eth_utils import add_0x_prefix, is_0x_prefixed
+from pydantic import root_validator
 
 from ethpm_types._pydantic_v1 import Field, validator
 from ethpm_types.abi import (
@@ -299,6 +300,11 @@ class ContractType(BaseModel):
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
+    method_identifiers: List[str] = Field(None, alias="methodIdentifiers")
+    """
+    A list of all the methods IDs, such as the keccak-based IDs.
+    """
+
     userdoc: Optional[dict] = None
     devdoc: Optional[dict] = None
 
@@ -320,6 +326,15 @@ class ContractType(BaseModel):
             return self.deployment_bytecode.to_bytes()
 
         return None
+
+    @root_validator
+    def auto_set_method_ids(cls, values):
+        # TODO: Switch to computed_field in Pydantic v2
+        methods = [x for x in values["abi"] if x.type == "function"]
+        values["method_identifiers"] = {
+            m.selector: HexBytes(cls._selector_hash_fn(m.selector)[:4]).hex() for m in methods
+        }
+        return values
 
     @validator("deployment_bytecode", "runtime_bytecode", pre=True)
     def validate_bytecode(cls, value):
@@ -436,7 +451,8 @@ class ContractType(BaseModel):
         """
         return self._get_abis(filter_fn=lambda a: isinstance(a, StructABI))
 
-    def _selector_hash_fn(self, selector: str) -> bytes:
+    @classmethod
+    def _selector_hash_fn(cls, selector: str) -> bytes:
         # keccak is the default on most ecosystems, other ecosystems can subclass to override it
         from eth_utils import keccak
 
