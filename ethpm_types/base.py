@@ -39,6 +39,7 @@ def _to_json_key(val: Any) -> Any:
 class BaseModel(_BaseModel):
     class Config:
         json_dumps = ethpm_dumps
+        use_enum_values = True
 
     def dict(self, *args, **kwargs) -> dict:
         # NOTE: We do this to accommodate the aliases needed for EIP-2678 compatibility

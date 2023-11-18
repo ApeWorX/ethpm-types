@@ -88,7 +88,7 @@ class Hex(str):
         return bytes.fromhex(self[2:])
 
 
-def compute_checksum(content: bytes, algorithm: Algorithm = Algorithm.MD5) -> Hex:
+def compute_checksum(content: bytes, algorithm: Union[Algorithm, str] = Algorithm.MD5) -> Hex:
     """
     Calculate the checksum of the given content.
 
@@ -99,6 +99,9 @@ def compute_checksum(content: bytes, algorithm: Algorithm = Algorithm.MD5) -> He
     Returns:
         :class:`~ethpm_types.utils.Hex`
     """
+
+    if isinstance(algorithm, str):
+        algorithm = Algorithm(algorithm)
 
     if algorithm is Algorithm.MD5:
         return Hex.from_bytes(md5(content).digest())
@@ -113,7 +116,7 @@ def compute_checksum(content: bytes, algorithm: Algorithm = Algorithm.MD5) -> He
     # TODO: Support keccak256 (if even necessary, mentioned in EIP but not used)
     # TODO: Explore other algorithms needed
     else:
-        raise ValueError("Unsupported algorithm.")
+        raise ValueError(f"Unsupported algorithm '{algorithm}'.")
 
 
 SourceLocation = Tuple[int, int, int, int]
