@@ -272,3 +272,52 @@ def test_init_bytecode_using_bytes(contract):
 def test_init_bytecode_using_empty_dict(contract):
     new_contract = ContractType(abi=[], deploymentBytecode={})
     assert new_contract.deployment_bytecode.bytecode is None
+
+
+def test_method_ids_are_set(vyper_contract):
+    actual = vyper_contract.method_identifiers
+
+    expected = {
+        "fooAndBar()": "0x2beb1711",
+        "setNumber(uint256)": "0x3fb5c1cb",
+        "setAddress(address)": "0xe30081a0",
+        "setBalance(address,uint256)": "0xe30443bc",
+        "getStruct()": "0x09b1b3f2",
+        "getNestedStruct1()": "0x02f487d6",
+        "getNestedStruct2()": "0xa420b5a5",
+        "getNestedStructWithTuple1()": "0xe9f7fd14",
+        "getNestedStructWithTuple2()": "0xa2fbee53",
+        "getEmptyDynArrayOfStructs()": "0x7a79591d",
+        "getEmptyTupleOfDynArrayStructs()": "0xa4f6d26b",
+        "getEmptyTupleOfArrayOfStructsAndDynArrayOfStructs()": "0x252e423e",
+        "getTupleOfIntAndStructArray()": "0xc2f14839",
+        "getEmptyTupleOfIntAndDynArray()": "0xa5c1b662",
+        "getStructWithArray()": "0x42ce1ec6",
+        "getEmptyArray()": "0x052f3e76",
+        "getSingleItemArray()": "0xb345ad96",
+        "getFilledArray()": "0x35417bf4",
+        "getAddressArray()": "0xa5b0930d",
+        "getDynamicStructArray()": "0x9bfb2ad8",
+        "getStaticStructArray()": "0x3ce80e94",
+        "getArrayWithBiggerSize()": "0x43790b64",
+        "getTupleOfArrays()": "0xd4d64b35",
+        "getMultipleValues()": "0x650543a3",
+        "getUnnamedTuple()": "0x243e0963",
+        "getTupleOfAddressArray()": "0x8ba6052d",
+        "getNestedArrayFixedFixed()": "0xccd62aa4",
+        "getNestedArrayDynamicFixed()": "0x6126c87f",
+        "getNestedArrayFixedDynamic()": "0x94a66fc9",
+        "getNestedArrayMixedDynamic()": "0xabeb2022",
+        "getNestedAddressArray()": "0x99e74a4c",
+        "functionWithUniqueAmountOfArguments(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256)": "0xacab48d8",  # noqa: E501
+        "setStruct((address,bytes32))": "0x78c067b0",
+        "setStructArray((address,bytes32)[2])": "0x7b92b7ce",
+        "owner()": "0x8da5cb5b",
+        "myNumber()": "0x23fd0e40",
+        "prevNumber()": "0x4825cf6f",
+        "theAddress()": "0x6cbceeec",
+        "balances(address)": "0x27e235e3",
+        "dynArray(uint256,uint256)": "0xd3aaff6d",
+        "mixedArray(uint256,uint256,uint256,uint256)": "0xae8ef2cb",
+    }
+    assert actual == expected
