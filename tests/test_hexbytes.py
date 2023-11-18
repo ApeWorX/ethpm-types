@@ -17,7 +17,7 @@ TEST_MODEL_DICT = {
 EMPTY_BYTES = HexBytes("0x0000000000000000000000000000000000000000000000000000000000000000")
 
 
-class TestModel(BaseModel):
+class DemoModel(BaseModel):
     byte_bytes: HexBytes
     bytearray_bytes: HexBytes
     str_bytes: HexBytes
@@ -34,7 +34,7 @@ class Block(BaseModel):
 
 
 def test_hexbytes_dict():
-    test_model = TestModel.parse_obj(TEST_MODEL_DICT)
+    test_model = DemoModel.parse_obj(TEST_MODEL_DICT)
 
     for _, item in test_model.__fields__.items():
         assert item.type_ == HexBytes
@@ -47,7 +47,7 @@ def test_hexbytes_dict():
 
 
 def test_hexbytes_dict_exclude():
-    test_model = TestModel.parse_obj(TEST_MODEL_DICT)
+    test_model = DemoModel.parse_obj(TEST_MODEL_DICT)
 
     test_dict = test_model.dict(exclude={"byte_bytes"})
     assert len(test_dict) == 6
@@ -55,7 +55,7 @@ def test_hexbytes_dict_exclude():
 
 
 def test_hexbytes_json():
-    test_models = (TestModel.parse_obj(TEST_MODEL_DICT), TestModel(**TEST_MODEL_DICT))
+    test_models = (DemoModel.parse_obj(TEST_MODEL_DICT), DemoModel(**TEST_MODEL_DICT))
     for model in test_models:
         test_json = model.json(exclude={"bool_bytes", "byte_bytes", "int_bytes"})
         assert test_json == (

@@ -76,20 +76,28 @@ def test_examples(example_name):
 
     if "invalid" not in example_name:
         package = PackageManifest.parse_obj(example_json)
-        assert package.dict() == example_json
+
+        # Remove extra fields not part of spec.
+        if package.contract_types:
+            for n, c in package.contract_types.items():
+                c.method_identifiers = None
+
+        actual_dict = package.dict()
+        assert actual_dict == example_json
 
         # NOTE: Also make sure that the encoding is exactly the same (per EIP-2678)
-        actual = package.json()
+        actual_json = package.json()
+
         expected = example.text
-        for idx, (c1, c2) in enumerate(zip(actual, expected)):
+        for idx, (c1, c2) in enumerate(zip(actual_json, expected)):
             # The following logic is because the strings being compared
             # are very long and this more accurately pinpoints
             # the failing section of the string, even on lower verbosity.
             buffer = 20
             start = max(0, idx - 10)
-            actual_end = min(idx + buffer, len(actual))
+            actual_end = min(idx + buffer, len(actual_json))
             expected_end = min(idx + buffer, len(expected))
-            actual_prefix = actual[start:actual_end]
+            actual_prefix = actual_json[start:actual_end]
             expected_prefix = expected[start:expected_end]
             fail_msg = (
                 f"Differs at index: {idx}, "
