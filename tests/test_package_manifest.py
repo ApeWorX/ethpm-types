@@ -5,10 +5,9 @@ from pathlib import Path
 import github
 import pytest
 import requests
-from pydantic import BaseModel
 
 from ethpm_types import ContractType
-from ethpm_types._pydantic_v1 import ValidationError
+from ethpm_types._pydantic_v1 import ValidationError, _BaseModel
 from ethpm_types.manifest import ALPHABET, NUMBERS, PackageManifest, PackageMeta, PackageName
 from ethpm_types.source import Compiler, Content, Source
 
@@ -237,7 +236,7 @@ def test_validate_package_manifest_when_is_field(package_manifest):
     Mimics a FastAPI internal behavior.
     """
 
-    class Response(BaseModel):
+    class Response(_BaseModel):
         manifest: PackageManifest  # type: ignore
 
     response = Response(manifest=package_manifest.dict())
