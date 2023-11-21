@@ -76,6 +76,11 @@ def test_schema():
     assert expected.issubset(definitions)
 
 
+def test_validate(contract):
+    contract.validate(contract)
+    contract.validate(contract.dict())
+
+
 def test_structs(contract):
     method_abi = _select_abi(contract, "getStruct")
     assert contract.structs == []

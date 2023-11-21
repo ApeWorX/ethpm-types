@@ -64,6 +64,18 @@ def test_source_repr(source):
     assert repr(source) == f"<Source {checksum.hash}>"
 
 
+def test_source_validate(source):
+    src = source  # alias for avoiding pdb name conflict
+    src_dict = src.dict()
+    assert isinstance(src_dict["content"], str)
+    assert source.validate(src)
+    assert source.validate(src_dict)
+
+    # Change src to a dict and retry
+    src_dict["content"] = {i + 1: ln for i, ln in enumerate(src_dict["content"])}
+    assert source.validate(src_dict)
+
+
 def test_source_line_access(source, content_raw):
     lines = content_raw.splitlines()
     assert source[0] == lines[0]
@@ -73,13 +85,13 @@ def test_source_line_access(source, content_raw):
     assert source[3:5] == lines[3:5]
 
 
-def test_enumerate(source):
+def test_source_enumerate(source):
     for line_idx, line in enumerate(source):
         assert isinstance(line_idx, int)
         assert isinstance(line, str)
 
 
-def test_len(source, content_raw):
+def test_source_len(source, content_raw):
     assert len(source) == len(content_raw.splitlines())
 
 
