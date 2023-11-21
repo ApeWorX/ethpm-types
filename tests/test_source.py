@@ -121,6 +121,54 @@ def test_content_chunk(content_raw):
     assert len(content) == 3
 
 
+def test_content_from_str():
+    lines = ("I am content", " I am line 2 of content")
+    content_str = "\n".join(lines)
+    content = Content.parse_obj(content_str)
+    assert content[1] == lines[0]  # Line 1
+    assert content[2] == lines[1]  # Line 2
+
+    # Assert it passes re-validation.
+    content.validate(content)
+
+
+def test_content_from_root_str():
+    lines = ("I am content", " I am line 2 of content")
+    content_str = "\n".join(lines)
+    content = Content.parse_obj({"__root__": content_str})
+    assert content[1] == lines[0]  # Line 1
+    assert content[2] == lines[1]  # Line 2
+
+    # Assert it passes re-validation.
+    content.validate(content)
+
+
+def test_content_from_dict():
+    lines = {1: "I am content", 2: "I am line 2 of content"}
+    content = Content.parse_obj(lines)
+    assert content[1] == lines[1]  # Line 1
+    assert content[2] == lines[2]  # Line 2
+
+    # Assert it passes re-validation.
+    content.validate(content)
+
+
+def test_content_from_root_dict():
+    lines = {1: "I am content", 2: "I am line 2 of content"}
+    content = Content.parse_obj({"__root__": lines})
+    assert content[1] == lines[1]  # Line 1
+    assert content[2] == lines[2]  # Line 2
+
+    # Assert it passes re-validation.
+    content.validate(content)
+
+
+@pytest.mark.parametrize("val", ("", {}, None))
+def test_content_validate_empty(val):
+    content = Content.parse_obj(val)
+    assert content.validate(val) == Content(__root__={})
+
+
 def test_contract_source(vyper_contract, source, source_base):
     actual = ContractSource.create(vyper_contract, source, source_base)
     assert actual.contract_type == vyper_contract
