@@ -116,6 +116,10 @@ class Content(BaseModel):
             # Prevent contains-check from failing when None.
             value = value.pop("__root__") or {}
 
+            # Convert paths to their texts (str)
+            if isinstance(value, Path):
+                value = {"__root__": value.read_text()}
+
         # Convert str-content to dict of linenos -> line content
         return {
             "__root__": (

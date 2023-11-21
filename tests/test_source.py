@@ -175,6 +175,32 @@ def test_content_from_root_dict():
     content.validate(content)
 
 
+def test_content_from_path():
+    lines = ("I am content", " I am line 2 of content")
+    with tempfile.TemporaryDirectory() as temp_dir:
+        path = Path(temp_dir) / "Contract.vy"
+        path.write_text("\n".join(lines))
+        content = Content.parse_obj(path)
+        assert content[1] == lines[0]  # Line 1
+        assert content[2] == lines[1]  # Line 2
+
+        # Assert it passes re-validation.
+        content.validate(content)
+
+
+def test_content_from_root_path():
+    lines = ("I am content", " I am line 2 of content")
+    with tempfile.TemporaryDirectory() as temp_dir:
+        path = Path(temp_dir) / "Contract.vy"
+        path.write_text("\n".join(lines))
+        content = Content.parse_obj({"__root__": path})
+        assert content[1] == lines[0]  # Line 1
+        assert content[2] == lines[1]  # Line 2
+
+        # Assert it passes re-validation.
+        content.validate(content)
+
+
 @pytest.mark.parametrize("val", ("", {}, None))
 def test_content_validate_empty(val):
     content = Content.parse_obj(val)

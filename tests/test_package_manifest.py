@@ -217,3 +217,15 @@ def test_contract_types():
 
     manifest = PackageManifest(contractTypes=contract_types)
     assert manifest.contract_types == contract_types
+
+
+def test_validate_fields(package_manifest):
+    """
+    Mimics a FastAPI internal behavior.
+    """
+
+    raw_data = package_manifest.dict()
+    for name, field in package_manifest.__fields__.items():
+        value_from_model = raw_data.get(name)
+        value, errors = field.validate(value_from_model, {}, loc=("response",))
+        assert not errors, ", ".join(errors)
