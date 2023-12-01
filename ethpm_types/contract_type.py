@@ -313,10 +313,10 @@ class ContractType(BaseModel):
 
         return None
 
-    @computed_field(alias="methodIdentifiers")
+    @computed_field(alias="methodIdentifiers")  # type: ignore
     @cached_property
     def method_identifiers(self) -> Optional[Dict[str, str]]:
-        methods = [x for x in self.abi if x.type == "function"]
+        methods: List[MethodABI] = [x for x in self.abi if x.type == "function"]  # type: ignore
         return {m.selector: HexBytes(self._selector_hash_fn(m.selector)[:4]).hex() for m in methods}
 
     @field_validator("deployment_bytecode", "runtime_bytecode", mode="before")
