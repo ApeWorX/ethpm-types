@@ -9,7 +9,7 @@ here = Path(__file__).parent.absolute()
 extras_require = {
     "test": [  # `test` GitHub Action jobs uses this
         "pytest>=6.0",  # Core testing package
-        "pytest-xdist",  # multi-process runner
+        "pytest-xdist",  # Multi-process runner
         "pytest-cov",  # Coverage analyzer plugin
         "hypothesis>=6.2.0,<7.0",  # Strategy-based fuzzer
         # Test-only deps
@@ -18,14 +18,18 @@ extras_require = {
         "pysha3>=1.0.2,<2.0.0",  # Backend for eth-hash
     ],
     "lint": [
-        "black>=23.11.0,<24",  # auto-formatter and linter
-        "mypy>=1.5.1,<2",  # Static type analyzer
-        "types-setuptools",  # Needed due to mypy typeshed
-        "types-requests",  # Needed due to mypy typeshed
+        "black>=23.11.0,<24",  # Auto-formatter and linter
+        "mypy>=1.7.1,<2",  # Static type analyzer
+        "types-setuptools",  # Needed for mypy type shed
+        "types-requests",  # Needed for mypy type shed
         "flake8>=6.1.0,<7",  # Style linter
-        "flake8-breakpoint>=1.1.0",  # detect breakpoints left in code
-        "flake8-print>=4.0.0",  # detect print statements left in code
-        "isort>=5.10.1,<5.11",  # Import sorting linter
+        "flake8-breakpoint>=1.1.0,<2",  # Detect breakpoints left in code
+        "flake8-print>=5.0.0,<6",  # Detect print statements left in code
+        "isort>=5.10.1,<6",  # Import sorting linter
+        "mdformat>=0.7.17",  # Auto-formatter for markdown
+        "mdformat-gfm>=0.3.5",  # Needed for formatting GitHub-flavored markdown
+        "mdformat-frontmatter>=0.4.1",  # Needed for frontmatters-style headers in issue templates
+        "mdformat-pyproject>=0.0.1",  # Allows configuring in pyproject.toml
     ],
     "doc": [
         "myst-parser>=0.17.0,<0.18",  # Tools for parsing markdown files in the docs
