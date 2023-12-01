@@ -11,9 +11,22 @@ SOURCE_ID = "VyperContract.vy"
 
 
 @pytest.fixture
-def get_contract_type():
+def get_contract_type(get_source_path):
     def fn(name: str) -> ContractType:
-        return ContractType.parse_file(COMPILED_BASE / f"{name}.json")
+        path = get_source_path(name, base=COMPILED_BASE)
+        return ContractType.parse_file(path)
+
+    return fn
+
+
+@pytest.fixture
+def get_source_path():
+    def fn(name: str, base: Path = SOURCE_BASE) -> Path:
+        for path in base.iterdir():
+            if path.stem == name:
+                return path
+
+        raise AssertionError("test setup failed - path not found")
 
     return fn
 
@@ -40,8 +53,8 @@ def oz_contract_type(oz_package):
 
 
 @pytest.fixture
-def content_raw() -> str:
-    return (SOURCE_BASE / "VyperContract.vy").read_text()
+def content_raw(get_source_path) -> str:
+    return get_source_path("VyperContract").read_text()
 
 
 @pytest.fixture
@@ -91,11 +104,16 @@ def fallback_contract(request, get_contract_type):
 
 
 @pytest.fixture
-def package_manifest(solidity_contract, vyper_contract):
+def package_manifest(solidity_contract, vyper_contract, get_source_path):
     return PackageManifest(
         contractTypes={
             solidity_contract.name: solidity_contract,
             vyper_contract.name: vyper_contract,
         },
-        sources={solidity_contract.source_id: "", vyper_contract.source_id: ""},
+        sources={
+            solidity_contract.source_id: {
+                "content": get_source_path("SolidityContract"),
+            },
+            vyper_contract.source_id: {"content": get_source_path("VyperContract")},
+        },
     )

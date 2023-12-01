@@ -7,7 +7,7 @@ import pytest
 import requests
 
 from ethpm_types import ContractType
-from ethpm_types._pydantic_v1 import ValidationError
+from ethpm_types._pydantic_v1 import ValidationError, _BaseModel
 from ethpm_types.manifest import ALPHABET, NUMBERS, PackageManifest, PackageMeta, PackageName
 from ethpm_types.source import Compiler, Content, Source
 
@@ -217,3 +217,28 @@ def test_contract_types():
 
     manifest = PackageManifest(contractTypes=contract_types)
     assert manifest.contract_types == contract_types
+
+
+def test_validate_fields(package_manifest):
+    """
+    Mimics a FastAPI internal behavior.
+    """
+
+    raw_data = package_manifest.dict()
+    for name, field in package_manifest.__fields__.items():
+        value_from_model = raw_data.get(name)
+        value, errors = field.validate(value_from_model, {}, loc=("response",))
+        assert not errors, ", ".join(errors)
+
+
+def test_validate_package_manifest_when_is_field(package_manifest):
+    """
+    Mimics a FastAPI internal behavior.
+    """
+
+    class Response(_BaseModel):
+        manifest: PackageManifest  # type: ignore
+
+    response = Response(manifest=package_manifest.dict())
+    assert response.manifest == package_manifest
+    response.__fields__["manifest"].validate(package_manifest.dict(), {}, loc=("response",))

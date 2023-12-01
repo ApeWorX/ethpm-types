@@ -17,10 +17,10 @@ class HexBytes(BaseHexBytes):
 
     @classmethod
     def __get_validators__(cls):
-        yield cls.validate
+        yield cls._validate
 
     @classmethod
-    def validate(cls, v):
+    def _validate(cls, v):
         return HexBytes(v)
 
 

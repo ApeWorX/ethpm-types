@@ -108,12 +108,24 @@ class Content(BaseModel):
 
     @root_validator(pre=True)
     def validate_dict(cls, value):
-        data = value["__root__"] if "__root__" in value else value
+        # Handle when full value is empty.
+        value = value or {}
+
+        # Find "root"
+        while "__root__" in value:
+            # Prevent contains-check from failing when None.
+            value = value.pop("__root__") or {}
+
+            # Convert paths to their texts (str)
+            if isinstance(value, Path):
+                value = {"__root__": value.read_text()}
+
+        # Convert str-content to dict of linenos -> line content
         return {
             "__root__": (
-                {i + 1: x for i, x in enumerate(data.splitlines())}
-                if isinstance(data, str)
-                else data
+                {i + 1: x for i, x in enumerate(value.splitlines())}
+                if isinstance(value, str)
+                else value
             )
         }
 
