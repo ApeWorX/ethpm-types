@@ -290,6 +290,11 @@ class ContractType(BaseModel):
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
+    method_identifiers: Dict[str, str] = Field(None, alias="methodIdentifiers")
+    """
+    A list of all the methods IDs, such as the keccak-based IDs.
+    """
+
     userdoc: Optional[dict] = None
     devdoc: Optional[dict] = None
 
@@ -427,7 +432,8 @@ class ContractType(BaseModel):
         """
         return self._get_abis(filter_fn=lambda a: isinstance(a, StructABI))
 
-    def _selector_hash_fn(self, selector: str) -> bytes:
+    @classmethod
+    def _selector_hash_fn(cls, selector: str) -> bytes:
         # keccak is the default on most ecosystems, other ecosystems can subclass to override it
         from eth_utils import keccak
 

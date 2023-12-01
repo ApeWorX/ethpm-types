@@ -53,6 +53,7 @@ def test_hexbytes_mode_dump_exclude():
 
 def test_hexbytes_mode_dump_json():
     test_models = (FooModel.model_validate(TEST_MODEL_DICT), FooModel(**TEST_MODEL_DICT))
+
     for model in test_models:
         test_json = model.model_dump_json(exclude={"bool_bytes", "byte_bytes", "int_bytes"})
         assert test_json == (
