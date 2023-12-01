@@ -1,9 +1,9 @@
-from functools import singledispatchmethod
+from functools import cached_property, singledispatchmethod
 from typing import Callable, Dict, Iterable, List, Optional, Type, TypeVar, Union
 
 from eth_pydantic_types import Address, HashStr32, HexBytes, HexStr
 from eth_utils import is_0x_prefixed
-from pydantic import Field, field_validator
+from pydantic import Field, computed_field, field_validator
 
 from ethpm_types.abi import (
     ABI,
@@ -291,11 +291,6 @@ class ContractType(BaseModel):
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
-    method_identifiers: Optional[Dict[str, str]] = Field(None, alias="methodIdentifiers")
-    """
-    A list of all the methods IDs, such as the keccak-based IDs.
-    """
-
     userdoc: Optional[dict] = None
     devdoc: Optional[dict] = None
 
@@ -317,6 +312,12 @@ class ContractType(BaseModel):
             return bytecode.to_bytes()
 
         return None
+
+    @computed_field(alias="methodIdentifiers")
+    @cached_property
+    def method_identifiers(self) -> Optional[Dict[str, str]]:
+        methods = [x for x in self.abi if x.type == "function"]
+        return {m.selector: HexBytes(self._selector_hash_fn(m.selector)[:4]).hex() for m in methods}
 
     @field_validator("deployment_bytecode", "runtime_bytecode", mode="before")
     def validate_bytecode(cls, value):

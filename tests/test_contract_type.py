@@ -77,8 +77,8 @@ def test_schema():
 
 
 def test_validate(contract):
-    contract.validate(contract)
-    contract.validate(contract.dict())
+    contract.model_validate(contract)
+    contract.model_validate(contract.model_dump())
 
 
 def test_structs(contract):
