@@ -5,6 +5,7 @@ from pathlib import Path
 import github
 import pytest
 import requests
+from pydantic import BaseModel as _BaseModel
 from pydantic import ValidationError
 
 from ethpm_types import ContractType
@@ -83,9 +84,9 @@ def test_examples(example_name):
             # the failing section of the string, even on lower verbosity.
             buffer = 20
             start = max(0, idx - 10)
-            actual_end = min(idx + buffer, len(actual_json))
+            actual_end = min(idx + buffer, len(actual))
             expected_end = min(idx + buffer, len(expected))
-            actual_prefix = actual_json[start:actual_end]
+            actual_prefix = actual[start:actual_end]
             expected_prefix = expected[start:expected_end]
             fail_msg = (
                 f"Differs at index: {idx}, "

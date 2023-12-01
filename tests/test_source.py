@@ -136,18 +136,7 @@ def test_content_chunk(content_raw):
 def test_content_from_str():
     lines = ("I am content", " I am line 2 of content")
     content_str = "\n".join(lines)
-    content = Content.parse_obj(content_str)
-    assert content[1] == lines[0]  # Line 1
-    assert content[2] == lines[1]  # Line 2
-
-    # Assert it passes re-validation.
-    content.validate(content)
-
-
-def test_content_from_root_str():
-    lines = ("I am content", " I am line 2 of content")
-    content_str = "\n".join(lines)
-    content = Content.parse_obj({"__root__": content_str})
+    content = Content.model_validate(content_str)
     assert content[1] == lines[0]  # Line 1
     assert content[2] == lines[1]  # Line 2
 
@@ -157,7 +146,7 @@ def test_content_from_root_str():
 
 def test_content_from_dict():
     lines = {1: "I am content", 2: "I am line 2 of content"}
-    content = Content.parse_obj(lines)
+    content = Content.model_validate(lines)
     assert content[1] == lines[1]  # Line 1
     assert content[2] == lines[2]  # Line 2
 
@@ -167,7 +156,7 @@ def test_content_from_dict():
 
 def test_content_from_root_dict():
     lines = {1: "I am content", 2: "I am line 2 of content"}
-    content = Content.parse_obj({"__root__": lines})
+    content = Content.model_validate(lines)
     assert content[1] == lines[1]  # Line 1
     assert content[2] == lines[2]  # Line 2
 
@@ -180,7 +169,7 @@ def test_content_from_path():
     with tempfile.TemporaryDirectory() as temp_dir:
         path = Path(temp_dir) / "Contract.vy"
         path.write_text("\n".join(lines))
-        content = Content.parse_obj(path)
+        content = Content.model_validate(path)
         assert content[1] == lines[0]  # Line 1
         assert content[2] == lines[1]  # Line 2
 
@@ -193,7 +182,7 @@ def test_content_from_root_path():
     with tempfile.TemporaryDirectory() as temp_dir:
         path = Path(temp_dir) / "Contract.vy"
         path.write_text("\n".join(lines))
-        content = Content.parse_obj({"__root__": path})
+        content = Content.model_validate(path)
         assert content[1] == lines[0]  # Line 1
         assert content[2] == lines[1]  # Line 2
 
@@ -203,8 +192,8 @@ def test_content_from_root_path():
 
 @pytest.mark.parametrize("val", ("", {}, None))
 def test_content_validate_empty(val):
-    content = Content.parse_obj(val)
-    assert content.validate(val) == Content(__root__={})
+    content = Content.model_validate(val)
+    assert content.validate(val) == Content(root={})
 
 
 def test_contract_source(vyper_contract, source, source_base):

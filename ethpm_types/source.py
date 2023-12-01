@@ -1,4 +1,4 @@
-from pathlib import Path
+from pathlib import Path, PosixPath
 from typing import Dict, Iterator, List, Optional, Set, Tuple, Union
 
 import requests
@@ -101,7 +101,13 @@ class Content(RootModel[Dict[int, str]]):
 
     @model_validator(mode="before")
     def validate_dict(cls, value):
-        data = value["root"] if "_root" in value else value
+        if value is None:
+            return {}
+
+        if type(value) is PosixPath:
+            data = value.read_text()
+        else:
+            data = value["root"] if "_root" in value else value
         return (
             {i + 1: x for i, x in enumerate(data.splitlines())} if isinstance(data, str) else data
         )

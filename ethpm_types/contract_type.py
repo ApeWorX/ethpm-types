@@ -265,6 +265,7 @@ class ContractType(BaseModel):
     sourcemap: Optional[SourceMap] = None
     """
     The range of the source code that is represented by the respective node in the AST.
+
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
@@ -290,7 +291,7 @@ class ContractType(BaseModel):
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
-    method_identifiers: Dict[str, str] = Field(None, alias="methodIdentifiers")
+    method_identifiers: Optional[Dict[str, str]] = Field(None, alias="methodIdentifiers")
     """
     A list of all the methods IDs, such as the keccak-based IDs.
     """
