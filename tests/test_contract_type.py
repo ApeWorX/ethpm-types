@@ -279,7 +279,7 @@ def test_init_using_bytecode(contract):
     new_contract = ContractType(abi=[], deploymentBytecode=obj)
     assert new_contract.deployment_bytecode.bytecode == obj.bytecode
 
-    
+
 def test_method_ids_are_set(vyper_contract):
     actual = vyper_contract.method_identifiers
 
