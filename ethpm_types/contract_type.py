@@ -301,6 +301,17 @@ class ContractType(BaseModel):
 
         return f"<{repr_id}>"
 
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, ContractType):
+            return NotImplemented
+
+        return (
+            other.name == self.name
+            and other.abi == self.abi
+            and self.runtime_bytecode == other.runtime_bytecode
+            and self.deployment_bytecode == other.deployment_bytecode
+        )
+
     def get_runtime_bytecode(self) -> Optional[HexBytes]:
         if bytecode := self.runtime_bytecode:
             return bytecode.to_bytes()
