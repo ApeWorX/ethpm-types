@@ -456,7 +456,7 @@ SOLIDITY_AST_JSON = {
 
 
 def test_vy_ast():
-    node = ASTNode.parse_obj(VYPER_AST_JSON)
+    node = ASTNode.model_validate(VYPER_AST_JSON)
     idx = SourceMapItem.parse_str("104:8:0")
     stmt = node.get_node(idx)
     stmts = node.get_nodes_at_line((6, 14, 6, 26))
@@ -474,14 +474,14 @@ def test_vy_ast():
 
 
 def test_sol_ast():
-    node = ASTNode.parse_obj(SOLIDITY_AST_JSON)
+    node = ASTNode.model_validate(SOLIDITY_AST_JSON)
     assert node.ast_type == "SourceUnit"
     assert len(node.children) == 10
 
 
 @pytest.mark.parametrize("length", (0, None))
 def test_ast_get_node_no_length(length):
-    node = ASTNode.parse_obj(VYPER_AST_JSON)
+    node = ASTNode.model_validate(VYPER_AST_JSON)
     idx = SourceMapItem(start=111, length=length, contract_id=None, jump_code="-")
     actual = node.get_node(idx)
     assert actual.ast_type == "Int"

@@ -2,8 +2,8 @@ import tempfile
 from pathlib import Path
 
 import pytest
+from pydantic import FileUrl
 
-from ethpm_types._pydantic_v1 import FileUrl
 from ethpm_types.source import Checksum, Compiler, Content, ContractSource, Source
 from ethpm_types.utils import Algorithm, compute_checksum
 
@@ -15,12 +15,12 @@ SOURCE_LOCATION = (
 
 @pytest.fixture
 def no_checksum() -> Source:
-    return Source.parse_obj({"source_id": "Foo.txt", "urls": [SOURCE_LOCATION]})
+    return Source.model_validate({"source_id": "Foo.txt", "urls": [SOURCE_LOCATION]})
 
 
 @pytest.fixture
 def bad_checksum() -> Source:
-    return Source.parse_obj(
+    return Source.model_validate(
         {
             "source_id": "Foo.txt",
             "urls": [SOURCE_LOCATION],
@@ -31,7 +31,7 @@ def bad_checksum() -> Source:
 
 @pytest.fixture
 def empty_source() -> Source:
-    return Source.parse_obj({"source_id": "Foo.txt", "content": ""})
+    return Source.model_validate({"source_id": "Foo.txt", "content": ""})
 
 
 def test_corrupt_source(bad_checksum, no_checksum):
@@ -50,7 +50,7 @@ def test_source_repr(source):
 
     # Test that uses file URI when available.
     raw_uri = "file://path/to/file.vy"
-    uri = FileUrl(raw_uri, scheme="file")
+    uri = FileUrl(raw_uri)
     source.urls = [uri]
     assert repr(source) == f"<Source {raw_uri}>"
 
@@ -100,7 +100,7 @@ def test_content(content, content_raw):
     assert str(content) == content_raw
     # `__getitem__` works off linenos
     assert content[1] == "# @version 0.3.7"
-    # slices are lineno-based from `content` because `__root__` is a dict.
+    # slices are lineno-based from `content` because `root` is a dict.
     # Sometimes, like when building source tracebacks, not all lines are present.
     # In the `Source` object, for its content, all lines are always there.
     # Thus, its `__getitem__` is index based.
@@ -127,7 +127,7 @@ def test_content_chunk(content_raw):
     """
     chunk = content_raw.splitlines()[6:9]
     data = {7: chunk[0], 8: chunk[1], 9: chunk[2]}
-    content = Content.parse_obj(data)
+    content = Content.model_validate(data)
     assert content.begin_lineno == 7
     assert content.end_lineno == 9
     assert len(content) == 3
@@ -136,18 +136,7 @@ def test_content_chunk(content_raw):
 def test_content_from_str():
     lines = ("I am content", " I am line 2 of content")
     content_str = "\n".join(lines)
-    content = Content.parse_obj(content_str)
-    assert content[1] == lines[0]  # Line 1
-    assert content[2] == lines[1]  # Line 2
-
-    # Assert it passes re-validation.
-    content.validate(content)
-
-
-def test_content_from_root_str():
-    lines = ("I am content", " I am line 2 of content")
-    content_str = "\n".join(lines)
-    content = Content.parse_obj({"__root__": content_str})
+    content = Content.model_validate(content_str)
     assert content[1] == lines[0]  # Line 1
     assert content[2] == lines[1]  # Line 2
 
@@ -157,7 +146,7 @@ def test_content_from_root_str():
 
 def test_content_from_dict():
     lines = {1: "I am content", 2: "I am line 2 of content"}
-    content = Content.parse_obj(lines)
+    content = Content.model_validate(lines)
     assert content[1] == lines[1]  # Line 1
     assert content[2] == lines[2]  # Line 2
 
@@ -167,7 +156,7 @@ def test_content_from_dict():
 
 def test_content_from_root_dict():
     lines = {1: "I am content", 2: "I am line 2 of content"}
-    content = Content.parse_obj({"__root__": lines})
+    content = Content.model_validate(lines)
     assert content[1] == lines[1]  # Line 1
     assert content[2] == lines[2]  # Line 2
 
@@ -180,7 +169,7 @@ def test_content_from_path():
     with tempfile.TemporaryDirectory() as temp_dir:
         path = Path(temp_dir) / "Contract.vy"
         path.write_text("\n".join(lines))
-        content = Content.parse_obj(path)
+        content = Content.model_validate(path)
         assert content[1] == lines[0]  # Line 1
         assert content[2] == lines[1]  # Line 2
 
@@ -193,7 +182,7 @@ def test_content_from_root_path():
     with tempfile.TemporaryDirectory() as temp_dir:
         path = Path(temp_dir) / "Contract.vy"
         path.write_text("\n".join(lines))
-        content = Content.parse_obj({"__root__": path})
+        content = Content.model_validate(path)
         assert content[1] == lines[0]  # Line 1
         assert content[2] == lines[1]  # Line 2
 
@@ -203,8 +192,8 @@ def test_content_from_root_path():
 
 @pytest.mark.parametrize("val", ("", {}, None))
 def test_content_validate_empty(val):
-    content = Content.parse_obj(val)
-    assert content.validate(val) == Content(__root__={})
+    content = Content.model_validate(val)
+    assert content.validate(val) == Content(root={})
 
 
 def test_contract_source(vyper_contract, source, source_base):

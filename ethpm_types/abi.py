@@ -1,10 +1,8 @@
-from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
-from ethpm_types._pydantic_v1 import Extra, Field
+from pydantic import ConfigDict, Field
+
 from ethpm_types.base import BaseModel
-
-if TYPE_CHECKING:
-    from ethpm_types.contract_type import ContractType
 
 
 class ABIType(BaseModel):
@@ -25,15 +23,13 @@ class ABIType(BaseModel):
     Tuples and structs tend to have this field.
     """
 
-    internalType: Optional[str] = None
+    internal_type: Optional[str] = Field(None, alias="internalType")
     """
     Another name for the type. Sometimes, compilers are able to populate
     this field with the struct or enum name.
     """
 
-    class Config:
-        extra = Extra.allow
-        allow_mutation = False
+    model_config = ConfigDict(frozen=True, extra="allow")
 
     @property
     def canonical_type(self) -> str:
@@ -64,10 +60,7 @@ class ABIType(BaseModel):
         Else, returns ``"<canonical_type>"``.
         """
 
-        if self.name:
-            return f"{self.canonical_type} {self.name}"
-        else:
-            return self.canonical_type
+        return f"{self.canonical_type} {self.name}" if self.name else self.canonical_type
 
 
 class EventABIType(ABIType):
@@ -90,34 +83,18 @@ class EventABIType(ABIType):
         """
 
         sig = self.canonical_type
+
         # For events (handles both None and False conditions)
         if self.indexed:
             sig += " indexed"
         if self.name:
             sig += f" {self.name}"
+
         return sig
 
 
 class BaseABI(BaseModel):
-    contract_type: Optional["ContractType"] = Field(None, exclude=True, repr=False)
-    """
-    A reference to this ABI's contract type. This gets set during ``ContractType``
-    deserialization.
-    """
-
-    @classmethod
-    def schema(cls, *args, **kwargs) -> Dict[str, Any]:
-        result = super().schema(*args, **kwargs)
-
-        # Remove definitions ContractType and all its sub-components.
-        # The backref to contract_type is internal to Python applications.
-        valid_types = ["ABIType", cls.__name__]
-        if cls.__name__ == "EventABI":
-            valid_types.append("EventABIType")
-
-        result["definitions"] = {n: d for n, d in result["definitions"].items() if n in valid_types}
-
-        return result
+    ...
 
 
 class ConstructorABI(BaseABI):
@@ -390,8 +367,7 @@ class StructABI(BaseABI):
     members: List[ABIType]
     """The properties that compose the struct."""
 
-    class Config:
-        extra = Extra.allow
+    model_config = ConfigDict(extra="allow")
 
     @property
     def selector(self) -> str:
@@ -423,9 +399,6 @@ class UnprocessedABI(BaseABI):
     type: str
     """The type name as a string."""
 
-    class Config:
-        extra = Extra.allow
-
     @property
     def signature(self) -> str:
         """
@@ -433,7 +406,7 @@ class UnprocessedABI(BaseABI):
         a more useful-looking signature.
         """
 
-        return self.json()
+        return self.model_dump_json()
 
 
 ABI = Union[

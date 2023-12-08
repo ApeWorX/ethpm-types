@@ -1,11 +1,14 @@
+import pytest
+
 from ethpm_types.sourcemap import PCMap, PCMapItem
 
 
-def test_pc_map_valid():
+@pytest.mark.parametrize("key", (186, "186"))
+def test_pc_map_valid(key):
     """
     Test the parsing of a valid pc-map from a compiler's output.
     """
-    pcmap = PCMap.parse_obj({"186": [10, 20, 10, 40]}).parse()
+    pcmap = PCMap.model_validate({key: [10, 20, 10, 40]}).parse()
 
     keys = list(pcmap.keys())
 
@@ -19,7 +22,7 @@ def test_pc_map_empty_line_info():
     Test the parsing of a pc-map from a compiler's output that has empty line
     information.
     """
-    pcmap = PCMap.parse_obj({"186": [None, None, None, None]}).parse()
+    pcmap = PCMap.model_validate({"186": [None, None, None, None]}).parse()
 
     keys = list(pcmap.keys())
 
@@ -35,7 +38,7 @@ def test_pc_map_missing_line_info():
     Test the parsing of a pc-map from a compiler's output that is entirely missing line
     information.
     """
-    pcmap = PCMap.parse_obj({"186": None}).parse()
+    pcmap = PCMap.model_validate({"186": None}).parse()
 
     keys = list(pcmap.keys())
 
@@ -50,13 +53,13 @@ def test_pc_map_empty():
     """
     Test the parsing of an empty pc-map from a compiler's output.
     """
-    pcmap = PCMap.parse_obj({}).parse()
+    pcmap = PCMap.model_validate({}).parse()
 
     assert pcmap == {}
 
 
 def test_pc_map_getting_and_setting():
-    pcmap = PCMap.parse_obj({"186": [10, 20, 10, 40]})
+    pcmap = PCMap.model_validate({"186": [10, 20, 10, 40]})
 
     # Test __contains__
     assert "186" in pcmap

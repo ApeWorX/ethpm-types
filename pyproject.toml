@@ -37,3 +37,6 @@ use_parentheses = true
 [tool.mypy]
 exclude = ["build"]
 plugins = ["pydantic.mypy"]
+
+[tool.mdformat]
+number = true

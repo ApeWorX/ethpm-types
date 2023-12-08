@@ -1,22 +1,17 @@
-from pathlib import Path
+from pathlib import Path, PosixPath
 from typing import Dict, Iterator, List, Optional, Set, Tuple, Union
 
 import requests
 from cid import make_cid  # type: ignore
+from eth_pydantic_types import HexBytes, HexStr
+from pydantic import AnyUrl, RootModel, field_validator, model_validator
+from pydantic_core import PydanticCustomError
 
-from ethpm_types._pydantic_v1 import root_validator, validator
 from ethpm_types.ast import ASTClassification, ASTNode, SourceLocation
 from ethpm_types.base import BaseModel
 from ethpm_types.contract_type import ContractType
 from ethpm_types.sourcemap import PCMap
-from ethpm_types.utils import (
-    CONTENT_ADDRESSED_SCHEMES,
-    Algorithm,
-    AnyUrl,
-    Hex,
-    HexBytes,
-    compute_checksum,
-)
+from ethpm_types.utils import CONTENT_ADDRESSED_SCHEMES, Algorithm, compute_checksum
 
 
 class Compiler(BaseModel):
@@ -68,7 +63,7 @@ class Checksum(BaseModel):
     Possible algorithms include, but are not limited to sha3, sha256, md5, keccak256.
     """
 
-    hash: Hex
+    hash: HexStr
     """
     The hash of a source files contents generated with the corresponding algorithm.
     """
@@ -83,13 +78,11 @@ class Checksum(BaseModel):
         return cls(algorithm=algorithm, hash=compute_checksum(data, algorithm=algorithm))
 
 
-class Content(BaseModel):
+class Content(RootModel[Dict[int, str]]):
     """
     A wrapper around source code line numbers mapped to the content
     string of those lines.
     """
-
-    __root__: Dict[int, str]
 
     @property
     def begin_lineno(self) -> int:
@@ -104,42 +97,32 @@ class Content(BaseModel):
         """
         All line number in order for this piece of content.
         """
-        return sorted(list(self.__root__.keys()))
+        return sorted(list(self.root.keys()))
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     def validate_dict(cls, value):
-        # Handle when full value is empty.
-        value = value or {}
+        if value is None:
+            return {}
 
-        # Find "root"
-        while "__root__" in value:
-            # Prevent contains-check from failing when None.
-            value = value.pop("__root__") or {}
-
-            # Convert paths to their texts (str)
-            if isinstance(value, Path):
-                value = {"__root__": value.read_text()}
-
-        # Convert str-content to dict of linenos -> line content
-        return {
-            "__root__": (
-                {i + 1: x for i, x in enumerate(value.splitlines())}
-                if isinstance(value, str)
-                else value
-            )
-        }
+        if type(value) is PosixPath:
+            data = value.read_text()
+        else:
+            data = value["root"] if "_root" in value else value
+        return (
+            {i + 1: x for i, x in enumerate(data.splitlines())} if isinstance(data, str) else data
+        )
 
     def encode(self, *args, **kwargs) -> bytes:
         return str(self).encode(*args, **kwargs)
 
     def items(self):
-        return self.__root__.items()
+        return self.root.items()
 
     def as_list(self) -> List[str]:
-        return list(self.__root__.values())
+        return list(self.root.values())
 
     def __str__(self) -> str:
-        res = "\n".join(self.__root__.values())
+        res = "\n".join(self.root.values())
         if res and not res.endswith("\n"):
             res = f"{res}\n"
 
@@ -147,7 +130,7 @@ class Content(BaseModel):
 
     def __getitem__(self, lineno: Union[int, slice]) -> Union[List[str], str]:
         if isinstance(lineno, int):
-            return self.__root__[lineno]
+            return self.root[lineno]
 
         # Handle slice of linenos.
         numbers = self.line_numbers
@@ -156,17 +139,17 @@ class Content(BaseModel):
         lines = []
         for no in numbers:
             if start <= no < stop:
-                lines.append(self.__root__[no])
+                lines.append(self.root[no])
             elif no >= stop:
                 break
 
         return lines
 
     def __iter__(self) -> Iterator[str]:  # type: ignore[override]
-        return iter(self.__root__.values())
+        return iter(self.root.values())
 
     def __len__(self) -> int:
-        return len(self.__root__)
+        return len(self.root)
 
 
 class Source(BaseModel):
@@ -212,14 +195,20 @@ class Source(BaseModel):
     """
     # TODO: Add `SourceId` type and use instead of `str`
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     def validate_model(cls, model):
-        if isinstance(model.get("content"), str):
-            model["content"] = Content(
-                __root__={i + 1: x for i, x in enumerate(model["content"].splitlines())}
-            )
+        str_model = None
+        if isinstance(model, str):
+            str_model = model
 
-        return model
+        elif isinstance(model, dict) and isinstance(model.get("content"), str):
+            str_model = model["content"]
+
+        return (
+            {"content": Content(root={i + 1: x for i, x in enumerate(str_model.splitlines())})}
+            if str_model
+            else model
+        )
 
     def __repr__(self) -> str:
         repr_id = "Source"
@@ -255,7 +244,7 @@ class Source(BaseModel):
         if self.content is None:
             raise ValueError("Source has no fetched content.")
 
-        return iter(self.content.__root__.values())
+        return iter(self.content.root.values())
 
     def __len__(self) -> int:
         if self.content is None:
@@ -263,8 +252,8 @@ class Source(BaseModel):
 
         return len(self.content)
 
-    def dict(self, *args, **kwargs) -> dict:
-        res = super().dict()
+    def model_dump(self, *args, **kwargs) -> Dict:
+        res = super().model_dump(*args, **kwargs)
         if self.content is not None:
             res["content"] = str(self.content)
         elif "content" in res:
@@ -285,7 +274,7 @@ class Source(BaseModel):
         if self.content is not None:
             return str(self.content)
 
-        if len(self.urls) == 0:
+        elif len(self.urls) == 0:
             raise ValueError("No content to fetch.")
 
         for url in map(str, self.urls):
@@ -381,14 +370,16 @@ class Function(Closure):
     content: Content
     """The function's line content after the signature, mapped by line numbers."""
 
-    @validator("ast", pre=True)
+    @field_validator("ast", mode="before")
     def validate_ast(cls, value):
         if (
             value.classification is not ASTClassification.FUNCTION
             and "function" not in str(value.ast_type).lower()
         ):
-            raise ValueError(
-                f"`ast` must be a function definition (classification={value.classification})."
+            raise PydanticCustomError(
+                f"{Function.__name__}Error",
+                f"`ast` must be a function definition (classification={value.classification}).",
+                {"classification": value.classification, "ast_type": value.ast_type},
             )
 
         return value
@@ -419,7 +410,7 @@ class Function(Closure):
         content = {
             n: str(self.content[n]) for n in range(start, stop) if n in self.content.line_numbers
         }
-        return Content(__root__=content)
+        return Content(root=content)
 
     def get_content_asts(self, location: SourceLocation) -> List[ASTNode]:
         """
@@ -481,17 +472,21 @@ class SourceStatement(Statement):
     def __iter__(self) -> Iterator[str]:  # type: ignore[override]
         yield from self.content
 
-    @validator("content", pre=True)
+    @field_validator("content", mode="before")
     def validate_content(cls, value):
         if len(value) < 1:
-            raise ValueError("Must have at least 1 line of content.")
+            raise PydanticCustomError(
+                f"{SourceStatement.__name__}Error", "Must have at least 1 line of content."
+            )
 
         return value
 
-    @validator("asts", pre=True)
+    @field_validator("asts", mode="before")
     def validate_asts(cls, value):
         if len(value) < 1:
-            raise ValueError("Must have at least 1 AST node.")
+            raise PydanticCustomError(
+                f"{SourceStatement.__name__}Error", "Must have a least 1 AST node."
+            )
 
         return value
 
@@ -570,24 +565,17 @@ class ContractSource(BaseModel):
 
     _function_ast_cache: Dict[str, ASTNode] = {}
 
-    @validator("contract_type", pre=True)
+    @field_validator("contract_type", mode="before")
     def _validate_contract_type(cls, contract_type):
-        if contract_type.source_id is None:
-            raise ValueError("ContractType missing source_id")
-        if contract_type.ast is None:
-            raise ValueError("ContractType missing ast")
-        if contract_type.pcmap is None:
-            raise ValueError("ContractType missing pcmap")
-
+        validate_source_id(contract_type)
+        validate_ast(contract_type)
+        validate_pcmap(contract_type)
         return contract_type
 
     @classmethod
     def create(cls, contract_type: ContractType, source: Source, base_path: Optional[Path] = None):
-        source_id = contract_type.source_id
-        if not source_id:
-            raise ValueError("ContractType missing source ID")
-
         if base_path:
+            source_id = validate_source_id(contract_type)
             source_path = base_path / source_id
             if not source_path.is_file():
                 raise FileNotFoundError(str(source_path))
@@ -601,20 +589,17 @@ class ContractSource(BaseModel):
     @property
     def source_id(self) -> str:
         """The contract type source ID."""
-
-        return self.contract_type.source_id  # type: ignore[return-value]
+        return validate_source_id(self.contract_type)
 
     @property
     def ast(self) -> ASTNode:
         """The contract type AST node."""
-
-        return self.contract_type.ast  # type: ignore[return-value]
+        return validate_ast(self.contract_type)
 
     @property
     def pcmap(self) -> PCMap:
         """The contract type PCMap."""
-
-        return self.contract_type.pcmap  # type: ignore[return-value]
+        return validate_pcmap(self.contract_type)
 
     def __repr__(self) -> str:
         return f"<{self.contract_type.source_id}::{self.contract_type.name or 'unknown'}>"
@@ -636,8 +621,7 @@ class ContractSource(BaseModel):
             found.
         """
 
-        ast = self.ast.get_defining_function(location)
-        if not ast:
+        if not (ast := self.ast.get_defining_function(location)):
             return None
 
         signature_lines, content_lines = self._parse_function(ast)
@@ -692,8 +676,8 @@ class ContractSource(BaseModel):
 
         signature_dict = {signature_start + i: ln for i, ln in enumerate(signature_lines)}
         content_dict = {offset + i: ln for i, ln in enumerate(content_lines)}
-        content = Content(__root__={**signature_dict, **content_dict})
-        Function.update_forward_refs()
+        content = Content(root={**signature_dict, **content_dict})
+        Function.model_rebuild()
 
         return Function(
             ast=ast,
@@ -705,7 +689,7 @@ class ContractSource(BaseModel):
 
     def _parse_function(self, function: ASTNode) -> Tuple[List[str], List[str]]:
         """
-        Parse function AST into two groups. One being the list of
+        Parse a function AST into two groups. One being the list of
         lines making up the signature and the other being the content
         lines of the function.
         """
@@ -745,3 +729,84 @@ def _strip_function(signature_lines: List[str]) -> str:
         name = name.split(prefix)[-1]
 
     return name.rstrip(":{ \n")
+
+
+def validate_source_id(contract_type: ContractType) -> str:
+    """
+    A validator used by :class:`~ethpm_types.source.ContractSource`
+    to ensure the given :class:`~ethpm_types.contract_type.ContractType`
+    has a ``.source_id`` set, which may be required for source-mapping features
+    in some applications.
+
+    Args:
+        contract_type (:class:`~ethpm_types.contract_type.ContractType): A
+          contract type that should have a ``.source_id``.
+
+    Returns:
+        str: A source ID for the given contract type.
+
+    Raises:
+        PydanticCustomError: If ``.source_id`` is missing.
+    """
+
+    if source_id := contract_type.source_id:
+        return source_id
+
+    raise PydanticCustomError(
+        f"{ContractSource.__name__}Error",
+        "Missing source ID",
+        {"contract_name": contract_type.name},
+    )
+
+
+def validate_ast(contract_type: ContractType) -> ASTNode:
+    """
+    A validator used by :class:`~ethpm_types.source.ContractSource`
+    to ensure the given :class:`~ethpm_types.contract_type.ContractType`
+    has an ``.ast`` set, which may be required for source-mapping features
+    in some applications.
+
+    Args:
+        contract_type (:class:`~ethpm_types.contract_type.ContractType): A
+          contract type that should have a ``.ast``.
+
+    Returns:
+        :class:`~ethpm_types.ast.ASTNode`: An ASTNode object for
+        the given contract type.
+
+    Raises:
+        PydanticCustomError: If ``.ast`` is missing.
+    """
+
+    if ast := contract_type.ast:
+        return ast
+
+    raise PydanticCustomError(
+        f"{ContractSource.__name__}Error", "Missing AST", {"contract_name": contract_type.name}
+    )
+
+
+def validate_pcmap(contract_type: ContractType) -> PCMap:
+    """
+    A validator used by :class:`~ethpm_types.source.ContractSource`
+    to ensure the given :class:`~ethpm_types.contract_type.ContractType`
+    has a ``.pcmap`` set, which may be required for source-mapping features
+    in some applications.
+
+    Args:
+        contract_type (:class:`~ethpm_types.contract_type.ContractType): A
+          contract type that should have a ``.pcmap``.
+
+    Returns:
+        :class:`~ethpm_types.sourcemap.SourceMap`: A source-map object for
+        the given contract type.
+
+    Raises:
+        PydanticCustomError: If ``.pcmap`` is missing.
+    """
+    if pcmap := contract_type.pcmap:
+        return pcmap
+
+    raise PydanticCustomError(
+        f"{ContractSource.__name__}Error", "Missing PCMap", {"contract_name": contract_type.name}
+    )

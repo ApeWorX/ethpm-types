@@ -1,9 +1,10 @@
-from functools import singledispatchmethod
+from functools import cached_property, singledispatchmethod
 from typing import Callable, Dict, Iterable, List, Optional, Type, TypeVar, Union
 
-from eth_utils import add_0x_prefix, is_0x_prefixed
+from eth_pydantic_types import Address, HashStr32, HexBytes, HexStr
+from eth_utils import is_0x_prefixed
+from pydantic import Field, computed_field, field_validator
 
-from ethpm_types._pydantic_v1 import Field, root_validator, validator
 from ethpm_types.abi import (
     ABI,
     ConstructorABI,
@@ -17,7 +18,6 @@ from ethpm_types.abi import (
 from ethpm_types.ast import ASTNode
 from ethpm_types.base import BaseModel
 from ethpm_types.sourcemap import PCMap, SourceMap
-from ethpm_types.utils import Hex, HexBytes, is_valid_hex
 
 ABILIST_T = TypeVar("ABILIST_T", bound=Union[MethodABI, EventABI, StructABI, ErrorABI])
 """The generic used for the ABIList class. Only for type-checking."""
@@ -77,26 +77,20 @@ class LinkReference(BaseModel):
 
 
 class Bytecode(BaseModel):
-    bytecode: Optional[Hex] = None
+    bytecode: Optional[HexStr] = None
     """
     A string containing the 0x prefixed hexadecimal representation of the bytecode.
     """
 
-    linkReferences: Optional[List[LinkReference]] = None
+    link_references: Optional[List[LinkReference]] = Field(None, alias="linkReferences")
     """
     The locations in the corresponding bytecode which require linking.
     """
 
-    linkDependencies: Optional[List[LinkDependency]] = None
+    link_dependencies: Optional[List[LinkDependency]] = Field(None, alias="linkDependencies")
     """
     The link values that have been used to link the corresponding bytecode.
     """
-
-    @validator("bytecode", pre=True)
-    def prefix_bytecode(cls, v):
-        if not v:
-            return None
-        return add_0x_prefix(v)
 
     def __repr__(self) -> str:
         self_str = super().__repr__()
@@ -110,11 +104,8 @@ class Bytecode(BaseModel):
         return self_str
 
     def to_bytes(self) -> Optional[HexBytes]:
-        if self.bytecode:
-            return HexBytes(self.bytecode)
-
         # TODO: Resolve links to produce dynamically linked bytecode
-        return None
+        return HexBytes(self.bytecode) if self.bytecode else None
 
 
 class ContractInstance(BaseModel):
@@ -125,13 +116,13 @@ class ContractInstance(BaseModel):
     from the ``buildDependencies`` section of the Package Manifest.
     """
 
-    address: Hex
+    address: Address
     """The contract address."""
 
-    transaction: Optional[Hex] = None
+    transaction: Optional[HashStr32] = None
     """The transaction hash from which the contract was created."""
 
-    block: Optional[Hex] = None
+    block: Optional[HashStr32] = None
     """
     The block hash in which this the transaction which created this
     contract instance was mined.
@@ -274,6 +265,7 @@ class ContractType(BaseModel):
     sourcemap: Optional[SourceMap] = None
     """
     The range of the source code that is represented by the respective node in the AST.
+
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
@@ -299,43 +291,46 @@ class ContractType(BaseModel):
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
-    method_identifiers: Dict[str, str] = Field(None, alias="methodIdentifiers")
-    """
-    A list of all the methods IDs, such as the keccak-based IDs.
-    """
-
     userdoc: Optional[dict] = None
     devdoc: Optional[dict] = None
 
     def __repr__(self) -> str:
         repr_id = self.__class__.__name__
-        if self.name:
-            repr_id = f"{repr_id} {self.name}"
+        if name := self.name:
+            repr_id = f"{repr_id} {name}"
 
         return f"<{repr_id}>"
 
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, ContractType):
+            return NotImplemented
+
+        return (
+            other.name == self.name
+            and other.abi == self.abi
+            and self.runtime_bytecode == other.runtime_bytecode
+            and self.deployment_bytecode == other.deployment_bytecode
+        )
+
     def get_runtime_bytecode(self) -> Optional[HexBytes]:
-        if self.runtime_bytecode:
-            return self.runtime_bytecode.to_bytes()
+        if bytecode := self.runtime_bytecode:
+            return bytecode.to_bytes()
 
         return None
 
     def get_deployment_bytecode(self) -> Optional[HexBytes]:
-        if self.deployment_bytecode:
-            return self.deployment_bytecode.to_bytes()
+        if bytecode := self.deployment_bytecode:
+            return bytecode.to_bytes()
 
         return None
 
-    @root_validator
-    def auto_set_method_ids(cls, values):
-        # TODO: Switch to computed_field in Pydantic v2
-        methods = [x for x in values["abi"] if x.type == "function"]
-        values["method_identifiers"] = {
-            m.selector: HexBytes(cls._selector_hash_fn(m.selector)[:4]).hex() for m in methods
-        }
-        return values
+    @computed_field(alias="methodIdentifiers")  # type: ignore
+    @cached_property
+    def method_identifiers(self) -> Optional[Dict[str, str]]:
+        methods: List[MethodABI] = [x for x in self.abi if x.type == "function"]  # type: ignore
+        return {m.selector: HexBytes(self._selector_hash_fn(m.selector)[:4]).hex() for m in methods}
 
-    @validator("deployment_bytecode", "runtime_bytecode", pre=True)
+    @field_validator("deployment_bytecode", "runtime_bytecode", mode="before")
     def validate_bytecode(cls, value):
         if not value:
             return {}
@@ -343,6 +338,10 @@ class ContractType(BaseModel):
         elif isinstance(value, dict):
             rest_attributes = value
             code = value["bytecode"]
+
+        elif isinstance(value, Bytecode):
+            # Already validated
+            return value
 
         else:
             rest_attributes = {}
@@ -361,9 +360,7 @@ class ContractType(BaseModel):
         """
 
         # Use default constructor (no args) when no defined.
-        return self._get_first_instance(ConstructorABI) or ConstructorABI(
-            type="constructor", contract_type=self
-        )
+        return self._get_first_instance(ConstructorABI) or ConstructorABI(type="constructor")
 
     @property
     def fallback(self) -> Optional[FallbackABI]:
@@ -372,7 +369,6 @@ class ContractType(BaseModel):
         is external, has no name, arguments, or return value, and gets invoked
         when the user attempts to call a method that does not exist.
         """
-
         return self._get_first_instance(FallbackABI)
 
     @property
@@ -383,7 +379,6 @@ class ContractType(BaseModel):
         the contract with empty calldata. The method is not allowed any arguments
         and cannot return anything.
         """
-
         return self._get_first_instance(ReceiveABI)
 
     @property
@@ -467,8 +462,6 @@ class ContractType(BaseModel):
 
         filter_fn = filter_fn or noop
         method_abis = [abi for abi in self.abi if filter_fn(abi)]
-        for abi in method_abis:
-            abi.contract_type = self
 
         return ABIList(
             method_abis,
@@ -481,74 +474,6 @@ class ContractType(BaseModel):
             if not isinstance(abi, _type):
                 continue
 
-            # TODO: Figure out better way than type ignore.
-            #  getting `<nothing> has no attribute contract_type`.
-            #  probably using generics wrong but not sure how else to do it.
-            abi.contract_type = self  # type: ignore[attr-defined]
             return abi
 
         return None
-
-
-class BIP122_URI(str):
-    """
-    A URI scheme for looking up blocks.
-    `BIP-122 <https://github.com/bitcoin/bips/blob/master/bip-0122.mediawiki>`__.
-
-    URI Format::
-
-        blockchain://<chain>/<block>/<hash>
-
-    """
-
-    @classmethod
-    def __modify_schema__(cls, field_schema):
-        field_schema.update(
-            pattern="^blockchain://[0-9a-f]{64}/block/[0-9a-f]{64}$",
-            examples=[
-                "blockchain://d4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3"
-                "/block/752820c0ad7abc1200f9ad42c4adc6fbb4bd44b5bed4667990e64565102c1ba6",
-            ],
-        )
-
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate_uri
-        yield cls.validate_genesis_hash
-        yield cls.validate_block_hash
-
-    @classmethod
-    def validate_uri(cls, uri):
-        if not uri.startswith("blockchain://"):
-            raise ValueError("Must use 'blockchain' protocol.")
-
-        if len(uri.replace("blockchain://", "").split("/")) != 3:
-            raise ValueError("Must be referenced via <genesis_hash>/block/<block_hash>.")
-
-        _, block_keyword, _ = uri.replace("blockchain://", "").split("/")
-        if block_keyword != "block":
-            raise ValueError("Must use block reference.")
-
-        return uri
-
-    @classmethod
-    def validate_genesis_hash(cls, uri):
-        genesis_hash, _, _ = uri.replace("blockchain://", "").split("/")
-        if not is_valid_hex("0x" + genesis_hash):
-            raise ValueError(f"Hash is not valid: {genesis_hash}.")
-
-        if len(genesis_hash) != 64:
-            raise ValueError(f"Hash is not valid length: {genesis_hash}.")
-
-        return uri
-
-    @classmethod
-    def validate_block_hash(cls, uri):
-        _, _, block_hash = uri.replace("blockchain://", "").split("/")
-        if not is_valid_hex("0x" + block_hash):
-            raise ValueError(f"Hash is not valid: {block_hash}.")
-
-        if len(block_hash) != 64:
-            raise ValueError(f"Hash is not valid length: {block_hash}.")
-
-        return uri

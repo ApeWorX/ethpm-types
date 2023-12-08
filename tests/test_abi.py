@@ -22,22 +22,33 @@ class TestABIType:
         assert abi.canonical_type == "(string)"
 
     def test_schema(self):
-        actual = ABIType.schema()
+        actual = ABIType.model_json_schema()
         expected = {
-            "$ref": "#/definitions/ABIType",
-            "definitions": {
+            "$defs": {
                 "ABIType": {
+                    "additionalProperties": True,
                     "properties": {
-                        "components": {
-                            "items": {"$ref": "#/definitions/ABIType"},
-                            "title": "Components",
-                            "type": "array",
+                        "name": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "default": None,
+                            "title": "Name",
                         },
-                        "internalType": {"title": "Internaltype", "type": "string"},
-                        "name": {"title": "Name", "type": "string"},
                         "type": {
-                            "anyOf": [{"type": "string"}, {"$ref": "#/definitions/ABIType"}],
+                            "anyOf": [{"type": "string"}, {"$ref": "#/$defs/ABIType"}],
                             "title": "Type",
+                        },
+                        "components": {
+                            "anyOf": [
+                                {"items": {"$ref": "#/$defs/ABIType"}, "type": "array"},
+                                {"type": "null"},
+                            ],
+                            "default": None,
+                            "title": "Components",
+                        },
+                        "internalType": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "default": None,
+                            "title": "Internaltype",
                         },
                     },
                     "required": ["type"],
@@ -45,17 +56,17 @@ class TestABIType:
                     "type": "object",
                 }
             },
+            "allOf": [{"$ref": "#/$defs/ABIType"}],
         }
         assert actual == expected
 
 
 class TestConstructorABI:
     def test_schema(self):
-        actual = ConstructorABI.schema()
-        assert actual["$ref"] == "#/definitions/ConstructorABI"
-        assert len(actual["definitions"]) == 2
-        assert ABIType.__name__ in actual["definitions"]
-        assert ConstructorABI.__name__ in actual["definitions"]
+        actual = ConstructorABI.model_json_schema()
+        assert len(actual["$defs"]) == 1
+        assert ABIType.__name__ in actual["$defs"]
+        assert ConstructorABI.__name__ in actual["title"]
 
     def test_selector(self):
         constructor = ConstructorABI(
@@ -66,12 +77,11 @@ class TestConstructorABI:
 
 class TestEventABI:
     def test_schema(self):
-        actual = EventABI.schema()
-        assert actual["$ref"] == "#/definitions/EventABI"
-        assert len(actual["definitions"]) == 3
-        assert ABIType.__name__ in actual["definitions"]
-        assert EventABIType.__name__ in actual["definitions"]
-        assert EventABI.__name__ in actual["definitions"]
+        actual = EventABI.model_json_schema()
+        assert len(actual["$defs"]) == 2
+        assert ABIType.__name__ in actual["$defs"]
+        assert EventABIType.__name__ in actual["$defs"]
+        assert EventABI.__name__ in actual["title"]
 
     def test_selector(self):
         event = EventABI(name="FooEvent")
@@ -87,20 +97,17 @@ class TestFallbackABI:
         assert abi.is_payable == expected
 
     def test_schema(self):
-        actual = FallbackABI.schema()
-        assert actual["$ref"] == "#/definitions/FallbackABI"
-        assert len(actual["definitions"]) == 2
-        assert ABIType.__name__ in actual["definitions"]
-        assert FallbackABI.__name__ in actual["definitions"]
+        actual = FallbackABI.model_json_schema()
+        assert not hasattr(actual, "$defs")
+        assert FallbackABI.__name__ in actual["title"]
 
 
 class TestMethodABI:
     def test_schema(self):
-        actual = MethodABI.schema()
-        assert actual["$ref"] == "#/definitions/MethodABI"
-        assert len(actual["definitions"]) == 2
-        assert ABIType.__name__ in actual["definitions"]
-        assert MethodABI.__name__ in actual["definitions"]
+        actual = MethodABI.model_json_schema()
+        assert len(actual["$defs"]) == 1
+        assert ABIType.__name__ in actual["$defs"]
+        assert MethodABI.__name__ in actual["title"]
 
     def test_selector(self):
         abi = MethodABI(
@@ -120,17 +127,13 @@ class TestReceiveABI:
         assert receive.stateMutability == "payable"
 
     def test_schema(self):
-        actual = ReceiveABI.schema()
-        assert actual["$ref"] == "#/definitions/ReceiveABI"
-        assert len(actual["definitions"]) == 2
-        assert ABIType.__name__ in actual["definitions"]
-        assert ReceiveABI.__name__ in actual["definitions"]
+        actual = ReceiveABI.model_json_schema()
+        assert not hasattr(actual, "$defs")
+        assert ReceiveABI.__name__ in actual["title"]
 
 
 class TestUnprocessedABI:
     def test_schema(self):
-        actual = UnprocessedABI.schema()
-        assert actual["$ref"] == "#/definitions/UnprocessedABI"
-        assert len(actual["definitions"]) == 2
-        assert ABIType.__name__ in actual["definitions"]
-        assert UnprocessedABI.__name__ in actual["definitions"]
+        actual = UnprocessedABI.model_json_schema()
+        assert not hasattr(actual, "$defs")
+        assert UnprocessedABI.__name__ in actual["title"]

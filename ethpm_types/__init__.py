@@ -1,4 +1,4 @@
-from .abi import (
+from ethpm_types.abi import (
     ABI,
     ConstructorABI,
     ErrorABI,
@@ -9,33 +9,12 @@ from .abi import (
     StructABI,
     UnprocessedABI,
 )
-from .ast import ASTNode
-from .base import BaseModel
-from .contract_type import Bytecode, ContractInstance, ContractType
-from .manifest import PackageManifest, PackageMeta
-from .source import Checksum, Compiler, Source
-from .sourcemap import PCMap, PCMapItem, SourceMap, SourceMapItem
-from .utils import HexBytes
-
-ContractType.update_forward_refs(
-    ConstructorABI=ConstructorABI,
-    ErrorABI=ErrorABI,
-    EventABI=EventABI,
-    FallbackABI=FallbackABI,
-    MethodABI=MethodABI,
-    ReceiveABI=ReceiveABI,
-    StructABI=StructABI,
-    UnprocessedABI=UnprocessedABI,
-)
-
-ConstructorABI.update_forward_refs(ContractType=ContractType)
-ErrorABI.update_forward_refs(ContractType=ContractType)
-EventABI.update_forward_refs(ContractType=ContractType)
-FallbackABI.update_forward_refs(ContractType=ContractType)
-MethodABI.update_forward_refs(ContractType=ContractType)
-ReceiveABI.update_forward_refs(ContractType=ContractType)
-StructABI.update_forward_refs(ContractType=ContractType)
-UnprocessedABI.update_forward_refs(ContractType=ContractType)
+from ethpm_types.ast import ASTNode
+from ethpm_types.base import BaseModel
+from ethpm_types.contract_type import Bytecode, ContractInstance, ContractType
+from ethpm_types.manifest import PackageManifest, PackageMeta
+from ethpm_types.source import Checksum, Compiler, Source
+from ethpm_types.sourcemap import PCMap, PCMapItem, SourceMap, SourceMapItem
 
 __all__ = [
     "ABI",
@@ -44,14 +23,21 @@ __all__ = [
     "Bytecode",
     "Checksum",
     "Compiler",
+    "ConstructorABI",
     "ContractInstance",
     "ContractType",
-    "HexBytes",
+    "ErrorABI",
+    "EventABI",
+    "FallbackABI",
+    "MethodABI",
     "PackageMeta",
     "PackageManifest",
     "PCMap",
     "PCMapItem",
+    "ReceiveABI",
     "Source",
     "SourceMap",
     "SourceMapItem",
+    "StructABI",
+    "UnprocessedABI",
 ]

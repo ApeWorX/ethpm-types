@@ -1,7 +1,8 @@
 import pytest
+from eth_pydantic_types import HexBytes
 from eth_utils import keccak
 
-from ethpm_types import ContractType, HexBytes
+from ethpm_types import ContractType
 from ethpm_types.abi import ABI, ErrorABI, EventABI, MethodABI
 
 MUTABLE_METHOD_SELECTOR_BYTES = keccak(text="setNumber(uint256)")
@@ -68,17 +69,16 @@ def _select_abi(contract_type: ContractType, name: str) -> ABI:
 
 
 def test_schema():
-    actual = ContractType.schema()
-    assert actual["$ref"] == "#/definitions/ContractType"
+    actual = ContractType.model_json_schema()
 
-    definitions = {d for d in actual["definitions"]}
+    definitions = {d for d in actual["$defs"]}
     expected = {"ABIType", "ASTClassification", "ASTNode", "Bytecode", "ConstructorABI"}
     assert expected.issubset(definitions)
 
 
 def test_validate(contract):
-    contract.validate(contract)
-    contract.validate(contract.dict())
+    contract.model_validate(contract)
+    contract.model_validate(contract.model_dump())
 
 
 def test_structs(contract):
@@ -212,11 +212,6 @@ def test_contract_type_backrefs(oz_contract_type):
     assert oz_contract_type.view_methods, "setup: Test contract should have view methods"
     assert oz_contract_type.mutable_methods, "setup: Test contract should have mutable methods"
 
-    assert oz_contract_type.constructor.contract_type == oz_contract_type
-    assert all(e.contract_type == oz_contract_type for e in oz_contract_type.events)
-    assert all(m.contract_type == oz_contract_type for m in oz_contract_type.mutable_methods)
-    assert all(m.contract_type == oz_contract_type for m in oz_contract_type.view_methods)
-
 
 @view_selector_parametrization
 def test_select_view_method_from_all_methods(selector, vyper_contract):
@@ -277,6 +272,12 @@ def test_init_bytecode_using_bytes(contract):
 def test_init_bytecode_using_empty_dict(contract):
     new_contract = ContractType(abi=[], deploymentBytecode={})
     assert new_contract.deployment_bytecode.bytecode is None
+
+
+def test_init_using_bytecode(contract):
+    obj = contract.deployment_bytecode
+    new_contract = ContractType(abi=[], deploymentBytecode=obj)
+    assert new_contract.deployment_bytecode.bytecode == obj.bytecode
 
 
 def test_method_ids_are_set(vyper_contract):

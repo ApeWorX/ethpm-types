@@ -13,8 +13,8 @@ SOURCE_ID = "VyperContract.vy"
 @pytest.fixture
 def get_contract_type(get_source_path):
     def fn(name: str) -> ContractType:
-        path = get_source_path(name, base=COMPILED_BASE)
-        return ContractType.parse_file(path)
+        model = (COMPILED_BASE / f"{name}.json").read_text()
+        return ContractType.model_validate_json(model)
 
     return fn
 
@@ -38,7 +38,8 @@ def oz_package_manifest_path():
 
 @pytest.fixture
 def oz_package(oz_package_manifest_path):
-    return PackageManifest.parse_file(oz_package_manifest_path)
+    model = oz_package_manifest_path.read_text()
+    return PackageManifest.model_validate_json(model)
 
 
 @pytest.fixture
@@ -59,7 +60,7 @@ def content_raw(get_source_path) -> str:
 
 @pytest.fixture
 def source(content_raw) -> Source:
-    return Source.parse_obj({"source_id": SOURCE_ID, "content": content_raw})
+    return Source.model_validate({"source_id": SOURCE_ID, "content": content_raw})
 
 
 @pytest.fixture
