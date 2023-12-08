@@ -104,20 +104,44 @@
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="ethpm_types.utils.Hex">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">Hex</span></span><a class="headerlink" href="#ethpm_types.utils.Hex" title="Permalink to this definition"></a></dt>
-<dd><p>A hex string value, typically from a hash.</p>
-</dd></dl>
+<dt class="sig sig-object py" id="ethpm_types.utils.Annotated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">Annotated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.utils.Annotated" title="Permalink to this definition"></a></dt>
+<dd><p>Add context specific metadata to a type.</p>
+<p>Example: Annotated[int, runtime_check.Unsigned] indicates to the
+hypothetical runtime_check module that this type is an unsigned int.
+Every other consumer of this type can ignore this metadata and treat
+this type as int.</p>
+<p>The first argument to Annotated must be a valid type.</p>
+<p>Details:</p>
+<ul>
+<li><p>It’s an error to call <cite>Annotated</cite> with less than two arguments.</p></li>
+<li><p>Nested Annotated are flattened:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Annotated</span><span class="p">[</span><span class="n">Annotated</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">Ann1</span><span class="p">,</span> <span class="n">Ann2</span><span class="p">],</span> <span class="n">Ann3</span><span class="p">]</span> <span class="o">==</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">Ann1</span><span class="p">,</span> <span class="n">Ann2</span><span class="p">,</span> <span class="n">Ann3</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Instantiating an annotated type is equivalent to instantiating the</p></li>
+</ul>
+<p>underlying type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Annotated</span><span class="p">[</span><span class="n">C</span><span class="p">,</span> <span class="n">Ann1</span><span class="p">](</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="n">C</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul>
+<li><p>Annotated can be used as a generic type alias:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Optimized</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">runtime</span><span class="o">.</span><span class="n">Optimize</span><span class="p">()]</span>
+<span class="n">Optimized</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">==</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">runtime</span><span class="o">.</span><span class="n">Optimize</span><span class="p">()]</span>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="ethpm_types.utils.HexBytes">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">HexBytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">memoryview</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.utils.HexBytes" title="Permalink to this definition"></a></dt>
-<dd><p>A class representing bytes as a hex-str.</p>
+<span class="n">OptimizedList</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">runtime</span><span class="o">.</span><span class="n">Optimize</span><span class="p">()]</span>
+<span class="n">OptimizedList</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">==</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">runtime</span><span class="o">.</span><span class="n">Optimize</span><span class="p">()]</span>
+</pre></div>
+</div>
+</li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ethpm_types.utils.compute_checksum">
-<span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">compute_checksum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.utils.Algorithm" title="ethpm_types.utils.Algorithm"><span class="pre">ethpm_types.utils.Algorithm</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Algorithm.MD5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ethpm_types.utils.Hex" title="ethpm_types.utils.Hex"><span class="pre">ethpm_types.utils.Hex</span></a></span></span><a class="headerlink" href="#ethpm_types.utils.compute_checksum" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">compute_checksum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.utils.Algorithm" title="ethpm_types.utils.Algorithm"><span class="pre">ethpm_types.utils.Algorithm</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Algorithm.MD5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">eth_pydantic_types.hex.HexStr</span></span></span><a class="headerlink" href="#ethpm_types.utils.compute_checksum" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate the checksum of the given content.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -127,15 +151,9 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethpm_types.utils.Hex" title="ethpm_types.utils.Hex"><code class="xref py py-class docutils literal notranslate"><span class="pre">Hex</span></code></a></p>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Hex</span></code></p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ethpm_types.utils.is_valid_hex">
-<span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">is_valid_hex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#ethpm_types.utils.is_valid_hex" title="Permalink to this definition"></a></dt>
-<dd><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the given data is a valid hex str.</p>
 </dd></dl>
 
 </section>
