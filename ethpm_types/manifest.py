@@ -146,7 +146,7 @@ class PackageManifest(BaseModel):
     must be unique across all other contract instances for the given chain.
     """
 
-    dependencies: Optional[Dict[PackageName, AnyUrl]] = Field(  # type: ignore [valid-type]
+    dependencies: Optional[Dict[PackageName, AnyUrl]] = Field(  # type: ignore[valid-type]
         None, alias="buildDependencies"
     )
     """
