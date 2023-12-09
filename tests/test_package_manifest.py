@@ -9,7 +9,14 @@ from pydantic import BaseModel as _BaseModel
 from pydantic import ValidationError
 
 from ethpm_types import ContractType
-from ethpm_types.manifest import ALPHABET, NUMBERS, PackageManifest, PackageMeta, PackageName
+from ethpm_types.manifest import (
+    ALPHABET,
+    NUMBERS,
+    PackageManifest,
+    PackageMeta,
+    PackageName,
+    PackageNameError,
+)
 from ethpm_types.source import Compiler, Content, Source
 
 ETHPM_SPEC_REPO = github.Github(os.environ.get("GITHUB_ACCESS_TOKEN", None)).get_repo(
@@ -163,6 +170,13 @@ def test_unpack_sources():
 
 def test_package_name_name():
     assert PackageName.__name__ == "PackageName"
+
+
+def test_package_name_error_str():
+    error = PackageNameError(name="!!!", message="Oh no!")
+    assert str(error) == "Oh no!"
+    assert error.type == "PackageNameError"
+    assert error.context == {"name": "!!!"}
 
 
 def test_package_name_using_all_valid_characters():
