@@ -55,6 +55,7 @@ PackageName = Annotated[
     ),
     BeforeValidator(validate_package_name),
 ]
+PackageName.__name__ = "PackageName"
 
 
 class PackageMeta(BaseModel):
@@ -97,7 +98,7 @@ class PackageManifest(BaseModel):
     manifest: str = "ethpm/3"
     """The specification version that the project conforms to."""
 
-    name: Optional[PackageName] = None  # type: ignore [valid-type]
+    name: Optional[PackageName] = None  # type: ignore[valid-type]
     """A human-readable name for the package."""
 
     version: Optional[str] = None
@@ -145,7 +146,7 @@ class PackageManifest(BaseModel):
     must be unique across all other contract instances for the given chain.
     """
 
-    dependencies: Optional[Dict[PackageName, AnyUrl]] = Field(  # type: ignore [valid-type]
+    dependencies: Optional[Dict[PackageName, AnyUrl]] = Field(  # type: ignore[valid-type]
         None, alias="buildDependencies"
     )
     """
