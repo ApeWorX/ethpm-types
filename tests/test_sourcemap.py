@@ -71,6 +71,19 @@ def test_source_map(sourcemap_filename):
     assert sourcemap[:10] == serialize(sourcemap_obj.parse())[:10]
 
 
+def test_source_map_parse_from_vyper(sourcemap_from_vyper):
+    """
+    Ensure we don't break source mapping features on Vyper.
+    """
+    actual = list(sourcemap_from_vyper.parse())[1:]
+    parts = sourcemap_from_vyper.root.strip().split(";")
+    assert len(parts) == 608
+    assert parts[52] == ":::-"
+    assert len(actual) == 607
+    assert actual[0].jump_code == "-"
+    assert actual[45].start == 1434
+
+
 def test_source_map_item():
     """
     Occasionally, you may need to parse individual source map items,
