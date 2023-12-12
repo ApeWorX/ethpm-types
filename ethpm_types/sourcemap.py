@@ -104,7 +104,9 @@ class SourceMap(RootModel[str]):
         #       where an empty entry means to copy the previous step.
         #       This is because sourcemaps are compressed to save space.
         for i, row in enumerate(self.root.strip().split(";")):
-            yield SourceMapItem.parse_str(row, previous=item)
+            # NOTE: Set ``item`` so it updates each time for `previous` kwarg.
+            item = SourceMapItem.parse_str(row, previous=item)
+            yield item
 
 
 class PCMapItem(BaseModel):
