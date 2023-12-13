@@ -331,6 +331,7 @@ class ContractType(BaseModel):
         return {m.selector: HexBytes(self._selector_hash_fn(m.selector)[:4]).hex() for m in methods}
 
     @field_validator("deployment_bytecode", "runtime_bytecode", mode="before")
+    @classmethod
     def validate_bytecode(cls, value):
         if not value:
             return {}

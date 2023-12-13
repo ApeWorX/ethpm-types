@@ -208,6 +208,7 @@ class PackageManifest(BaseModel):
         return {**values, "sources": sources_fixed or None}
 
     @field_validator("contract_types")
+    @classmethod
     def add_name_to_contract_types(cls, values):
         aliases = list((values or {}).keys())
         # NOTE: Must manually inject names to types here
