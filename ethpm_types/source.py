@@ -371,6 +371,7 @@ class Function(Closure):
     """The function's line content after the signature, mapped by line numbers."""
 
     @field_validator("ast", mode="before")
+    @classmethod
     def validate_ast(cls, value):
         if (
             value.classification is not ASTClassification.FUNCTION
@@ -473,6 +474,7 @@ class SourceStatement(Statement):
         yield from self.content
 
     @field_validator("content", mode="before")
+    @classmethod
     def validate_content(cls, value):
         if len(value) < 1:
             raise PydanticCustomError(
@@ -482,6 +484,7 @@ class SourceStatement(Statement):
         return value
 
     @field_validator("asts", mode="before")
+    @classmethod
     def validate_asts(cls, value):
         if len(value) < 1:
             raise PydanticCustomError(
@@ -566,6 +569,7 @@ class ContractSource(BaseModel):
     _function_ast_cache: Dict[str, ASTNode] = {}
 
     @field_validator("contract_type", mode="before")
+    @classmethod
     def _validate_contract_type(cls, contract_type):
         validate_source_id(contract_type)
         validate_ast(contract_type)

@@ -66,14 +66,14 @@ def test_source_repr(source):
 
 def test_source_validate(source):
     src = source  # alias for avoiding pdb name conflict
-    src_dict = src.dict()
+    src_dict = src.model_dump()
     assert isinstance(src_dict["content"], str)
-    assert source.validate(src)
-    assert source.validate(src_dict)
+    assert source.model_validate(src)
+    assert source.model_validate(src_dict)
 
     # Change src to a dict and retry
     src_dict["content"] = {i + 1: ln for i, ln in enumerate(src_dict["content"])}
-    assert source.validate(src_dict)
+    assert source.model_validate(src_dict)
 
 
 def test_source_line_access(source, content_raw):
@@ -141,7 +141,7 @@ def test_content_from_str():
     assert content[2] == lines[1]  # Line 2
 
     # Assert it passes re-validation.
-    content.validate(content)
+    content.model_validate(content)
 
 
 def test_content_from_dict():
@@ -151,7 +151,7 @@ def test_content_from_dict():
     assert content[2] == lines[2]  # Line 2
 
     # Assert it passes re-validation.
-    content.validate(content)
+    content.model_validate(content)
 
 
 def test_content_from_root_dict():
@@ -161,7 +161,7 @@ def test_content_from_root_dict():
     assert content[2] == lines[2]  # Line 2
 
     # Assert it passes re-validation.
-    content.validate(content)
+    content.model_validate(content)
 
 
 def test_content_from_path():
@@ -174,7 +174,7 @@ def test_content_from_path():
         assert content[2] == lines[1]  # Line 2
 
         # Assert it passes re-validation.
-        content.validate(content)
+        content.model_validate(content)
 
 
 def test_content_from_root_path():
@@ -187,13 +187,13 @@ def test_content_from_root_path():
         assert content[2] == lines[1]  # Line 2
 
         # Assert it passes re-validation.
-        content.validate(content)
+        content.model_validate(content)
 
 
 @pytest.mark.parametrize("val", ("", {}, None))
 def test_content_validate_empty(val):
     content = Content.model_validate(val)
-    assert content.validate(val) == Content(root={})
+    assert content.model_validate(val) == Content(root={})
 
 
 def test_contract_source(vyper_contract, source, source_base):
