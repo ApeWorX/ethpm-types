@@ -308,7 +308,7 @@ class PackageManifest(BaseModel):
         Returns:
             Optional[`~ethpm_types.source.Compiler`]
         """
-        for compiler in (self.compilers or []):
+        for compiler in self.compilers or []:
             if compiler.name == name.lower() and compiler.version == version:
                 return compiler
 
