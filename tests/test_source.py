@@ -249,6 +249,23 @@ def test_compiler_equality():
     compiler_1.settings = compiler_2.settings
 
 
+def test_compiler_hash():
+    compiler_1 = Compiler(
+        name="yo", version="0.2.0", settings={"foo": "bar"}, contractType=["test1"]
+    )
+    compiler_2 = Compiler(
+        name="foo", version="0.1.0", settings={"foo": "bar"}, contractType=["test1", "test2"]
+    )
+    compiler_3 = Compiler(
+        name="yo", version="0.2.0", settings={"foo": "bar"}, contractType=["test1"]
+    )
+    a_set = {compiler_1, compiler_2, compiler_3}
+    assert len(a_set) == 2
+    assert compiler_1 in a_set
+    assert compiler_2 in a_set
+    assert compiler_3 in a_set
+
+
 def test_checksum_from_file():
     file = Path(tempfile.mktemp())
     file.write_text("foobartest123")

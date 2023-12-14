@@ -297,6 +297,23 @@ class PackageManifest(BaseModel):
 
             source_path.write_text(content)
 
+    def get_compiler(self, name: str, version: str) -> Optional[Compiler]:
+        """
+        Get a compiler by name and version.
+
+        Args:
+            name (str): The name of the compiler, such as ``"vyper"``.
+            version (str): The version of the compiler.
+
+        Returns:
+            Optional[`~ethpm_types.source.Compiler`]
+        """
+        for compiler in self.compilers or []:
+            if compiler.name == name.lower() and compiler.version == version:
+                return compiler
+
+        return None
+
     def get_contract_compiler(self, contract_type_name: str) -> Optional[Compiler]:
         """
         Get the compiler used to compile the contract type, if it exists.

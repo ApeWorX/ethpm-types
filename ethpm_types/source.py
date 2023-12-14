@@ -53,6 +53,9 @@ class Compiler(BaseModel):
             and self.settings == other.settings
         )
 
+    def __hash__(self) -> int:
+        return hash(f"{self.name}=={self.version}")
+
 
 class Checksum(BaseModel):
     """Checksum information about the contents of a source file."""
