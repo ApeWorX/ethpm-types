@@ -190,6 +190,15 @@ def test_package_name_using_all_valid_characters():
     assert manifest.name == name
 
 
+def test_get_compiler():
+    compiler = Compiler(name="vyper", version="0.3.7", settings={}, contractTypes=["foobar"])
+    manifest = PackageManifest(
+        compilers=[compiler], contractTypes={"foobar": ContractType(contractNam="foobar")}
+    )
+    actual = manifest.get_compiler("vyper", "0.3.7")
+    assert actual == compiler
+
+
 def test_get_contract_compiler():
     compiler = Compiler(name="vyper", version="0.3.7", settings={}, contractTypes=["foobar"])
     manifest = PackageManifest(
