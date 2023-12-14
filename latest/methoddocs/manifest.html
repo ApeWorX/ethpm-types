@@ -160,6 +160,23 @@ must be unique across all other contract instances for the given chain.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.get_compiler">
+<span class="sig-name descname"><span class="pre">get_compiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="source.html#ethpm_types.source.Compiler" title="ethpm_types.source.Compiler"><span class="pre">ethpm_types.source.Compiler</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.get_compiler" title="Permalink to this definition"></a></dt>
+<dd><p>Get a compiler by name and version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the compiler, such as <code class="docutils literal notranslate"><span class="pre">&quot;vyper&quot;</span></code>.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) – The version of the compiler.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Optional[<cite>~ethpm_types.source.Compiler</cite>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.get_contract_compiler">
 <span class="sig-name descname"><span class="pre">get_contract_compiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract_type_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="source.html#ethpm_types.source.Compiler" title="ethpm_types.source.Compiler"><span class="pre">ethpm_types.source.Compiler</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.get_contract_compiler" title="Permalink to this definition"></a></dt>
 <dd><p>Get the compiler used to compile the contract type, if it exists.</p>
