@@ -325,24 +325,25 @@ class ContractType(BaseModel):
         return None
 
     @cached_property
-    def identifier_definitions(self) -> Dict[str, Optional[str]]:
+    def identifier_definitions(self) -> Dict[str, str]:
         """
         Returns a mapping of the full suite of signatures to selectors/topics/IDs for this
         contract
         """
 
-        def get_ident(aitem: ABI) -> Optional[str]:
+        # ABITypeWithSelector = Union[ConstructorABI, MethodABI, EventABI, ErrorABI, StructABI]
+        def get_id(aitem: ABI) -> str:
             if isinstance(aitem, MethodABI) or isinstance(aitem, ErrorABI):
                 return HexBytes(self._selector_hash_fn(aitem.selector)[:4]).hex()
-            elif hasattr(aitem, "selector"):
-                return HexBytes(self._selector_hash_fn(aitem.selector)).hex()
             else:
-                return None
+                assert hasattr(aitem, "selector")
+                return HexBytes(self._selector_hash_fn(aitem.selector)).hex()
 
-        return {m.selector: get_ident(m) for m in self.abi}
+        abis_with_selector = [x for x in self.abi if hasattr(x, "selector")]
+        return {x.selector: get_id(x) for x in abis_with_selector}
 
     @cached_property
-    def identifier_lookup(self) -> Dict[str, Optional[str]]:
+    def identifier_lookup(self) -> Dict[str, str]:
         """
         Returns a mapping of the full suite of selectors/topics/IDs of this contract to human
         readable signature
