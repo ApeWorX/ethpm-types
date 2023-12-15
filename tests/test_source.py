@@ -236,17 +236,20 @@ def test_compiler_equality():
     )
     assert compiler_1 == compiler_2
 
+    # Name affects equality.
     compiler_1.name = "yo2"
     assert compiler_1 != compiler_2
     compiler_1.name = compiler_2.name
 
+    # Version affects equality.
     compiler_1.version = "0.100000.0"
     assert compiler_1 != compiler_2
     compiler_1.version = compiler_2.version
 
-    compiler_1.settings["test"] = "123"
+    # Settings affect equality.
+    compiler_2.settings["test"] = "123"
     assert compiler_1 != compiler_2
-    compiler_1.settings = compiler_2.settings
+    del compiler_2.settings["test"]
 
 
 def test_compiler_hash():
@@ -259,11 +262,15 @@ def test_compiler_hash():
     compiler_3 = Compiler(
         name="yo", version="0.2.0", settings={"foo": "bar"}, contractType=["test1"]
     )
-    a_set = {compiler_1, compiler_2, compiler_3}
-    assert len(a_set) == 2
-    assert compiler_1 in a_set
-    assert compiler_2 in a_set
-    assert compiler_3 in a_set
+    compiler_4 = Compiler(
+        name="yo", version="0.2.0", settings={"foo": "bar", "test": "123"}, contractType=["test1"]
+    )
+    compiler_set = {compiler_1, compiler_2, compiler_3, compiler_4}
+    assert len(compiler_set) == 3
+    assert compiler_1 in compiler_set
+    assert compiler_2 in compiler_set
+    assert compiler_3 in compiler_set
+    assert compiler_4 in compiler_set
 
 
 def test_checksum_from_file():

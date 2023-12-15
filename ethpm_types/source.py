@@ -1,5 +1,6 @@
+import json
 from pathlib import Path, PosixPath
-from typing import Dict, Iterator, List, Optional, Set, Tuple, Union
+from typing import Any, Dict, Iterator, List, Optional, Set, Tuple, Union
 
 import requests
 from cid import make_cid  # type: ignore
@@ -42,19 +43,35 @@ class Compiler(BaseModel):
     def __eq__(self, other) -> bool:
         if (
             not hasattr(other, "name")
-            and not hasattr(other, "version")
-            and not hasattr(other, "settings")
+            or not hasattr(other, "version")
+            or not hasattr(other, "settings")
         ):
             return NotImplemented
 
-        return (
-            self.name == other.name
-            and self.version == other.version
-            and self.settings == other.settings
-        )
+        return self.__hash__() == other.__hash__()
+
+    def _get_settings_str(self) -> str:
+        # For hashing and ID.
+        # Recursively sort dictionaries based on values
+        def sort_value(value: Any) -> Any:
+            if isinstance(value, dict):
+                return sort_dict(value)
+            elif isinstance(value, list):
+                return [sort_value(item) for item in value]
+            else:
+                return value
+
+        def sort_dict(_dict: Dict) -> Dict:
+            return {
+                k: sort_value(v)
+                for k, v in sorted(_dict.items(), key=lambda item: sort_value(item[1]))
+            }
+
+        settings: Dict = sort_dict(self.settings or {})
+        return json.dumps(settings, separators=(",", ":"), sort_keys=True)
 
     def __hash__(self) -> int:
-        return hash(f"{self.name}=={self.version}")
+        return hash(f"{self.name}=={self.version}_{self._get_settings_str()}")
 
 
 class Checksum(BaseModel):
