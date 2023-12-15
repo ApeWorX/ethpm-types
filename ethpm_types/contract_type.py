@@ -344,6 +344,7 @@ class ContractType(BaseModel):
         return {sig: atype for atype, sig in self._abi_identifiers if sig is not None}
 
     @computed_field(alias="methodIdentifiers")  # type: ignore
+    @cached_property
     def method_identifiers(self) -> Dict[str, str]:
         return {
             atype.selector: sig for atype, sig in self._abi_identifiers if atype.type == "function"
