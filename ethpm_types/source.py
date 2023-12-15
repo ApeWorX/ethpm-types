@@ -51,6 +51,10 @@ class Compiler(BaseModel):
         return self.__hash__() == other.__hash__()
 
     def _get_settings_str(self) -> str:
+        return self._stringify_settings(self.settings)
+
+    @classmethod
+    def _stringify_settings(cls, settings: Dict) -> str:
         # For hashing and ID.
         # Recursively sort dictionaries based on values
         def sort_value(value: Any) -> Any:
@@ -67,7 +71,7 @@ class Compiler(BaseModel):
                 for k, v in sorted(_dict.items(), key=lambda item: sort_value(item[1]))
             }
 
-        settings: Dict = sort_dict(self.settings or {})
+        settings = sort_dict(settings or {})
         return json.dumps(settings, separators=(",", ":"), sort_keys=True)
 
     def __hash__(self) -> int:
