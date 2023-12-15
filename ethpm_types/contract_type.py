@@ -328,7 +328,7 @@ class ContractType(BaseModel):
     def identifier_definitions(self) -> Dict[str, str]:
         """
         Returns a mapping of the full suite of signatures to selectors/topics/IDs for this
-        contract
+        contract.
         """
 
         def get_id(aitem: ABI) -> str:
