@@ -324,9 +324,34 @@ class ContractType(BaseModel):
 
         return None
 
+    @cached_property
+    def identifier_definitions(self) -> Dict[str, Optional[str]]:
+        """
+        Returns a mapping of the full suite of signatures to selectors/topics/IDs for this
+        contract
+        """
+
+        def get_ident(aitem: ABI) -> Optional[str]:
+            if isinstance(aitem, MethodABI) or isinstance(aitem, ErrorABI):
+                return HexBytes(self._selector_hash_fn(aitem.selector)[:4]).hex()
+            elif hasattr(aitem, "selector"):
+                return HexBytes(self._selector_hash_fn(aitem.selector)).hex()
+            else:
+                return None
+
+        return {m.selector: get_ident(m) for m in self.abi}
+
+    @cached_property
+    def identifier_lookup(self) -> Dict[str, Optional[str]]:
+        """
+        Returns a mapping of the full suite of selectors/topics/IDs of this contract to human
+        readable signature
+        """
+        return {v: k for k, v in self.identifier_definitions.items() if v is not None}
+
     @computed_field(alias="methodIdentifiers")  # type: ignore
     @cached_property
-    def method_identifiers(self) -> Optional[Dict[str, str]]:
+    def method_identifiers(self) -> Dict[str, str]:
         methods: List[MethodABI] = [x for x in self.abi if x.type == "function"]  # type: ignore
         return {m.selector: HexBytes(self._selector_hash_fn(m.selector)[:4]).hex() for m in methods}
 
