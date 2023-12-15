@@ -329,12 +329,12 @@ def test_method_ids_are_set(vyper_contract):
     assert actual == expected
 
 
-def test_identifier_definitions(vyper_contract):
-    assert len(vyper_contract.identifier_definitions.keys()) == 46
-    assert vyper_contract.identifier_definitions["balances(address)"] == "0x27e235e3"
-    assert vyper_contract.identifier_definitions["owner()"] == "0x8da5cb5b"
+def test_selector_identifiers(vyper_contract):
+    assert len(vyper_contract.selector_identifiers.keys()) == 46
+    assert vyper_contract.selector_identifiers["balances(address)"] == "0x27e235e3"
+    assert vyper_contract.selector_identifiers["owner()"] == "0x8da5cb5b"
     assert (
-        vyper_contract.identifier_definitions["FooHappened(uint256)"]
+        vyper_contract.selector_identifiers["FooHappened(uint256)"]
         == "0x1a7c56fae0af54ebae73bc4699b9de9835e7bb86b050dff7e80695b633f17abd"
     )
 

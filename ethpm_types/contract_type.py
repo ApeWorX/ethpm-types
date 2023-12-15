@@ -325,7 +325,7 @@ class ContractType(BaseModel):
         return None
 
     @cached_property
-    def identifier_definitions(self) -> Dict[str, str]:
+    def selector_identifiers(self) -> Dict[str, str]:
         """
         Returns a mapping of the full suite of signatures to selectors/topics/IDs for this
         contract.
@@ -347,7 +347,7 @@ class ContractType(BaseModel):
         Returns a mapping of the full suite of selectors/topics/IDs of this contract to human
         readable signature
         """
-        return {v: k for k, v in self.identifier_definitions.items() if v is not None}
+        return {v: k for k, v in self.selector_identifiers.items() if v is not None}
 
     @computed_field(alias="methodIdentifiers")  # type: ignore
     @cached_property
