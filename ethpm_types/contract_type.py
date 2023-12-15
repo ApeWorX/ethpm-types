@@ -7,7 +7,6 @@ from pydantic import Field, computed_field, field_validator
 
 from ethpm_types.abi import (
     ABI,
-    ABIType,
     ConstructorABI,
     ErrorABI,
     EventABI,
@@ -346,7 +345,9 @@ class ContractType(BaseModel):
 
     @computed_field(alias="methodIdentifiers")  # type: ignore
     def method_identifiers(self) -> Dict[str, str]:
-        return {atype.selector: sig for atype, sig in self._abi_identifiers if atype.type == "function"}
+        return {
+            atype.selector: sig for atype, sig in self._abi_identifiers if atype.type == "function"
+        }
 
     @field_validator("deployment_bytecode", "runtime_bytecode", mode="before")
     @classmethod
