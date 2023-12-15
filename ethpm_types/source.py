@@ -51,10 +51,14 @@ class Compiler(BaseModel):
         return self.__hash__() == other.__hash__()
 
     def _get_settings_str(self) -> str:
-        return self._stringify_settings(self.settings)
+        return self._stringify_settings(self.settings or {})
 
     @classmethod
     def _stringify_settings(cls, settings: Dict) -> str:
+        # NOTE: Exclude outputSelection as it may contain contract type names.
+        banned_fields = ("outputSelection",)
+        settings_filtered = {k: v for k, v in settings.items() if k not in banned_fields}
+
         # For hashing and ID.
         # Recursively sort dictionaries based on values
         def sort_value(value: Any) -> Any:
@@ -71,8 +75,8 @@ class Compiler(BaseModel):
                 for k, v in sorted(_dict.items(), key=lambda item: sort_value(item[1]))
             }
 
-        settings = sort_dict(settings or {})
-        return json.dumps(settings, separators=(",", ":"), sort_keys=True)
+        sorted_settings = sort_dict(settings_filtered or {})
+        return json.dumps(sorted_settings, separators=(",", ":"), sort_keys=True)
 
     def __hash__(self) -> int:
         return hash(f"{self.name}=={self.version}_{self._get_settings_str()}")

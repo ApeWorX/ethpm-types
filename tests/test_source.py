@@ -257,10 +257,13 @@ def test_compiler_hash():
         name="yo", version="0.2.0", settings={"foo": "bar"}, contractType=["test1"]
     )
     compiler_2 = Compiler(
-        name="foo", version="0.1.0", settings={"foo": "bar"}, contractType=["test1", "test2"]
+        name="foo",
+        version="0.1.0",
+        settings={"foo": "bar", "outputSelection": {"test1": ["*"]}},
+        contractType=["test1", "test2"],
     )
     compiler_3 = Compiler(
-        name="yo", version="0.2.0", settings={"foo": "bar"}, contractType=["test1"]
+        name="yo", version="0.2.0", settings={"foo": "bar"}, contractType=["test1", "test2"]
     )
     compiler_4 = Compiler(
         name="yo", version="0.2.0", settings={"foo": "bar", "test": "123"}, contractType=["test1"]
