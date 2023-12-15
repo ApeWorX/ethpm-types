@@ -331,7 +331,6 @@ class ContractType(BaseModel):
         contract
         """
 
-        # ABITypeWithSelector = Union[ConstructorABI, MethodABI, EventABI, ErrorABI, StructABI]
         def get_id(aitem: ABI) -> str:
             if isinstance(aitem, MethodABI) or isinstance(aitem, ErrorABI):
                 return HexBytes(self._selector_hash_fn(aitem.selector)[:4]).hex()
