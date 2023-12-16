@@ -1,6 +1,5 @@
-import json
 from pathlib import Path, PosixPath
-from typing import Any, Dict, Iterator, List, Optional, Set, Tuple, Union
+from typing import Dict, Iterator, List, Optional, Set, Tuple, Union
 
 import requests
 from cid import make_cid  # type: ignore
@@ -12,7 +11,12 @@ from ethpm_types.ast import ASTClassification, ASTNode, SourceLocation
 from ethpm_types.base import BaseModel
 from ethpm_types.contract_type import ContractType
 from ethpm_types.sourcemap import PCMap
-from ethpm_types.utils import CONTENT_ADDRESSED_SCHEMES, Algorithm, compute_checksum
+from ethpm_types.utils import (
+    CONTENT_ADDRESSED_SCHEMES,
+    Algorithm,
+    compute_checksum,
+    stringify_dict_for_hash,
+)
 
 
 class Compiler(BaseModel):
@@ -56,27 +60,8 @@ class Compiler(BaseModel):
     @classmethod
     def _stringify_settings(cls, settings: Dict) -> str:
         # NOTE: Exclude outputSelection as it may contain contract type names.
-        banned_fields = ("outputSelection",)
-        settings_filtered = {k: v for k, v in settings.items() if k not in banned_fields}
-
-        # For hashing and ID.
-        # Recursively sort dictionaries based on values
-        def sort_value(value: Any) -> Any:
-            if isinstance(value, dict):
-                return sort_dict(value)
-            elif isinstance(value, list):
-                return [sort_value(item) for item in value]
-            else:
-                return value
-
-        def sort_dict(_dict: Dict) -> Dict:
-            return {
-                k: sort_value(v)
-                for k, v in sorted(_dict.items(), key=lambda item: sort_value(item[1]))
-            }
-
-        sorted_settings = sort_dict(settings_filtered or {})
-        return json.dumps(sorted_settings, separators=(",", ":"), sort_keys=True)
+        fields = ("evmVersion", "optimizer")
+        return stringify_dict_for_hash(settings, include=fields)
 
     def __hash__(self) -> int:
         return hash(f"{self.name}=={self.version}_{self._get_settings_str()}")

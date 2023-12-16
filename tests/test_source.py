@@ -229,10 +229,13 @@ def test_contract_source_use_method_id(vyper_contract, source, source_base):
 
 def test_compiler_equality():
     compiler_1 = Compiler(
-        name="yo", version="0.1.0", settings={"foo": "bar"}, contractType=["test1"]
+        name="yo", version="0.1.0", settings={"evmVersion": "shanghai"}, contractType=["test1"]
     )
     compiler_2 = Compiler(
-        name="yo", version="0.1.0", settings={"foo": "bar"}, contractType=["test1", "test2"]
+        name="yo",
+        version="0.1.0",
+        settings={"evmVersion": "shanghai"},
+        contractType=["test1", "test2"],
     )
     assert compiler_1 == compiler_2
 
@@ -247,26 +250,32 @@ def test_compiler_equality():
     compiler_1.version = compiler_2.version
 
     # Settings affect equality.
-    compiler_2.settings["test"] = "123"
+    compiler_2.settings["evmVersion"] = "london"
     assert compiler_1 != compiler_2
-    del compiler_2.settings["test"]
+    compiler_2.settings["evmVersion"] = "shanghai"
 
 
 def test_compiler_hash():
     compiler_1 = Compiler(
-        name="yo", version="0.2.0", settings={"foo": "bar"}, contractType=["test1"]
+        name="yo", version="0.2.0", settings={"evmVersion": "shanghai"}, contractType=["test1"]
     )
     compiler_2 = Compiler(
         name="foo",
         version="0.1.0",
-        settings={"foo": "bar", "outputSelection": {"test1": ["*"]}},
+        settings={"evmVersion": "shanghai", "outputSelection": {"test1": ["*"]}},
         contractType=["test1", "test2"],
     )
     compiler_3 = Compiler(
-        name="yo", version="0.2.0", settings={"foo": "bar"}, contractType=["test1", "test2"]
+        name="yo",
+        version="0.2.0",
+        settings={"evmVersion": "shanghai"},
+        contractType=["test1", "test2"],
     )
     compiler_4 = Compiler(
-        name="yo", version="0.2.0", settings={"foo": "bar", "test": "123"}, contractType=["test1"]
+        name="yo",
+        version="0.2.0",
+        settings={"evmVersion": "shanghai", "optimizer": {"enabled": False, "runs": 200}},
+        contractType=["test1"],
     )
     compiler_set = {compiler_1, compiler_2, compiler_3, compiler_4}
     assert len(compiler_set) == 3
