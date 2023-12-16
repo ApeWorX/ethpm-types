@@ -11,7 +11,12 @@ from ethpm_types.ast import ASTClassification, ASTNode, SourceLocation
 from ethpm_types.base import BaseModel
 from ethpm_types.contract_type import ContractType
 from ethpm_types.sourcemap import PCMap
-from ethpm_types.utils import CONTENT_ADDRESSED_SCHEMES, Algorithm, compute_checksum
+from ethpm_types.utils import (
+    CONTENT_ADDRESSED_SCHEMES,
+    Algorithm,
+    compute_checksum,
+    stringify_dict_for_hash,
+)
 
 
 class Compiler(BaseModel):
@@ -42,19 +47,24 @@ class Compiler(BaseModel):
     def __eq__(self, other) -> bool:
         if (
             not hasattr(other, "name")
-            and not hasattr(other, "version")
-            and not hasattr(other, "settings")
+            or not hasattr(other, "version")
+            or not hasattr(other, "settings")
         ):
             return NotImplemented
 
-        return (
-            self.name == other.name
-            and self.version == other.version
-            and self.settings == other.settings
-        )
+        return self.__hash__() == other.__hash__()
+
+    def _get_settings_str(self) -> str:
+        return self._stringify_settings(self.settings or {})
+
+    @classmethod
+    def _stringify_settings(cls, settings: Dict) -> str:
+        # NOTE: Exclude outputSelection as it may contain contract type names.
+        fields = ("evmVersion", "optimizer")
+        return stringify_dict_for_hash(settings, include=fields)
 
     def __hash__(self) -> int:
-        return hash(f"{self.name}=={self.version}")
+        return hash(f"{self.name}=={self.version}_{self._get_settings_str()}")
 
 
 class Checksum(BaseModel):

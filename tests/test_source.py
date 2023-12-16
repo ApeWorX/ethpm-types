@@ -229,41 +229,60 @@ def test_contract_source_use_method_id(vyper_contract, source, source_base):
 
 def test_compiler_equality():
     compiler_1 = Compiler(
-        name="yo", version="0.1.0", settings={"foo": "bar"}, contractType=["test1"]
+        name="yo", version="0.1.0", settings={"evmVersion": "shanghai"}, contractType=["test1"]
     )
     compiler_2 = Compiler(
-        name="yo", version="0.1.0", settings={"foo": "bar"}, contractType=["test1", "test2"]
+        name="yo",
+        version="0.1.0",
+        settings={"evmVersion": "shanghai"},
+        contractType=["test1", "test2"],
     )
     assert compiler_1 == compiler_2
 
+    # Name affects equality.
     compiler_1.name = "yo2"
     assert compiler_1 != compiler_2
     compiler_1.name = compiler_2.name
 
+    # Version affects equality.
     compiler_1.version = "0.100000.0"
     assert compiler_1 != compiler_2
     compiler_1.version = compiler_2.version
 
-    compiler_1.settings["test"] = "123"
+    # Settings affect equality.
+    compiler_2.settings["evmVersion"] = "london"
     assert compiler_1 != compiler_2
-    compiler_1.settings = compiler_2.settings
+    compiler_2.settings["evmVersion"] = "shanghai"
 
 
 def test_compiler_hash():
     compiler_1 = Compiler(
-        name="yo", version="0.2.0", settings={"foo": "bar"}, contractType=["test1"]
+        name="yo", version="0.2.0", settings={"evmVersion": "shanghai"}, contractType=["test1"]
     )
     compiler_2 = Compiler(
-        name="foo", version="0.1.0", settings={"foo": "bar"}, contractType=["test1", "test2"]
+        name="foo",
+        version="0.1.0",
+        settings={"evmVersion": "shanghai", "outputSelection": {"test1": ["*"]}},
+        contractType=["test1", "test2"],
     )
     compiler_3 = Compiler(
-        name="yo", version="0.2.0", settings={"foo": "bar"}, contractType=["test1"]
+        name="yo",
+        version="0.2.0",
+        settings={"evmVersion": "shanghai"},
+        contractType=["test1", "test2"],
     )
-    a_set = {compiler_1, compiler_2, compiler_3}
-    assert len(a_set) == 2
-    assert compiler_1 in a_set
-    assert compiler_2 in a_set
-    assert compiler_3 in a_set
+    compiler_4 = Compiler(
+        name="yo",
+        version="0.2.0",
+        settings={"evmVersion": "shanghai", "optimizer": {"enabled": False, "runs": 200}},
+        contractType=["test1"],
+    )
+    compiler_set = {compiler_1, compiler_2, compiler_3, compiler_4}
+    assert len(compiler_set) == 3
+    assert compiler_1 in compiler_set
+    assert compiler_2 in compiler_set
+    assert compiler_3 in compiler_set
+    assert compiler_4 in compiler_set
 
 
 def test_checksum_from_file():
