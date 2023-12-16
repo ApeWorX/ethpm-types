@@ -501,11 +501,10 @@ class ContractType(BaseModel):
 
     @cached_property
     def _abi_identifiers(self) -> List[Tuple[ABI_W_SELECTOR_T, str]]:
-        def get_id(aitem: ABI) -> str:
+        def get_id(aitem: ABI_W_SELECTOR_T) -> str:
             if isinstance(aitem, MethodABI) or isinstance(aitem, ErrorABI):
                 return HexBytes(self._selector_hash_fn(aitem.selector)[:4]).hex()
             else:
-                assert hasattr(aitem, "selector")
                 return HexBytes(self._selector_hash_fn(aitem.selector)).hex()
 
         abis_with_selector = cast(
