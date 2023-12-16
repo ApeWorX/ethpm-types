@@ -129,8 +129,8 @@ def test_content_chunk(content_raw):
     data = {7: chunk[0], 8: chunk[1], 9: chunk[2]}
     content = Content.model_validate(data)
     assert content.begin_lineno == 7
-    assert content.end_lineno == 9
-    assert len(content) == 3
+    assert content.end_lineno == 8
+    assert len(content) == 2
 
 
 def test_content_from_str():
@@ -294,3 +294,9 @@ def test_checksum_from_file():
         hash=compute_checksum(file.read_bytes()),
     )
     assert actual == expected
+
+
+def test_source_excludes_extra_lines():
+    content = "helloworld\n\n\n  \n\n\t\n\n"
+    source = Source(content=content)
+    assert len(source) == 1

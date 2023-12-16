@@ -121,9 +121,20 @@ class Content(RootModel[Dict[int, str]]):
             data = value.read_text()
         else:
             data = value["root"] if "_root" in value else value
-        return (
-            {i + 1: x for i, x in enumerate(data.splitlines())} if isinstance(data, str) else data
-        )
+
+        if isinstance(data, str):
+            return {i + 1: x for i, x in enumerate(data.rstrip().splitlines())}
+
+        else:
+            last_idx = len(data) - 1
+            for key, val in reversed(data.items()):
+                if val.strip():
+                    break
+
+                last_idx -= 1
+
+            keys = list(data.keys())
+            return {keys[i]: data[keys[i]] for i in range(last_idx + 1)}
 
     def encode(self, *args, **kwargs) -> bytes:
         return str(self).encode(*args, **kwargs)
