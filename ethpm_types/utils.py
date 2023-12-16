@@ -70,7 +70,6 @@ def stringify_dict_for_hash(
         str
     """
 
-    # NOTE: Exclude outputSelection as it may contain contract type names.
     if include:
         data = {k: v for k, v in data.items() if k in include}
     if exclude:
