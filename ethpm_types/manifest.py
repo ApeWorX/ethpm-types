@@ -2,20 +2,14 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from eth_pydantic_types import Bip122Uri
-from pydantic import (
-    AnyUrl,
-    BeforeValidator,
-    Field,
-    WithJsonSchema,
-    field_validator,
-    model_validator,
-)
-from pydantic_core import PydanticCustomError
+from pydantic import AnyUrl, Field, field_validator, model_validator
+from pydantic_core import CoreSchema, PydanticCustomError
+from pydantic_core.core_schema import str_schema, with_info_before_validator_function
 
 from ethpm_types.base import BaseModel
 from ethpm_types.contract_type import ContractInstance, ContractType
 from ethpm_types.source import Compiler, Source
-from ethpm_types.utils import Algorithm, Annotated
+from ethpm_types.utils import Algorithm
 
 ALPHABET = set("abcdefghijklmnopqrstuvwxyz")
 NUMBERS = set("0123456789")
@@ -26,7 +20,7 @@ def PackageNameError(name: str, message: str) -> PydanticCustomError:
     return PydanticCustomError(error_name, message, {"name": name})
 
 
-def validate_package_name(name: str) -> str:
+def validate_package_name(name: str, info) -> str:
     if not isinstance(name, str):
         # NOTE: Don't raise TypeError here.
         # Those no longer turn to ValidationError in Pydantic.
@@ -44,18 +38,24 @@ def validate_package_name(name: str) -> str:
     return name
 
 
-PackageName = Annotated[
-    str,
-    WithJsonSchema(
-        {
-            "type": "string",
-            "pattern": "^[a-z][-a-z0-9]{0,254}$",
-            "examples": ["my-token", "safe-math", "nft"],
-        }
-    ),
-    BeforeValidator(validate_package_name),
-]
-PackageName.__name__ = "PackageName"
+class PackageName(str):
+    @classmethod
+    def __get_pydantic_core_schema__(cls, value, handler=None) -> CoreSchema:
+        schema = with_info_before_validator_function(
+            validate_package_name,
+            str_schema(),
+        )
+        return schema
+
+    @classmethod
+    def __get_pydantic_json_schema__(cls, core_schema, handler):
+        json_schema = handler(core_schema)
+        json_schema.update(
+            format="binary",
+            pattern="^[a-z][-a-z0-9]{0,254}$",
+            examples=["my-token", "safe-math", "nft"],
+        )
+        return json_schema
 
 
 class PackageMeta(BaseModel):
