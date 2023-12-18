@@ -284,7 +284,7 @@ def test_compiler_hash():
         contractType=["test1"],
     )
     compiler_set = {compiler_1, compiler_2, compiler_3, compiler_4, compiler_5}
-    assert len(compiler_set) == 3
+    assert len(compiler_set) == 4
     assert compiler_1 in compiler_set
     assert compiler_2 in compiler_set
     assert compiler_3 in compiler_set
