@@ -60,7 +60,7 @@ class Compiler(BaseModel):
     @classmethod
     def _stringify_settings(cls, settings: Dict) -> str:
         # NOTE: Exclude outputSelection as it may contain contract type names.
-        fields = ("evmVersion", "optimizer")
+        fields = ("evmVersion", "optimizer", "optimize")
         return stringify_dict_for_hash(settings, include=fields)
 
     def __hash__(self) -> int:

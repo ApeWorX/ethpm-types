@@ -277,12 +277,19 @@ def test_compiler_hash():
         settings={"evmVersion": "shanghai", "optimizer": {"enabled": False, "runs": 200}},
         contractType=["test1"],
     )
-    compiler_set = {compiler_1, compiler_2, compiler_3, compiler_4}
-    assert len(compiler_set) == 3
+    compiler_5 = Compiler(
+        name="yo",
+        version="0.2.0",
+        settings={"evmVersion": "shanghai", "optimize": True},
+        contractType=["test1"],
+    )
+    compiler_set = {compiler_1, compiler_2, compiler_3, compiler_4, compiler_5}
+    assert len(compiler_set) == 4
     assert compiler_1 in compiler_set
     assert compiler_2 in compiler_set
     assert compiler_3 in compiler_set
     assert compiler_4 in compiler_set
+    assert compiler_5 in compiler_set
 
 
 def test_checksum_from_file():
