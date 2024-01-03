@@ -221,18 +221,21 @@ class Source(BaseModel):
 
     @model_validator(mode="before")
     def validate_model(cls, model):
-        str_model = None
+        content = None
+        other_props = {}
         if isinstance(model, str):
-            str_model = model
+            content = model
 
         elif isinstance(model, dict) and isinstance(model.get("content"), str):
-            str_model = model["content"]
+            content = model["content"]
+            other_props = {k: v for k, v in model.items() if k != "content"}
 
-        return (
-            {"content": Content(root={i + 1: x for i, x in enumerate(str_model.splitlines())})}
-            if str_model
+        content_result = (
+            {"content": Content(root={i + 1: x for i, x in enumerate(content.splitlines())})}
+            if content
             else model
         )
+        return {**content_result, **other_props}
 
     def __repr__(self) -> str:
         repr_id = "Source"
