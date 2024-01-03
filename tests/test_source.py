@@ -307,3 +307,12 @@ def test_source_excludes_extra_lines():
     content = "helloworld\n\n\n  \n\n\t\n\n"
     source = Source(content=content)
     assert len(source) == 1
+
+
+def test_references():
+    """
+    Tests against a bug where the model validation
+    would accidentally ignore all extra properties.
+    """
+    source = Source(content="foo\n", references=["bar.txt"])
+    assert source.references == ["bar.txt"]
