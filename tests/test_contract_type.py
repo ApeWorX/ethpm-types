@@ -349,3 +349,25 @@ def test_identifier_lookup(vyper_contract):
         ].selector
         == "FooHappened(uint256)"
     )
+
+
+def test_get_runtime_bytecode(vyper_contract):
+    actual = vyper_contract.get_runtime_bytecode()
+    assert actual.hex().startswith("0x")
+
+
+def test_get_runtime_bytecode_no_code(vyper_contract):
+    vyper_contract.runtime_bytecode = None
+    actual = vyper_contract.get_runtime_bytecode()
+    assert actual is None
+
+
+def test_get_deployment_bytecode(vyper_contract):
+    actual = vyper_contract.get_deployment_bytecode()
+    assert actual.hex().startswith("0x")
+
+
+def test_get_deployment_bytecode_no_code(vyper_contract):
+    vyper_contract.deployment_bytecode = None
+    actual = vyper_contract.get_deployment_bytecode()
+    assert actual is None
