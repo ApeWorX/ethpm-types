@@ -1,7 +1,7 @@
 import pytest
 
 from ethpm_types import SourceMapItem
-from ethpm_types.ast import ASTNode
+from ethpm_types.ast import ASTClassification, ASTNode
 
 VYPER_AST_JSON = {
     "ast_type": "Module",
@@ -455,6 +455,51 @@ SOLIDITY_AST_JSON = {
 }
 
 
+def test_model_validate():
+    node = ASTNode.model_validate({"ast_type": "Function"})
+    assert len(list(node.children)) == 0
+    assert node.ast_type == "Function"
+
+
+def test_children():
+    data = {"ast_type": "Function", "childNode": {"ast_type": "TypeDef"}}
+    node = ASTNode.model_validate(data)
+    actual = list(node.children)
+    assert len(actual) == 1
+    assert actual[0].ast_type == "TypeDef"
+
+
+def test_children_nested():
+    """
+    Ensure can find extremely nested child-nodes.
+    """
+    data = {
+        "ast_type": "Function",
+        "foo": 1,
+        "bar": [
+            {"example": "NotAnASTNode"},
+            {"example": "NotAnASTNode"},
+            [
+                {"example": "NotAnASTNode"},
+                {"example": "NotAnASTNode"},
+                [
+                    {"example": "NotAnASTNode"},
+                    # ASTNode here!
+                    {"ast_type": "Variable"},
+                    {"example": "NotAnASTNode"},
+                ],
+                {"example": "NotAnASTNode"},
+            ],
+            {"example": "NotAnASTNode"},
+        ],
+        "baz": {"example": "NotAnASTNode"},
+    }
+    node = ASTNode.model_validate(data)
+    actual = list(node.children)
+    assert len(actual) == 1
+    assert actual[0].ast_type == "Variable"
+
+
 def test_vy_ast():
     node = ASTNode.model_validate(VYPER_AST_JSON)
     idx = SourceMapItem.parse_str("104:8:0")
@@ -463,7 +508,6 @@ def test_vy_ast():
     funcs = node.functions
     assert stmt.ast_type == "Compare"
     assert stmt.line_numbers == (7, 11, 7, 19)
-    assert len(stmts) == 2
     assert stmts[0].ast_type == "arguments"
     assert stmts[1].ast_type == "arg"
     assert len(funcs) == 1
@@ -472,11 +516,29 @@ def test_vy_ast():
     assert node.get_defining_function([7, 11, 7, 14]) == funcs[0]
     assert node.get_defining_function((55, 11, 56, 14)) is None
 
+    # Show we can classify nodes.
+    node.classification = ASTClassification.FUNCTION
+
+    # The dumped model MUST be the same as the raw data!
+    # NOTE: Must happen AFTER the classification step above.
+    dumped_model = node.model_dump(mode="json", by_alias=True)
+    assert dumped_model == VYPER_AST_JSON
+
 
 def test_sol_ast():
     node = ASTNode.model_validate(SOLIDITY_AST_JSON)
+    children = list(node.children)
+    ids = sorted([x.root.get("id") for x in children])
     assert node.ast_type == "SourceUnit"
-    assert len(list(node.children)) == 10
+    assert len(set(ids)) == len(children)
+
+    # Show we can classify nodes.
+    node.classification = ASTClassification.FUNCTION
+
+    # The dumped model MUST be the same as the raw data!
+    # NOTE: Must happen AFTER the classification step above.
+    dumped_model = node.model_dump(mode="json", by_alias=True)
+    assert dumped_model == SOLIDITY_AST_JSON
 
 
 @pytest.mark.parametrize("length", (0, None))

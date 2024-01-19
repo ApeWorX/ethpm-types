@@ -1,8 +1,8 @@
 from enum import Enum
 from functools import cached_property
-from typing import Iterator, List, Optional, Union, Tuple, Any
+from typing import Any, Iterator, List, Optional, Tuple, Union
 
-from pydantic import RootModel, model_validator
+from pydantic import RootModel, ValidationError, model_validator
 
 from ethpm_types.sourcemap import SourceMapItem
 from ethpm_types.utils import SourceLocation
@@ -23,22 +23,41 @@ class ASTNode(RootModel[dict]):
 
     _classification: ASTClassification = ASTClassification.UNCLASSIFIED
     _lazy_children: List["ASTNode"] = []
-    _function_node_types: Tuple[str, ...] = tuple()
+    _function_node_types: Tuple[str, ...]
+    _ast_type_keys: Tuple[str, ...]
 
     @model_validator(mode="before")
     @classmethod
     def validate_ast(cls, values):
-        cls._function_node_types = values.pop("function_node_types", tuple())
-        return values
+        fn_node_types = values.pop("function_node_types", ("FunctionDef",))
+        ast_type_keys = values.pop("ast_type_keys", ("ast_type", "nodeType"))
+
+        cls._function_node_types = fn_node_types
+        cls._ast_type_keys = ast_type_keys
+
+        for key in ast_type_keys:
+            if ast_type := values.get(key):
+                # Is a node!
+                if ast_type in fn_node_types:
+                    cls._classification = ASTClassification.FUNCTION
+
+                return values
+
+        raise ValidationError("Not a valid ASTNode.")
 
     @cached_property
     def ast_type(self) -> str:
         """
         The compiler-given AST node type, such as ``FunctionDef``.
         """
-        return self.root.get("ast_type", self.root.get("nodeType")) or ""
+        for key in self._ast_type_keys:
+            if itm := self.root.get(key):
+                return itm
 
-    @cached_property
+        # Shouldn't happen.
+        raise ValueError("Missing AST type.")
+
+    @property
     def children(self) -> Iterator["ASTNode"]:
         """
         All sub-AST nodes within this one.
@@ -47,9 +66,8 @@ class ASTNode(RootModel[dict]):
             yield from self._lazy_children
 
         else:
-            for child in self.find_children(self.root):
-                self._lazy_children.append(child)
-                yield child
+            for val in self.root.values():
+                yield from self.find_children(val)
 
     @property
     def classification(self) -> ASTClassification:
@@ -123,23 +141,23 @@ class ASTNode(RootModel[dict]):
         return val
 
     @classmethod
-    def find_children(cls, node: dict) -> Iterator["ASTNode"]:
+    def find_children(cls, node: Any) -> Iterator["ASTNode"]:
         def is_ast_node(data: Any) -> bool:
             return isinstance(data, dict) and any(x in data for x in ("ast_type", "nodeType"))
 
-        for value in node.values():
-            if isinstance(value, dict) or (
-                isinstance(value, list) and all(isinstance(v, dict) for v in value)
-            ):
-                if is_ast_node(value):
-                    child = ASTNode.model_validate(value)
-                    yield from child.iter_nodes()
+        if isinstance(node, dict):
+            if is_ast_node(node):
+                child = ASTNode.model_validate(node)
+                yield child
+                yield from child.children
 
-                elif isinstance(value, (list, tuple)):
-                    for _val in value:
-                        if is_ast_node(_val):
-                            child = ASTNode.model_validate(_val)
-                            yield from child.iter_nodes()
+            else:
+                # Not a node but may have child nodes.
+                yield from cls.find_children(list(node.values()))
+
+        elif isinstance(node, (list, tuple)):
+            for val in node:
+                yield from cls.find_children(val)
 
     @property
     def line_numbers(self) -> SourceLocation:
@@ -161,10 +179,14 @@ class ASTNode(RootModel[dict]):
         return [n for n in self.children if n.ast_type == "FunctionDef"]
 
     def __repr__(self) -> str:
-        return str(self)
+        try:
+            return str(self)
+        except Exception:
+            # Don't allow repr to fail.
+            return "<ASTNode>"
 
     def __str__(self):
-        num_children = len(self.children)
+        num_children = len(list(self.children))
         stats = "leaf" if num_children == 0 else f"children={num_children}"
         return f"<{self.ast_type}Node {stats}>"
 
@@ -242,7 +264,8 @@ class ASTNode(RootModel[dict]):
         """
 
         for function in self.functions:
-            if function.get_nodes_at_line(line_numbers):
+            gen = function.get_nodes_at_line(line_numbers)
+            if next(gen, None):
                 return function
 
         return None
