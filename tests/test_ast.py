@@ -459,7 +459,7 @@ def test_vy_ast():
     node = ASTNode.model_validate(VYPER_AST_JSON)
     idx = SourceMapItem.parse_str("104:8:0")
     stmt = node.get_node(idx)
-    stmts = node.get_nodes_at_line((6, 14, 6, 26))
+    stmts = list(node.get_nodes_at_line((6, 14, 6, 26)))
     funcs = node.functions
     assert stmt.ast_type == "Compare"
     assert stmt.line_numbers == (7, 11, 7, 19)
@@ -476,7 +476,7 @@ def test_vy_ast():
 def test_sol_ast():
     node = ASTNode.model_validate(SOLIDITY_AST_JSON)
     assert node.ast_type == "SourceUnit"
-    assert len(node.children) == 10
+    assert len(list(node.children)) == 10
 
 
 @pytest.mark.parametrize("length", (0, None))
