@@ -17,7 +17,7 @@ extras_require = {
         "hypothesis-jsonschema==0.19.0",  # Fuzzes based on a json schema
     ],
     "lint": [
-        "black>=24.2.0,<25",  # Auto-formatter and linter
+        "black>=24.3.0,<25",  # Auto-formatter and linter
         "mypy>=1.9.0,<2",  # Static type analyzer
         "types-setuptools",  # Needed for mypy type shed
         "types-requests",  # Needed for mypy type shed
