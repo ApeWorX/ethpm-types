@@ -140,7 +140,21 @@ class ContractInstance(BaseModel):
     """
 
 
-class ABIList(List[ABILIST_T]):
+def _abi_iterale_to_map(
+    iterable: Optional[Iterable[ABILIST_T]] = None,
+) -> Dict[str, List[ABILIST_T]]:
+    items: Dict[str, List[ABILIST_T]] = {}
+    iterable = iterable or []
+    for abi in iterable:
+        if abi.name in items:
+            items[abi.name].append(abi)
+        else:
+            items[abi.name] = [abi]
+
+    return items
+
+
+class ABIList(Dict[str, List[ABILIST_T]]):
     """
     Adds selection by name, selector and keccak(selector).
     """
@@ -153,8 +167,9 @@ class ABIList(List[ABILIST_T]):
         selector_hash_fn: Optional[Callable[[str], bytes]] = None,
     ):
         self._selector_id_size = selector_id_size
-        self._selector_hash_fn = selector_hash_fn
-        super().__init__(iterable or ())
+        self._selector_hash_fn = selector_hash_fn or _default_hash_fn
+        items = _abi_iterale_to_map(iterable)
+        super().__init__(items)
 
     @singledispatchmethod
     def __getitem__(self, selector):
@@ -162,44 +177,48 @@ class ABIList(List[ABILIST_T]):
 
     @__getitem__.register
     def __getitem_int(self, selector: int):
-        return super().__getitem__(selector)
+        return [abi for abis in self.values() for abi in abis][selector]
 
     @__getitem__.register
     def __getitem_slice(self, selector: slice):
-        return super().__getitem__(selector)
+        return [abi for abis in self.values() for abi in abis][selector]
 
     @__getitem__.register
     def __getitem_str(self, selector: str):
-        try:
-            if "(" in selector:
-                # String-style selector e.g. `method(arg0)`.
-                return next(abi for abi in self if abi.selector == selector)
+        if "(" in selector:
+            # String-style selector e.g. `method(arg0)`.
+            if item := next(
+                (abi for abi_ls in self.values() for abi in abi_ls if abi.selector == selector),
+                None,
+            ):
+                return item
 
-            elif is_0x_prefixed(selector):
-                # Hashed bytes selector, but as a hex str.
-                return self.__getitem__(HexBytes(selector))
+        elif is_0x_prefixed(selector):
+            # Hashed bytes selector, but as a hex str.
+            return self.__getitem__(HexBytes(selector))
 
-            # Search by name (could be ambiguous()
-            return next(abi for abi in self if abi.name == selector)
+        elif abis := super().__getitem__(selector):
+            # Search by name (could be ambiguous)
+            if item := next(iter(abis), None):
+                return item
 
-        except StopIteration:
-            raise KeyError(selector)
+        raise KeyError(selector)
 
     @__getitem__.register
     def __getitem_bytes(self, selector: bytes):
-        try:
-            if self._selector_hash_fn:
-                return next(
-                    abi
-                    for abi in self
-                    if self._selector_hash_fn(abi.selector)[: self._selector_id_size]
-                    == selector[: self._selector_id_size]
-                )
+        if abi := next(
+            (
+                abi
+                for abi_ls in self.values()
+                for abi in abi_ls
+                if self._selector_hash_fn(abi.selector)[: self._selector_id_size]
+                == selector[: self._selector_id_size]
+            ),
+            None,
+        ):
+            return abi
 
-            else:
-                raise KeyError(selector)
-
-        except StopIteration:
+        else:
             raise KeyError(selector)
 
     @__getitem__.register
@@ -216,7 +235,13 @@ class ABIList(List[ABILIST_T]):
 
     @__contains__.register
     def __contains_str(self, selector: str) -> bool:
-        return self._contains(selector)
+        # NOTE: Not using super().__contains__ to handle selector-str parsing.
+        try:
+            _ = self[selector]
+        except KeyError:
+            return False
+
+        return True
 
     @__contains__.register
     def __contains_bytes(self, selector: bytes) -> bool:
@@ -230,9 +255,22 @@ class ABIList(List[ABILIST_T]):
     def __contains_event_abi(self, selector: EventABI) -> bool:
         return self._contains(selector)
 
+    @singledispatchmethod
+    def __eq__(self, other):
+        raise NotImplementedError(f"Cannot compare with {type(other)}.")
+
+    @__eq__.register
+    def __eq_dict(self, other: dict) -> bool:
+        return super().__eq__(other)
+
+    @__eq__.register
+    def __eq_list(self, other: list) -> bool:
+        other_dict = _abi_iterale_to_map(other)
+        return self == other_dict
+
     def _contains(self, selector: Union[str, bytes, MethodABI, EventABI]) -> bool:
         try:
-            _ = self[selector]
+            _ = super().__contains__(selector)
             return True
         except (KeyError, IndexError):
             return False
@@ -468,10 +506,7 @@ class ContractType(BaseModel):
 
     @classmethod
     def _selector_hash_fn(cls, selector: str) -> bytes:
-        # keccak is the default on most ecosystems, other ecosystems can subclass to override it
-        from eth_utils import keccak
-
-        return keccak(text=selector)
+        return _default_hash_fn(selector)
 
     def _get_abis(
         self,
@@ -511,3 +546,10 @@ class ContractType(BaseModel):
             List[ABI_W_SELECTOR_T], [x for x in self.abi if hasattr(x, "selector")]
         )
         return [(x, get_id(x)) for x in abis_with_selector]
+
+
+def _default_hash_fn(selector: str) -> bytes:
+    # keccak is the default on most ecosystems, other ecosystems can subclass to override it
+    from eth_utils import keccak
+
+    return keccak(text=selector)

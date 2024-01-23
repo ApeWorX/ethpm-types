@@ -84,6 +84,8 @@ def test_validate(contract):
 def test_structs(contract):
     method_abi = _select_abi(contract, "getStruct")
     assert contract.structs == []
+    # ABIList is treated as dict or a list.
+    assert contract.structs == {}
     assert len(method_abi.outputs) == 1
     output = method_abi.outputs[0]
     assert output.type == "tuple"
@@ -371,3 +373,13 @@ def test_get_deployment_bytecode_no_code(vyper_contract):
     vyper_contract.deployment_bytecode = None
     actual = vyper_contract.get_deployment_bytecode()
     assert actual is None
+
+
+def test_view_methods_dict(vyper_contract):
+    """
+    Showing the best way to select an ABI by name.
+    """
+    actual = dict(vyper_contract.view_methods)
+    abis = actual["getStruct"]
+    assert isinstance(abis, list)
+    assert len(abis) > 0

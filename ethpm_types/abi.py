@@ -97,7 +97,20 @@ class BaseABI(BaseModel):
     ...
 
 
-class ConstructorABI(BaseABI):
+class HashableABI(BaseABI):
+    @property
+    def selector(self) -> str:
+        """
+        String representing the constructor selector.
+        """
+
+        raise NotImplementedError("Overridden")
+
+    def __hash__(self):
+        return hash(self.selector)
+
+
+class ConstructorABI(HashableABI):
     """
     An ABI describing a contract constructor.
     **NOTE**: The constructor ABI does not have a ``name`` property.
@@ -206,7 +219,7 @@ class ReceiveABI(BaseABI):
         return "receive()"
 
 
-class MethodABI(BaseABI):
+class MethodABI(HashableABI):
     """
     An ABI representing a method you can invoke from a contact.
     """
@@ -279,7 +292,7 @@ class MethodABI(BaseABI):
         return f"{self.name}({input_args}){output_args}"
 
 
-class EventABI(BaseABI):
+class EventABI(HashableABI):
     """
     An ABI describing an event-type defined in a contract.
     """
@@ -317,7 +330,7 @@ class EventABI(BaseABI):
         return f"{self.name}({input_args})"
 
 
-class ErrorABI(BaseABI):
+class ErrorABI(HashableABI):
     """
     An ABI describing an error-type defined in a contract.
     """
@@ -353,7 +366,7 @@ class ErrorABI(BaseABI):
         return f"{self.name}({input_args})"
 
 
-class StructABI(BaseABI):
+class StructABI(HashableABI):
     """
     An ABI describing a struct-type defined in a contract.
     """
