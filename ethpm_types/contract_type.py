@@ -18,6 +18,7 @@ from ethpm_types.abi import (
 from ethpm_types.ast import ASTNode
 from ethpm_types.base import BaseModel
 from ethpm_types.sourcemap import PCMap, SourceMap
+from ethpm_types.types import ContractName, SourceId
 
 ABI_W_SELECTOR_T = Union[ConstructorABI, MethodABI, EventABI, StructABI, ErrorABI]
 """ABI types with selectors"""
@@ -245,13 +246,13 @@ class ContractType(BaseModel):
     then ``MyContract`` would be the type.
     """
 
-    name: Optional[str] = Field(None, alias="contractName")
+    name: Optional[ContractName] = Field(None, alias="contractName")
     """
     The name of the contract type. The field is optional if ``ContractAlias``
     is the same as ``ContractName``.
     """
 
-    source_id: Optional[str] = Field(None, alias="sourceId")
+    source_id: Optional[SourceId] = Field(None, alias="sourceId")
     """
     The global source identifier for the source file from which this contract type was generated.
     """

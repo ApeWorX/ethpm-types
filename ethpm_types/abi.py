@@ -94,7 +94,9 @@ class EventABIType(ABIType):
 
 
 class BaseABI(BaseModel):
-    ...
+    """
+    A base ABI.
+    """
 
 
 class ConstructorABI(BaseABI):

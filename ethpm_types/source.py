@@ -4,13 +4,14 @@ from typing import Dict, Iterator, List, Optional, Set, Tuple, Union
 import requests
 from cid import make_cid  # type: ignore
 from eth_pydantic_types import HexBytes, HexStr
-from pydantic import AnyUrl, RootModel, field_validator, model_validator
+from pydantic import AnyUrl, Field, RootModel, field_validator, model_validator
 from pydantic_core import PydanticCustomError
 
 from ethpm_types.ast import ASTClassification, ASTNode, SourceLocation
 from ethpm_types.base import BaseModel
 from ethpm_types.contract_type import ContractType
 from ethpm_types.sourcemap import PCMap
+from ethpm_types.types import ContractName, SourceId
 from ethpm_types.utils import (
     CONTENT_ADDRESSED_SCHEMES,
     Algorithm,
@@ -38,7 +39,7 @@ class Compiler(BaseModel):
     [Compiler Input and Output Description](https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-input-and-output-json-description).
     """  # noqa: E501
 
-    contractTypes: Optional[List[str]] = None
+    contract_types: Optional[List[ContractName]] = Field(None, alias="contractTypes")
     """
     A list of the contract type names in this package
     that used this compiler to generate its outputs.
@@ -205,19 +206,17 @@ class Source(BaseModel):
     license: Optional[str] = None
     """The type of license associated with this source file."""
 
-    references: Optional[List[str]] = None
+    references: Optional[List[SourceId]] = None
     """
     List of `Source` objects that depend on this object.
     **NOTE**: Not a part of canonical EIP-2678 spec.
     """
-    # TODO: Add `SourceId` type and use instead of `str`
 
-    imports: Optional[List[str]] = None
+    imports: Optional[List[SourceId]] = None
     """
     List of source objects that this object depends on.
     **NOTE**: Not a part of canonical EIP-2678 spec.
     """
-    # TODO: Add `SourceId` type and use instead of `str`
 
     @model_validator(mode="before")
     def validate_model(cls, model):
@@ -618,7 +617,7 @@ class ContractSource(BaseModel):
         return ContractSource(contract_type=contract_type, source=source, source_path=source_path)
 
     @property
-    def source_id(self) -> str:
+    def source_id(self) -> SourceId:
         """The contract type source ID."""
         return validate_source_id(self.contract_type)
 
@@ -762,7 +761,7 @@ def _strip_function(signature_lines: List[str]) -> str:
     return name.rstrip(":{ \n")
 
 
-def validate_source_id(contract_type: ContractType) -> str:
+def validate_source_id(contract_type: ContractType) -> SourceId:
     """
     A validator used by :class:`~ethpm_types.source.ContractSource`
     to ensure the given :class:`~ethpm_types.contract_type.ContractType`

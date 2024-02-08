@@ -9,6 +9,7 @@ from pydantic_core.core_schema import str_schema, with_info_before_validator_fun
 from ethpm_types.base import BaseModel
 from ethpm_types.contract_type import ContractInstance, ContractType
 from ethpm_types.source import Compiler, Source
+from ethpm_types.types import ContractName, SourceId
 from ethpm_types.utils import Algorithm
 
 ALPHABET = set("abcdefghijklmnopqrstuvwxyz")
@@ -112,13 +113,13 @@ class PackageManifest(BaseModel):
     ``meta``.
     """
 
-    sources: Optional[Dict[str, Source]] = None
+    sources: Optional[Dict[SourceId, Source]] = None
     """
     The sources field defines a source tree that should comprise the full source tree
     necessary to recompile the contracts contained in this release.
     """
 
-    contract_types: Optional[Dict[str, ContractType]] = Field(None, alias="contractTypes")
+    contract_types: Optional[Dict[ContractName, ContractType]] = Field(None, alias="contractTypes")
     """
     :class:`~ethpm_types.contract_type.ContractType` objects that have been included
     in this release.
@@ -225,7 +226,8 @@ class PackageManifest(BaseModel):
             return self.__getattribute__(attr_name)
         except AttributeError:
             # Check if contract type name.
-            if contract_type := self.get_contract_type(attr_name):
+            contract_name = ContractName(attr_name)
+            if contract_type := self.get_contract_type(contract_name):
                 return contract_type
 
         # NOTE: **must** raise `AttributeError` or return here, or else Python breaks
@@ -233,7 +235,7 @@ class PackageManifest(BaseModel):
             f"{self.__class__.__name__} has no attribute or contract type named '{attr_name}'."
         )
 
-    def get_contract_type(self, name: str) -> Optional[ContractType]:
+    def get_contract_type(self, name: ContractName) -> Optional[ContractType]:
         """
         Get a contract type by name, if it exists. Else, returns ``None``.
 
@@ -325,7 +327,7 @@ class PackageManifest(BaseModel):
             Optional[`~ethpm_types.source.Compiler`]
         """
         for compiler in self.compilers or []:
-            if contract_type_name in (compiler.contractTypes or []):
+            if contract_type_name in (compiler.contract_types or []):
                 return compiler
 
         return None
