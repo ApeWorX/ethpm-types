@@ -327,4 +327,3 @@ def test_model_validate_empty_str():
     """
     source = Source.model_validate("")
     assert isinstance(source, Source)
-
