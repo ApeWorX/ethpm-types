@@ -232,7 +232,7 @@ class Source(BaseModel):
 
         content_result = (
             {"content": Content(root={i + 1: x for i, x in enumerate(content.splitlines())})}
-            if content
+            if content is not None
             else model
         )
         return {**content_result, **other_props}
