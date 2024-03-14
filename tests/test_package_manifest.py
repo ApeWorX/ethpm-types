@@ -241,6 +241,10 @@ def test_contract_types():
     manifest = PackageManifest(contractTypes=contract_types)
     assert manifest.contract_types == contract_types
 
+    # Show we can also set them.
+    manifest.contract_types = {}
+    assert manifest.contract_types == {}
+
 
 def test_validate_fields(package_manifest):
     """

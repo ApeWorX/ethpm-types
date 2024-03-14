@@ -93,8 +93,7 @@ class EventABIType(ABIType):
         return sig
 
 
-class BaseABI(BaseModel):
-    ...
+class BaseABI(BaseModel): ...
 
 
 class ConstructorABI(BaseABI):

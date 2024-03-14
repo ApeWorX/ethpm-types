@@ -316,3 +316,14 @@ def test_references():
     """
     source = Source(content="foo\n", references=["bar.txt"])
     assert source.references == ["bar.txt"]
+
+
+def test_model_validate_empty_str():
+    """
+    There was a bug where if a file was empty,
+    it would try to use the empty str as a
+    dict to create the source content, due to an improper
+    truthy check.
+    """
+    source = Source.model_validate("")
+    assert isinstance(source, Source)
