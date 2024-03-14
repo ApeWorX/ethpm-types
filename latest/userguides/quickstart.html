@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quick Start &mdash; ethpm-types  documentation</title>
@@ -11,16 +11,16 @@
       <link rel="stylesheet" href="/ethpm-types/latest/_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="/ethpm-types/latest/_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="/ethpm-types/latest/_static/custom.css" type="text/css" />
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="canonical" href="/ethpm-types/userguides/quickstart.html" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <script src="../_static/custom.js"></script>
   <script>
@@ -38,7 +38,6 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> ethpm-types
-            <img src="../_static/logo.gif" class="logo" alt="Logo"/>
           </a>
 
           <div class="version">
@@ -106,26 +105,26 @@
            <div itemprop="articleBody">
              
   <section id="quick-start">
-<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline"></a></h1>
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading"></a></h1>
 <p>EthPM is an Ethereum package manifest containing data types for contracts, deployments, and source code using <a class="reference external" href="https://eips.ethereum.org/EIPS/eip-2678">EIP-2678</a>.
 The library validates and serializes contract related data and provides JSON schemas.</p>
 <section id="dependencies">
-<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline"></a></h2>
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.python.org/downloads">python3</a> version 3.8 to 3.11.</p></li>
 </ul>
 </section>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
 <section id="via-pip">
-<h3>via <code class="docutils literal notranslate"><span class="pre">pip</span></code><a class="headerlink" href="#via-pip" title="Permalink to this headline"></a></h3>
+<h3>via <code class="docutils literal notranslate"><span class="pre">pip</span></code><a class="headerlink" href="#via-pip" title="Permalink to this heading"></a></h3>
 <p>You can install the latest release via <a class="reference external" href="https://pypi.org/project/pip/"><code class="docutils literal notranslate"><span class="pre">pip</span></code></a>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ethpm-types
 </pre></div>
 </div>
 </section>
 <section id="via-setuptools">
-<h3>via <code class="docutils literal notranslate"><span class="pre">setuptools</span></code><a class="headerlink" href="#via-setuptools" title="Permalink to this headline"></a></h3>
+<h3>via <code class="docutils literal notranslate"><span class="pre">setuptools</span></code><a class="headerlink" href="#via-setuptools" title="Permalink to this heading"></a></h3>
 <p>You can clone the repository and use <a class="reference external" href="https://github.com/pypa/setuptools"><code class="docutils literal notranslate"><span class="pre">setuptools</span></code></a> for the most up-to-date version:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ApeWorX/ethpm-types.git
 <span class="nb">cd</span><span class="w"> </span>ethpm-types
@@ -135,7 +134,7 @@ python3<span class="w"> </span>setup.py<span class="w"> </span>install
 </section>
 </section>
 <section id="quick-usage">
-<h2>Quick Usage<a class="headerlink" href="#quick-usage" title="Permalink to this headline"></a></h2>
+<h2>Quick Usage<a class="headerlink" href="#quick-usage" title="Permalink to this heading"></a></h2>
 <p>Starting with a dictionary of attribute data, such as a contract instance, you can build an EthPM typed object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ethpm_types</span> <span class="kn">import</span> <span class="n">ContractInstance</span>
 

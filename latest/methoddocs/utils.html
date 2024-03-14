@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Utils &mdash; ethpm-types  documentation</title>
@@ -11,16 +11,16 @@
       <link rel="stylesheet" href="/ethpm-types/latest/_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="/ethpm-types/latest/_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="/ethpm-types/latest/_static/custom.css" type="text/css" />
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="canonical" href="/ethpm-types/methoddocs/utils.html" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <script src="../_static/custom.js"></script>
   <script>
@@ -37,7 +37,6 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> ethpm-types
-            <img src="../_static/logo.gif" class="logo" alt="Logo"/>
           </a>
 
           <div class="version">
@@ -67,7 +66,12 @@
 <li class="toctree-l1"><a class="reference internal" href="manifest.html">Package Manifest</a></li>
 <li class="toctree-l1"><a class="reference internal" href="abi.html">ABI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source.html">Source</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Utils</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.utils.Algorithm"><code class="docutils literal notranslate"><span class="pre">Algorithm</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.utils.Annotated"><code class="docutils literal notranslate"><span class="pre">Annotated</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.utils.compute_checksum"><code class="docutils literal notranslate"><span class="pre">compute_checksum()</span></code></a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -96,7 +100,7 @@
            <div itemprop="articleBody">
              
   <section id="module-ethpm_types.utils">
-<span id="utils"></span><h1>Utils<a class="headerlink" href="#module-ethpm_types.utils" title="Permalink to this headline"></a></h1>
+<span id="utils"></span><h1>Utils<a class="headerlink" href="#module-ethpm_types.utils" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethpm_types.utils.Algorithm">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">Algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.utils.Algorithm" title="Permalink to this definition"></a></dt>
@@ -141,16 +145,16 @@ this type as int.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ethpm_types.utils.compute_checksum">
-<span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">compute_checksum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.utils.Algorithm" title="ethpm_types.utils.Algorithm"><span class="pre">ethpm_types.utils.Algorithm</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Algorithm.MD5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">eth_pydantic_types.hex.HexStr</span></span></span><a class="headerlink" href="#ethpm_types.utils.compute_checksum" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">compute_checksum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.utils.Algorithm" title="ethpm_types.utils.Algorithm"><span class="pre">Algorithm</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Algorithm.MD5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">HexStr</span></span></span><a class="headerlink" href="#ethpm_types.utils.compute_checksum" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate the checksum of the given content.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>content</strong> (<em>bytes</em>) – Content to hash.</p></li>
 <li><p><strong>algorithm</strong> (<a class="reference internal" href="#ethpm_types.utils.Algorithm" title="ethpm_types.utils.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a>) – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Hex</span></code></p>
 </dd>
 </dl>

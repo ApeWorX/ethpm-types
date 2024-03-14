@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Source &mdash; ethpm-types  documentation</title>
@@ -11,16 +11,16 @@
       <link rel="stylesheet" href="/ethpm-types/latest/_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="/ethpm-types/latest/_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="/ethpm-types/latest/_static/custom.css" type="text/css" />
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="canonical" href="/ethpm-types/methoddocs/source.html" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <script src="../_static/custom.js"></script>
   <script>
@@ -38,7 +38,6 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> ethpm-types
-            <img src="../_static/logo.gif" class="logo" alt="Logo"/>
           </a>
 
           <div class="version">
@@ -67,7 +66,108 @@
 <li class="toctree-l1"><a class="reference internal" href="contract_type.html">Contract Type</a></li>
 <li class="toctree-l1"><a class="reference internal" href="manifest.html">Package Manifest</a></li>
 <li class="toctree-l1"><a class="reference internal" href="abi.html">ABI</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Source</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Source</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.source.Checksum"><code class="docutils literal notranslate"><span class="pre">Checksum</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Checksum.algorithm"><code class="docutils literal notranslate"><span class="pre">Checksum.algorithm</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Checksum.hash"><code class="docutils literal notranslate"><span class="pre">Checksum.hash</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Checksum.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Checksum.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Checksum.model_config"><code class="docutils literal notranslate"><span class="pre">Checksum.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Checksum.model_fields"><code class="docutils literal notranslate"><span class="pre">Checksum.model_fields</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.source.Closure"><code class="docutils literal notranslate"><span class="pre">Closure</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Closure.full_name"><code class="docutils literal notranslate"><span class="pre">Closure.full_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Closure.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Closure.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Closure.model_config"><code class="docutils literal notranslate"><span class="pre">Closure.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Closure.model_fields"><code class="docutils literal notranslate"><span class="pre">Closure.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Closure.name"><code class="docutils literal notranslate"><span class="pre">Closure.name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.source.Compiler"><code class="docutils literal notranslate"><span class="pre">Compiler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Compiler.contractTypes"><code class="docutils literal notranslate"><span class="pre">Compiler.contractTypes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Compiler.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Compiler.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Compiler.model_config"><code class="docutils literal notranslate"><span class="pre">Compiler.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Compiler.model_fields"><code class="docutils literal notranslate"><span class="pre">Compiler.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Compiler.name"><code class="docutils literal notranslate"><span class="pre">Compiler.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Compiler.settings"><code class="docutils literal notranslate"><span class="pre">Compiler.settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Compiler.version"><code class="docutils literal notranslate"><span class="pre">Compiler.version</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.source.Content"><code class="docutils literal notranslate"><span class="pre">Content</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Content.line_numbers"><code class="docutils literal notranslate"><span class="pre">Content.line_numbers</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Content.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Content.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Content.model_config"><code class="docutils literal notranslate"><span class="pre">Content.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Content.model_fields"><code class="docutils literal notranslate"><span class="pre">Content.model_fields</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.source.ContractSource"><code class="docutils literal notranslate"><span class="pre">ContractSource</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.ContractSource.ast"><code class="docutils literal notranslate"><span class="pre">ContractSource.ast</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.ContractSource.contract_type"><code class="docutils literal notranslate"><span class="pre">ContractSource.contract_type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.ContractSource.lookup_function"><code class="docutils literal notranslate"><span class="pre">ContractSource.lookup_function()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.ContractSource.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">ContractSource.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.ContractSource.model_config"><code class="docutils literal notranslate"><span class="pre">ContractSource.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.ContractSource.model_fields"><code class="docutils literal notranslate"><span class="pre">ContractSource.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.ContractSource.model_post_init"><code class="docutils literal notranslate"><span class="pre">ContractSource.model_post_init()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.ContractSource.pcmap"><code class="docutils literal notranslate"><span class="pre">ContractSource.pcmap</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.ContractSource.source"><code class="docutils literal notranslate"><span class="pre">ContractSource.source</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.ContractSource.source_id"><code class="docutils literal notranslate"><span class="pre">ContractSource.source_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.ContractSource.source_path"><code class="docutils literal notranslate"><span class="pre">ContractSource.source_path</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.source.Function"><code class="docutils literal notranslate"><span class="pre">Function</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Function.ast"><code class="docutils literal notranslate"><span class="pre">Function.ast</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Function.content"><code class="docutils literal notranslate"><span class="pre">Function.content</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Function.get_content"><code class="docutils literal notranslate"><span class="pre">Function.get_content()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Function.get_content_asts"><code class="docutils literal notranslate"><span class="pre">Function.get_content_asts()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Function.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Function.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Function.model_config"><code class="docutils literal notranslate"><span class="pre">Function.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Function.model_fields"><code class="docutils literal notranslate"><span class="pre">Function.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Function.offset"><code class="docutils literal notranslate"><span class="pre">Function.offset</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.source.Source"><code class="docutils literal notranslate"><span class="pre">Source</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Source.calculate_checksum"><code class="docutils literal notranslate"><span class="pre">Source.calculate_checksum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Source.checksum"><code class="docutils literal notranslate"><span class="pre">Source.checksum</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Source.content"><code class="docutils literal notranslate"><span class="pre">Source.content</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Source.content_is_valid"><code class="docutils literal notranslate"><span class="pre">Source.content_is_valid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Source.fetch_content"><code class="docutils literal notranslate"><span class="pre">Source.fetch_content()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Source.imports"><code class="docutils literal notranslate"><span class="pre">Source.imports</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Source.installPath"><code class="docutils literal notranslate"><span class="pre">Source.installPath</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Source.license"><code class="docutils literal notranslate"><span class="pre">Source.license</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Source.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Source.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Source.model_config"><code class="docutils literal notranslate"><span class="pre">Source.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Source.model_dump"><code class="docutils literal notranslate"><span class="pre">Source.model_dump()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Source.model_fields"><code class="docutils literal notranslate"><span class="pre">Source.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Source.references"><code class="docutils literal notranslate"><span class="pre">Source.references</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Source.type"><code class="docutils literal notranslate"><span class="pre">Source.type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Source.urls"><code class="docutils literal notranslate"><span class="pre">Source.urls</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.source.SourceStatement"><code class="docutils literal notranslate"><span class="pre">SourceStatement</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.SourceStatement.asts"><code class="docutils literal notranslate"><span class="pre">SourceStatement.asts</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.SourceStatement.begin_lineno"><code class="docutils literal notranslate"><span class="pre">SourceStatement.begin_lineno</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.SourceStatement.content"><code class="docutils literal notranslate"><span class="pre">SourceStatement.content</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.SourceStatement.end_lineno"><code class="docutils literal notranslate"><span class="pre">SourceStatement.end_lineno</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.SourceStatement.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">SourceStatement.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.SourceStatement.model_config"><code class="docutils literal notranslate"><span class="pre">SourceStatement.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.SourceStatement.model_fields"><code class="docutils literal notranslate"><span class="pre">SourceStatement.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.SourceStatement.type"><code class="docutils literal notranslate"><span class="pre">SourceStatement.type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.SourceStatement.ws_begin_lineno"><code class="docutils literal notranslate"><span class="pre">SourceStatement.ws_begin_lineno</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.source.Statement"><code class="docutils literal notranslate"><span class="pre">Statement</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Statement.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">Statement.model_computed_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Statement.model_config"><code class="docutils literal notranslate"><span class="pre">Statement.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Statement.model_fields"><code class="docutils literal notranslate"><span class="pre">Statement.model_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Statement.pcs"><code class="docutils literal notranslate"><span class="pre">Statement.pcs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.source.Statement.type"><code class="docutils literal notranslate"><span class="pre">Statement.type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.source.validate_ast"><code class="docutils literal notranslate"><span class="pre">validate_ast()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.source.validate_pcmap"><code class="docutils literal notranslate"><span class="pre">validate_pcmap()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.source.validate_source_id"><code class="docutils literal notranslate"><span class="pre">validate_source_id()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
 </ul>
 
@@ -97,34 +197,74 @@
            <div itemprop="articleBody">
              
   <section id="module-ethpm_types.source">
-<span id="source"></span><h1>Source<a class="headerlink" href="#module-ethpm_types.source" title="Permalink to this headline"></a></h1>
+<span id="source"></span><h1>Source<a class="headerlink" href="#module-ethpm_types.source" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethpm_types.source.Checksum">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">Checksum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="utils.html#ethpm_types.utils.Algorithm" title="ethpm_types.utils.Algorithm"><span class="pre">ethpm_types.utils.Algorithm</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">eth_pydantic_types.hex.HexStr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.source.Checksum" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">Checksum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="utils.html#ethpm_types.utils.Algorithm" title="ethpm_types.utils.Algorithm"><span class="pre">Algorithm</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">HexStr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.source.Checksum" title="Permalink to this definition"></a></dt>
 <dd><p>Checksum information about the contents of a source file.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.Checksum.algorithm">
-<span class="sig-name descname"><span class="pre">algorithm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="utils.html#ethpm_types.utils.Algorithm" title="ethpm_types.utils.Algorithm"><span class="pre">ethpm_types.utils.Algorithm</span></a></em><a class="headerlink" href="#ethpm_types.source.Checksum.algorithm" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">algorithm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="utils.html#ethpm_types.utils.Algorithm" title="ethpm_types.utils.Algorithm"><span class="pre">Algorithm</span></a></em><a class="headerlink" href="#ethpm_types.source.Checksum.algorithm" title="Permalink to this definition"></a></dt>
 <dd><p>The algorithm used to generate the corresponding hash.
 Possible algorithms include, but are not limited to sha3, sha256, md5, keccak256.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.Checksum.hash">
-<span class="sig-name descname"><span class="pre">hash</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">eth_pydantic_types.hex.HexStr</span></em><a class="headerlink" href="#ethpm_types.source.Checksum.hash" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">hash</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HexStr</span></em><a class="headerlink" href="#ethpm_types.source.Checksum.hash" title="Permalink to this definition"></a></dt>
 <dd><p>The hash of a source files contents generated with the corresponding algorithm.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Checksum.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.Checksum.model_computed_fields" title="Permalink to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Checksum.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.Checksum.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Checksum.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'algorithm':</span> <span class="pre">FieldInfo(annotation=Algorithm,</span> <span class="pre">required=True),</span> <span class="pre">'hash':</span> <span class="pre">FieldInfo(annotation=HexStr,</span> <span class="pre">required=True)}</span></em><a class="headerlink" href="#ethpm_types.source.Checksum.model_fields" title="Permalink to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethpm_types.source.Closure">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">Closure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.source.Closure" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">Closure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.source.Closure" title="Permalink to this definition"></a></dt>
 <dd><p>A wrapper around code ran, such as a function.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.Closure.full_name">
-<span class="sig-name descname"><span class="pre">full_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.source.Closure.full_name" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">full_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.source.Closure.full_name" title="Permalink to this definition"></a></dt>
 <dd><p>This is a unique name of the definition.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Closure.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.Closure.model_computed_fields" title="Permalink to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Closure.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.Closure.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Closure.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'full_name':</span> <span class="pre">FieldInfo(annotation=Union[str,</span> <span class="pre">NoneType],</span> <span class="pre">required=False),</span> <span class="pre">'name':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True)}</span></em><a class="headerlink" href="#ethpm_types.source.Closure.model_fields" title="Permalink to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -137,12 +277,32 @@ Possible algorithms include, but are not limited to sha3, sha256, md5, keccak256
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethpm_types.source.Compiler">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">Compiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contractTypes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.source.Compiler" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">Compiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contractTypes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.source.Compiler" title="Permalink to this definition"></a></dt>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.Compiler.contractTypes">
-<span class="sig-name descname"><span class="pre">contractTypes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.source.Compiler.contractTypes" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">contractTypes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.source.Compiler.contractTypes" title="Permalink to this definition"></a></dt>
 <dd><p>A list of the contract type names in this package
 that used this compiler to generate its outputs.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Compiler.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.Compiler.model_computed_fields" title="Permalink to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Compiler.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.Compiler.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Compiler.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'contractTypes':</span> <span class="pre">FieldInfo(annotation=Union[List[str],</span> <span class="pre">NoneType],</span> <span class="pre">required=False),</span> <span class="pre">'name':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'settings':</span> <span class="pre">FieldInfo(annotation=Union[dict,</span> <span class="pre">NoneType],</span> <span class="pre">required=False),</span> <span class="pre">'version':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True)}</span></em><a class="headerlink" href="#ethpm_types.source.Compiler.model_fields" title="Permalink to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -153,7 +313,7 @@ that used this compiler to generate its outputs.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.Compiler.settings">
-<span class="sig-name descname"><span class="pre">settings</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.source.Compiler.settings" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">settings</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.source.Compiler.settings" title="Permalink to this definition"></a></dt>
 <dd><p>Any settings or configuration that was used in compilation. For the <code class="docutils literal notranslate"><span class="pre">solc</span></code> compiler,
 this should conform to the
 [Compiler Input and Output Description](<a class="reference external" href="https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-input-and-output-json-description">https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-input-and-output-json-description</a>).</p>
@@ -181,32 +341,52 @@ string of those lines.</p>
 <dd><p>All line number in order for this piece of content.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Content.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.Content.model_computed_fields" title="Permalink to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Content.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.Content.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Content.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'root':</span> <span class="pre">FieldInfo(annotation=Dict[int,</span> <span class="pre">str],</span> <span class="pre">required=True)}</span></em><a class="headerlink" href="#ethpm_types.source.Content.model_fields" title="Permalink to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethpm_types.source.ContractSource">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">ContractSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contract_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><span class="pre">ethpm_types.contract_type.ContractType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.source.Source" title="ethpm_types.source.Source"><span class="pre">ethpm_types.source.Source</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.source.ContractSource" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">ContractSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contract_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><span class="pre">ContractType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.source.Source" title="ethpm_types.source.Source"><span class="pre">Source</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.source.ContractSource" title="Permalink to this definition"></a></dt>
 <dd><p>A contract type wrapper that enforces all the necessary
 properties needed for doing source-code processing,
 such as coverage or showing source code lines during an exception.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethpm_types.source.ContractSource.ast">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ast</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ethpm_types.ast.ASTNode</span></em><a class="headerlink" href="#ethpm_types.source.ContractSource.ast" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ast</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ASTNode</span></em><a class="headerlink" href="#ethpm_types.source.ContractSource.ast" title="Permalink to this definition"></a></dt>
 <dd><p>The contract type AST node.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.ContractSource.contract_type">
-<span class="sig-name descname"><span class="pre">contract_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><span class="pre">ethpm_types.contract_type.ContractType</span></a></em><a class="headerlink" href="#ethpm_types.source.ContractSource.contract_type" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">contract_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><span class="pre">ContractType</span></a></em><a class="headerlink" href="#ethpm_types.source.ContractSource.contract_type" title="Permalink to this definition"></a></dt>
 <dd><p>The contract type with AST, PCMap, and other necessary properties.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethpm_types.source.ContractSource.lookup_function">
-<span class="sig-name descname"><span class="pre">lookup_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">eth_pydantic_types.hex.HexBytes</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.source.Function" title="ethpm_types.source.Function"><span class="pre">ethpm_types.source.Function</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ethpm_types.source.ContractSource.lookup_function" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">lookup_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">HexBytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ethpm_types.source.Function" title="ethpm_types.source.Function"><span class="pre">Function</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ethpm_types.source.ContractSource.lookup_function" title="Permalink to this definition"></a></dt>
 <dd><p>Lookup a function by location.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>location</strong> (<code class="docutils literal notranslate"><span class="pre">SourceLocation</span></code>) – The location to search.</p></li>
 <li><p><strong>method_id</strong> (<em>Optional</em><em>[</em><em>HexBytes</em><em>]</em>) – Optionally provide a method ID
@@ -214,14 +394,34 @@ to use to craft a nicer name. Defaults to using the combined
 lines of the function signature content.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The function, if one is
 found.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Optional[<code class="xref py py-class docutils literal notranslate"><span class="pre">SourceFunction</span></code>]</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.ContractSource.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.ContractSource.model_computed_fields" title="Permalink to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.ContractSource.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.ContractSource.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.ContractSource.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'contract_type':</span> <span class="pre">FieldInfo(annotation=ContractType,</span> <span class="pre">required=True),</span> <span class="pre">'source':</span> <span class="pre">FieldInfo(annotation=Source,</span> <span class="pre">required=True),</span> <span class="pre">'source_path':</span> <span class="pre">FieldInfo(annotation=Union[Path,</span> <span class="pre">NoneType],</span> <span class="pre">required=False)}</span></em><a class="headerlink" href="#ethpm_types.source.ContractSource.model_fields" title="Permalink to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -230,7 +430,7 @@ found.</p>
 <dd><p>This function is meant to behave like a BaseModel method to initialise private attributes.</p>
 <p>It takes context as an argument since that’s what pydantic-core passes when calling it.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>self</strong> – The BaseModel instance.</p></li>
 <li><p><strong>__context</strong> – The context.</p></li>
@@ -241,13 +441,13 @@ found.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethpm_types.source.ContractSource.pcmap">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pcmap</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ethpm_types.sourcemap.PCMap</span></em><a class="headerlink" href="#ethpm_types.source.ContractSource.pcmap" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pcmap</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">PCMap</span></em><a class="headerlink" href="#ethpm_types.source.ContractSource.pcmap" title="Permalink to this definition"></a></dt>
 <dd><p>The contract type PCMap.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.ContractSource.source">
-<span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethpm_types.source.Source" title="ethpm_types.source.Source"><span class="pre">ethpm_types.source.Source</span></a></em><a class="headerlink" href="#ethpm_types.source.ContractSource.source" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethpm_types.source.Source" title="ethpm_types.source.Source"><span class="pre">Source</span></a></em><a class="headerlink" href="#ethpm_types.source.ContractSource.source" title="Permalink to this definition"></a></dt>
 <dd><p>The source code wrapper.</p>
 </dd></dl>
 
@@ -259,7 +459,7 @@ found.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.ContractSource.source_path">
-<span class="sig-name descname"><span class="pre">source_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.source.ContractSource.source_path" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">source_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.source.ContractSource.source_path" title="Permalink to this definition"></a></dt>
 <dd><p>The path to the source.</p>
 </dd></dl>
 
@@ -267,29 +467,29 @@ found.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethpm_types.source.Function">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">Function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ast</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ethpm_types.ast.ASTNode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.source.Content" title="ethpm_types.source.Content"><span class="pre">ethpm_types.source.Content</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.source.Function" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">Function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ast</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ASTNode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.source.Content" title="ethpm_types.source.Content"><span class="pre">Content</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.source.Function" title="Permalink to this definition"></a></dt>
 <dd><p>Data about a function in a contract with known source code.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.Function.ast">
-<span class="sig-name descname"><span class="pre">ast</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ethpm_types.ast.ASTNode</span></em><a class="headerlink" href="#ethpm_types.source.Function.ast" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ast</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ASTNode</span></em><a class="headerlink" href="#ethpm_types.source.Function.ast" title="Permalink to this definition"></a></dt>
 <dd><p>The function definition AST node.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.Function.content">
-<span class="sig-name descname"><span class="pre">content</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethpm_types.source.Content" title="ethpm_types.source.Content"><span class="pre">ethpm_types.source.Content</span></a></em><a class="headerlink" href="#ethpm_types.source.Function.content" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">content</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethpm_types.source.Content" title="ethpm_types.source.Content"><span class="pre">Content</span></a></em><a class="headerlink" href="#ethpm_types.source.Function.content" title="Permalink to this definition"></a></dt>
 <dd><p>The function’s line content after the signature, mapped by line numbers.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethpm_types.source.Function.get_content">
-<span class="sig-name descname"><span class="pre">get_content</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ethpm_types.source.Content" title="ethpm_types.source.Content"><span class="pre">ethpm_types.source.Content</span></a></span></span><a class="headerlink" href="#ethpm_types.source.Function.get_content" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_content</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ethpm_types.source.Content" title="ethpm_types.source.Content"><span class="pre">Content</span></a></span></span><a class="headerlink" href="#ethpm_types.source.Function.get_content" title="Permalink to this definition"></a></dt>
 <dd><p>Get the source content for the given location.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>location</strong> (<code class="docutils literal notranslate"><span class="pre">SourceLocation</span></code>) – The location of the content.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">ethpm_types.source.Content</span></code></p>
 </dd>
 </dl>
@@ -297,19 +497,39 @@ found.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethpm_types.source.Function.get_content_asts">
-<span class="sig-name descname"><span class="pre">get_content_asts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ethpm_types.ast.ASTNode</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ethpm_types.source.Function.get_content_asts" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_content_asts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ASTNode</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ethpm_types.source.Function.get_content_asts" title="Permalink to this definition"></a></dt>
 <dd><p>Get all AST nodes for the given location.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>location</strong> (<code class="docutils literal notranslate"><span class="pre">SourceLocation</span></code>) – The location of the content.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>AST nodes objects.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">List[ASTNode]</span></code></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Function.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.Function.model_computed_fields" title="Permalink to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Function.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.Function.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Function.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'ast':</span> <span class="pre">FieldInfo(annotation=ASTNode,</span> <span class="pre">required=True),</span> <span class="pre">'content':</span> <span class="pre">FieldInfo(annotation=Content,</span> <span class="pre">required=True),</span> <span class="pre">'full_name':</span> <span class="pre">FieldInfo(annotation=Union[str,</span> <span class="pre">NoneType],</span> <span class="pre">required=False),</span> <span class="pre">'name':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'offset':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=True)}</span></em><a class="headerlink" href="#ethpm_types.source.Function.model_fields" title="Permalink to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -322,20 +542,20 @@ found.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethpm_types.source.Source">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">Source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">urls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pydantic_core._pydantic_core.Url</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checksum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.source.Checksum" title="ethpm_types.source.Checksum"><span class="pre">ethpm_types.source.Checksum</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.source.Content" title="ethpm_types.source.Content"><span class="pre">ethpm_types.source.Content</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">installPath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">license</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">references</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imports</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.source.Source" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">Source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">urls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Url</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checksum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.source.Checksum" title="ethpm_types.source.Checksum"><span class="pre">Checksum</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.source.Content" title="ethpm_types.source.Content"><span class="pre">Content</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">installPath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">license</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">references</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imports</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.source.Source" title="Permalink to this definition"></a></dt>
 <dd><p>Information about a source file included in a Package Manifest.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethpm_types.source.Source.calculate_checksum">
-<span class="sig-name descname"><span class="pre">calculate_checksum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="utils.html#ethpm_types.utils.Algorithm" title="ethpm_types.utils.Algorithm"><span class="pre">ethpm_types.utils.Algorithm</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Algorithm.MD5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ethpm_types.source.Checksum" title="ethpm_types.source.Checksum"><span class="pre">ethpm_types.source.Checksum</span></a></span></span><a class="headerlink" href="#ethpm_types.source.Source.calculate_checksum" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">calculate_checksum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="utils.html#ethpm_types.utils.Algorithm" title="ethpm_types.utils.Algorithm"><span class="pre">Algorithm</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Algorithm.MD5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ethpm_types.source.Checksum" title="ethpm_types.source.Checksum"><span class="pre">Checksum</span></a></span></span><a class="headerlink" href="#ethpm_types.source.Source.calculate_checksum" title="Permalink to this definition"></a></dt>
 <dd><p>Compute the checksum of the <code class="docutils literal notranslate"><span class="pre">Source</span></code> object.
 Will short-circuit to content identifier if using content-addressed file references
 Fails if <code class="docutils literal notranslate"><span class="pre">content</span></code> isn’t available locally or by fetching.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>algorithm</strong> (Optional[<a class="reference internal" href="utils.html#ethpm_types.utils.Algorithm" title="ethpm_types.utils.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a>]) – The algorithm to use
 to compute the checksum with. Defaults to MD5.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#ethpm_types.source.Checksum" title="ethpm_types.source.Checksum"><code class="xref py py-class docutils literal notranslate"><span class="pre">Checksum</span></code></a></p>
 </dd>
 </dl>
@@ -343,14 +563,14 @@ to compute the checksum with. Defaults to MD5.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.Source.checksum">
-<span class="sig-name descname"><span class="pre">checksum</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.source.Checksum" title="ethpm_types.source.Checksum"><span class="pre">ethpm_types.source.Checksum</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.source.Source.checksum" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">checksum</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethpm_types.source.Checksum" title="ethpm_types.source.Checksum"><span class="pre">Checksum</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.source.Source.checksum" title="Permalink to this definition"></a></dt>
 <dd><p>Hash of the source file. Per EIP-2678,
 this field is only necessary if source must be fetched.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.Source.content">
-<span class="sig-name descname"><span class="pre">content</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.source.Content" title="ethpm_types.source.Content"><span class="pre">ethpm_types.source.Content</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.source.Source.content" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">content</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethpm_types.source.Content" title="ethpm_types.source.Content"><span class="pre">Content</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.source.Source.content" title="Permalink to this definition"></a></dt>
 <dd><p>Inlined contract source.</p>
 </dd></dl>
 
@@ -364,7 +584,7 @@ will not be corrupted either.
 If referenced from a server URL,
 then checksum must be present and will be validated against.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -376,7 +596,7 @@ then checksum must be present and will be validated against.</p>
 <dd><p>Fetch the content for the given Source object.
 Loads resource at <code class="docutils literal notranslate"><span class="pre">urls</span></code> into <code class="docutils literal notranslate"><span class="pre">content</span></code> if not available.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -384,14 +604,14 @@ Loads resource at <code class="docutils literal notranslate"><span class="pre">u
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.Source.imports">
-<span class="sig-name descname"><span class="pre">imports</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.source.Source.imports" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">imports</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.source.Source.imports" title="Permalink to this definition"></a></dt>
 <dd><p>List of source objects that this object depends on.
 <strong>NOTE</strong>: Not a part of canonical EIP-2678 spec.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.Source.installPath">
-<span class="sig-name descname"><span class="pre">installPath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.source.Source.installPath" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">installPath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.source.Source.installPath" title="Permalink to this definition"></a></dt>
 <dd><p>Filesystem path of source file.
 <strong>NOTE</strong>: This was probably done for solidity, needs files cached to disk for compiling.
 If processing a local project, code already exists, so no issue.
@@ -400,53 +620,73 @@ If processing remote project, cache them in ape project data folder</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.Source.license">
-<span class="sig-name descname"><span class="pre">license</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.source.Source.license" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">license</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.source.Source.license" title="Permalink to this definition"></a></dt>
 <dd><p>The type of license associated with this source file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Source.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.Source.model_computed_fields" title="Permalink to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Source.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.Source.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethpm_types.source.Source.model_dump">
 <span class="sig-name descname"><span class="pre">model_dump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#ethpm_types.source.Source.model_dump" title="Permalink to this definition"></a></dt>
-<dd><p>Usage docs: <a class="reference external" href="https://docs.pydantic.dev/2.5/concepts/serialization/#modelmodel_dump">https://docs.pydantic.dev/2.5/concepts/serialization/#modelmodel_dump</a></p>
+<dd><p>Usage docs: <a class="reference external" href="https://docs.pydantic.dev/2.6/concepts/serialization/#modelmodel_dump">https://docs.pydantic.dev/2.6/concepts/serialization/#modelmodel_dump</a></p>
 <p>Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mode</strong> – The mode in which <cite>to_python</cite> should run.
-If mode is ‘json’, the dictionary will only contain JSON serializable types.
-If mode is ‘python’, the dictionary may contain any Python objects.</p></li>
+If mode is ‘json’, the output will only contain JSON serializable types.
+If mode is ‘python’, the output may contain non-JSON-serializable Python objects.</p></li>
 <li><p><strong>include</strong> – A list of fields to include in the output.</p></li>
 <li><p><strong>exclude</strong> – A list of fields to exclude from the output.</p></li>
 <li><p><strong>by_alias</strong> – Whether to use the field’s alias in the dictionary key if defined.</p></li>
 <li><p><strong>exclude_unset</strong> – Whether to exclude fields that have not been explicitly set.</p></li>
-<li><p><strong>exclude_defaults</strong> – Whether to exclude fields that are set to their default value from the output.</p></li>
-<li><p><strong>exclude_none</strong> – Whether to exclude fields that have a value of <cite>None</cite> from the output.</p></li>
-<li><p><strong>round_trip</strong> – Whether to enable serialization and deserialization round-trip support.</p></li>
+<li><p><strong>exclude_defaults</strong> – Whether to exclude fields that are set to their default value.</p></li>
+<li><p><strong>exclude_none</strong> – Whether to exclude fields that have a value of <cite>None</cite>.</p></li>
+<li><p><strong>round_trip</strong> – If True, dumped values should be valid as input for non-idempotent types such as Json[T].</p></li>
 <li><p><strong>warnings</strong> – Whether to log warnings when invalid fields are encountered.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A dictionary representation of the model.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Source.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'checksum':</span> <span class="pre">FieldInfo(annotation=Union[Checksum,</span> <span class="pre">NoneType],</span> <span class="pre">required=False),</span> <span class="pre">'content':</span> <span class="pre">FieldInfo(annotation=Union[Content,</span> <span class="pre">NoneType],</span> <span class="pre">required=False),</span> <span class="pre">'imports':</span> <span class="pre">FieldInfo(annotation=Union[List[str],</span> <span class="pre">NoneType],</span> <span class="pre">required=False),</span> <span class="pre">'installPath':</span> <span class="pre">FieldInfo(annotation=Union[str,</span> <span class="pre">NoneType],</span> <span class="pre">required=False),</span> <span class="pre">'license':</span> <span class="pre">FieldInfo(annotation=Union[str,</span> <span class="pre">NoneType],</span> <span class="pre">required=False),</span> <span class="pre">'references':</span> <span class="pre">FieldInfo(annotation=Union[List[str],</span> <span class="pre">NoneType],</span> <span class="pre">required=False),</span> <span class="pre">'type':</span> <span class="pre">FieldInfo(annotation=Union[str,</span> <span class="pre">NoneType],</span> <span class="pre">required=False),</span> <span class="pre">'urls':</span> <span class="pre">FieldInfo(annotation=List[Url],</span> <span class="pre">required=False,</span> <span class="pre">default=[])}</span></em><a class="headerlink" href="#ethpm_types.source.Source.model_fields" title="Permalink to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.Source.references">
-<span class="sig-name descname"><span class="pre">references</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.source.Source.references" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">references</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.source.Source.references" title="Permalink to this definition"></a></dt>
 <dd><p>List of <cite>Source</cite> objects that depend on this object.
 <strong>NOTE</strong>: Not a part of canonical EIP-2678 spec.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.Source.type">
-<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.source.Source.type" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.source.Source.type" title="Permalink to this definition"></a></dt>
 <dd><p>The type of the source file.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.Source.urls">
-<span class="sig-name descname"><span class="pre">urls</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">pydantic_core._pydantic_core.Url</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.source.Source.urls" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">urls</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Url</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.source.Source.urls" title="Permalink to this definition"></a></dt>
 <dd><p>Array of urls that resolve to the same source file.</p>
 </dd></dl>
 
@@ -454,11 +694,11 @@ If mode is ‘python’, the dictionary may contain any Python objects.</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethpm_types.source.SourceStatement">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">SourceStatement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'source'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pcs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ethpm_types.ast.ASTNode</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.source.Content" title="ethpm_types.source.Content"><span class="pre">ethpm_types.source.Content</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.source.SourceStatement" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">SourceStatement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'source'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pcs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ASTNode</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.source.Content" title="ethpm_types.source.Content"><span class="pre">Content</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.source.SourceStatement" title="Permalink to this definition"></a></dt>
 <dd><p>A class mapping an AST node to some source code content.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.SourceStatement.asts">
-<span class="sig-name descname"><span class="pre">asts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ethpm_types.ast.ASTNode</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.source.SourceStatement.asts" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">asts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ASTNode</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.source.SourceStatement.asts" title="Permalink to this definition"></a></dt>
 <dd><p>The AST nodes from this statement.</p>
 </dd></dl>
 
@@ -470,7 +710,7 @@ If mode is ‘python’, the dictionary may contain any Python objects.</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.SourceStatement.content">
-<span class="sig-name descname"><span class="pre">content</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethpm_types.source.Content" title="ethpm_types.source.Content"><span class="pre">ethpm_types.source.Content</span></a></em><a class="headerlink" href="#ethpm_types.source.SourceStatement.content" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">content</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethpm_types.source.Content" title="ethpm_types.source.Content"><span class="pre">Content</span></a></em><a class="headerlink" href="#ethpm_types.source.SourceStatement.content" title="Permalink to this definition"></a></dt>
 <dd><p>The source code content connected to the AST node.</p>
 </dd></dl>
 
@@ -478,6 +718,32 @@ If mode is ‘python’, the dictionary may contain any Python objects.</p></li>
 <dt class="sig sig-object py" id="ethpm_types.source.SourceStatement.end_lineno">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">end_lineno</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#ethpm_types.source.SourceStatement.end_lineno" title="Permalink to this definition"></a></dt>
 <dd><p>The last line number.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.SourceStatement.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.SourceStatement.model_computed_fields" title="Permalink to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.SourceStatement.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.SourceStatement.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.SourceStatement.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'asts':</span> <span class="pre">FieldInfo(annotation=List[ASTNode],</span> <span class="pre">required=True),</span> <span class="pre">'content':</span> <span class="pre">FieldInfo(annotation=Content,</span> <span class="pre">required=True),</span> <span class="pre">'pcs':</span> <span class="pre">FieldInfo(annotation=Set[int],</span> <span class="pre">required=False,</span> <span class="pre">default=set()),</span> <span class="pre">'type':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=False,</span> <span class="pre">default='source')}</span></em><a class="headerlink" href="#ethpm_types.source.SourceStatement.model_fields" title="Permalink to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.SourceStatement.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.source.SourceStatement.type" title="Permalink to this definition"></a></dt>
+<dd><p>The type of statement it is, such as <cite>source</cite> or a virtual identifier.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -495,6 +761,26 @@ If mode is ‘python’, the dictionary may contain any Python objects.</p></li>
 <dd><p>A class representing an item in a control flow, either a source statement
 or implicit compiler code.</p>
 <dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Statement.model_computed_fields">
+<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.Statement.model_computed_fields" title="Permalink to this definition"></a></dt>
+<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Statement.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.source.Statement.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.source.Statement.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'pcs':</span> <span class="pre">FieldInfo(annotation=Set[int],</span> <span class="pre">required=False,</span> <span class="pre">default=set()),</span> <span class="pre">'type':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True)}</span></em><a class="headerlink" href="#ethpm_types.source.Statement.model_fields" title="Permalink to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.source.Statement.pcs">
 <span class="sig-name descname"><span class="pre">pcs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.source.Statement.pcs" title="Permalink to this definition"></a></dt>
 <dd><p>The PC value for the statement.</p>
@@ -510,24 +796,24 @@ or implicit compiler code.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ethpm_types.source.validate_ast">
-<span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">validate_ast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><span class="pre">ethpm_types.contract_type.ContractType</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ethpm_types.ast.ASTNode</span></span></span><a class="headerlink" href="#ethpm_types.source.validate_ast" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">validate_ast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><span class="pre">ContractType</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ASTNode</span></span></span><a class="headerlink" href="#ethpm_types.source.validate_ast" title="Permalink to this definition"></a></dt>
 <dd><p>A validator used by <a class="reference internal" href="#ethpm_types.source.ContractSource" title="ethpm_types.source.ContractSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractSource</span></code></a>
 to ensure the given <a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractType</span></code></a>
 has an <code class="docutils literal notranslate"><span class="pre">.ast</span></code> set, which may be required for source-mapping features
 in some applications.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>(</strong> (<em>contract_type</em>) – class:<cite>~ethpm_types.contract_type.ContractType): A
 contract type that should have a `</cite>.ast``.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>An ASTNode object for
 the given contract type.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ASTNode</span></code></p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>PydanticCustomError</strong> – If <code class="docutils literal notranslate"><span class="pre">.ast</span></code> is missing.</p>
 </dd>
 </dl>
@@ -535,24 +821,24 @@ the given contract type.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ethpm_types.source.validate_pcmap">
-<span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">validate_pcmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><span class="pre">ethpm_types.contract_type.ContractType</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ethpm_types.sourcemap.PCMap</span></span></span><a class="headerlink" href="#ethpm_types.source.validate_pcmap" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">validate_pcmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><span class="pre">ContractType</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">PCMap</span></span></span><a class="headerlink" href="#ethpm_types.source.validate_pcmap" title="Permalink to this definition"></a></dt>
 <dd><p>A validator used by <a class="reference internal" href="#ethpm_types.source.ContractSource" title="ethpm_types.source.ContractSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractSource</span></code></a>
 to ensure the given <a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractType</span></code></a>
 has a <code class="docutils literal notranslate"><span class="pre">.pcmap</span></code> set, which may be required for source-mapping features
 in some applications.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>(</strong> (<em>contract_type</em>) – class:<cite>~ethpm_types.contract_type.ContractType): A
 contract type that should have a `</cite>.pcmap``.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A source-map object for
 the given contract type.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">SourceMap</span></code></p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>PydanticCustomError</strong> – If <code class="docutils literal notranslate"><span class="pre">.pcmap</span></code> is missing.</p>
 </dd>
 </dl>
@@ -560,23 +846,23 @@ the given contract type.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ethpm_types.source.validate_source_id">
-<span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">validate_source_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><span class="pre">ethpm_types.contract_type.ContractType</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#ethpm_types.source.validate_source_id" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ethpm_types.source.</span></span><span class="sig-name descname"><span class="pre">validate_source_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><span class="pre">ContractType</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#ethpm_types.source.validate_source_id" title="Permalink to this definition"></a></dt>
 <dd><p>A validator used by <a class="reference internal" href="#ethpm_types.source.ContractSource" title="ethpm_types.source.ContractSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractSource</span></code></a>
 to ensure the given <a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractType</span></code></a>
 has a <code class="docutils literal notranslate"><span class="pre">.source_id</span></code> set, which may be required for source-mapping features
 in some applications.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>(</strong> (<em>contract_type</em>) – class:<cite>~ethpm_types.contract_type.ContractType): A
 contract type that should have a `</cite>.source_id``.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A source ID for the given contract type.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>PydanticCustomError</strong> – If <code class="docutils literal notranslate"><span class="pre">.source_id</span></code> is missing.</p>
 </dd>
 </dl>
