@@ -1,9 +1,9 @@
 from enum import Enum
-from typing import Dict, Iterator, List, Optional, Union
+from functools import cached_property
+from typing import Any, Iterator, List, Optional, Tuple, Union
 
-from pydantic import model_validator
+from pydantic import RootModel, ValidationError, model_validator
 
-from ethpm_types.base import BaseModel
 from ethpm_types.sourcemap import SourceMapItem
 from ethpm_types.utils import SourceLocation
 
@@ -16,105 +16,148 @@ class ASTClassification(Enum):
     """ASTTypes related to defining a function."""
 
 
-class ASTNode(BaseModel):
-    name: Optional[str] = None
+class ASTNode(RootModel[dict]):
     """
-    The node's name if it has one, such as a function name.
-    """
-
-    ast_type: str
-    """
-    The compiler-given AST node type, such as ``FunctionDef``.
+    A model representing the AST (abstract-syntax tree) of a compiled contract.
     """
 
-    classification: ASTClassification = ASTClassification.UNCLASSIFIED
-    """
-    A generic classification of what type of AST this is.
-    """
-
-    doc_str: Optional[Union[str, "ASTNode"]] = None
-    """
-    Documentation for the node.
-    """
-
-    src: SourceMapItem
-    """
-    The source offset item.
-    """
-
-    lineno: int = -1
-    """
-    The start line number in the source.
-    """
-
-    end_lineno: int = -1
-    """
-    The line number where the AST node ends.
-    """
-
-    col_offset: int = -1
-    """
-    The offset of the column start.
-    """
-
-    end_col_offset: int = -1
-    """
-    The offset when the column ends.
-    """
-
-    children: List["ASTNode"] = []
-    """
-    All sub-AST nodes within this one.
-    """
+    _function_node_types: Tuple[str, ...]
+    _ast_type_keys: Tuple[str, ...]
+    _classification: ASTClassification = ASTClassification.UNCLASSIFIED
+    _lazy_children: List["ASTNode"] = []
 
     @model_validator(mode="before")
-    def validate_node(cls, val):
-        src = cls._validate_src(val)
+    @classmethod
+    def validate_ast(cls, values):
+        fn_node_types = values.pop("function_node_types", ("FunctionDef",))
+        ast_type_keys = values.pop("ast_type_keys", ("ast_type", "nodeType"))
 
-        # Handle `ast_type`.
-        if "nodeType" in val and "ast_type" not in val:
-            val["ast_type"] = val.pop("nodeType")
+        cls._function_node_types = fn_node_types
+        cls._ast_type_keys = ast_type_keys
 
-        return {
-            "doc_str": val.get("doc_string"),
-            "children": cls.find_children(val),
-            **val,
-            "src": src,
-        }
+        for key in ast_type_keys:
+            if ast_type := values.get(key):
+                # Is a node!
+                if ast_type in fn_node_types:
+                    cls._classification = ASTClassification.FUNCTION
+
+                return values
+
+        raise ValidationError("Not a valid ASTNode.")
+
+    @cached_property
+    def ast_type(self) -> str:
+        """
+        The compiler-given AST node type, such as ``FunctionDef``.
+        """
+        for key in self._ast_type_keys:
+            if itm := self.root.get(key):
+                return itm
+
+        # Shouldn't happen.
+        raise ValueError("Missing AST type.")
+
+    @property
+    def children(self) -> Iterator["ASTNode"]:
+        """
+        All sub-AST nodes within this one.
+        """
+        if self._lazy_children:
+            yield from self._lazy_children
+
+        else:
+            for val in self.root.values():
+                yield from self.find_children(val)
+
+    @property
+    def classification(self) -> ASTClassification:
+        """
+        A generic classification of what type of AST this is.
+        """
+        return self._classification
+
+    @property
+    def col_offset(self) -> int:
+        """
+        The offset of the column start.
+        """
+        return self.root.get("col_offset", -1)
+
+    @property
+    def doc_str(self) -> Optional[Union[str, "ASTNode"]]:
+        """
+        Documentation for the node.
+        """
+        return self.root.get("doc_str", self.root.get("doc_string"))
+
+    @property
+    def end_col_offset(self) -> int:
+        """
+        The offset when the column ends.
+        """
+        return self.root.get("end_col_offset", -1)
+
+    @property
+    def end_lineno(self) -> int:
+        """
+        The line number where the AST node ends.
+        """
+        return self.root.get("end_lineno", -1)
+
+    @property
+    def lineno(self) -> int:
+        """
+        The start line number in the source.
+        """
+        return self.root.get("lineno", -1)
+
+    @property
+    def name(self) -> Optional[str]:
+        """
+        The node's name if it has one, such as a function name.
+        """
+        return self.root.get("name")
+
+    @cached_property
+    def src(self) -> SourceMapItem:
+        """
+        The source offset item.
+        """
+        raw_src = self.root["src"]
+        return self._validate_src(raw_src)
 
     @classmethod
-    def _validate_src(cls, val: Dict) -> SourceMapItem:
-        src = val.get("src")
-        if src and isinstance(src, str):
-            src = SourceMapItem.parse_str(src)
+    def _validate_src(cls, val: str) -> SourceMapItem:
+        if val and isinstance(val, str):
+            return SourceMapItem.parse_str(val)
 
-        elif isinstance(src, dict):
-            src = SourceMapItem.model_validate(src)
+        elif isinstance(val, dict):
+            return SourceMapItem.model_validate(val)
 
-        elif not isinstance(src, SourceMapItem):
-            raise TypeError(type(src))
+        elif not isinstance(val, SourceMapItem):
+            raise TypeError(type(val))
 
-        return src
+        # Already validated.
+        return val
 
     @classmethod
-    def find_children(cls, node) -> List["ASTNode"]:
-        children = []
+    def find_children(cls, node: Any) -> Iterator["ASTNode"]:
+        def is_ast_node(data: Any) -> bool:
+            return isinstance(data, dict) and any(x in data for x in ("ast_type", "nodeType"))
 
-        def add_child(data):
-            data["children"] = cls.find_children(data)
-            child = cls.model_validate(data)
-            children.append(child)
+        if isinstance(node, dict):
+            if is_ast_node(node):
+                child = ASTNode.model_validate(node)
+                yield child
+                yield from child.children
 
-        for value in node.values():
-            if isinstance(value, dict) and ("ast_type" in value or "nodeType" in value):
-                add_child(value)
+            else:
+                # Not a node but may have child nodes.
+                yield from cls.find_children(list(node.values()))
 
-            elif isinstance(value, list):
-                for _val in value:
-                    if isinstance(_val, dict) and ("ast_type" in _val or "nodeType" in _val):
-                        add_child(_val)
-
-        return children
+        elif isinstance(node, (list, tuple)):
+            for val in node:
+                yield from cls.find_children(val)
 
     @property
     def line_numbers(self) -> SourceLocation:
@@ -136,12 +179,22 @@ class ASTNode(BaseModel):
         return [n for n in self.children if n.ast_type == "FunctionDef"]
 
     def __repr__(self) -> str:
-        return str(self)
+        try:
+            return str(self)
+        except Exception:
+            # Don't allow repr to fail.
+            return "<ASTNode>"
 
     def __str__(self):
-        num_children = len(self.children)
+        num_children = len(list(self.children))
         stats = "leaf" if num_children == 0 else f"children={num_children}"
         return f"<{self.ast_type}Node {stats}>"
+
+    def __setattr__(self, key, value):
+        if key == "classification":
+            self._classification = value
+        else:
+            return super().__setattr__(key, value)
 
     def iter_nodes(self) -> Iterator["ASTNode"]:
         """
@@ -173,7 +226,7 @@ class ASTNode(BaseModel):
 
         return None
 
-    def get_nodes_at_line(self, line_numbers: SourceLocation) -> List["ASTNode"]:
+    def get_nodes_at_line(self, line_numbers: SourceLocation) -> Iterator["ASTNode"]:
         """
         Get the AST nodes for the given line number combination
 
@@ -182,10 +235,9 @@ class ASTNode(BaseModel):
               [lineno, col_offset, end_lineno, end_col_offset].
 
         Returns:
-            List[``ASTNode``]: All matching nodes.
+            Iterator[``ASTNode``]: All matching nodes.
         """
 
-        nodes = []
         if len(line_numbers) != 4:
             raise ValueError(
                 "Line numbers should be given in form of "
@@ -193,13 +245,10 @@ class ASTNode(BaseModel):
             )
 
         if all(x == y for x, y in zip(self.line_numbers, line_numbers)):
-            nodes.append(self)
+            yield self
 
         for child in self.children:
-            subs = child.get_nodes_at_line(line_numbers)
-            nodes.extend(subs)
-
-        return nodes
+            yield from child.get_nodes_at_line(line_numbers)
 
     def get_defining_function(self, line_numbers: SourceLocation) -> Optional["ASTNode"]:
         """
@@ -215,7 +264,8 @@ class ASTNode(BaseModel):
         """
 
         for function in self.functions:
-            if function.get_nodes_at_line(line_numbers):
+            gen = function.get_nodes_at_line(line_numbers)
+            if next(gen, None):
                 return function
 
         return None

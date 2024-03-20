@@ -72,7 +72,7 @@ def test_schema():
     actual = ContractType.model_json_schema()
 
     definitions = {d for d in actual["$defs"]}
-    expected = {"ABIType", "ASTClassification", "ASTNode", "Bytecode", "ConstructorABI"}
+    expected = {"ABIType", "ASTNode", "Bytecode", "ConstructorABI"}
     assert expected.issubset(definitions)
 
 
