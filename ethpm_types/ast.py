@@ -21,10 +21,10 @@ class ASTNode(RootModel[dict]):
     A model representing the AST (abstract-syntax tree) of a compiled contract.
     """
 
-    _classification: ASTClassification = ASTClassification.UNCLASSIFIED
-    _lazy_children: List["ASTNode"] = []
     _function_node_types: Tuple[str, ...]
     _ast_type_keys: Tuple[str, ...]
+    _classification: ASTClassification = ASTClassification.UNCLASSIFIED
+    _lazy_children: List["ASTNode"] = []
 
     @model_validator(mode="before")
     @classmethod
