@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from pathlib import Path
 
 from setuptools import find_packages, setup
@@ -76,14 +75,14 @@ setup(
     url="https://github.com/ApeWorX/ethpm-types",
     include_package_data=True,
     install_requires=[
-        "pydantic>=2.4.2,<3",
-        "eth-utils>=2.1.0,<3",
+        "pydantic>=2.6.4,<3",
+        "eth-utils>=4.1.0,<5",
         "py-cid>=0.3.0,<0.4",
         "requests>=2.29.0,<3",
         "typing_extensions>=4.0,<5",
         "eth-pydantic-types>=0.1.0a4",
     ],
-    python_requires=">=3.8,<4",
+    python_requires=">=3.9,<4",
     extras_require=extras_require,
     py_modules=["ethpm_types"],
     license="Apache-2.0",
@@ -99,7 +98,6 @@ setup(
         "Operating System :: MacOS",
         "Operating System :: POSIX",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",

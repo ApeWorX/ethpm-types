@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Optional
 
 from eth_pydantic_types import Bip122Uri
 from pydantic import AnyUrl, Field, field_validator, model_validator
@@ -64,7 +64,7 @@ class PackageMeta(BaseModel):
     but should be included when publishing.
     """
 
-    authors: Optional[List[str]] = None
+    authors: Optional[list[str]] = None
     """A list of human readable names for the authors of this package."""
 
     license: Optional[str] = None
@@ -79,10 +79,10 @@ class PackageMeta(BaseModel):
     description: Optional[str] = None
     """Additional detail that may be relevant for this package."""
 
-    keywords: Optional[List[str]] = None
+    keywords: Optional[list[str]] = None
     """Relevant keywords related to this package."""
 
-    links: Optional[Dict[str, AnyUrl]] = None
+    links: Optional[dict[str, AnyUrl]] = None
     """
     URIs to relevant resources associated with this package.
     When possible, authors should use the following keys for the following common resources.
@@ -112,13 +112,13 @@ class PackageManifest(BaseModel):
     ``meta``.
     """
 
-    sources: Optional[Dict[str, Source]] = None
+    sources: Optional[dict[str, Source]] = None
     """
     The sources field defines a source tree that should comprise the full source tree
     necessary to recompile the contracts contained in this release.
     """
 
-    contract_types: Optional[Dict[str, ContractType]] = Field(None, alias="contractTypes")
+    contract_types: Optional[dict[str, ContractType]] = Field(None, alias="contractTypes")
     """
     :class:`~ethpm_types.contract_type.ContractType` objects that have been included
     in this release.
@@ -128,13 +128,13 @@ class PackageManifest(BaseModel):
       * Should not include abstracts.
     """
 
-    compilers: Optional[List[Compiler]] = None
+    compilers: Optional[list[Compiler]] = None
     """
     Information about the compilers and their settings that have been
     used to generate the various contractTypes included in this release.
     """
 
-    deployments: Optional[Dict[Bip122Uri, Dict[str, ContractInstance]]] = None
+    deployments: Optional[dict[Bip122Uri, dict[str, ContractInstance]]] = None
     """
     Information for the chains on which this release has
     :class:`~ethpm_types.contract_type.ContractInstance` references as well as the
@@ -146,7 +146,7 @@ class PackageManifest(BaseModel):
     must be unique across all other contract instances for the given chain.
     """
 
-    dependencies: Optional[Dict[PackageName, AnyUrl]] = Field(  # type: ignore[valid-type]
+    dependencies: Optional[dict[PackageName, AnyUrl]] = Field(  # type: ignore[valid-type]
         None, alias="buildDependencies"
     )
     """
@@ -248,7 +248,7 @@ class PackageManifest(BaseModel):
             else None
         )
 
-    def model_dump(self, *args, **kwargs) -> Dict:
+    def model_dump(self, *args, **kwargs) -> dict:
         res = super().model_dump(*args, **kwargs)
         sources = res.get("sources", {})
         for source_id, src in sources.items():
