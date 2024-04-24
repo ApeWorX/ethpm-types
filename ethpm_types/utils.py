@@ -1,7 +1,7 @@
 import json
 from enum import Enum
 from hashlib import md5, sha3_256, sha256
-from typing import Any, Dict, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from eth_pydantic_types import HexStr
 
@@ -89,7 +89,7 @@ def stringify_dict_for_hash(
     return json.dumps(sorted_settings, separators=(",", ":"), sort_keys=True)
 
 
-def parse_signature(sig: str) -> tuple[str, list[tuple[str, str, str]]]:
+def parse_signature(sig: str) -> Tuple[str, List[Tuple[str, str, str]]]:
     """
     Parse an event or function signature into name and inputs
 
