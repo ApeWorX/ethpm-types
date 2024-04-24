@@ -161,9 +161,9 @@ class TestMethodABI:
         "sig",
         [
             "transfer(address to, uint256 value)",
-            "allowance(address owner, address spender) -> (uint256)",
-            "totalSupply() -> (uint256)",
-            "things() -> (uint256,uint8)",
+            "allowance(address owner, address spender) -> uint256",
+            "totalSupply() -> uint256",
+            "things() -> (uint256, uint8)",
             "swap(uint8 a, uint256 b) -> (uint256, uint8)",
         ],
     )
