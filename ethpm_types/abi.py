@@ -1,8 +1,10 @@
 from typing import List, Literal, Optional, Union
 
 from pydantic import ConfigDict, Field
+from typing_extensions import Self
 
 from ethpm_types.base import BaseModel
+from ethpm_types.utils import parse_signature
 
 
 class ABIType(BaseModel):
@@ -277,6 +279,20 @@ class MethodABI(BaseABI):
 
         return f"{self.name}({input_args}){output_args}"
 
+    @classmethod
+    def from_signature(cls, sig: str) -> Self:
+        """
+        Create an MethodABI instance from a method signature.
+
+        **NOTE**: Method return types and state mutability are not included in signatures.
+                  Therefore, they will not necessarily be accurate in the resulting MethodABI
+                  instance.
+        """
+        name, inputs, outputs = parse_signature(sig)
+        input_abis = [ABIType(name=name, type=type_) for type_, _, name in inputs]
+        output_abis = [ABIType(type=type_) for type_ in outputs]
+        return cls(name=name, inputs=input_abis, outputs=output_abis)
+
 
 class EventABI(BaseABI):
     """
@@ -314,6 +330,16 @@ class EventABI(BaseABI):
         """
         input_args = ", ".join(i.signature for i in self.inputs)
         return f"{self.name}({input_args})"
+
+    @classmethod
+    def from_signature(cls, sig: str) -> Self:
+        """Create an EventABI instance from an event signature."""
+        name, inputs, _ = parse_signature(sig)
+        input_abis = [
+            EventABIType(name=name, indexed=(indexed == "indexed"), type=type_)
+            for type_, indexed, name in inputs
+        ]
+        return cls(name=name, inputs=input_abis)
 
 
 class ErrorABI(BaseABI):

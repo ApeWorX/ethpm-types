@@ -1,7 +1,7 @@
 import json
 from enum import Enum
 from hashlib import md5, sha3_256, sha256
-from typing import Any, Dict, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from eth_pydantic_types import HexStr
 
@@ -87,6 +87,47 @@ def stringify_dict_for_hash(
 
     sorted_settings = _sort(data or {})
     return json.dumps(sorted_settings, separators=(",", ":"), sort_keys=True)
+
+
+def parse_signature(sig: str) -> Tuple[str, List[Tuple[str, str, str]], List[str]]:
+    """
+    Parse an event or function signature into name and inputs
+
+    Args:
+        sig (str): The string signature to parse.
+
+    Returns:
+        A tuple of (name, inputs, outputs) where inputs is a list of tuples of (type, indexed, arg
+        name) and ouputs is a list of types.
+    """
+    outsplit = sig.split(" -> ")
+    std_sig = outsplit[0]
+    outputs_maybe = ""
+    if len(outsplit) > 1:
+        outputs_maybe = outsplit[1]
+    name, remainder = std_sig.split("(")
+    input_tups = [
+        tuple(y.strip().split(" "))
+        for y in filter(lambda x: x, [x for x in remainder.rstrip(")").split(",")])
+    ]
+    inputs = []
+    outputs = []
+
+    for intup in input_tups:
+        inlen = len(intup)
+        if inlen == 2:
+            inputs.append((intup[0], "", intup[1]))
+        elif inlen == 3 and intup[1] == "indexed":
+            assert len(intup) == 3  # mypy more like mywhy
+            inputs.append(intup)
+        else:
+            raise ValueError(f'Unexpected parameter format: {" ".join(intup)}')
+
+    if outputs_maybe:
+        for outtyp in outputs_maybe.strip("()").split(","):
+            outputs.append(outtyp.strip())
+
+    return (name, inputs, outputs)
 
 
 SourceLocation = Tuple[int, int, int, int]
