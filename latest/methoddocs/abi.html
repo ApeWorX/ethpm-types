@@ -109,6 +109,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ethpm_types.abi.EventABI"><code class="docutils literal notranslate"><span class="pre">EventABI</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.anonymous"><code class="docutils literal notranslate"><span class="pre">EventABI.anonymous</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.from_signature"><code class="docutils literal notranslate"><span class="pre">EventABI.from_signature()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.inputs"><code class="docutils literal notranslate"><span class="pre">EventABI.inputs</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">EventABI.model_computed_fields</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.model_config"><code class="docutils literal notranslate"><span class="pre">EventABI.model_config</span></code></a></li>
@@ -138,6 +139,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ethpm_types.abi.MethodABI"><code class="docutils literal notranslate"><span class="pre">MethodABI</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.MethodABI.from_signature"><code class="docutils literal notranslate"><span class="pre">MethodABI.from_signature()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.MethodABI.inputs"><code class="docutils literal notranslate"><span class="pre">MethodABI.inputs</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.MethodABI.is_payable"><code class="docutils literal notranslate"><span class="pre">MethodABI.is_payable</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.MethodABI.is_stateful"><code class="docutils literal notranslate"><span class="pre">MethodABI.is_stateful</span></code></a></li>
@@ -439,6 +441,12 @@ and output names and type(s) (if any) for display purposes only.</p>
 <dd><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the event has no name.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="ethpm_types.abi.EventABI.from_signature">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_signature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="headerlink" href="#ethpm_types.abi.EventABI.from_signature" title="Permalink to this definition"></a></dt>
+<dd><p>Create an EventABI instance from an event signature.</p>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.abi.EventABI.inputs">
 <span class="sig-name descname"><span class="pre">inputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.abi.EventABIType" title="ethpm_types.abi.EventABIType"><span class="pre">EventABIType</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.abi.EventABI.inputs" title="Permalink to this definition"></a></dt>
@@ -589,6 +597,17 @@ Defaults to the value <code class="docutils literal notranslate"><span class="pr
 <dt class="sig sig-object py" id="ethpm_types.abi.MethodABI">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.abi.</span></span><span class="sig-name descname"><span class="pre">MethodABI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'function'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'function'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stateMutability</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'nonpayable'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><span class="pre">ABIType</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><span class="pre">ABIType</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.abi.MethodABI" title="Permalink to this definition"></a></dt>
 <dd><p>An ABI representing a method you can invoke from a contact.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethpm_types.abi.MethodABI.from_signature">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_signature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="headerlink" href="#ethpm_types.abi.MethodABI.from_signature" title="Permalink to this definition"></a></dt>
+<dd><p>Create an MethodABI instance from a method signature.</p>
+<dl class="simple">
+<dt><strong>NOTE</strong>: Method return types and state mutability are not included in signatures.</dt><dd><p>Therefore, they will not necessarily be accurate in the resulting MethodABI
+instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.abi.MethodABI.inputs">
 <span class="sig-name descname"><span class="pre">inputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><span class="pre">ABIType</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.abi.MethodABI.inputs" title="Permalink to this definition"></a></dt>
