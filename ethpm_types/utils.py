@@ -89,6 +89,33 @@ def stringify_dict_for_hash(
     return json.dumps(sorted_settings, separators=(",", ":"), sort_keys=True)
 
 
+def parse_signature(sig: str) -> tuple[str, list[tuple[str, str]]]:
+    """
+    Parse an event or function signature into name and inputs
+
+    Args:
+        sig (str): The string signature to parse.
+
+    Returns:
+        A tuple of (name, inputs) where inputs is a list of tuples of (type, indexed, arg name).
+    """
+    name, remainder = sig.split("(")
+    input_tups = [
+        tuple(y.strip().split(" "))
+        for y in filter(lambda x: x, [x for x in remainder.split(")")[0].split(",")])
+    ]
+    inputs = []
+    for intup in input_tups:
+        inlen = len(intup)
+        if inlen == 2:
+            inputs.append((intup[0], "", intup[1]))
+        elif inlen == 3 and intup[1] == "indexed":
+            inputs.append(intup)
+        else:
+            raise ValueError(f'Unexpected parameter format: {" ".join(intup)}')
+    return (name, inputs)
+
+
 SourceLocation = Tuple[int, int, int, int]
 
 __all__ = [

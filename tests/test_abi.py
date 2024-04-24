@@ -87,6 +87,21 @@ class TestEventABI:
         event = EventABI(name="FooEvent")
         assert event.selector == "FooEvent()"
 
+    def test_from_signature(self):
+        signature = "Transfer(address indexed from, address indexed to, uint256 value)"
+        event = EventABI.from_signature(signature)
+        assert event.name == "Transfer"
+        assert event.signature == signature
+        assert event.inputs[0].name == "from"
+        assert event.inputs[0].indexed
+        assert event.inputs[0].type == "address"
+        assert event.inputs[1].name == "to"
+        assert event.inputs[1].indexed
+        assert event.inputs[1].type == "address"
+        assert event.inputs[2].name == "value"
+        assert event.inputs[2].indexed is False
+        assert event.inputs[2].type == "uint256"
+
 
 class TestFallbackABI:
     @pytest.mark.parametrize(
@@ -118,6 +133,16 @@ class TestMethodABI:
             ],
         )
         assert abi.selector == "MyMethod(address,string)"
+
+    def test_from_signature(self):
+        signature = "transfer(address to, uint256 value)"
+        method = MethodABI.from_signature(signature)
+        assert method.name == "transfer"
+        assert method.signature == signature
+        assert method.inputs[0].name == "to"
+        assert method.inputs[0].type == "address"
+        assert method.inputs[1].name == "value"
+        assert method.inputs[1].type == "uint256"
 
 
 class TestReceiveABI:
