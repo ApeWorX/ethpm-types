@@ -284,8 +284,9 @@ class MethodABI(BaseABI):
         """
         Create an MethodABI instance from a method signature.
 
-        **NOTE**: Method return types and state mutability are not included in signatures. Therefore,
-                  they will not necessarily be accurate in the resulting MethodABI instance.
+        **NOTE**: Method return types and state mutability are not included in signatures.
+                  Therefore, they will not necessarily be accurate in the resulting MethodABI
+                  instance.
         """
         name, inputs, outputs = parse_signature(sig)
         input_abis = [ABIType(name=name, type=type_) for type_, _, name in inputs]
