@@ -89,7 +89,7 @@ def stringify_dict_for_hash(
     return json.dumps(sorted_settings, separators=(",", ":"), sort_keys=True)
 
 
-def parse_signature(sig: str) -> tuple[str, list[tuple[str, str]]]:
+def parse_signature(sig: str) -> tuple[str, list[tuple[str, str, str]]]:
     """
     Parse an event or function signature into name and inputs
 
@@ -110,6 +110,7 @@ def parse_signature(sig: str) -> tuple[str, list[tuple[str, str]]]:
         if inlen == 2:
             inputs.append((intup[0], "", intup[1]))
         elif inlen == 3 and intup[1] == "indexed":
+            assert len(intup) == 3  # mypy more like mywhy
             inputs.append(intup)
         else:
             raise ValueError(f'Unexpected parameter format: {" ".join(intup)}')

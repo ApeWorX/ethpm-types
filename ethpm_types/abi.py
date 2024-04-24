@@ -1,7 +1,7 @@
 from typing import List, Literal, Optional, Union
-from typing_extensions import Self
 
 from pydantic import ConfigDict, Field
+from typing_extensions import Self
 
 from ethpm_types.base import BaseModel
 from ethpm_types.utils import parse_signature
@@ -95,7 +95,8 @@ class EventABIType(ABIType):
         return sig
 
 
-class BaseABI(BaseModel): ...
+class BaseABI(BaseModel):
+    ...
 
 
 class ConstructorABI(BaseABI):
