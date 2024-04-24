@@ -282,7 +282,7 @@ class MethodABI(BaseABI):
     @classmethod
     def from_signature(cls, sig: str) -> Self:
         """
-        Create an EventABI instance from an event signature.
+        Create an MethodABI instance from a method signature.
 
         **NOTE**: Method return types and state mutability are not included in signatures. Therefore,
                   they will not necessarily be accurate in the resulting MethodABI instance.
