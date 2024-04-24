@@ -102,6 +102,19 @@ class TestEventABI:
         assert event.inputs[2].indexed is False
         assert event.inputs[2].type == "uint256"
 
+    @pytest.mark.parametrize(
+        "sig",
+        [
+            "Transfer(address indexed from, address indexed to, uint256 value)",
+            "Approval(address indexed owner, address indexed spender, uint256 value)",
+            "Paused()",
+            "NotIndexed(uint256 a, uint8 b)",
+        ],
+    )
+    def test_signature_serialization(self, sig):
+        event = EventABI.from_signature(sig)
+        assert event.signature == sig
+
 
 class TestFallbackABI:
     @pytest.mark.parametrize(
@@ -143,6 +156,20 @@ class TestMethodABI:
         assert method.inputs[0].type == "address"
         assert method.inputs[1].name == "value"
         assert method.inputs[1].type == "uint256"
+
+    @pytest.mark.parametrize(
+        "sig",
+        [
+            "transfer(address to, uint256 value)",
+            "allowance(address owner, address spender) -> (uint256)",
+            "totalSupply() -> (uint256)",
+            "things() -> (uint256,uint8)",
+            "swap(uint8 a, uint256 b) -> (uint256, uint8)",
+        ],
+    )
+    def test_signature_serialization(self, sig):
+        method = MethodABI.from_signature(sig)
+        assert method.signature == sig
 
 
 class TestReceiveABI:
