@@ -89,7 +89,7 @@ def stringify_dict_for_hash(
     return json.dumps(sorted_settings, separators=(",", ":"), sort_keys=True)
 
 
-def parse_signature(sig: str) -> Tuple[str, List[Tuple[str, str, str]]]:
+def parse_signature(sig: str) -> Tuple[str, List[Tuple[str, str, str]], List[str]]:
     """
     Parse an event or function signature into name and inputs
 
@@ -97,14 +97,22 @@ def parse_signature(sig: str) -> Tuple[str, List[Tuple[str, str, str]]]:
         sig (str): The string signature to parse.
 
     Returns:
-        A tuple of (name, inputs) where inputs is a list of tuples of (type, indexed, arg name).
+        A tuple of (name, inputs, outputs) where inputs is a list of tuples of (type, indexed, arg
+        name) and ouputs is a list of types.
     """
-    name, remainder = sig.split("(")
+    outsplit = sig.split(" -> ")
+    std_sig = outsplit[0]
+    outputs_maybe = ""
+    if len(outsplit) > 1:
+        outputs_maybe = outsplit[1]
+    name, remainder = std_sig.split("(")
     input_tups = [
         tuple(y.strip().split(" "))
-        for y in filter(lambda x: x, [x for x in remainder.split(")")[0].split(",")])
+        for y in filter(lambda x: x, [x for x in remainder.rstrip(")").split(",")])
     ]
     inputs = []
+    outputs = []
+
     for intup in input_tups:
         inlen = len(intup)
         if inlen == 2:
@@ -114,7 +122,12 @@ def parse_signature(sig: str) -> Tuple[str, List[Tuple[str, str, str]]]:
             inputs.append(intup)
         else:
             raise ValueError(f'Unexpected parameter format: {" ".join(intup)}')
-    return (name, inputs)
+
+    if outputs_maybe:
+        for outtyp in outputs_maybe.strip("()").split(","):
+            outputs.append(outtyp.strip())
+
+    return (name, inputs, outputs)
 
 
 SourceLocation = Tuple[int, int, int, int]

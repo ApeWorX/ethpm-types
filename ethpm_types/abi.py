@@ -287,9 +287,10 @@ class MethodABI(BaseABI):
         **NOTE**: Method return types and state mutability are not included in signatures. Therefor
                   they will not necessarily be accurate in the resulting MethodABI instance.
         """
-        name, inputs = parse_signature(sig)
+        name, inputs, outputs = parse_signature(sig)
         input_abis = [ABIType(name=name, type=type_) for type_, _, name in inputs]
-        return cls(name=name, inputs=input_abis)
+        output_abis = [ABIType(type=type_) for type_ in outputs]
+        return cls(name=name, inputs=input_abis, outputs=output_abis)
 
 
 class EventABI(BaseABI):
@@ -332,7 +333,7 @@ class EventABI(BaseABI):
     @classmethod
     def from_signature(cls, sig: str) -> Self:
         """Create an EventABI instance from an event signature."""
-        name, inputs = parse_signature(sig)
+        name, inputs, _ = parse_signature(sig)
         input_abis = [
             EventABIType(name=name, indexed=(indexed == "indexed"), type=type_)
             for type_, indexed, name in inputs
