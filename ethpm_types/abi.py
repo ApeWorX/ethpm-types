@@ -284,7 +284,7 @@ class MethodABI(BaseABI):
         """
         Create an EventABI instance from an event signature.
 
-        **NOTE**: Method return types and state mutability are not included in signatures. Therefor
+        **NOTE**: Method return types and state mutability are not included in signatures. Therefore,
                   they will not necessarily be accurate in the resulting MethodABI instance.
         """
         name, inputs, outputs = parse_signature(sig)
