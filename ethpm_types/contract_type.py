@@ -165,7 +165,7 @@ class ABIList(List[ABILIST_T]):
         return super().__getitem__(selector)
 
     @__getitem__.register
-    def __getitem_slice(self, selector: slice) -> ABILIST_T:
+    def __getitem_slice(self, selector: slice) -> List[ABILIST_T]:
         return super().__getitem__(selector)
 
     @__getitem__.register
@@ -211,7 +211,7 @@ class ABIList(List[ABILIST_T]):
         return self.__getitem__(selector.selector)
 
     @singledispatchmethod
-    def __contains__(self, selector) -> bool:
+    def __contains__(self, selector) -> bool:  # type: ignore[override]
         raise NotImplementedError(f"Cannot use {type(selector)} as a selector.")
 
     @__contains__.register
