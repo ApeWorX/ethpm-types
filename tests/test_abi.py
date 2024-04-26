@@ -10,6 +10,7 @@ from ethpm_types.abi import (
     ReceiveABI,
     UnprocessedABI,
 )
+from ethpm_types.contract_type import ABIList
 
 
 class TestABIType:
@@ -189,3 +190,13 @@ class TestUnprocessedABI:
         actual = UnprocessedABI.model_json_schema()
         assert not hasattr(actual, "$defs")
         assert UnprocessedABI.__name__ in actual["title"]
+
+
+class TestABIList:
+    def test_get(self):
+        signature = "transfer(address to, uint256 value)"
+        method_abi = MethodABI.from_signature(signature)
+        abi_ls = ABIList((method_abi,))
+        # Show the .get() method works.
+        actual = abi_ls.get("transfer")
+        assert actual.signature == signature

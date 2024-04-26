@@ -161,15 +161,15 @@ class ABIList(List[ABILIST_T]):
         raise NotImplementedError(f"Cannot use {type(selector)} as a selector.")
 
     @__getitem__.register
-    def __getitem_int(self, selector: int):
+    def __getitem_int(self, selector: int) -> ABILIST_T:
         return super().__getitem__(selector)
 
     @__getitem__.register
-    def __getitem_slice(self, selector: slice):
+    def __getitem_slice(self, selector: slice) -> ABILIST_T:
         return super().__getitem__(selector)
 
     @__getitem__.register
-    def __getitem_str(self, selector: str):
+    def __getitem_str(self, selector: str) -> ABILIST_T:
         try:
             if "(" in selector:
                 # String-style selector e.g. `method(arg0)`.
@@ -186,7 +186,7 @@ class ABIList(List[ABILIST_T]):
             raise KeyError(selector)
 
     @__getitem__.register
-    def __getitem_bytes(self, selector: bytes):
+    def __getitem_bytes(self, selector: bytes) -> ABILIST_T:
         try:
             if self._selector_hash_fn:
                 return next(
@@ -203,15 +203,15 @@ class ABIList(List[ABILIST_T]):
             raise KeyError(selector)
 
     @__getitem__.register
-    def __getitem_method_abi(self, selector: MethodABI):
+    def __getitem_method_abi(self, selector: MethodABI) -> ABILIST_T:
         return self.__getitem__(selector.selector)
 
     @__getitem__.register
-    def __getitem_event_abi(self, selector: EventABI):
+    def __getitem_event_abi(self, selector: EventABI) -> ABILIST_T:
         return self.__getitem__(selector.selector)
 
     @singledispatchmethod
-    def __contains__(self, selector):
+    def __contains__(self, selector) -> bool:
         raise NotImplementedError(f"Cannot use {type(selector)} as a selector.")
 
     @__contains__.register
@@ -229,6 +229,9 @@ class ABIList(List[ABILIST_T]):
     @__contains__.register
     def __contains_event_abi(self, selector: EventABI) -> bool:
         return self._contains(selector)
+
+    def get(self, item, default: Optional[ABILIST_T] = None) -> Optional[ABILIST_T]:
+        return self[item] if item in self else default
 
     def _contains(self, selector: Union[str, bytes, MethodABI, EventABI]) -> bool:
         try:
