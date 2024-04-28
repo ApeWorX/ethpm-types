@@ -25,7 +25,7 @@ class ABIType(BaseModel):
     Tuples and structs tend to have this field.
     """
 
-    internal_type: Optional[str] = Field(None, alias="internalType")
+    internal_type: Optional[str] = Field(default=None, alias="internalType")
     """
     Another name for the type. Sometimes, compilers are able to populate
     this field with the struct or enum name.
