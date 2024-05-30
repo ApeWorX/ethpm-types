@@ -117,7 +117,7 @@ class Content(RootModel[Dict[int, str]]):
         if value is None:
             return {}
 
-        if type(value) is PosixPath:
+        if isinstance(value, Path):
             data = value.read_text()
         else:
             data = value["root"] if "_root" in value else value
