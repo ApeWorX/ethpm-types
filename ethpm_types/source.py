@@ -1,4 +1,4 @@
-from pathlib import Path, PosixPath
+from pathlib import Path
 from typing import Dict, Iterator, List, Optional, Set, Tuple, Union
 
 import requests
