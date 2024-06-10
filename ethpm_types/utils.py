@@ -2,15 +2,9 @@ import json
 from collections.abc import Sequence
 from enum import Enum
 from hashlib import md5, sha3_256, sha256
-from typing import Any, Optional
+from typing import Annotated, Any, Optional
 
 from eth_pydantic_types import HexStr
-
-try:
-    from typing import Annotated  # type: ignore
-except ImportError:
-    from typing import Annotated  # type: ignore
-
 
 CONTENT_ADDRESSED_SCHEMES = {"ipfs"}
 
