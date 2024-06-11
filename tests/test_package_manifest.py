@@ -153,21 +153,22 @@ def test_get_contract_type(package_manifest, solidity_contract):
 
 
 def test_unpack_sources():
-    foo_txt = Content(root={0: "line 0 in foo.txt"})
-    baz_txt = Content(root={1: "line 1 in baz.txt"})
+    # NOTE: Purposely using extra utf-8 symbol `“` as an encoding test.
+    foo_txt = Content(root={0: "line “0“ in foo.txt"})
+    baz_txt = Content(root={1: "line “1“ in baz.txt"})
     sources = {"foo.txt": Source(content=foo_txt), "bar/nested/baz.txt": Source(content=baz_txt)}
     manifest = PackageManifest(sources=sources)
 
     with tempfile.TemporaryDirectory() as temp_dir:
-        destination = Path(temp_dir) / "src"
+        destination = Path(temp_dir).resolve() / "src"
         manifest.unpack_sources(destination)
         foo_expected = destination / "foo.txt"
         baz_expected = destination / "bar" / "nested" / "baz.txt"
 
         assert foo_expected.is_file()
         assert baz_expected.is_file()
-        assert foo_expected.read_text() == str(foo_txt)
-        assert baz_expected.read_text() == str(baz_txt)
+        assert foo_expected.read_text(encoding="utf8") == str(foo_txt)
+        assert baz_expected.read_text(encoding="utf8") == str(baz_txt)
 
 
 def test_package_name_name():
