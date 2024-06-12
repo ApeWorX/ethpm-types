@@ -1,11 +1,10 @@
 import json
-from typing import Dict
 
 from pydantic import BaseModel as _BaseModel
 
 
 class BaseModel(_BaseModel):
-    def model_dump(self, *args, **kwargs) -> Dict:
+    def model_dump(self, *args, **kwargs) -> dict:
         # NOTE: We do this to accommodate the aliases needed for EIP-2678 compatibility
         if "by_alias" not in kwargs:
             kwargs["by_alias"] = True
