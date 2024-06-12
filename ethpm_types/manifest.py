@@ -295,7 +295,7 @@ class PackageManifest(BaseModel):
             # Create nested directories as needed.
             source_path.parent.mkdir(parents=True, exist_ok=True)
 
-            source_path.write_text(content)
+            source_path.write_text(content, encoding="utf8")
 
     def get_compiler(self, name: str, version: str) -> Optional[Compiler]:
         """
