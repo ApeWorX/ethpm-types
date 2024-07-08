@@ -426,14 +426,14 @@ mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethpm_types.source.ContractSource.model_post_init">
-<span class="sig-name descname"><span class="pre">model_post_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ethpm_types.source.ContractSource.model_post_init" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">model_post_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ethpm_types.source.ContractSource.model_post_init" title="Permalink to this definition"></a></dt>
 <dd><p>This function is meant to behave like a BaseModel method to initialise private attributes.</p>
 <p>It takes context as an argument since that’s what pydantic-core passes when calling it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>self</strong> – The BaseModel instance.</p></li>
-<li><p><strong>__context</strong> – The context.</p></li>
+<li><p><strong>context</strong> – The context.</p></li>
 </ul>
 </dd>
 </dl>
@@ -639,7 +639,7 @@ If processing remote project, cache them in ape project data folder</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethpm_types.source.Source.model_dump">
 <span class="sig-name descname"><span class="pre">model_dump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#ethpm_types.source.Source.model_dump" title="Permalink to this definition"></a></dt>
-<dd><p>Usage docs: <a class="reference external" href="https://docs.pydantic.dev/2.7/concepts/serialization/#modelmodel_dump">https://docs.pydantic.dev/2.7/concepts/serialization/#modelmodel_dump</a></p>
+<dd><p>Usage docs: <a class="reference external" href="https://docs.pydantic.dev/2.8/concepts/serialization/#modelmodel_dump">https://docs.pydantic.dev/2.8/concepts/serialization/#modelmodel_dump</a></p>
 <p>Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
