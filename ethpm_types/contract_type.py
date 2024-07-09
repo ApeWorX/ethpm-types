@@ -478,6 +478,37 @@ class ContractType(BaseModel):
         """
         return self._get_abis(filter_fn=lambda a: isinstance(a, StructABI))
 
+    @property
+    def natspecs(self) -> dict[str, str]:
+        """
+        A mapping of ABI selectors to their natspec documentation.
+        """
+        return {
+            **self._method_natspecs,
+            **self._event_natspecs,
+            **self._error_natspecs,
+            **self._struct_natspecs,
+        }
+
+    @cached_property
+    def _method_natspecs(self) -> Dict[str, str]:
+        return _extract_natspec(self.devdoc or {}, "methods", self.methods)
+
+    @cached_property
+    def _event_natspecs(self) -> Dict[str, str]:
+        # NOTE: I have only seen these appear on Solidity (not Vyper).
+        return _extract_natspec(self.devdoc or {}, "events", self.events)
+
+    @cached_property
+    def _error_natspecs(self) -> Dict[str, str]:
+        # NOTE: I have only seen these appear on Solidity (not Vyper).
+        return _extract_natspec(self.devdoc or {}, "errors", self.errors)
+
+    @cached_property
+    def _struct_natspecs(self) -> Dict[str, str]:
+        # NOTE: I have not seen any Struct NatSpecs show up in compiler outputs
+        return _extract_natspec(self.devdoc or {}, "structs", self.structs)
+
     @classmethod
     def _selector_hash_fn(cls, selector: str) -> bytes:
         # keccak is the default on most ecosystems, other ecosystems can subclass to override it
@@ -523,3 +554,46 @@ class ContractType(BaseModel):
             List[ABI_W_SELECTOR_T], [x for x in self.abi if hasattr(x, "selector")]
         )
         return [(x, get_id(x)) for x in abis_with_selector]
+
+
+def _extract_natspec(devdoc: dict, devdoc_key: str, abis: ABIList) -> Dict[str, str]:
+    result: Dict[str, str] = {}
+    devdocs = devdoc.get(devdoc_key, {})
+    for abi in abis:
+        dev_fields = devdocs.get(abi.selector, {})
+        if isinstance(dev_fields, dict):
+            if spec := _extract_natspec_from_dict(dev_fields, abi):
+                result[abi.selector] = "\n".join(spec)
+
+        elif isinstance(dev_fields, list):
+            for dev_field_ls_item in dev_fields:
+                if not isinstance(dev_field_ls_item, dict):
+                    # Not sure.
+                    continue
+
+                if spec := _extract_natspec_from_dict(dev_field_ls_item, abi):
+                    result[abi.selector] = "\n".join(spec)
+
+    return result
+
+
+def _extract_natspec_from_dict(data: dict, abi: ABI) -> list[str]:
+    info_parts: list[str] = []
+
+    for field_key, field_doc in data.items():
+        if isinstance(field_doc, str):
+            info_parts.append(f"@{field_key} {field_doc}")
+        elif isinstance(field_doc, dict):
+            if field_key != "params":
+                # Not sure!
+                continue
+
+            for param_name, param_doc in field_doc.items():
+                param_type_matches = [i for i in getattr(abi, "inputs", []) if i.name == param_name]
+                if not param_type_matches:
+                    continue  # Unlikely?
+
+                param_type = str(param_type_matches[0].type)
+                info_parts.append(f"@param {param_name} {param_type} {param_doc}")
+
+    return info_parts
