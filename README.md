@@ -37,3 +37,21 @@ from ethpm_types import ContractInstance
 contract = ContractInstance(contractType="ContractClassName", address="0x123...")
 print(contract.contract_type)
 ```
+
+Use of `from_signature` method
+
+```py
+# get MethodABI from function signature
+import ethpm_types
+
+method_abi = ethpm_types.abi.MethodABI.from_signature("function_name(uint256 arg1)")
+print(method_abi)
+>>> MethodABI(type='function', name='function_name', stateMutability='nonpayable', inputs=[ABIType(name='arg1', type='uint256', components=None, internal_type=None)], outputs=[])
+
+# get MethodABI from Events signature
+signature = "Transfer(address indexed from, address indexed to, uint256 value)"
+event = ethpm_types.abi.EventABI.from_signature(signature)
+print(event.name)
+>> Transfer
+```
+
