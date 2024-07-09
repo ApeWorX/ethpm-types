@@ -142,6 +142,16 @@ python3<span class="w"> </span>setup.py<span class="w"> </span>install
 <span class="nb">print</span><span class="p">(</span><span class="n">contract</span><span class="o">.</span><span class="n">contract_type</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>You can also parse <code class="docutils literal notranslate"><span class="pre">ethpm_types.abi</span></code> objects using the <code class="docutils literal notranslate"><span class="pre">.from_signature</span></code> classmethod:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ethpm_types.abi</span> <span class="kn">import</span> <span class="n">MethodABI</span><span class="p">,</span> <span class="n">EventABI</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MethodABI</span><span class="o">.</span><span class="n">from_signature</span><span class="p">(</span><span class="s2">&quot;function_name(uint256 arg1)&quot;</span><span class="p">)</span>
+<span class="n">MethodABI</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;function&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;function_name&#39;</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">EventABI</span><span class="o">.</span><span class="n">from_signature</span><span class="p">(</span><span class="s2">&quot;Transfer(address indexed from, address indexed to, uint256 value)&quot;</span><span class="p">)</span>
+<span class="n">EventABI</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;event&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Transfer&#39;</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="o">...</span><span class="p">],</span> <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 </section>
 
