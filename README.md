@@ -37,3 +37,16 @@ from ethpm_types import ContractInstance
 contract = ContractInstance(contractType="ContractClassName", address="0x123...")
 print(contract.contract_type)
 ```
+
+You can also parse `ethpm_types.abi` objects using the `.from_signature` classmethod:
+
+```py
+from ethpm_types.abi import MethodABI, EventABI
+
+>>> MethodABI.from_signature("function_name(uint256 arg1)")
+MethodABI(type='function', name='function_name', inputs=[...], ...)
+
+>>> EventABI.from_signature("Transfer(address indexed from, address indexed to, uint256 value)")
+EventABI(type='event', name='Transfer', inputs=[...], ...)
+```
+
