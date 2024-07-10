@@ -298,7 +298,16 @@ class ContractType(BaseModel):
     """
 
     userdoc: Optional[dict] = None
+    """
+    Documentation for the end-user, generated from NatSpecs
+    found in the contract source file.
+    """
+
     devdoc: Optional[dict] = None
+    """
+    Documentation for the contract maintainers, generated from NatSpecs
+    found in the contract source file.
+    """
 
     def __repr__(self) -> str:
         repr_id = self.__class__.__name__
