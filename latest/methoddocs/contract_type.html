@@ -94,6 +94,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.contract_type.ContractType.constructor"><code class="docutils literal notranslate"><span class="pre">ContractType.constructor</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.contract_type.ContractType.deployment_bytecode"><code class="docutils literal notranslate"><span class="pre">ContractType.deployment_bytecode</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.contract_type.ContractType.dev_messages"><code class="docutils literal notranslate"><span class="pre">ContractType.dev_messages</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.contract_type.ContractType.devdoc"><code class="docutils literal notranslate"><span class="pre">ContractType.devdoc</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.contract_type.ContractType.errors"><code class="docutils literal notranslate"><span class="pre">ContractType.errors</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.contract_type.ContractType.events"><code class="docutils literal notranslate"><span class="pre">ContractType.events</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.contract_type.ContractType.fallback"><code class="docutils literal notranslate"><span class="pre">ContractType.fallback</span></code></a></li>
@@ -111,6 +112,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.contract_type.ContractType.source_id"><code class="docutils literal notranslate"><span class="pre">ContractType.source_id</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.contract_type.ContractType.sourcemap"><code class="docutils literal notranslate"><span class="pre">ContractType.sourcemap</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.contract_type.ContractType.structs"><code class="docutils literal notranslate"><span class="pre">ContractType.structs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.contract_type.ContractType.userdoc"><code class="docutils literal notranslate"><span class="pre">ContractType.userdoc</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.contract_type.ContractType.view_methods"><code class="docutils literal notranslate"><span class="pre">ContractType.view_methods</span></code></a></li>
 </ul>
 </li>
@@ -340,6 +342,13 @@ a contract.</p>
 <p><strong>NOTE</strong>: This is not part of the canonical EIP-2678 spec.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.ContractType.devdoc">
+<span class="sig-name descname"><span class="pre">devdoc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.contract_type.ContractType.devdoc" title="Permalink to this definition"></a></dt>
+<dd><p>Documentation for the contract maintainers, generated from NatSpecs
+found in the contract source file.</p>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethpm_types.contract_type.ContractType.errors">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">errors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethpm_types.contract_type.ABIList" title="ethpm_types.contract_type.ABIList"><span class="pre">ABIList</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="abi.html#ethpm_types.abi.ErrorABI" title="ethpm_types.abi.ErrorABI"><span class="pre">ErrorABI</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.contract_type.ContractType.errors" title="Permalink to this definition"></a></dt>
@@ -481,6 +490,13 @@ contract.</p>
 <dd class="field-even"><p>class</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.contract_type.ContractType.userdoc">
+<span class="sig-name descname"><span class="pre">userdoc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.contract_type.ContractType.userdoc" title="Permalink to this definition"></a></dt>
+<dd><p>Documentation for the end-user, generated from NatSpecs
+found in the contract source file.</p>
 </dd></dl>
 
 <dl class="py property">
