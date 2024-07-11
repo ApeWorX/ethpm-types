@@ -578,7 +578,7 @@ def _extract_natspec(devdoc: dict, devdoc_key: str, abis: ABIList) -> Dict[str, 
     return result
 
 
-def _extract_natspec_from_dict(data: dict, abi: ABI) -> list[str]:
+def _extract_natspec_from_dict(data: Dict, abi: ABI) -> List[str]:
     info_parts: list[str] = []
 
     for field_key, field_doc in data.items():
