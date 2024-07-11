@@ -22,9 +22,9 @@ def get_contract_type(get_source_path):
 @pytest.fixture
 def get_source_path():
     def fn(name: str, base: Path = SOURCE_BASE) -> Path:
-        contracts_path = (base / "contracts")
+        contracts_path = base / "contracts"
         if not contracts_path.is_dir():
-            raise AssertionError(f"test setup failed - contracts directory not found")
+            raise AssertionError("test setup failed - contracts directory not found")
 
         for path in contracts_path.iterdir():
             if path.stem == name:

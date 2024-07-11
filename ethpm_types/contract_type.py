@@ -479,7 +479,7 @@ class ContractType(BaseModel):
         return self._get_abis(filter_fn=lambda a: isinstance(a, StructABI))
 
     @property
-    def natspecs(self) -> dict[str, str]:
+    def natspecs(self) -> Dict[str, str]:
         """
         A mapping of ABI selectors to their natspec documentation.
         """
