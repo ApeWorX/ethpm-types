@@ -492,21 +492,22 @@ class ContractType(BaseModel):
 
     @cached_property
     def _method_natspecs(self) -> Dict[str, str]:
+        # NOTE: Both Solidity and Vyper support this!
         return _extract_natspec(self.devdoc or {}, "methods", self.methods)
 
     @cached_property
     def _event_natspecs(self) -> Dict[str, str]:
-        # NOTE: I have only seen these appear on Solidity (not Vyper).
+        # NOTE: Only supported in Solidity (at time of writing this).
         return _extract_natspec(self.devdoc or {}, "events", self.events)
 
     @cached_property
     def _error_natspecs(self) -> Dict[str, str]:
-        # NOTE: I have only seen these appear on Solidity (not Vyper).
+        # NOTE: Only supported in Solidity (at time of writing this).
         return _extract_natspec(self.devdoc or {}, "errors", self.errors)
 
     @cached_property
     def _struct_natspecs(self) -> Dict[str, str]:
-        # NOTE: I have not seen any Struct NatSpecs show up in compiler outputs
+        # NOTE: Not supported in Solidity or Vyper at the time of writing this.
         return _extract_natspec(self.devdoc or {}, "structs", self.structs)
 
     @classmethod
