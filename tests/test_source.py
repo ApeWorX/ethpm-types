@@ -99,12 +99,12 @@ def test_content(content, content_raw):
     assert isinstance(content, Content)
     assert str(content) == content_raw
     # `__getitem__` works off linenos
-    assert content[1] == "# @version 0.3.7"
+    assert content[1] == "# @version 0.3.9"
     # slices are lineno-based from `content` because `root` is a dict.
     # Sometimes, like when building source tracebacks, not all lines are present.
     # In the `Source` object, for its content, all lines are always there.
     # Thus, its `__getitem__` is index based.
-    assert content[1:2] == ["# @version 0.3.7"]
+    assert content[1:2] == ["# @version 0.3.9"]
     assert content.begin_lineno == 1
     # The last line number is the same as the length of list of lines.
     length = len(content_raw.splitlines())
@@ -129,8 +129,8 @@ def test_content_chunk(content_raw):
     data = {7: chunk[0], 8: chunk[1], 9: chunk[2]}
     content = Content.model_validate(data)
     assert content.begin_lineno == 7
-    assert content.end_lineno == 8
-    assert len(content) == 2
+    assert content.end_lineno == 9
+    assert len(content) == 3
 
 
 def test_content_from_str():
@@ -201,9 +201,13 @@ def test_contract_source(vyper_contract, source, source_base):
     assert actual.contract_type == vyper_contract
     assert actual.source == source
     assert actual.source_path == source_base / vyper_contract.source_id
-    assert repr(actual) == "<VyperContract.vy::VyperContract>"
+    assert repr(actual) == "<contracts/VyperContract.vy::VyperContract>"
 
-    location = (121, 4, 121, 46)
+    # Get a location we can use as an input (that we know should work).
+    fn_name = "getEmptyTupleOfDynArrayStructs"
+    fn = [x for x in actual.ast.functions if x.name == fn_name][0]
+    location = fn.line_numbers
+
     function = actual.lookup_function(location)
     # Tests ``Function`` class here.
     assert function.name == "getEmptyTupleOfDynArrayStructs"
@@ -218,12 +222,18 @@ def test_contract_source(vyper_contract, source, source_base):
 
 def test_contract_source_use_method_id(vyper_contract, source, source_base):
     actual = ContractSource.create(vyper_contract, source, source_base)
-    location = (121, 4, 121, 46)
-    method_id = vyper_contract._selector_hash_fn(
-        vyper_contract.methods["getEmptyTupleOfDynArrayStructs"].selector
-    )
+
+    # Get a location we know will work.
+    fn_name = "getEmptyTupleOfDynArrayStructs"
+    fn = [x for x in actual.ast.functions if x.name == fn_name][0]
+    location = fn.line_numbers
+
+    hash_fn = vyper_contract._selector_hash_fn
+    abi = vyper_contract.methods[fn_name]
+    method_id = hash_fn(abi.selector)
+
     function = actual.lookup_function(location, method_id=method_id)
-    assert function.name == "getEmptyTupleOfDynArrayStructs"
+    assert function.name == fn_name
     assert function.full_name == "getEmptyTupleOfDynArrayStructs()"
 
 

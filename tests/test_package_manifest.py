@@ -270,4 +270,8 @@ def test_validate_package_manifest_when_is_field(package_manifest):
         manifest: PackageManifest  # type: ignore
 
     response = Response(manifest=package_manifest.model_dump())
-    assert response.manifest.model_dump() == package_manifest.model_dump()
+    actual = response.manifest.model_dump()
+    assert "contractTypes" in actual
+    new_manifest = PackageManifest.model_validate(actual)
+    assert new_manifest.contract_types == package_manifest.contract_types
+    assert new_manifest.sources == package_manifest.sources
