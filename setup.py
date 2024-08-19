@@ -16,11 +16,11 @@ extras_require = {
         "hypothesis-jsonschema==0.19.0",  # Fuzzes based on a json schema
     ],
     "lint": [
-        "black>=24.4.2,<25",  # Auto-formatter and linter
-        "mypy>=1.10.0,<2",  # Static type analyzer
+        "black>=24.8.0,<25",  # Auto-formatter and linter
+        "mypy>=1.11.1,<2",  # Static type analyzer
         "types-setuptools",  # Needed for mypy type shed
         "types-requests",  # Needed for mypy type shed
-        "flake8>=7.0.0,<8",  # Style linter
+        "flake8>=7.1.1,<8",  # Style linter
         "flake8-breakpoint>=1.1.0,<2",  # Detect breakpoints left in code
         "flake8-print>=5.0.0,<6",  # Detect print statements left in code
         "isort>=5.13.2,<6",  # Import sorting linter
@@ -75,12 +75,12 @@ setup(
     url="https://github.com/ApeWorX/ethpm-types",
     include_package_data=True,
     install_requires=[
-        "pydantic>=2.6.4,<3",
-        "eth-utils>=2.2.0",  # To be updated
+        "pydantic>=2.4.2,<3",
+        "eth-utils>=5.0.0,<6",
         "py-cid>=0.3.0,<0.4",
         "requests>=2.32.3,<3",
         "typing_extensions>=4.0,<5",
-        "eth-pydantic-types>=0.1.0",
+        "eth-pydantic-types>=0.1.2,<0.2",
     ],
     python_requires=">=3.9,<4",
     extras_require=extras_require,

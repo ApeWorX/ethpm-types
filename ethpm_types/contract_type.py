@@ -480,7 +480,7 @@ class ContractType(BaseModel):
         return self._get_abis(filter_fn=lambda a: isinstance(a, StructABI))
 
     @property
-    def natspecs(self) -> Dict[str, str]:
+    def natspecs(self) -> dict[str, str]:
         """
         A mapping of ABI selectors to their natspec documentation.
         """
@@ -492,22 +492,22 @@ class ContractType(BaseModel):
         }
 
     @cached_property
-    def _method_natspecs(self) -> Dict[str, str]:
+    def _method_natspecs(self) -> dict[str, str]:
         # NOTE: Both Solidity and Vyper support this!
         return _extract_natspec(self.devdoc or {}, "methods", self.methods)
 
     @cached_property
-    def _event_natspecs(self) -> Dict[str, str]:
+    def _event_natspecs(self) -> dict[str, str]:
         # NOTE: Only supported in Solidity (at time of writing this).
         return _extract_natspec(self.devdoc or {}, "events", self.events)
 
     @cached_property
-    def _error_natspecs(self) -> Dict[str, str]:
+    def _error_natspecs(self) -> dict[str, str]:
         # NOTE: Only supported in Solidity (at time of writing this).
         return _extract_natspec(self.devdoc or {}, "errors", self.errors)
 
     @cached_property
-    def _struct_natspecs(self) -> Dict[str, str]:
+    def _struct_natspecs(self) -> dict[str, str]:
         # NOTE: Not supported in Solidity or Vyper at the time of writing this.
         return _extract_natspec(self.devdoc or {}, "structs", self.structs)
 
@@ -560,8 +560,8 @@ class ContractType(BaseModel):
         return [(x, get_id(x)) for x in abis_with_selector]
 
 
-def _extract_natspec(devdoc: dict, devdoc_key: str, abis: ABIList) -> Dict[str, str]:
-    result: Dict[str, str] = {}
+def _extract_natspec(devdoc: dict, devdoc_key: str, abis: ABIList) -> dict[str, str]:
+    result: dict[str, str] = {}
     devdocs = devdoc.get(devdoc_key, {})
     for abi in abis:
         dev_fields = devdocs.get(abi.selector, {})
@@ -581,7 +581,7 @@ def _extract_natspec(devdoc: dict, devdoc_key: str, abis: ABIList) -> Dict[str, 
     return result
 
 
-def _extract_natspec_from_dict(data: Dict, abi: ABI) -> List[str]:
+def _extract_natspec_from_dict(data: dict, abi: ABI) -> list[str]:
     info_parts: list[str] = []
 
     for field_key, field_doc in data.items():

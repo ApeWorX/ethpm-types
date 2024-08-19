@@ -34,14 +34,14 @@ def _to_json_str(model, *args, **kwargs) -> str:
 
 
 class BaseModel(_BaseModel):
-    def model_dump(self, *args, **kwargs) -> Dict:
+    def model_dump(self, *args, **kwargs) -> dict:
         kwargs = _set_dict_defaults(**kwargs)
         return super().model_dump(*args, **kwargs)
 
     def model_dump_json(self, *args, **kwargs) -> str:
         return _to_json_str(self, *args, **kwargs)
 
-    def dict(self, *args, **kwargs) -> Dict:
+    def dict(self, *args, **kwargs) -> dict:
         kwargs = _set_dict_defaults(**kwargs)
         return super().dict(*args, **kwargs)
 
