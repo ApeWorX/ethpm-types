@@ -1,14 +1,15 @@
 import json
 from enum import Enum
 from hashlib import md5, sha3_256, sha256
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Optional, Tuple
+from collections.abc import Sequence
 
 from eth_pydantic_types import HexStr
 
 try:
     from typing import Annotated  # type: ignore
 except ImportError:
-    from typing_extensions import Annotated  # type: ignore
+    from typing import Annotated  # type: ignore
 
 
 CONTENT_ADDRESSED_SCHEMES = {"ipfs"}
@@ -56,7 +57,7 @@ def compute_checksum(content: bytes, algorithm: Algorithm = Algorithm.MD5) -> He
 
 
 def stringify_dict_for_hash(
-    data: Dict, include: Optional[Sequence[str]] = None, exclude: Optional[Sequence[str]] = None
+    data: dict, include: Optional[Sequence[str]] = None, exclude: Optional[Sequence[str]] = None
 ) -> str:
     """
     Convert the given dict to a consistent str that can be used in hash.
@@ -89,7 +90,7 @@ def stringify_dict_for_hash(
     return json.dumps(sorted_settings, separators=(",", ":"), sort_keys=True)
 
 
-def parse_signature(sig: str) -> Tuple[str, List[Tuple[str, str, str]], List[str]]:
+def parse_signature(sig: str) -> tuple[str, list[tuple[str, str, str]], list[str]]:
     """
     Parse an event or function signature into name and inputs
 
@@ -130,7 +131,7 @@ def parse_signature(sig: str) -> Tuple[str, List[Tuple[str, str, str]], List[str
     return (name, inputs, outputs)
 
 
-SourceLocation = Tuple[int, int, int, int]
+SourceLocation = tuple[int, int, int, int]
 
 __all__ = [
     "Algorithm",

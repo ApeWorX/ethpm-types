@@ -1,5 +1,6 @@
 from enum import Enum
-from typing import Dict, Iterator, List, Optional, Union
+from collections.abc import Iterator
+from typing import Optional, Union
 
 from pydantic import model_validator
 
