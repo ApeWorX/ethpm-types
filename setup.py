@@ -77,11 +77,11 @@ setup(
     include_package_data=True,
     install_requires=[
         "pydantic>=2.4.2,<3",
-        "eth-utils>=2.1.0,<3",
+        "eth-utils>=5.0.0,<6",
         "py-cid>=0.3.0,<0.4",
         "requests>=2.29.0,<3",
         "typing_extensions>=4.0,<5",
-        "eth-pydantic-types>=0.1.0a4",
+        "eth-pydantic-types>=0.1.2,<0.2",
     ],
     python_requires=">=3.8,<4",
     extras_require=extras_require,
