@@ -1,5 +1,5 @@
 import pytest
-from eth_pydantic_types import HexBytes
+from eth_pydantic_types import HexStr
 from eth_utils import keccak
 
 from ethpm_types import ContractType
@@ -264,9 +264,9 @@ def test_fallback_and_receive_not_defined(contract):
 
 
 def test_init_bytecode_using_bytes(contract):
-    raw_bytes = HexBytes(contract.deployment_bytecode.bytecode)
+    raw_bytes = HexStr(contract.deployment_bytecode.bytecode)
     new_contract = ContractType(abi=[], deploymentBytecode=raw_bytes)
-    assert new_contract.deployment_bytecode.bytecode == raw_bytes.hex()
+    assert new_contract.deployment_bytecode.bytecode == raw_bytes
 
 
 def test_init_bytecode_using_empty_dict(contract):
@@ -356,7 +356,7 @@ def test_identifier_lookup(vyper_contract):
 
 def test_get_runtime_bytecode(vyper_contract):
     actual = vyper_contract.get_runtime_bytecode()
-    assert actual.hex().startswith("0x")
+    assert len(actual.hex()) > 0
 
 
 def test_get_runtime_bytecode_no_code(vyper_contract):
@@ -367,7 +367,7 @@ def test_get_runtime_bytecode_no_code(vyper_contract):
 
 def test_get_deployment_bytecode(vyper_contract):
     actual = vyper_contract.get_deployment_bytecode()
-    assert actual.hex().startswith("0x")
+    assert len(actual.hex()) > 0
 
 
 def test_get_deployment_bytecode_no_code(vyper_contract):

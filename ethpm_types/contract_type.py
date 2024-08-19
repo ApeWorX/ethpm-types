@@ -1,5 +1,6 @@
+from collections.abc import Callable, Iterable
 from functools import cached_property, singledispatchmethod
-from typing import Callable, Dict, Iterable, List, Optional, Tuple, Type, TypeVar, Union, cast
+from typing import Optional, TypeVar, Union, cast
 
 from eth_pydantic_types import Address, HashStr32, HexBytes, HexStr
 from eth_utils import is_0x_prefixed
@@ -35,7 +36,7 @@ Only for type-checking.
 # TODO link references & link values are for solidity, not used with Vyper
 # Offsets are for dynamic links, e.g. EIP1167 proxy forwarder
 class LinkDependency(BaseModel):
-    offsets: List[int]
+    offsets: list[int]
     """
     The locations within the corresponding bytecode where the value for this
     link value was written. These locations are 0-indexed from the beginning
@@ -55,7 +56,7 @@ class LinkDependency(BaseModel):
 
 
 class LinkReference(BaseModel):
-    offsets: List[int]
+    offsets: list[int]
     """
     An array of integers, corresponding to each of the start positions
     where the link reference appears in the bytecode. Locations are 0-indexed
@@ -85,12 +86,12 @@ class Bytecode(BaseModel):
     A string containing the 0x prefixed hexadecimal representation of the bytecode.
     """
 
-    link_references: Optional[List[LinkReference]] = Field(None, alias="linkReferences")
+    link_references: Optional[list[LinkReference]] = Field(None, alias="linkReferences")
     """
     The locations in the corresponding bytecode which require linking.
     """
 
-    link_dependencies: Optional[List[LinkDependency]] = Field(None, alias="linkDependencies")
+    link_dependencies: Optional[list[LinkDependency]] = Field(None, alias="linkDependencies")
     """
     The link values that have been used to link the corresponding bytecode.
     """
@@ -140,7 +141,7 @@ class ContractInstance(BaseModel):
     """
 
 
-class ABIList(List[ABILIST_T]):
+class ABIList(list[ABILIST_T]):
     """
     Adds selection by name, selector and keccak(selector).
     """
@@ -165,7 +166,7 @@ class ABIList(List[ABILIST_T]):
         return super().__getitem__(selector)
 
     @__getitem__.register
-    def __getitem_slice(self, selector: slice) -> List[ABILIST_T]:
+    def __getitem_slice(self, selector: slice) -> list[ABILIST_T]:
         return super().__getitem__(selector)
 
     @__getitem__.register
@@ -265,7 +266,7 @@ class ContractType(BaseModel):
     runtime_bytecode: Optional[Bytecode] = Field(None, alias="runtimeBytecode")
     """The unlinked 0x-prefixed runtime portion of bytecode for this ContractType."""
 
-    abi: List[ABI] = []
+    abi: list[ABI] = []
     """The application binary interface to the contract."""
 
     sourcemap: Optional[SourceMap] = None
@@ -283,7 +284,7 @@ class ContractType(BaseModel):
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
-    dev_messages: Optional[Dict[int, str]] = None
+    dev_messages: Optional[dict[int, str]] = None
     """
     A map of dev-message comments in the source contract by their starting line number.
 
@@ -340,7 +341,7 @@ class ContractType(BaseModel):
         return None
 
     @property
-    def selector_identifiers(self) -> Dict[str, str]:
+    def selector_identifiers(self) -> dict[str, str]:
         """
         Returns a mapping of the full suite of signatures to selectors/topics/IDs for this
         contract.
@@ -348,7 +349,7 @@ class ContractType(BaseModel):
         return {atype.selector: sig for atype, sig in self._abi_identifiers}
 
     @property
-    def identifier_lookup(self) -> Dict[str, ABI_W_SELECTOR_T]:
+    def identifier_lookup(self) -> dict[str, ABI_W_SELECTOR_T]:
         """
         Returns a mapping of the full suite of selectors/topics/IDs of this contract to human
         readable signature
@@ -357,7 +358,7 @@ class ContractType(BaseModel):
 
     @computed_field(alias="methodIdentifiers")  # type: ignore
     @cached_property
-    def method_identifiers(self) -> Dict[str, str]:
+    def method_identifiers(self) -> dict[str, str]:
         return {
             atype.selector: sig for atype, sig in self._abi_identifiers if atype.type == "function"
         }
@@ -479,7 +480,7 @@ class ContractType(BaseModel):
         return self._get_abis(filter_fn=lambda a: isinstance(a, StructABI))
 
     @property
-    def natspecs(self) -> Dict[str, str]:
+    def natspecs(self) -> dict[str, str]:
         """
         A mapping of ABI selectors to their natspec documentation.
         """
@@ -491,22 +492,22 @@ class ContractType(BaseModel):
         }
 
     @cached_property
-    def _method_natspecs(self) -> Dict[str, str]:
+    def _method_natspecs(self) -> dict[str, str]:
         # NOTE: Both Solidity and Vyper support this!
         return _extract_natspec(self.devdoc or {}, "methods", self.methods)
 
     @cached_property
-    def _event_natspecs(self) -> Dict[str, str]:
+    def _event_natspecs(self) -> dict[str, str]:
         # NOTE: Only supported in Solidity (at time of writing this).
         return _extract_natspec(self.devdoc or {}, "events", self.events)
 
     @cached_property
-    def _error_natspecs(self) -> Dict[str, str]:
+    def _error_natspecs(self) -> dict[str, str]:
         # NOTE: Only supported in Solidity (at time of writing this).
         return _extract_natspec(self.devdoc or {}, "errors", self.errors)
 
     @cached_property
-    def _struct_natspecs(self) -> Dict[str, str]:
+    def _struct_natspecs(self) -> dict[str, str]:
         # NOTE: Not supported in Solidity or Vyper at the time of writing this.
         return _extract_natspec(self.devdoc or {}, "structs", self.structs)
 
@@ -534,7 +535,7 @@ class ContractType(BaseModel):
             selector_hash_fn=self._selector_hash_fn,
         )
 
-    def _get_first_instance(self, _type: Type[ABI_SINGLETON_T]) -> Optional[ABI_SINGLETON_T]:
+    def _get_first_instance(self, _type: type[ABI_SINGLETON_T]) -> Optional[ABI_SINGLETON_T]:
         for abi in self.abi:
             if not isinstance(abi, _type):
                 continue
@@ -544,21 +545,23 @@ class ContractType(BaseModel):
         return None
 
     @cached_property
-    def _abi_identifiers(self) -> List[Tuple[ABI_W_SELECTOR_T, str]]:
+    def _abi_identifiers(self) -> list[tuple[ABI_W_SELECTOR_T, str]]:
         def get_id(aitem: ABI_W_SELECTOR_T) -> str:
-            if isinstance(aitem, MethodABI) or isinstance(aitem, ErrorABI):
-                return HexBytes(self._selector_hash_fn(aitem.selector)[:4]).hex()
-            else:
-                return HexBytes(self._selector_hash_fn(aitem.selector)).hex()
+            bytes_val = (
+                self._selector_hash_fn(aitem.selector)[:4]
+                if isinstance(aitem, (MethodABI, ErrorABI))
+                else self._selector_hash_fn(aitem.selector)
+            )
+            return HexStr.__eth_pydantic_validate__(bytes_val)
 
         abis_with_selector = cast(
-            List[ABI_W_SELECTOR_T], [x for x in self.abi if hasattr(x, "selector")]
+            list[ABI_W_SELECTOR_T], [x for x in self.abi if hasattr(x, "selector")]
         )
         return [(x, get_id(x)) for x in abis_with_selector]
 
 
-def _extract_natspec(devdoc: dict, devdoc_key: str, abis: ABIList) -> Dict[str, str]:
-    result: Dict[str, str] = {}
+def _extract_natspec(devdoc: dict, devdoc_key: str, abis: ABIList) -> dict[str, str]:
+    result: dict[str, str] = {}
     devdocs = devdoc.get(devdoc_key, {})
     for abi in abis:
         dev_fields = devdocs.get(abi.selector, {})
@@ -578,7 +581,7 @@ def _extract_natspec(devdoc: dict, devdoc_key: str, abis: ABIList) -> Dict[str, 
     return result
 
 
-def _extract_natspec_from_dict(data: Dict, abi: ABI) -> List[str]:
+def _extract_natspec_from_dict(data: dict, abi: ABI) -> list[str]:
     info_parts: list[str] = []
 
     for field_key, field_doc in data.items():
