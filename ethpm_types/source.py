@@ -5,7 +5,7 @@ from typing import Optional, Union
 import requests
 from cid import make_cid  # type: ignore
 from eth_pydantic_types import HexBytes, HexStr
-from pydantic import AnyUrl, RootModel, field_validator, model_validator
+from pydantic import AnyUrl, RootModel, field_validator, model_validator, model_serializer
 from pydantic_core import PydanticCustomError
 
 from ethpm_types.ast import ASTClassification, ASTNode, SourceLocation
@@ -136,6 +136,14 @@ class Content(RootModel[dict[int, str]]):
 
             keys = list(data.keys())
             return {keys[i]: data[keys[i]] for i in range(last_idx + 1)}
+
+    @model_serializer()
+    def _serialize_content(self, info):
+        content_str = "\n".join(self.root.values())
+        if not content_str.endswith("\n"):
+            content_str = f"{content_str}\n"
+
+        return content_str
 
     def encode(self, *args, **kwargs) -> bytes:
         return str(self).encode(*args, **kwargs)

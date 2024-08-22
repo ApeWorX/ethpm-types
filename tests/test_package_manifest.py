@@ -299,3 +299,20 @@ def test_model_dump(package_manifest):
         assert "runtimeBytecode" in actual["contractTypes"][contract_name]
         assert "deploymentBytecode" in actual["contractTypes"][contract_name]
         assert "abi" in actual["contractTypes"][contract_name]
+
+
+def test_model_dump_none_sources():
+    manifest = PackageManifest(sources=None)
+    actual = manifest.model_dump()
+    assert "sources" not in actual
+    assert actual["manifest"] == "ethpm/3"
+
+
+def test_model_dump_source_with_none_checksum():
+    manifest = PackageManifest(
+        sources={"this_is_a_source_id": Source(checksum=None, content="I am a source!")}
+    )
+    actual = manifest.model_dump(exclude_none=False)
+    assert "sources" in actual
+    assert "checksum" not in actual["sources"]
+    assert actual["sources"]["this_is_a_source_id"]["content"] == "I am a source!\n"
