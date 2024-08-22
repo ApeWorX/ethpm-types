@@ -5,7 +5,7 @@ from typing import Optional, Union
 import requests
 from cid import make_cid  # type: ignore
 from eth_pydantic_types import HexBytes, HexStr
-from pydantic import AnyUrl, RootModel, field_validator, model_validator, model_serializer
+from pydantic import AnyUrl, RootModel, field_validator, model_serializer, model_validator
 from pydantic_core import PydanticCustomError
 
 from ethpm_types.ast import ASTClassification, ASTNode, SourceLocation
