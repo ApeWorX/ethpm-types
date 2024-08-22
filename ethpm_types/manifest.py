@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Optional
 
 from eth_pydantic_types import Bip122Uri
-from pydantic import AnyUrl, Field, field_validator, model_validator
+from pydantic import AnyUrl, Field, field_validator, model_validator, model_serializer
 from pydantic_core import CoreSchema, PydanticCustomError
 from pydantic_core.core_schema import str_schema, with_info_before_validator_function
 
@@ -247,29 +247,6 @@ class PackageManifest(BaseModel):
             if self.contract_types and name in self.contract_types
             else None
         )
-
-    def model_dump(self, *args, **kwargs) -> dict:
-        res = super().model_dump(*args, **kwargs)
-        sources = res.get("sources", {})
-        for source_id, src in sources.items():
-            if "content" in src and isinstance(src["content"], dict):
-                content = "\n".join(src["content"].values())
-                if content and not content.endswith("\n"):
-                    content = f"{content}\n"
-
-                src["content"] = content
-
-            elif "content" in src and src["content"] is None:
-                src["content"] = ""
-
-            if (
-                "checksum" in src
-                and "algorithm" in src["checksum"]
-                and isinstance(src["checksum"]["algorithm"], Algorithm)
-            ):
-                src["checksum"]["algorithm"] = src["checksum"]["algorithm"].value
-
-        return res
 
     def unpack_sources(self, destination: Path):
         """
