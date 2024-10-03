@@ -120,8 +120,10 @@ class Content(RootModel[dict[int, str]]):
 
         if isinstance(value, Path):
             data = value.read_text()
-        else:
+        elif isinstance(value, dict):
             data = value["root"] if "_root" in value else value
+        else:
+            data = value
 
         if isinstance(data, str):
             return {i + 1: x for i, x in enumerate(data.rstrip().splitlines())}

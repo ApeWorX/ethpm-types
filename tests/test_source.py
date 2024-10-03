@@ -155,13 +155,26 @@ def test_content_from_dict():
 
 
 def test_content_from_root_dict():
-    lines = {1: "I am content", 2: "I am line 2 of content"}
+    """
+    Handles weird root-model behavior.
+    """
+    lines = {"root": {1: "I am content", 2: "I am line 2 of content"}}
     content = Content.model_validate(lines)
     assert content[1] == lines[1]  # Line 1
     assert content[2] == lines[2]  # Line 2
 
     # Assert it passes re-validation.
     content.model_validate(content)
+
+
+def test_content_with_root_suffix_in_line():
+    """
+    Tests against a strange bug where if your file contained
+    ``_root``, it would cause an issue.
+    """
+    lines = {1: "I am _root"}
+    content = Content.model_validate(lines)
+    assert content[1] == "I am _root"
 
 
 def test_content_from_path():
