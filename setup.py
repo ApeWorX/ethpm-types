@@ -14,10 +14,11 @@ extras_require = {
         # Test-only deps
         "PyGithub>=1.54,<2.0",  # Necessary to pull official schema from github
         "hypothesis-jsonschema==0.19.0",  # Fuzzes based on a json schema
+        "eth-hash[pysha3]",  # For eth-utils address checksumming
     ],
     "lint": [
         "black>=24.8.0,<25",  # Auto-formatter and linter
-        "mypy>=1.11.1,<2",  # Static type analyzer
+        "mypy>=1.11.2,<2",  # Static type analyzer
         "types-setuptools",  # Needed for mypy type shed
         "types-requests",  # Needed for mypy type shed
         "flake8>=7.1.1,<8",  # Style linter

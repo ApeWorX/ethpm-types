@@ -77,7 +77,7 @@ class TestABIType:
                     "type": "object",
                 }
             },
-            "allOf": [{"$ref": "#/$defs/ABIType"}],
+            "$ref": "#/$defs/ABIType",
         }
         assert actual == expected
 
