@@ -86,12 +86,14 @@ class Bytecode(BaseModel):
     A string containing the 0x prefixed hexadecimal representation of the bytecode.
     """
 
-    link_references: Optional[list[LinkReference]] = Field(None, alias="linkReferences")
+    link_references: Optional[list[LinkReference]] = Field(default=None, alias="linkReferences")
     """
     The locations in the corresponding bytecode which require linking.
     """
 
-    link_dependencies: Optional[list[LinkDependency]] = Field(None, alias="linkDependencies")
+    link_dependencies: Optional[list[LinkDependency]] = Field(
+        default=None, alias="linkDependencies"
+    )
     """
     The link values that have been used to link the corresponding bytecode.
     """
@@ -113,7 +115,7 @@ class Bytecode(BaseModel):
 
 
 class ContractInstance(BaseModel):
-    contract_type: str = Field(..., alias="contractType")
+    contract_type: str = Field(default=..., alias="contractType")
     """
     Any of the contract type names included in this Package
     or any of the contract type names found in any of the package dependencies
@@ -132,7 +134,7 @@ class ContractInstance(BaseModel):
     contract instance was mined.
     """
 
-    runtime_bytecode: Optional[Bytecode] = Field(None, alias="runtimeBytecode")
+    runtime_bytecode: Optional[Bytecode] = Field(default=None, alias="runtimeBytecode")
     """
     The runtime portion of bytecode for this Contract Instance.
     When present, the value from this field supersedes the ``runtimeBytecode``
@@ -249,21 +251,21 @@ class ContractType(BaseModel):
     then ``MyContract`` would be the type.
     """
 
-    name: Optional[str] = Field(None, alias="contractName")
+    name: Optional[str] = Field(default=None, alias="contractName")
     """
     The name of the contract type. The field is optional if ``ContractAlias``
     is the same as ``ContractName``.
     """
 
-    source_id: Optional[str] = Field(None, alias="sourceId")
+    source_id: Optional[str] = Field(default=None, alias="sourceId")
     """
     The global source identifier for the source file from which this contract type was generated.
     """
 
-    deployment_bytecode: Optional[Bytecode] = Field(None, alias="deploymentBytecode")
+    deployment_bytecode: Optional[Bytecode] = Field(default=None, alias="deploymentBytecode")
     """The bytecode for the ContractType."""
 
-    runtime_bytecode: Optional[Bytecode] = Field(None, alias="runtimeBytecode")
+    runtime_bytecode: Optional[Bytecode] = Field(default=None, alias="runtimeBytecode")
     """The unlinked 0x-prefixed runtime portion of bytecode for this ContractType."""
 
     abi: list[ABI] = []
