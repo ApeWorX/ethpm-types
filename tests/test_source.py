@@ -158,10 +158,10 @@ def test_content_from_root_dict():
     """
     Handles weird root-model behavior.
     """
-    lines = {"root": {1: "I am content", 2: "I am line 2 of content"}}
+    lines = {"_root": {1: "I am content", 2: "I am line 2 of content"}}
     content = Content.model_validate(lines)
-    assert content[1] == lines[1]  # Line 1
-    assert content[2] == lines[2]  # Line 2
+    assert content[1] == lines["_root"][1]  # Line 1
+    assert content[2] == lines["_root"][2]  # Line 2
 
     # Assert it passes re-validation.
     content.model_validate(content)
