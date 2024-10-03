@@ -117,7 +117,7 @@ class PackageManifest(BaseModel):
     necessary to recompile the contracts contained in this release.
     """
 
-    contract_types: Optional[dict[str, ContractType]] = Field(None, alias="contractTypes")
+    contract_types: Optional[dict[str, ContractType]] = Field(default=None, alias="contractTypes")
     """
     :class:`~ethpm_types.contract_type.ContractType` objects that have been included
     in this release.
@@ -146,7 +146,7 @@ class PackageManifest(BaseModel):
     """
 
     dependencies: Optional[dict[PackageName, AnyUrl]] = Field(  # type: ignore[valid-type]
-        None, alias="buildDependencies"
+        default=None, alias="buildDependencies"
     )
     """
     A mapping of EthPM packages that this project depends on.
