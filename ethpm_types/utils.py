@@ -110,7 +110,9 @@ def parse_signature(sig: str) -> tuple[str, list[tuple[str, str, str]], list[str
 
     for intup in input_tups:
         inlen = len(intup)
-        if inlen == 2:
+        if inlen == 1:
+            inputs.append((intup[0], "", ""))
+        elif inlen == 2:
             inputs.append((intup[0], "", intup[1]))
         elif inlen == 3 and intup[1] == "indexed":
             assert len(intup) == 3  # mypy more like mywhy
