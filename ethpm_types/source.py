@@ -12,9 +12,9 @@ from ethpm_types.ast import ASTClassification, ASTNode, SourceLocation
 from ethpm_types.base import BaseModel
 from ethpm_types.contract_type import ContractType
 from ethpm_types.utils import (
-    AnyUrl,
     CONTENT_ADDRESSED_SCHEMES,
     Algorithm,
+    AnyUrl,
     compute_checksum,
     stringify_dict_for_hash,
 )
