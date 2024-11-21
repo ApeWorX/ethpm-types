@@ -1,14 +1,12 @@
 from collections.abc import Iterator
 from enum import Enum
-from typing import TYPE_CHECKING, Optional, Union
+from typing import Optional, Union
 
 from pydantic import model_validator
 
 from ethpm_types.base import BaseModel
 from ethpm_types.sourcemap import SourceMapItem
-
-if TYPE_CHECKING:
-    from ethpm_types.utils import SourceLocation
+from ethpm_types.utils import SourceLocation
 
 
 class ASTClassification(Enum):
@@ -222,3 +220,10 @@ class ASTNode(BaseModel):
                 return function
 
         return None
+
+
+__all__ = [
+    "ASTClassification",
+    "ASTNode",
+    "SourceLocation",  # For backwards compat.
+]
