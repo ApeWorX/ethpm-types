@@ -1,12 +1,14 @@
 from collections.abc import Iterator
 from enum import Enum
-from typing import Optional, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 from pydantic import model_validator
 
 from ethpm_types.base import BaseModel
 from ethpm_types.sourcemap import SourceMapItem
-from ethpm_types.utils import SourceLocation
+
+if TYPE_CHECKING:
+    from ethpm_types.utils import SourceLocation
 
 
 class ASTClassification(Enum):
@@ -118,7 +120,7 @@ class ASTNode(BaseModel):
         return children
 
     @property
-    def line_numbers(self) -> SourceLocation:
+    def line_numbers(self) -> "SourceLocation":
         """
         The values needed for constructing the line numbers for this node
         in the form ``[lineno, col_offset, end_lineno, end_col_offset]``.
@@ -174,7 +176,7 @@ class ASTNode(BaseModel):
 
         return None
 
-    def get_nodes_at_line(self, line_numbers: SourceLocation) -> list["ASTNode"]:
+    def get_nodes_at_line(self, line_numbers: "SourceLocation") -> list["ASTNode"]:
         """
         Get the AST nodes for the given line number combination
 
@@ -202,7 +204,7 @@ class ASTNode(BaseModel):
 
         return nodes
 
-    def get_defining_function(self, line_numbers: SourceLocation) -> Optional["ASTNode"]:
+    def get_defining_function(self, line_numbers: "SourceLocation") -> Optional["ASTNode"]:
         """
         Get the function that defines the given line numbers.
 
