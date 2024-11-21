@@ -2,11 +2,14 @@ import json
 from collections.abc import Sequence
 from enum import Enum
 from hashlib import md5, sha3_256, sha256
-from typing import Annotated, Any, Optional
+from typing import Annotated, Any, Optional, Union
 
 from eth_pydantic_types import HexStr
+from pydantic import AnyUrl as _AnyUrl
+from pydantic import FileUrl
 
 CONTENT_ADDRESSED_SCHEMES = {"ipfs"}
+AnyUrl = Union[FileUrl, _AnyUrl]
 
 
 class Algorithm(str, Enum):
