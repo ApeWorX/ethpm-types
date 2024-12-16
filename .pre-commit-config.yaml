@@ -27,6 +27,11 @@ repos:
     -   id: mypy
         additional_dependencies: [types-requests, types-setuptools, pydantic]
 
+-   repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.19
+    hooks:
+    -   id: mdformat
+        additional_dependencies: [mdformat-gfm, mdformat-frontmatter, mdformat-pyproject]
 
 default_language_version:
     python: python3
