@@ -49,4 +49,3 @@ MethodABI(type='function', name='function_name', inputs=[...], ...)
 >>> EventABI.from_signature("Transfer(address indexed from, address indexed to, uint256 value)")
 EventABI(type='event', name='Transfer', inputs=[...], ...)
 ```
-

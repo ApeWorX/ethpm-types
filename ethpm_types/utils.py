@@ -1,5 +1,4 @@
 import json
-import re
 from collections.abc import Sequence
 from enum import Enum
 from hashlib import md5, sha3_256, sha256
@@ -103,7 +102,7 @@ def parse_signature(sig: str) -> tuple[str, list[tuple[str, str, str]], list[str
     std_sig = outsplit[0]
     outputs_maybe = ""
     if len(outsplit) > 1:
-        outputs_maybe = outsplit[1] 
+        outputs_maybe = outsplit[1]
     index = std_sig.find("(")
     name = std_sig[:index].strip()
     remainder = std_sig[index + 1 : -1].strip()
