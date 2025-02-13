@@ -154,6 +154,45 @@ class TestEventABI:
         event = EventABI.from_signature(sig)
         assert event.signature == sig
 
+    def test_encode_topics(self):
+        signature = "Transfer(address indexed from, address indexed to, uint256 value, uint)"
+        event = EventABI.from_signature(signature)
+        topics = {
+            "from": "0xc627dafb1c8c8f28fbbb560ff4d3c85f602d4a69",
+            "to": "0xc627dafb1c8c8f28fbbb560ff4d3c85f602d4a69",
+        }
+        actual = event.encode_topics(topics)
+        expected = [
+            "0x36a46ac9279f9cc24a2b0ce490d205f822f91eb09330ba01a04d4b20577e469c",
+            "0xb710f78c797e0b10f6190e15ea85cdefebe41f2e61cfb696e173be39d6eab5a5",
+            "0xb710f78c797e0b10f6190e15ea85cdefebe41f2e61cfb696e173be39d6eab5a5",
+        ]
+        assert actual == expected
+
+    def test_encode_topics_single_input(self):
+        signature = "Transfer(address indexed from, address indexed to, uint256 value, uint)"
+        event = EventABI.from_signature(signature)
+        topics = {"from": "0xc627dafb1c8c8f28fbbb560ff4d3c85f602d4a69"}
+        actual = event.encode_topics(topics)
+        expected = [
+            "0x36a46ac9279f9cc24a2b0ce490d205f822f91eb09330ba01a04d4b20577e469c",
+            "0xb710f78c797e0b10f6190e15ea85cdefebe41f2e61cfb696e173be39d6eab5a5",
+            None,
+        ]
+        assert actual == expected
+
+    def test_encode_topics_no_inputs(self):
+        signature = "Transfer(address indexed from, address indexed to, uint256 value, uint)"
+        event = EventABI.from_signature(signature)
+        topics = {}
+        actual = event.encode_topics(topics)
+        expected = [
+            "0x36a46ac9279f9cc24a2b0ce490d205f822f91eb09330ba01a04d4b20577e469c",
+            None,
+            None,
+        ]
+        assert actual == expected
+
 
 class TestFallbackABI:
     @pytest.mark.parametrize(
