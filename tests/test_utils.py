@@ -59,3 +59,14 @@ def test_parse_signature_indexed_and_named_tuple_inputs():
     actual = parse_signature(signature)
     expected_inputs = [("(uint256,address)", "indexed", "bartup")]
     assert actual == ("FooEvent", expected_inputs, [])
+
+
+def test_parse_signature_multiple_inputs():
+    signature = "Transfer(address indexed from, address indexed to, uint256 value)"
+    actual = parse_signature(signature)
+    expected = (
+        "Transfer",
+        [("address", "indexed", "from"), ("address", "indexed", "to"), ("uint256", "", "value")],
+        [],
+    )
+    assert actual == expected

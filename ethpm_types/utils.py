@@ -126,18 +126,22 @@ def _parse_signature_inputs(abi_str: str) -> list[tuple[str, str, str]]:
     indexed = ""
     name = ""
     characters = [c for c in abi_str]
-    seen_char_since_complete = True
     working_on = "type"
     while characters:
         character = characters.pop(0)
-        if character == "," and seen_char_since_complete:
+        if character == ",":
             # We reached the end of an input, or some random space.
             result.append((type_, indexed, name))
             type_ = indexed = name = ""
-            seen_char_since_complete = False  # Avoid multiple spaces, commas causing issues.
+            working_on = "type"
+
+            # Clear random spaces.
+            while characters[0] == " ":
+                characters.pop(0)
+
             continue
 
-        elif character == " ":
+        if character == " ":
             if working_on == "type":
                 working_on = "name"
 
@@ -147,10 +151,7 @@ def _parse_signature_inputs(abi_str: str) -> list[tuple[str, str, str]]:
 
             continue
 
-        # Lets it know we can accept new types again.
-        seen_char_since_complete = True
-
-        if character == "(":
+        elif character == "(":
             # Is a tuple. Find the end of the tuple.
             type_ = "("
             end_tuple = None
