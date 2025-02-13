@@ -1,5 +1,7 @@
-from typing import TYPE_CHECKING, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
+from eth_pydantic_types import HexBytes
+from eth_utils import keccak, to_hex
 from pydantic import ConfigDict, Field
 
 from ethpm_types.base import BaseModel
@@ -342,6 +344,33 @@ class EventABI(BaseABI):
             for type_, indexed, name in inputs
         ]
         return cls(name=name, inputs=input_abis)
+
+    def encode_topics(self, inputs: dict[str, Any]) -> list[Optional[str]]:
+        """
+        Encode the given input data into a topics list, useful for log-filtering.
+        Missing topics correspond to None values in the returns list, which work
+        as wildcards in eth_getLogs.
+
+        Args:
+            inputs (dict[str, Any]): Input data that will be encoded.
+
+        Returns:
+            list[Optional[str]]: Encoded topics.
+        """
+        result: list[Optional[str]] = [str(to_hex(HexBytes(keccak(text=self.selector))))]
+        for ipt in self.inputs:
+            if not ipt.indexed:
+                continue
+
+            name = getattr(ipt, "name", str(ipt))
+            if name and name in inputs:
+                encoded_topic = to_hex(HexBytes(keccak(text=inputs[name])))
+                result.append(encoded_topic)
+            else:
+                # Wildcard.
+                result.append(None)
+
+        return result
 
 
 class ErrorABI(BaseABI):
