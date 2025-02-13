@@ -16,10 +16,10 @@ def serialize(sourcemap: Iterator[SourceMapItem]) -> str:
             result += ";"
             continue
 
-        skip_start = previous_item and item.start == previous_item.start
-        skip_stop = previous_item and item.length == previous_item.length
-        skip_contract_id = previous_item and item.contract_id == previous_item.contract_id
-        skip_jump_code = previous_item and item.jump_code == previous_item.jump_code
+        skip_start = bool(previous_item and item.start == previous_item.start)
+        skip_stop = bool(previous_item and item.length == previous_item.length)
+        skip_contract_id = bool(previous_item and item.contract_id == previous_item.contract_id)
+        skip_jump_code = bool(previous_item and item.jump_code == previous_item.jump_code)
 
         if skip_jump_code and skip_contract_id and skip_stop and skip_start:
             result += ";"
