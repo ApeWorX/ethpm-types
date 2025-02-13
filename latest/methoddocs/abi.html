@@ -101,6 +101,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ethpm_types.abi.EventABI"><code class="docutils literal notranslate"><span class="pre">EventABI</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.anonymous"><code class="docutils literal notranslate"><span class="pre">EventABI.anonymous</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.encode_topics"><code class="docutils literal notranslate"><span class="pre">EventABI.encode_topics()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.from_signature"><code class="docutils literal notranslate"><span class="pre">EventABI.from_signature()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.inputs"><code class="docutils literal notranslate"><span class="pre">EventABI.inputs</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.model_config"><code class="docutils literal notranslate"><span class="pre">EventABI.model_config</span></code></a></li>
@@ -361,6 +362,25 @@ and output names and type(s) (if any) for display purposes only.</p>
 <dt class="sig sig-object py" id="ethpm_types.abi.EventABI.anonymous">
 <span class="sig-name descname"><span class="pre">anonymous</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethpm_types.abi.EventABI.anonymous" title="Permalink to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the event has no name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethpm_types.abi.EventABI.encode_topics">
+<span class="sig-name descname"><span class="pre">encode_topics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ethpm_types.abi.EventABI.encode_topics" title="Permalink to this definition"></a></dt>
+<dd><p>Encode the given input data into a topics list, useful for log-filtering.
+Missing topics correspond to None values in the returns list, which work
+as wildcards in eth_getLogs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Input data that will be encoded.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Encoded topics.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[Optional[str]]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
