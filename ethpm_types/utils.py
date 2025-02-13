@@ -103,34 +103,72 @@ def parse_signature(sig: str) -> tuple[str, list[tuple[str, str, str]], list[str
     outputs_maybe = ""
     if len(outsplit) > 1:
         outputs_maybe = outsplit[1]
+
     index = std_sig.find("(")
     name = std_sig[:index].strip()
-    start_idx = index + 1
-    remainder = std_sig[start_idx:-1].strip()
-    input_tups = [
-        tuple(y.strip().split(" "))
-        for y in filter(lambda x: x, [x for x in remainder.rstrip(")").split(",")])
-    ]
-    inputs = []
+    remainder = std_sig[index:].strip()[1:-1]
+    inputs = _parse_signature_inputs(remainder)
     outputs = []
-
-    for intup in input_tups:
-        inlen = len(intup)
-        if inlen == 1:
-            inputs.append((intup[0], "", ""))
-        elif inlen == 2:
-            inputs.append((intup[0], "", intup[1]))
-        elif inlen == 3 and intup[1] == "indexed":
-            assert len(intup) == 3  # mypy more like mywhy
-            inputs.append(intup)
-        else:
-            raise ValueError(f'Unexpected parameter format: {" ".join(intup)}')
 
     if outputs_maybe:
         for outtyp in outputs_maybe.strip("()").split(","):
             outputs.append(outtyp.strip())
 
     return (name, inputs, outputs)
+
+
+def _parse_signature_inputs(abi_str: str) -> list[tuple[str, str, str]]:
+    if not abi_str:
+        return []
+
+    result = []
+    type_ = ""
+    indexed = ""
+    name = ""
+    characters = [c for c in abi_str]
+    seen_char_since_complete = True
+    working_on = "type"
+    while characters:
+        character = characters.pop(0)
+        if character == "," and seen_char_since_complete:
+            # We reached the end of an input, or some random space.
+            result.append((type_, indexed, name))
+            type_ = indexed = name = ""
+            seen_char_since_complete = False  # Avoid multiple spaces, commas causing issues.
+            continue
+
+        elif character == " ":
+            if working_on == "type":
+                working_on = "name"
+
+            if "".join(characters).startswith("indexed "):
+                indexed = "indexed"
+                characters = characters[8:]
+
+            continue
+
+        # Lets it know we can accept new types again.
+        seen_char_since_complete = True
+
+        if character == "(":
+            # Is a tuple. Find the end of the tuple.
+            type_ = "("
+            end_tuple = None
+            while end_tuple != ")":
+                end_tuple = characters.pop(0)
+                type_ = f"{type_}{end_tuple}"
+
+        elif working_on == "type":
+            type_ = f"{type_}{character}"
+
+        elif working_on == "name":
+            name = f"{name}{character}"
+
+    # Add the last input.
+    if type_:
+        result.append((type_, indexed, name))
+
+    return result
 
 
 SourceLocation = tuple[int, int, int, int]
