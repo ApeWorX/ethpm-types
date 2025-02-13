@@ -354,16 +354,23 @@ class EventABI(BaseABI):
         Args:
             inputs (dict[str, Any]): Input data that will be encoded.
 
+        Returns:
+            list[Optional[str]]: Encoded topics.
         """
-        return [to_hex(HexBytes(keccak(text=self.selector)))] + [
-            (
-                to_hex(HexBytes(keccak(text=inputs.get(getattr(ipt, "name", ipt)))))
-                if inputs.get(getattr(ipt, "name", ipt)) is not None
-                else None
-            )
-            for ipt in self.inputs
-            if getattr(ipt, "indexed", False)
-        ]
+        result: list[Optional[str]] = [str(to_hex(HexBytes(keccak(text=self.selector))))]
+        for ipt in self.inputs:
+            if not ipt.indexed:
+                continue
+
+            name = getattr(ipt, "name", str(ipt))
+            if name and name in inputs:
+                encoded_topic = to_hex(HexBytes(keccak(text=inputs[name])))
+                result.append(encoded_topic)
+            else:
+                # Wildcard.
+                result.append(None)
+
+        return result
 
 
 class ErrorABI(BaseABI):
