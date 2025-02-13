@@ -105,7 +105,8 @@ def parse_signature(sig: str) -> tuple[str, list[tuple[str, str, str]], list[str
         outputs_maybe = outsplit[1]
     index = std_sig.find("(")
     name = std_sig[:index].strip()
-    remainder = std_sig[index + 1 : -1].strip()
+    start_idx = index + 1
+    remainder = std_sig[start_idx:-1].strip()
     input_tups = [
         tuple(y.strip().split(" "))
         for y in filter(lambda x: x, [x for x in remainder.rstrip(")").split(",")])
