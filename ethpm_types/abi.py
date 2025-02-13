@@ -364,7 +364,15 @@ class EventABI(BaseABI):
 
             name = getattr(ipt, "name", str(ipt))
             if name and name in inputs:
-                encoded_topic = to_hex(HexBytes(keccak(text=inputs[name])))
+                input_value = inputs[name]
+                if isinstance(input_value, str) and input_value.startswith("0x"):
+                    keccak_val = keccak(hexstr=inputs[name])
+                elif isinstance(input_value, str):
+                    keccak_val = keccak(text=inputs[name])
+                else:
+                    keccak_val = keccak(HexBytes(inputs[name]))
+
+                encoded_topic = to_hex(keccak_val)
                 result.append(encoded_topic)
             else:
                 # Wildcard.

@@ -193,6 +193,16 @@ class TestEventABI:
         ]
         assert actual == expected
 
+    def test_encode_topics_int(self):
+        signature = "Transfer(int256 indexed value)"
+        event = EventABI.from_signature(signature)
+        actual = event.encode_topics({"value": 1})
+        expected = [
+            "0xdfe7b17d34477d236495b6b3e918bcf8a53ae88d483b608ed1daf09f5424b4eb",
+            "0x5fe7f977e71dba2ea1a68e21057beebb9be2ac30c6410aa38d4f3fbe41dcffd2",
+        ]
+        assert actual == expected
+
 
 class TestFallbackABI:
     @pytest.mark.parametrize(
