@@ -400,6 +400,10 @@ def encode_topic_value(abi_type, value) -> Union[Optional[str], list[str]]:
         return [encode_topic_value(abi_type, v) for v in value]  # type: ignore
 
     elif is_dynamic_sized_type(abi_type):
+        if abi_type == "string" and not isinstance(value, str):
+            # Bytes or int or something.
+            value = to_hex(value)
+
         return encode_hex(keccak(encode_packed([str(abi_type)], [value])))
 
     return HashStr32.__eth_pydantic_validate__(value)
