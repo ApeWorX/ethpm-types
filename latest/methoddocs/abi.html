@@ -162,6 +162,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.UnprocessedABI.type"><code class="docutils literal notranslate"><span class="pre">UnprocessedABI.type</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.abi.encode_topic_value"><code class="docutils literal notranslate"><span class="pre">encode_topic_value()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="source.html">Source</a></li>
@@ -681,6 +682,26 @@ a more useful-looking signature.</p>
 <dd><p>The type name as a string.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ethpm_types.abi.encode_topic_value">
+<span class="sig-prename descclassname"><span class="pre">ethpm_types.abi.</span></span><span class="sig-name descname"><span class="pre">encode_topic_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">abi_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.abi.encode_topic_value" title="Permalink to this definition"></a></dt>
+<dd><p>Encode a single topic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>abi_type</strong> (<em>str</em>) – The ABI type of the topic.</p></li>
+<li><p><strong>value</strong> (<em>Any</em>) – The value to encode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a hex-str of th encoded topic value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
