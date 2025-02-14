@@ -307,6 +307,29 @@ class TestEventABI:
         ]
         assert actual == expected
 
+    def test_encode_topics_int_for_string(self):
+        event = EventABI(
+            type="event",
+            name="StringBytesEvent",
+            inputs=[
+                EventABIType(
+                    name="dynIndexed",
+                    type="string",
+                    components=None,
+                    internal_type=None,
+                    indexed=True,
+                ),
+            ],
+            anonymous=False,
+        )
+        data = {"dynIndexed": 123}
+        actual = event.encode_topics(data)
+        expected = [
+            "0x6168f6acac733ad1199187f85ee89781c4dfd2e625b4be24d437ec707bd1a82a",
+            "0x38848aa0a2dad98b7c8ce946459e3426193e71ee439c7b0ceb2dfb615cf41df9",
+        ]
+        assert actual == expected
+
 
 class TestFallbackABI:
     @pytest.mark.parametrize(
