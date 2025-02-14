@@ -275,6 +275,19 @@ class TestEventABI:
         ]
         assert actual == expected
 
+    def test_encode_topics_removes_trailing_wildcards(self):
+        signature = "Transfer(address indexed from, address indexed to, uint256 indexed value)"
+        event = EventABI.from_signature(signature)
+        actual = event.encode_topics({"from": None, "to": "0x01", "value": None})
+        # The first None stays because it is not trailing. The second None is gone because
+        # it is for `.value`, which is trailing.
+        expected = [
+            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            None,
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
+        ]
+        assert actual == expected
+
 
 class TestFallbackABI:
     @pytest.mark.parametrize(
