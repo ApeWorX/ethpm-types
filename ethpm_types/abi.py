@@ -1,7 +1,6 @@
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from eth_abi import grammar
-from eth_abi.abi import encode
 from eth_abi.packed import encode_packed
 from eth_pydantic_types import HashStr32, HexBytes
 from eth_utils import encode_hex, keccak, to_hex
@@ -367,7 +366,7 @@ class EventABI(BaseABI):
 
             name = getattr(ipt, "name", str(ipt))
             if name and name in inputs:
-                topic = HashStr32.__eth_pydantic_validate__(inputs[name])
+                topic = encode_topic_value(ipt.type, inputs[name])
                 topics.append(topic)
             else:
                 # Wildcard.
@@ -393,7 +392,7 @@ def encode_topic_value(abi_type, value):
     elif is_dynamic_sized_type(abi_type):
         return encode_hex(keccak(encode_packed([str(abi_type)], [value])))
 
-    return encode_hex(encode([abi_type], [value]))
+    return HashStr32.__eth_pydantic_validate__(value)
 
 
 def is_dynamic_sized_type(abi_type: Union[ABIType, str]) -> bool:

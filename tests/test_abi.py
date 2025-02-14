@@ -203,6 +203,31 @@ class TestEventABI:
         ]
         assert actual == expected
 
+    def test_encode_topics_multiple_values(self):
+        event = EventABI(
+            type="event",
+            name="FooHappened",
+            inputs=[
+                EventABIType(
+                    name="foo",
+                    type="uint256",
+                    components=None,
+                    internal_type="uint256",
+                    indexed=True,
+                )
+            ],
+            anonymous=False,
+        )
+        actual = event.encode_topics({"foo": [0, 1]})
+        expected = [
+            "0x1a7c56fae0af54ebae73bc4699b9de9835e7bb86b050dff7e80695b633f17abd",
+            [
+                "0x0000000000000000000000000000000000000000000000000000000000000000",
+                "0x0000000000000000000000000000000000000000000000000000000000000001",
+            ],
+        ]
+        assert actual == expected
+
 
 class TestFallbackABI:
     @pytest.mark.parametrize(
