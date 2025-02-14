@@ -177,7 +177,6 @@ class TestEventABI:
         expected = [
             "0x36a46ac9279f9cc24a2b0ce490d205f822f91eb09330ba01a04d4b20577e469c",
             "0x000000000000000000000000c627dafb1c8c8f28fbbb560ff4d3c85f602d4a69",
-            None,
         ]
         assert actual == expected
 
@@ -186,11 +185,7 @@ class TestEventABI:
         event = EventABI.from_signature(signature)
         topics = {}
         actual = event.encode_topics(topics)
-        expected = [
-            "0x36a46ac9279f9cc24a2b0ce490d205f822f91eb09330ba01a04d4b20577e469c",
-            None,
-            None,
-        ]
+        expected = ["0x36a46ac9279f9cc24a2b0ce490d205f822f91eb09330ba01a04d4b20577e469c"]
         assert actual == expected
 
     def test_encode_topics_int(self):
@@ -199,6 +194,91 @@ class TestEventABI:
         actual = event.encode_topics({"value": 1})
         expected = [
             "0xdfe7b17d34477d236495b6b3e918bcf8a53ae88d483b608ed1daf09f5424b4eb",
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
+        ]
+        assert actual == expected
+
+    def test_encode_topics_multiple_values(self):
+        event = EventABI(
+            type="event",
+            name="FooHappened",
+            inputs=[
+                EventABIType(
+                    name="foo",
+                    type="uint256",
+                    components=None,
+                    internal_type="uint256",
+                    indexed=True,
+                )
+            ],
+            anonymous=False,
+        )
+        actual = event.encode_topics({"foo": [0, 1]})
+        expected = [
+            "0x1a7c56fae0af54ebae73bc4699b9de9835e7bb86b050dff7e80695b633f17abd",
+            [
+                "0x0000000000000000000000000000000000000000000000000000000000000000",
+                "0x0000000000000000000000000000000000000000000000000000000000000001",
+            ],
+        ]
+        assert actual == expected
+
+    def test_encode_topics_dynamic_value(self):
+        event = EventABI(
+            type="event",
+            name="FooHappened",
+            inputs=[
+                EventABIType(
+                    name="fooStr",
+                    type="string",
+                    components=None,
+                    internal_type="string",
+                    indexed=True,
+                )
+            ],
+            anonymous=False,
+        )
+        actual = event.encode_topics({"fooStr": "hello ethpm-types"})
+        expected = [
+            "0x303e54345675e954e1d04b6cc303625da54125e099e74eaa668ceebb40f49e8a",
+            "0x6bd959934a59ba145da1523272e142d1f6f9872a1bc797562e0348fc6aea9a89",
+        ]
+        assert actual == expected
+
+    def test_encode_topics_multiple_dynamic_values(self):
+        event = EventABI(
+            type="event",
+            name="FooHappened",
+            inputs=[
+                EventABIType(
+                    name="fooStr",
+                    type="string",
+                    components=None,
+                    internal_type="string",
+                    indexed=True,
+                )
+            ],
+            anonymous=False,
+        )
+        actual = event.encode_topics({"fooStr": ["hello ethpm-types", "hello apes"]})
+        expected = [
+            "0x303e54345675e954e1d04b6cc303625da54125e099e74eaa668ceebb40f49e8a",
+            [
+                "0x6bd959934a59ba145da1523272e142d1f6f9872a1bc797562e0348fc6aea9a89",
+                "0x7569d0c03843b022429ec0c9988a82a58e69908d9df2cd80c1da50bb2aee5239",
+            ],
+        ]
+        assert actual == expected
+
+    def test_encode_topics_removes_trailing_wildcards(self):
+        signature = "Transfer(address indexed from, address indexed to, uint256 indexed value)"
+        event = EventABI.from_signature(signature)
+        actual = event.encode_topics({"from": None, "to": "0x01", "value": None})
+        # The first None stays because it is not trailing. The second None is gone because
+        # it is for `.value`, which is trailing.
+        expected = [
+            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            None,
             "0x0000000000000000000000000000000000000000000000000000000000000001",
         ]
         assert actual == expected

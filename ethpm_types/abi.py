@@ -1,7 +1,6 @@
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
 from eth_abi import grammar
-from eth_abi.abi import encode
 from eth_abi.packed import encode_packed
 from eth_pydantic_types import HashStr32, HexBytes
 from eth_utils import encode_hex, keccak, to_hex
@@ -88,7 +87,7 @@ class EventABIType(ABIType):
         """
         The event signature.
         Will include the canonical type as well as the
-        the name if it has one. Also notes indexed types.
+        name if it has one. Also notes indexed types.
         """
 
         sig = self.canonical_type
@@ -348,7 +347,7 @@ class EventABI(BaseABI):
         ]
         return cls(name=name, inputs=input_abis)
 
-    def encode_topics(self, inputs: dict[str, Any]) -> list[Optional[str]]:
+    def encode_topics(self, inputs: dict[str, Any]) -> list[Union[Optional[str], list[str]]]:
         """
         Encode the given input data into a topics list, useful for log-filtering.
         Missing topics correspond to None values in the returns list, which work
@@ -360,23 +359,29 @@ class EventABI(BaseABI):
         Returns:
             list[Optional[str]]: Encoded topics.
         """
-        topics: list[Optional[str]] = [str(to_hex(HexBytes(keccak(text=self.selector))))]
+        topics: list[Union[Optional[str], list[str]]] = [
+            str(to_hex(HexBytes(keccak(text=self.selector))))
+        ]
         for ipt in self.inputs:
             if not ipt.indexed:
                 continue
 
             name = getattr(ipt, "name", str(ipt))
             if name and name in inputs:
-                topic = HashStr32.__eth_pydantic_validate__(inputs[name])
+                topic = encode_topic_value(ipt.type, inputs[name])
                 topics.append(topic)
             else:
                 # Wildcard.
                 topics.append(None)
 
+        # Remove trailing wildcards, since they don't do anything.
+        while topics[-1] is None:
+            topics.pop()
+
         return topics
 
 
-def encode_topic_value(abi_type, value):
+def encode_topic_value(abi_type, value) -> Union[Optional[str], list[str]]:
     """
     Encode a single topic.
 
@@ -387,13 +392,17 @@ def encode_topic_value(abi_type, value):
     Returns:
         str: a hex-str of th encoded topic value.
     """
-    if isinstance(value, (list, tuple)):
-        return [encode_topic_value(abi_type, v) for v in value]
+    if value is None:
+        return None
+
+    elif isinstance(value, (list, tuple)):
+        # NOTE: Assume this is just list[str] at this point (hence type-ignore).
+        return [encode_topic_value(abi_type, v) for v in value]  # type: ignore
 
     elif is_dynamic_sized_type(abi_type):
         return encode_hex(keccak(encode_packed([str(abi_type)], [value])))
 
-    return encode_hex(encode([abi_type], [value]))
+    return HashStr32.__eth_pydantic_validate__(value)
 
 
 def is_dynamic_sized_type(abi_type: Union[ABIType, str]) -> bool:
