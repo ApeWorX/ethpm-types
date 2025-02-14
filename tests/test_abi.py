@@ -228,6 +228,53 @@ class TestEventABI:
         ]
         assert actual == expected
 
+    def test_encode_topics_dynamic_value(self):
+        event = EventABI(
+            type="event",
+            name="FooHappened",
+            inputs=[
+                EventABIType(
+                    name="fooStr",
+                    type="string",
+                    components=None,
+                    internal_type="string",
+                    indexed=True,
+                )
+            ],
+            anonymous=False,
+        )
+        actual = event.encode_topics({"fooStr": "hello ethpm-types"})
+        expected = [
+            "0x303e54345675e954e1d04b6cc303625da54125e099e74eaa668ceebb40f49e8a",
+            "0x6bd959934a59ba145da1523272e142d1f6f9872a1bc797562e0348fc6aea9a89",
+        ]
+        assert actual == expected
+
+    def test_encode_topics_multiple_dynamic_values(self):
+        event = EventABI(
+            type="event",
+            name="FooHappened",
+            inputs=[
+                EventABIType(
+                    name="fooStr",
+                    type="string",
+                    components=None,
+                    internal_type="string",
+                    indexed=True,
+                )
+            ],
+            anonymous=False,
+        )
+        actual = event.encode_topics({"fooStr": ["hello ethpm-types", "hello apes"]})
+        expected = [
+            "0x303e54345675e954e1d04b6cc303625da54125e099e74eaa668ceebb40f49e8a",
+            [
+                "0x6bd959934a59ba145da1523272e142d1f6f9872a1bc797562e0348fc6aea9a89",
+                "0x7569d0c03843b022429ec0c9988a82a58e69908d9df2cd80c1da50bb2aee5239",
+            ],
+        ]
+        assert actual == expected
+
 
 class TestFallbackABI:
     @pytest.mark.parametrize(
