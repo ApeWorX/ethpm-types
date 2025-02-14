@@ -164,8 +164,8 @@ class TestEventABI:
         actual = event.encode_topics(topics)
         expected = [
             "0x36a46ac9279f9cc24a2b0ce490d205f822f91eb09330ba01a04d4b20577e469c",
-            "0xb710f78c797e0b10f6190e15ea85cdefebe41f2e61cfb696e173be39d6eab5a5",
-            "0xb710f78c797e0b10f6190e15ea85cdefebe41f2e61cfb696e173be39d6eab5a5",
+            "0x000000000000000000000000c627dafb1c8c8f28fbbb560ff4d3c85f602d4a69",
+            "0x000000000000000000000000c627dafb1c8c8f28fbbb560ff4d3c85f602d4a69",
         ]
         assert actual == expected
 
@@ -176,7 +176,7 @@ class TestEventABI:
         actual = event.encode_topics(topics)
         expected = [
             "0x36a46ac9279f9cc24a2b0ce490d205f822f91eb09330ba01a04d4b20577e469c",
-            "0xb710f78c797e0b10f6190e15ea85cdefebe41f2e61cfb696e173be39d6eab5a5",
+            "0x000000000000000000000000c627dafb1c8c8f28fbbb560ff4d3c85f602d4a69",
             None,
         ]
         assert actual == expected
@@ -190,6 +190,16 @@ class TestEventABI:
             "0x36a46ac9279f9cc24a2b0ce490d205f822f91eb09330ba01a04d4b20577e469c",
             None,
             None,
+        ]
+        assert actual == expected
+
+    def test_encode_topics_int(self):
+        signature = "Transfer(int256 indexed value)"
+        event = EventABI.from_signature(signature)
+        actual = event.encode_topics({"value": 1})
+        expected = [
+            "0xdfe7b17d34477d236495b6b3e918bcf8a53ae88d483b608ed1daf09f5424b4eb",
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
         ]
         assert actual == expected
 
