@@ -1,7 +1,10 @@
 from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 
-from eth_pydantic_types import HexBytes
-from eth_utils import keccak, to_hex
+from eth_abi import grammar
+from eth_abi.abi import encode
+from eth_abi.packed import encode_packed
+from eth_pydantic_types import HashStr32, HexBytes
+from eth_utils import encode_hex, keccak, to_hex
 from pydantic import ConfigDict, Field
 
 from ethpm_types.base import BaseModel
@@ -357,28 +360,45 @@ class EventABI(BaseABI):
         Returns:
             list[Optional[str]]: Encoded topics.
         """
-        result: list[Optional[str]] = [str(to_hex(HexBytes(keccak(text=self.selector))))]
+        topics: list[Optional[str]] = [str(to_hex(HexBytes(keccak(text=self.selector))))]
         for ipt in self.inputs:
             if not ipt.indexed:
                 continue
 
             name = getattr(ipt, "name", str(ipt))
             if name and name in inputs:
-                input_value = inputs[name]
-                if isinstance(input_value, str) and input_value.startswith("0x"):
-                    keccak_val = keccak(hexstr=inputs[name])
-                elif isinstance(input_value, str):
-                    keccak_val = keccak(text=inputs[name])
-                else:
-                    keccak_val = keccak(HexBytes(inputs[name]))
-
-                encoded_topic = to_hex(keccak_val)
-                result.append(encoded_topic)
+                topic = HashStr32.__eth_pydantic_validate__(inputs[name])
+                topics.append(topic)
             else:
                 # Wildcard.
-                result.append(None)
+                topics.append(None)
 
-        return result
+        return topics
+
+
+def encode_topic_value(abi_type, value):
+    """
+    Encode a single topic.
+
+    Args:
+        abi_type (str): The ABI type of the topic.
+        value (Any): The value to encode.
+
+    Returns:
+        str: a hex-str of th encoded topic value.
+    """
+    if isinstance(value, (list, tuple)):
+        return [encode_topic_value(abi_type, v) for v in value]
+
+    elif is_dynamic_sized_type(abi_type):
+        return encode_hex(keccak(encode_packed([str(abi_type)], [value])))
+
+    return encode_hex(encode([abi_type], [value]))
+
+
+def is_dynamic_sized_type(abi_type: Union[ABIType, str]) -> bool:
+    parsed = grammar.parse(str(abi_type))
+    return parsed.is_dynamic
 
 
 class ErrorABI(BaseABI):
