@@ -177,7 +177,6 @@ class TestEventABI:
         expected = [
             "0x36a46ac9279f9cc24a2b0ce490d205f822f91eb09330ba01a04d4b20577e469c",
             "0x000000000000000000000000c627dafb1c8c8f28fbbb560ff4d3c85f602d4a69",
-            None,
         ]
         assert actual == expected
 
@@ -186,11 +185,7 @@ class TestEventABI:
         event = EventABI.from_signature(signature)
         topics = {}
         actual = event.encode_topics(topics)
-        expected = [
-            "0x36a46ac9279f9cc24a2b0ce490d205f822f91eb09330ba01a04d4b20577e469c",
-            None,
-            None,
-        ]
+        expected = ["0x36a46ac9279f9cc24a2b0ce490d205f822f91eb09330ba01a04d4b20577e469c"]
         assert actual == expected
 
     def test_encode_topics_int(self):
