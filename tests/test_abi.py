@@ -1,4 +1,5 @@
 import pytest
+from hexbytes import HexBytes
 
 from ethpm_types.abi import (
     ABIType,
@@ -280,6 +281,29 @@ class TestEventABI:
             "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
             None,
             "0x0000000000000000000000000000000000000000000000000000000000000001",
+        ]
+        assert actual == expected
+
+    def test_encode_topics_bytes_for_string(self):
+        event = EventABI(
+            type="event",
+            name="StringBytesEvent",
+            inputs=[
+                EventABIType(
+                    name="dynIndexed",
+                    type="string",
+                    components=None,
+                    internal_type=None,
+                    indexed=True,
+                ),
+            ],
+            anonymous=False,
+        )
+        data = {"dynIndexed": HexBytes(123)}
+        actual = event.encode_topics(data)
+        expected = [
+            "0x6168f6acac733ad1199187f85ee89781c4dfd2e625b4be24d437ec707bd1a82a",
+            "0x38848aa0a2dad98b7c8ce946459e3426193e71ee439c7b0ceb2dfb615cf41df9",
         ]
         assert actual == expected
 
