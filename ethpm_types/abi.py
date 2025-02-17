@@ -37,7 +37,7 @@ class ABIType(BaseModel):
     this field with the struct or enum name.
     """
 
-    model_config = ConfigDict(frozen=True, extra="allow")
+    model_config = ConfigDict(frozen=True, extra="ignore")
 
     @property
     def canonical_type(self) -> str:
