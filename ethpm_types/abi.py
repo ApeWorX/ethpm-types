@@ -101,7 +101,16 @@ class EventABIType(ABIType):
         return sig
 
 
-class BaseABI(BaseModel): ...
+class BaseABI(BaseModel):
+    def __hash__(self) -> int:
+        if hasattr(self, "selector"):
+            return hash(self.selector)
+
+        elif isinstance(self, (FallbackABI, ReceiveABI)):
+            # NOTE: Essentially the same as `self.selector` since no args
+            return hash(self.signature)
+
+        raise TypeError(f"unhashable type: '{type(self)}'")
 
 
 class ConstructorABI(BaseABI):

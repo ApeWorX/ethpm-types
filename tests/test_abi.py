@@ -95,6 +95,7 @@ class TestConstructorABI:
             inputs=[ABIType(name="contract_address", type="address", internalType="address")],
         )
         assert constructor.selector == "constructor(address)"
+        assert constructor in set((constructor, ConstructorABI()))
 
 
 class TestEventABI:
@@ -108,6 +109,7 @@ class TestEventABI:
     def test_selector(self):
         event = EventABI(name="FooEvent")
         assert event.selector == "FooEvent()"
+        assert event in set((event, EventABI(name="BarEvent")))
 
     def test_from_signature(self):
         signature = "Transfer(address indexed from, address indexed to, uint256 value)"
@@ -361,6 +363,7 @@ class TestMethodABI:
             ],
         )
         assert abi.selector == "MyMethod(address,string)"
+        assert abi in set((abi, MethodABI(name="OtherMethod")))
 
     def test_from_signature(self):
         signature = "transfer(address to, uint256 value)"
