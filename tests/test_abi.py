@@ -48,7 +48,7 @@ class TestABIType:
         expected = {
             "$defs": {
                 "ABIType": {
-                    "additionalProperties": True,
+                    "additionalProperties": False,
                     "properties": {
                         "name": {
                             "anyOf": [{"type": "string"}, {"type": "null"}],
