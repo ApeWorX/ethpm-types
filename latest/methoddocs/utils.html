@@ -66,13 +66,7 @@
 <li class="toctree-l1"><a class="reference internal" href="manifest.html">Package Manifest</a></li>
 <li class="toctree-l1"><a class="reference internal" href="abi.html">ABI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source.html">Source</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Utils</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.utils.Algorithm"><code class="docutils literal notranslate"><span class="pre">Algorithm</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.utils.Annotated"><code class="docutils literal notranslate"><span class="pre">Annotated</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.utils.SourceLocation"><code class="docutils literal notranslate"><span class="pre">SourceLocation</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.utils.compute_checksum"><code class="docutils literal notranslate"><span class="pre">compute_checksum()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Utils</a></li>
 </ul>
 
         </div>
@@ -100,73 +94,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-ethpm_types.utils">
-<span id="utils"></span><h1>Utils<a class="headerlink" href="#module-ethpm_types.utils" title="Permalink to this heading"></a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ethpm_types.utils.Algorithm">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">Algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.utils.Algorithm" title="Permalink to this definition"></a></dt>
-<dd><p>Algorithm enum options MD5, SHA3, and SHA256.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ethpm_types.utils.Annotated">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">Annotated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.utils.Annotated" title="Permalink to this definition"></a></dt>
-<dd><p>Add context specific metadata to a type.</p>
-<p>Example: Annotated[int, runtime_check.Unsigned] indicates to the
-hypothetical runtime_check module that this type is an unsigned int.
-Every other consumer of this type can ignore this metadata and treat
-this type as int.</p>
-<p>The first argument to Annotated must be a valid type.</p>
-<p>Details:</p>
-<ul>
-<li><p>It’s an error to call <cite>Annotated</cite> with less than two arguments.</p></li>
-<li><p>Nested Annotated are flattened:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Annotated</span><span class="p">[</span><span class="n">Annotated</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">Ann1</span><span class="p">,</span> <span class="n">Ann2</span><span class="p">],</span> <span class="n">Ann3</span><span class="p">]</span> <span class="o">==</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">Ann1</span><span class="p">,</span> <span class="n">Ann2</span><span class="p">,</span> <span class="n">Ann3</span><span class="p">]</span>
-</pre></div>
-</div>
-</li>
-<li><p>Instantiating an annotated type is equivalent to instantiating the</p></li>
-</ul>
-<p>underlying type:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Annotated</span><span class="p">[</span><span class="n">C</span><span class="p">,</span> <span class="n">Ann1</span><span class="p">](</span><span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="n">C</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-</pre></div>
-</div>
-<ul>
-<li><p>Annotated can be used as a generic type alias:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Optimized</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">runtime</span><span class="o">.</span><span class="n">Optimize</span><span class="p">()]</span>
-<span class="n">Optimized</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">==</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">runtime</span><span class="o">.</span><span class="n">Optimize</span><span class="p">()]</span>
-
-<span class="n">OptimizedList</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">runtime</span><span class="o">.</span><span class="n">Optimize</span><span class="p">()]</span>
-<span class="n">OptimizedList</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">==</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">runtime</span><span class="o">.</span><span class="n">Optimize</span><span class="p">()]</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.utils.SourceLocation">
-<span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">SourceLocation</span></span><a class="headerlink" href="#ethpm_types.utils.SourceLocation" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="ethpm_types.utils.compute_checksum">
-<span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">compute_checksum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.utils.Algorithm" title="ethpm_types.utils.Algorithm"><span class="pre">Algorithm</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Algorithm.MD5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">HexStr</span></span></span><a class="headerlink" href="#ethpm_types.utils.compute_checksum" title="Permalink to this definition"></a></dt>
-<dd><p>Calculate the checksum of the given content.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>content</strong> (<em>bytes</em>) – Content to hash.</p></li>
-<li><p><strong>algorithm</strong> (<a class="reference internal" href="#ethpm_types.utils.Algorithm" title="ethpm_types.utils.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Hex</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
+  <section id="utils">
+<h1>Utils<a class="headerlink" href="#utils" title="Permalink to this heading"></a></h1>
 </section>
 
 
