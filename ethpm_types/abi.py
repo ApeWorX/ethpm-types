@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Union
 from eth_abi import grammar
 from eth_abi.packed import encode_packed
 from eth_pydantic_types import HexBytes, HexStr32
+from eth_pydantic_types.utils import PadDirection
 from eth_utils import encode_hex, keccak, to_hex
 from pydantic import ConfigDict, Field
 
@@ -415,7 +416,7 @@ def encode_topic_value(abi_type, value) -> Union[Optional[str], list[str]]:
 
         return encode_hex(keccak(encode_packed([str(abi_type)], [value])))
 
-    return HexStr32.__eth_pydantic_validate__(value)
+    return HexStr32.__eth_pydantic_validate__(value, pad=PadDirection.LEFT)
 
 
 def is_dynamic_sized_type(abi_type: Union[ABIType, str]) -> bool:
