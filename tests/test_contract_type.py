@@ -81,6 +81,23 @@ def test_validate(contract):
     contract.model_validate(contract.model_dump())
 
 
+def test_model_dump_json(contract):
+    assert contract.source_id is not None, "Set up failed - source ID required for this test"
+
+    actual = contract.model_dump_json()
+    assert "sourceId" in actual
+
+    # Ensure we get the source ID back.
+    new_contract = ContractType.model_validate_json(actual)
+    assert new_contract.source_id == contract.source_id
+
+
+def test_model_dump_json_source_id_not_exists(contract):
+    contract.source_id = "path/to/nowhere"
+    actual = contract.model_dump_json()
+    assert "sourceId" in actual
+
+
 def test_structs(contract):
     method_abi = _select_abi(contract, "getStruct")
     assert contract.structs == []
