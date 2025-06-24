@@ -65,7 +65,106 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="contract_type.html">Contract Type</a></li>
 <li class="toctree-l1"><a class="reference internal" href="manifest.html">Package Manifest</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">ABI</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ABI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.abi.ABIType"><code class="docutils literal notranslate"><span class="pre">ABIType</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ABIType.canonical_type"><code class="docutils literal notranslate"><span class="pre">ABIType.canonical_type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ABIType.components"><code class="docutils literal notranslate"><span class="pre">ABIType.components</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ABIType.internal_type"><code class="docutils literal notranslate"><span class="pre">ABIType.internal_type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ABIType.model_config"><code class="docutils literal notranslate"><span class="pre">ABIType.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ABIType.name"><code class="docutils literal notranslate"><span class="pre">ABIType.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ABIType.signature"><code class="docutils literal notranslate"><span class="pre">ABIType.signature</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ABIType.type"><code class="docutils literal notranslate"><span class="pre">ABIType.type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.abi.BaseABI"><code class="docutils literal notranslate"><span class="pre">BaseABI</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.BaseABI.model_config"><code class="docutils literal notranslate"><span class="pre">BaseABI.model_config</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.abi.ConstructorABI"><code class="docutils literal notranslate"><span class="pre">ConstructorABI</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ConstructorABI.inputs"><code class="docutils literal notranslate"><span class="pre">ConstructorABI.inputs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ConstructorABI.is_payable"><code class="docutils literal notranslate"><span class="pre">ConstructorABI.is_payable</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ConstructorABI.model_config"><code class="docutils literal notranslate"><span class="pre">ConstructorABI.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ConstructorABI.selector"><code class="docutils literal notranslate"><span class="pre">ConstructorABI.selector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ConstructorABI.signature"><code class="docutils literal notranslate"><span class="pre">ConstructorABI.signature</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ConstructorABI.stateMutability"><code class="docutils literal notranslate"><span class="pre">ConstructorABI.stateMutability</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ConstructorABI.type"><code class="docutils literal notranslate"><span class="pre">ConstructorABI.type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.abi.ErrorABI"><code class="docutils literal notranslate"><span class="pre">ErrorABI</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ErrorABI.inputs"><code class="docutils literal notranslate"><span class="pre">ErrorABI.inputs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ErrorABI.model_config"><code class="docutils literal notranslate"><span class="pre">ErrorABI.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ErrorABI.name"><code class="docutils literal notranslate"><span class="pre">ErrorABI.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ErrorABI.selector"><code class="docutils literal notranslate"><span class="pre">ErrorABI.selector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ErrorABI.signature"><code class="docutils literal notranslate"><span class="pre">ErrorABI.signature</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ErrorABI.type"><code class="docutils literal notranslate"><span class="pre">ErrorABI.type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.abi.EventABI"><code class="docutils literal notranslate"><span class="pre">EventABI</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.anonymous"><code class="docutils literal notranslate"><span class="pre">EventABI.anonymous</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.encode_topics"><code class="docutils literal notranslate"><span class="pre">EventABI.encode_topics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.from_signature"><code class="docutils literal notranslate"><span class="pre">EventABI.from_signature()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.inputs"><code class="docutils literal notranslate"><span class="pre">EventABI.inputs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.model_config"><code class="docutils literal notranslate"><span class="pre">EventABI.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.name"><code class="docutils literal notranslate"><span class="pre">EventABI.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.selector"><code class="docutils literal notranslate"><span class="pre">EventABI.selector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.signature"><code class="docutils literal notranslate"><span class="pre">EventABI.signature</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABI.type"><code class="docutils literal notranslate"><span class="pre">EventABI.type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.abi.EventABIType"><code class="docutils literal notranslate"><span class="pre">EventABIType</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABIType.indexed"><code class="docutils literal notranslate"><span class="pre">EventABIType.indexed</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABIType.model_config"><code class="docutils literal notranslate"><span class="pre">EventABIType.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.EventABIType.signature"><code class="docutils literal notranslate"><span class="pre">EventABIType.signature</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.abi.FallbackABI"><code class="docutils literal notranslate"><span class="pre">FallbackABI</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.FallbackABI.is_payable"><code class="docutils literal notranslate"><span class="pre">FallbackABI.is_payable</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.FallbackABI.model_config"><code class="docutils literal notranslate"><span class="pre">FallbackABI.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.FallbackABI.signature"><code class="docutils literal notranslate"><span class="pre">FallbackABI.signature</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.FallbackABI.stateMutability"><code class="docutils literal notranslate"><span class="pre">FallbackABI.stateMutability</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.FallbackABI.type"><code class="docutils literal notranslate"><span class="pre">FallbackABI.type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.abi.MethodABI"><code class="docutils literal notranslate"><span class="pre">MethodABI</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.MethodABI.from_signature"><code class="docutils literal notranslate"><span class="pre">MethodABI.from_signature()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.MethodABI.inputs"><code class="docutils literal notranslate"><span class="pre">MethodABI.inputs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.MethodABI.is_payable"><code class="docutils literal notranslate"><span class="pre">MethodABI.is_payable</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.MethodABI.is_stateful"><code class="docutils literal notranslate"><span class="pre">MethodABI.is_stateful</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.MethodABI.model_config"><code class="docutils literal notranslate"><span class="pre">MethodABI.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.MethodABI.name"><code class="docutils literal notranslate"><span class="pre">MethodABI.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.MethodABI.outputs"><code class="docutils literal notranslate"><span class="pre">MethodABI.outputs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.MethodABI.selector"><code class="docutils literal notranslate"><span class="pre">MethodABI.selector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.MethodABI.signature"><code class="docutils literal notranslate"><span class="pre">MethodABI.signature</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.MethodABI.stateMutability"><code class="docutils literal notranslate"><span class="pre">MethodABI.stateMutability</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.MethodABI.type"><code class="docutils literal notranslate"><span class="pre">MethodABI.type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.abi.ReceiveABI"><code class="docutils literal notranslate"><span class="pre">ReceiveABI</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ReceiveABI.is_payable"><code class="docutils literal notranslate"><span class="pre">ReceiveABI.is_payable</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ReceiveABI.model_config"><code class="docutils literal notranslate"><span class="pre">ReceiveABI.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ReceiveABI.signature"><code class="docutils literal notranslate"><span class="pre">ReceiveABI.signature</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ReceiveABI.stateMutability"><code class="docutils literal notranslate"><span class="pre">ReceiveABI.stateMutability</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.ReceiveABI.type"><code class="docutils literal notranslate"><span class="pre">ReceiveABI.type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.abi.StructABI"><code class="docutils literal notranslate"><span class="pre">StructABI</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.StructABI.members"><code class="docutils literal notranslate"><span class="pre">StructABI.members</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.StructABI.model_config"><code class="docutils literal notranslate"><span class="pre">StructABI.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.StructABI.name"><code class="docutils literal notranslate"><span class="pre">StructABI.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.StructABI.selector"><code class="docutils literal notranslate"><span class="pre">StructABI.selector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.StructABI.signature"><code class="docutils literal notranslate"><span class="pre">StructABI.signature</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.StructABI.type"><code class="docutils literal notranslate"><span class="pre">StructABI.type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.abi.UnprocessedABI"><code class="docutils literal notranslate"><span class="pre">UnprocessedABI</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.UnprocessedABI.model_config"><code class="docutils literal notranslate"><span class="pre">UnprocessedABI.model_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.UnprocessedABI.signature"><code class="docutils literal notranslate"><span class="pre">UnprocessedABI.signature</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.abi.UnprocessedABI.type"><code class="docutils literal notranslate"><span class="pre">UnprocessedABI.type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.abi.encode_topic_value"><code class="docutils literal notranslate"><span class="pre">encode_topic_value()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="source.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
 </ul>
@@ -95,8 +194,516 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="abi">
-<h1>ABI<a class="headerlink" href="#abi" title="Permalink to this heading"></a></h1>
+  <section id="module-ethpm_types.abi">
+<span id="abi"></span><h1>ABI<a class="headerlink" href="#module-ethpm_types.abi" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethpm_types.abi.ABIType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.abi.</span></span><span class="sig-name descname"><span class="pre">ABIType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><span class="pre">ABIType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'ABIType'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internalType</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.abi.ABIType" title="Permalink to this definition"></a></dt>
+<dd><dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.ABIType.canonical_type">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">canonical_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.ABIType.canonical_type" title="Permalink to this definition"></a></dt>
+<dd><p>The low-level type recognized by the virtual machine.
+For example, a tuple is converted to comma-separated string
+of its components.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.ABIType.components">
+<span class="sig-name descname"><span class="pre">components</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'ABIType'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.abi.ABIType.components" title="Permalink to this definition"></a></dt>
+<dd><p>A field of sub-types that makes up this type.
+Tuples and structs tend to have this field.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.ABIType.internal_type">
+<span class="sig-name descname"><span class="pre">internal_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.abi.ABIType.internal_type" title="Permalink to this definition"></a></dt>
+<dd><p>Another name for the type. Sometimes, compilers are able to populate
+this field with the struct or enum name.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.ABIType.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'extra':</span> <span class="pre">'allow',</span> <span class="pre">'frozen':</span> <span class="pre">True}</span></em><a class="headerlink" href="#ethpm_types.abi.ABIType.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.ABIType.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.abi.ABIType.name" title="Permalink to this definition"></a></dt>
+<dd><p>The name attached to the type, such as the input name of
+a function.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.ABIType.signature">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.ABIType.signature" title="Permalink to this definition"></a></dt>
+<dd><p>If the type has name, returns <code class="docutils literal notranslate"><span class="pre">&quot;&lt;canonical_type&gt;</span> <span class="pre">&lt;name&gt;&quot;</span></code>.
+Else, returns <code class="docutils literal notranslate"><span class="pre">&quot;&lt;canonical_type&gt;&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.ABIType.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><span class="pre">ABIType</span></a></em><a class="headerlink" href="#ethpm_types.abi.ABIType.type" title="Permalink to this definition"></a></dt>
+<dd><p>The value-type, such as <code class="docutils literal notranslate"><span class="pre">address</span></code> or <code class="docutils literal notranslate"><span class="pre">address[]</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethpm_types.abi.BaseABI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.abi.</span></span><span class="sig-name descname"><span class="pre">BaseABI</span></span><a class="headerlink" href="#ethpm_types.abi.BaseABI" title="Permalink to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.BaseABI.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.abi.BaseABI.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethpm_types.abi.ConstructorABI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.abi.</span></span><span class="sig-name descname"><span class="pre">ConstructorABI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'constructor'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'constructor'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stateMutability</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'nonpayable'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><span class="pre">ethpm_types.abi.ABIType</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.abi.ConstructorABI" title="Permalink to this definition"></a></dt>
+<dd><p>An ABI describing a contract constructor.
+<strong>NOTE</strong>: The constructor ABI does not have a <code class="docutils literal notranslate"><span class="pre">name</span></code> property.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.ConstructorABI.inputs">
+<span class="sig-name descname"><span class="pre">inputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><span class="pre">ethpm_types.abi.ABIType</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.abi.ConstructorABI.inputs" title="Permalink to this definition"></a></dt>
+<dd><p>Contract constructor arguments.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.ConstructorABI.is_payable">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_payable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethpm_types.abi.ConstructorABI.is_payable" title="Permalink to this definition"></a></dt>
+<dd><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the contract accepts currency upon deployment.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.ConstructorABI.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.abi.ConstructorABI.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.ConstructorABI.selector">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">selector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.ConstructorABI.selector" title="Permalink to this definition"></a></dt>
+<dd><p>String representing the constructor selector.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.ConstructorABI.signature">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.ConstructorABI.signature" title="Permalink to this definition"></a></dt>
+<dd><p>String representing the function signature, which includes the arg names and types,
+for display purposes only.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.ConstructorABI.stateMutability">
+<span class="sig-name descname"><span class="pre">stateMutability</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.ConstructorABI.stateMutability" title="Permalink to this definition"></a></dt>
+<dd><p>Can be either <code class="docutils literal notranslate"><span class="pre">&quot;payable&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;nonpayable&quot;</span></code>.
+Defaults to the value <code class="docutils literal notranslate"><span class="pre">&quot;nonpayable&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.ConstructorABI.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'constructor'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.abi.ConstructorABI.type" title="Permalink to this definition"></a></dt>
+<dd><p>The value <code class="docutils literal notranslate"><span class="pre">&quot;constructor&quot;</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethpm_types.abi.ErrorABI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.abi.</span></span><span class="sig-name descname"><span class="pre">ErrorABI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'error'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><span class="pre">ethpm_types.abi.ABIType</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.abi.ErrorABI" title="Permalink to this definition"></a></dt>
+<dd><p>An ABI describing an error-type defined in a contract.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.ErrorABI.inputs">
+<span class="sig-name descname"><span class="pre">inputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><span class="pre">ethpm_types.abi.ABIType</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.abi.ErrorABI.inputs" title="Permalink to this definition"></a></dt>
+<dd><p>Inputs when raising the error defined as
+<a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABIType</span></code></a> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.ErrorABI.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.abi.ErrorABI.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.ErrorABI.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.ErrorABI.name" title="Permalink to this definition"></a></dt>
+<dd><p>The name of the error.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.ErrorABI.selector">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">selector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.ErrorABI.selector" title="Permalink to this definition"></a></dt>
+<dd><p>String representing the event selector, used to compute <code class="docutils literal notranslate"><span class="pre">event_id</span></code>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.ErrorABI.signature">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.ErrorABI.signature" title="Permalink to this definition"></a></dt>
+<dd><p>String representing the event signature, which includes the arg names and types,
+and output names and type(s) (if any) for display purposes only.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.ErrorABI.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'error'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.abi.ErrorABI.type" title="Permalink to this definition"></a></dt>
+<dd><p>The value <code class="docutils literal notranslate"><span class="pre">&quot;error&quot;</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethpm_types.abi.EventABI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.abi.</span></span><span class="sig-name descname"><span class="pre">EventABI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'event'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'event'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.abi.EventABIType" title="ethpm_types.abi.EventABIType"><span class="pre">ethpm_types.abi.EventABIType</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anonymous</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.abi.EventABI" title="Permalink to this definition"></a></dt>
+<dd><p>An ABI describing an event-type defined in a contract.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.EventABI.anonymous">
+<span class="sig-name descname"><span class="pre">anonymous</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethpm_types.abi.EventABI.anonymous" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the event has no name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethpm_types.abi.EventABI.encode_topics">
+<span class="sig-name descname"><span class="pre">encode_topics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">NoneType</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ethpm_types.abi.EventABI.encode_topics" title="Permalink to this definition"></a></dt>
+<dd><p>Encode the given input data into a topics list, useful for log-filtering.
+Missing topics correspond to None values in the returns list, which work
+as wildcards in eth_getLogs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Input data that will be encoded.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Encoded topics.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[Optional[str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethpm_types.abi.EventABI.from_signature">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_signature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="headerlink" href="#ethpm_types.abi.EventABI.from_signature" title="Permalink to this definition"></a></dt>
+<dd><p>Create an EventABI instance from an event signature.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.EventABI.inputs">
+<span class="sig-name descname"><span class="pre">inputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.abi.EventABIType" title="ethpm_types.abi.EventABIType"><span class="pre">ethpm_types.abi.EventABIType</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.abi.EventABI.inputs" title="Permalink to this definition"></a></dt>
+<dd><p>Event properties defined as <a class="reference internal" href="#ethpm_types.abi.EventABIType" title="ethpm_types.abi.EventABIType"><code class="xref py py-class docutils literal notranslate"><span class="pre">EventABIType</span></code></a> objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.EventABI.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.abi.EventABI.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.EventABI.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.EventABI.name" title="Permalink to this definition"></a></dt>
+<dd><p>The name of the event.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.EventABI.selector">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">selector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.EventABI.selector" title="Permalink to this definition"></a></dt>
+<dd><p>String representing the event selector, used to compute <code class="docutils literal notranslate"><span class="pre">event_id</span></code>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.EventABI.signature">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.EventABI.signature" title="Permalink to this definition"></a></dt>
+<dd><p>String representing the event signature, which includes the arg names and types,
+and output names and type(s) (if any) for display purposes only.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.EventABI.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'event'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.abi.EventABI.type" title="Permalink to this definition"></a></dt>
+<dd><p>The value <code class="docutils literal notranslate"><span class="pre">&quot;event&quot;</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethpm_types.abi.EventABIType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.abi.</span></span><span class="sig-name descname"><span class="pre">EventABIType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><span class="pre">ABIType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'ABIType'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internalType</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indexed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.abi.EventABIType" title="Permalink to this definition"></a></dt>
+<dd><p>ABI types describing event ABIs defined in contracts.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.EventABIType.indexed">
+<span class="sig-name descname"><span class="pre">indexed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethpm_types.abi.EventABIType.indexed" title="Permalink to this definition"></a></dt>
+<dd><p>Whether you can search logs based on this ABI type.
+<strong>NOTE</strong>: Only event ABI types should have this field</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.EventABIType.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'extra':</span> <span class="pre">'allow',</span> <span class="pre">'frozen':</span> <span class="pre">True}</span></em><a class="headerlink" href="#ethpm_types.abi.EventABIType.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.EventABIType.signature">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.EventABIType.signature" title="Permalink to this definition"></a></dt>
+<dd><p>The event signature.
+Will include the canonical type as well as the
+name if it has one. Also notes indexed types.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethpm_types.abi.FallbackABI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.abi.</span></span><span class="sig-name descname"><span class="pre">FallbackABI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'fallback'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'fallback'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stateMutability</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'nonpayable'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.abi.FallbackABI" title="Permalink to this definition"></a></dt>
+<dd><p>An ABI dedicated to receiving unknown method selectors.
+<strong>NOTE</strong>: The fallback ABI does not have a name property.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.FallbackABI.is_payable">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_payable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethpm_types.abi.FallbackABI.is_payable" title="Permalink to this definition"></a></dt>
+<dd><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the fallback accepts currency.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.FallbackABI.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.abi.FallbackABI.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.FallbackABI.signature">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.FallbackABI.signature" title="Permalink to this definition"></a></dt>
+<dd><p>String representing the function signature for display purposes only.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.FallbackABI.stateMutability">
+<span class="sig-name descname"><span class="pre">stateMutability</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.FallbackABI.stateMutability" title="Permalink to this definition"></a></dt>
+<dd><p>Can be either <code class="docutils literal notranslate"><span class="pre">&quot;payable&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;nonpayable&quot;</span></code>.
+Defaults to the value <code class="docutils literal notranslate"><span class="pre">&quot;nonpayable&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.FallbackABI.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'fallback'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.abi.FallbackABI.type" title="Permalink to this definition"></a></dt>
+<dd><p>The value <code class="docutils literal notranslate"><span class="pre">&quot;fallback&quot;</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethpm_types.abi.MethodABI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.abi.</span></span><span class="sig-name descname"><span class="pre">MethodABI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'function'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'function'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stateMutability</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'nonpayable'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><span class="pre">ethpm_types.abi.ABIType</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><span class="pre">ethpm_types.abi.ABIType</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.abi.MethodABI" title="Permalink to this definition"></a></dt>
+<dd><p>An ABI representing a method you can invoke from a contact.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethpm_types.abi.MethodABI.from_signature">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_signature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sig</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="headerlink" href="#ethpm_types.abi.MethodABI.from_signature" title="Permalink to this definition"></a></dt>
+<dd><p>Create an MethodABI instance from a method signature.</p>
+<dl class="simple">
+<dt><strong>NOTE</strong>: Method return types and state mutability are not included in signatures.</dt><dd><p>Therefore, they will not necessarily be accurate in the resulting MethodABI
+instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.MethodABI.inputs">
+<span class="sig-name descname"><span class="pre">inputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><span class="pre">ethpm_types.abi.ABIType</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.abi.MethodABI.inputs" title="Permalink to this definition"></a></dt>
+<dd><p>Inputs to the method as <a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABIType</span></code></a> objects.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.MethodABI.is_payable">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_payable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethpm_types.abi.MethodABI.is_payable" title="Permalink to this definition"></a></dt>
+<dd><p>Whether the method expects currency or not.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.MethodABI.is_stateful">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_stateful</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethpm_types.abi.MethodABI.is_stateful" title="Permalink to this definition"></a></dt>
+<dd><p>Whether the method alters the state of the blockchain
+(and likely requires a transaction).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.MethodABI.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.abi.MethodABI.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.MethodABI.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.MethodABI.name" title="Permalink to this definition"></a></dt>
+<dd><p>The name of the method.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.MethodABI.outputs">
+<span class="sig-name descname"><span class="pre">outputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><span class="pre">ethpm_types.abi.ABIType</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.abi.MethodABI.outputs" title="Permalink to this definition"></a></dt>
+<dd><p>What the method returns as <a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABIType</span></code></a> objects.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.MethodABI.selector">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">selector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.MethodABI.selector" title="Permalink to this definition"></a></dt>
+<dd><p>String representing the function selector, used to compute <code class="docutils literal notranslate"><span class="pre">method_id</span></code>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.MethodABI.signature">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.MethodABI.signature" title="Permalink to this definition"></a></dt>
+<dd><p>String representing the function signature, which includes the arg names and types,
+and output names and type(s) (if any) for display purposes only.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.MethodABI.stateMutability">
+<span class="sig-name descname"><span class="pre">stateMutability</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.MethodABI.stateMutability" title="Permalink to this definition"></a></dt>
+<dd><p>Can be either <code class="docutils literal notranslate"><span class="pre">&quot;payable&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;nonpayable&quot;</span></code>.
+Defaults to the value <code class="docutils literal notranslate"><span class="pre">&quot;nonpayable&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.MethodABI.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'function'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.abi.MethodABI.type" title="Permalink to this definition"></a></dt>
+<dd><p>The value <code class="docutils literal notranslate"><span class="pre">&quot;function&quot;</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethpm_types.abi.ReceiveABI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.abi.</span></span><span class="sig-name descname"><span class="pre">ReceiveABI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'receive'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'receive'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stateMutability</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'payable'</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.abi.ReceiveABI" title="Permalink to this definition"></a></dt>
+<dd><p>An ABI dedicated to receiving currency from transactions with unknown
+method selectors.
+<strong>NOTE</strong>: The receive ABI does not have name field.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.ReceiveABI.is_payable">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_payable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethpm_types.abi.ReceiveABI.is_payable" title="Permalink to this definition"></a></dt>
+<dd><p>Always returns <code class="docutils literal notranslate"><span class="pre">True</span></code> as receive methods are intended
+to receive money.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.ReceiveABI.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.abi.ReceiveABI.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.ReceiveABI.signature">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.ReceiveABI.signature" title="Permalink to this definition"></a></dt>
+<dd><p>String representing the function signature for display purposes only.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.ReceiveABI.stateMutability">
+<span class="sig-name descname"><span class="pre">stateMutability</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'payable'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.abi.ReceiveABI.stateMutability" title="Permalink to this definition"></a></dt>
+<dd><p>The value <code class="docutils literal notranslate"><span class="pre">&quot;payable&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.ReceiveABI.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'receive'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.abi.ReceiveABI.type" title="Permalink to this definition"></a></dt>
+<dd><p>The value <code class="docutils literal notranslate"><span class="pre">&quot;receive&quot;</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethpm_types.abi.StructABI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.abi.</span></span><span class="sig-name descname"><span class="pre">StructABI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'struct'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'struct'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">members</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><span class="pre">ethpm_types.abi.ABIType</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">extra_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.abi.StructABI" title="Permalink to this definition"></a></dt>
+<dd><p>An ABI describing a struct-type defined in a contract.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.StructABI.members">
+<span class="sig-name descname"><span class="pre">members</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.abi.ABIType" title="ethpm_types.abi.ABIType"><span class="pre">ethpm_types.abi.ABIType</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.abi.StructABI.members" title="Permalink to this definition"></a></dt>
+<dd><p>The properties that compose the struct.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.StructABI.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'extra':</span> <span class="pre">'allow'}</span></em><a class="headerlink" href="#ethpm_types.abi.StructABI.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.StructABI.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.StructABI.name" title="Permalink to this definition"></a></dt>
+<dd><p>The name of the struct.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.StructABI.selector">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">selector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.StructABI.selector" title="Permalink to this definition"></a></dt>
+<dd><p>String representing the struct selector.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.StructABI.signature">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.StructABI.signature" title="Permalink to this definition"></a></dt>
+<dd><p>String representing the struct signature, which includes the member names and types,
+and offsets (if any) for display purposes only.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.StructABI.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'struct'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethpm_types.abi.StructABI.type" title="Permalink to this definition"></a></dt>
+<dd><p>The value <code class="docutils literal notranslate"><span class="pre">&quot;struct&quot;</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethpm_types.abi.UnprocessedABI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.abi.</span></span><span class="sig-name descname"><span class="pre">UnprocessedABI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.abi.UnprocessedABI" title="Permalink to this definition"></a></dt>
+<dd><p>An ABI representing an unknown entity.
+This is useful for supporting custom compiler types,
+such as types defined in L2 ecosystems but are not
+in Ethereum.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.UnprocessedABI.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.abi.UnprocessedABI.model_config" title="Permalink to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethpm_types.abi.UnprocessedABI.signature">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">signature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.UnprocessedABI.signature" title="Permalink to this definition"></a></dt>
+<dd><p>The full ABI JSON output, as we are unable to know
+a more useful-looking signature.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethpm_types.abi.UnprocessedABI.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.abi.UnprocessedABI.type" title="Permalink to this definition"></a></dt>
+<dd><p>The type name as a string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ethpm_types.abi.encode_topic_value">
+<span class="sig-prename descclassname"><span class="pre">ethpm_types.abi.</span></span><span class="sig-name descname"><span class="pre">encode_topic_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">abi_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ethpm_types.abi.encode_topic_value" title="Permalink to this definition"></a></dt>
+<dd><p>Encode a single topic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>abi_type</strong> (<em>str</em>) – The ABI type of the topic.</p></li>
+<li><p><strong>value</strong> (<em>Any</em>) – The value to encode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a hex-str of th encoded topic value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
