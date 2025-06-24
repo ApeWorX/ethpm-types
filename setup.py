@@ -81,7 +81,7 @@ setup(
         "eth-utils>=2.1.0,<6",
         "py-cid>=0.3.0,<0.4",
         "requests>=2.32.3,<3",
-        "eth-pydantic-types>=0.2.0,<0.3",
+        "eth-pydantic-types>=0.2.1,<0.3",
     ],
     python_requires=">=3.9,<4",
     extras_require=extras_require,
