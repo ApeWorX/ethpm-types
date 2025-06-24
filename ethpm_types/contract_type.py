@@ -2,10 +2,10 @@ from collections.abc import Callable, Iterable
 from functools import cached_property, singledispatchmethod
 from typing import Optional, TypeVar, Union, cast
 
-from eth_pydantic_types import Address, HexBytes, HexStr, HexStr32
 from eth_utils import is_0x_prefixed
 from pydantic import Field, computed_field, field_validator
 
+from eth_pydantic_types import Address, HexBytes, HexStr, HexStr32
 from ethpm_types.abi import (
     ABI,
     ConstructorABI,
@@ -426,7 +426,8 @@ class ContractType(BaseModel):
             List[:class:`~ethpm_types.abi.ABI`]
         """
         return self._get_abis(
-            selector_id_size=4, filter_fn=lambda x: isinstance(x, MethodABI) and not x.is_stateful
+            selector_id_size=4,
+            filter_fn=lambda x: isinstance(x, MethodABI) and not x.is_stateful,
         )
 
     @property
@@ -438,7 +439,8 @@ class ContractType(BaseModel):
             List[:class:`~ethpm_types.abi.ABI`]
         """
         return self._get_abis(
-            selector_id_size=4, filter_fn=lambda x: isinstance(x, MethodABI) and x.is_stateful
+            selector_id_size=4,
+            filter_fn=lambda x: isinstance(x, MethodABI) and x.is_stateful,
         )
 
     @property

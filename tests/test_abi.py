@@ -82,6 +82,12 @@ class TestABIType:
         }
         assert actual == expected
 
+    @pytest.mark.parametrize("kwarg", ("internal_type", "internalType"))
+    def test_internal_type(self, kwarg):
+        data = {"name": "_name", "type": "String", "components": None, kwarg: "string"}
+        abi_type = ABIType.model_validate(data)
+        assert abi_type.internal_type == "string"
+
 
 class TestConstructorABI:
     def test_schema(self):
@@ -95,7 +101,7 @@ class TestConstructorABI:
             inputs=[ABIType(name="contract_address", type="address", internalType="address")],
         )
         assert constructor.selector == "constructor(address)"
-        assert constructor in set((constructor, ConstructorABI()))
+        assert constructor in {constructor, ConstructorABI()}
 
 
 class TestEventABI:
@@ -109,7 +115,7 @@ class TestEventABI:
     def test_selector(self):
         event = EventABI(name="FooEvent")
         assert event.selector == "FooEvent()"
-        assert event in set((event, EventABI(name="BarEvent")))
+        assert event in {event, EventABI(name="BarEvent")}
 
     def test_from_signature(self):
         signature = "Transfer(address indexed from, address indexed to, uint256 value)"
@@ -363,7 +369,7 @@ class TestMethodABI:
             ],
         )
         assert abi.selector == "MyMethod(address,string)"
-        assert abi in set((abi, MethodABI(name="OtherMethod")))
+        assert abi in {abi, MethodABI(name="OtherMethod")}
 
     def test_from_signature(self):
         signature = "transfer(address to, uint256 value)"

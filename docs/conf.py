@@ -13,7 +13,6 @@ import os
 import re
 import sys
 from pathlib import Path
-from typing import List
 
 sys.path.insert(0, os.path.abspath(".."))
 
@@ -38,7 +37,7 @@ templates_path = ["_templates"]
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns: List[str] = ["_build", ".DS_Store"]
+exclude_patterns: list[str] = ["_build", ".DS_Store"]
 
 
 # The suffix(es) of source filenames.
@@ -86,7 +85,7 @@ def fixpath(path: str) -> str:
     return new
 
 
-def get_versions() -> List[str]:
+def get_versions() -> list[str]:
     build_dir = Path(__file__).parent / "_build" / "ethpm-types"
     if not build_dir.exists():
         return []

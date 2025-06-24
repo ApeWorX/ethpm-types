@@ -1,11 +1,11 @@
 from pathlib import Path
 from typing import Optional
 
-from eth_pydantic_types import Bip122Uri
 from pydantic import Field, field_validator, model_validator
 from pydantic_core import CoreSchema, PydanticCustomError
 from pydantic_core.core_schema import str_schema, with_info_before_validator_function
 
+from eth_pydantic_types import Bip122Uri
 from ethpm_types.base import BaseModel
 from ethpm_types.contract_type import ContractInstance, ContractType
 from ethpm_types.source import Compiler, Source

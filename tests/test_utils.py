@@ -66,7 +66,11 @@ def test_parse_signature_multiple_inputs():
     actual = parse_signature(signature)
     expected = (
         "Transfer",
-        [("address", "indexed", "from"), ("address", "indexed", "to"), ("uint256", "", "value")],
+        [
+            ("address", "indexed", "from"),
+            ("address", "indexed", "to"),
+            ("uint256", "", "value"),
+        ],
         [],
     )
     assert actual == expected
