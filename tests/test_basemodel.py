@@ -1,8 +1,8 @@
 from typing import Any
 
 import pytest
-from eth_pydantic_types import HexBytes
 
+from eth_pydantic_types import HexBytes
 from ethpm_types import BaseModel
 
 

@@ -4,10 +4,10 @@ from typing import TYPE_CHECKING, Optional, Union
 
 import requests
 from cid import make_cid  # type: ignore
-from eth_pydantic_types import HexBytes, HexStr
 from pydantic import RootModel, field_validator, model_serializer, model_validator
 from pydantic_core import PydanticCustomError
 
+from eth_pydantic_types import HexBytes, HexStr
 from ethpm_types.ast import ASTClassification, ASTNode, SourceLocation
 from ethpm_types.base import BaseModel
 from ethpm_types.contract_type import ContractType
@@ -519,7 +519,8 @@ class SourceStatement(Statement):
     def validate_content(cls, value):
         if len(value) < 1:
             raise PydanticCustomError(
-                f"{SourceStatement.__name__}Error", "Must have at least 1 line of content."
+                f"{SourceStatement.__name__}Error",
+                "Must have at least 1 line of content.",
             )
 
         return value
@@ -618,7 +619,12 @@ class ContractSource(BaseModel):
         return contract_type
 
     @classmethod
-    def create(cls, contract_type: ContractType, source: Source, base_path: Optional[Path] = None):
+    def create(
+        cls,
+        contract_type: ContractType,
+        source: Source,
+        base_path: Optional[Path] = None,
+    ):
         if base_path:
             source_id = validate_source_id(contract_type)
             source_path = base_path / source_id
@@ -827,7 +833,9 @@ def validate_ast(contract_type: ContractType) -> ASTNode:
         return ast
 
     raise PydanticCustomError(
-        f"{ContractSource.__name__}Error", "Missing AST", {"contract_name": contract_type.name}
+        f"{ContractSource.__name__}Error",
+        "Missing AST",
+        {"contract_name": contract_type.name},
     )
 
 
@@ -853,5 +861,7 @@ def validate_pcmap(contract_type: ContractType) -> "PCMap":
         return pcmap
 
     raise PydanticCustomError(
-        f"{ContractSource.__name__}Error", "Missing PCMap", {"contract_name": contract_type.name}
+        f"{ContractSource.__name__}Error",
+        "Missing PCMap",
+        {"contract_name": contract_type.name},
     )

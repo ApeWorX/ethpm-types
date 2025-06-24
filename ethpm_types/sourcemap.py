@@ -64,7 +64,9 @@ class SourceMapItem(BaseModel):
 
     @staticmethod
     def _extract_value(
-        row: list[Union[str, int]], item_idx: int, previous: Optional[Union[int, str]] = None
+        row: list[Union[str, int]],
+        item_idx: int,
+        previous: Optional[Union[int, str]] = None,
     ):
         if len(row) > item_idx and row[item_idx] != "":
             return row[item_idx]

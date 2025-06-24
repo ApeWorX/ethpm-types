@@ -1,7 +1,7 @@
 import pytest
-from eth_pydantic_types import HexStr
 from eth_utils import keccak
 
+from eth_pydantic_types import HexStr
 from ethpm_types import ContractType
 from ethpm_types.abi import ABI, ErrorABI, EventABI, MethodABI
 

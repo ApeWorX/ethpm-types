@@ -58,7 +58,10 @@ CAIRO_ABI = [
             {"name": "calldata_size", "type": "felt"},
             {"name": "calldata", "type": "felt*"},
         ],
-        "outputs": [{"name": "retdata_size", "type": "felt"}, {"name": "retdata", "type": "felt*"}],
+        "outputs": [
+            {"name": "retdata_size", "type": "felt"},
+            {"name": "retdata", "type": "felt*"},
+        ],
     },
     {
         "inputs": [

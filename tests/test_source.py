@@ -252,7 +252,10 @@ def test_contract_source_use_method_id(vyper_contract, source, source_base):
 
 def test_compiler_equality():
     compiler_1 = Compiler(
-        name="yo", version="0.1.0", settings={"evmVersion": "shanghai"}, contractType=["test1"]
+        name="yo",
+        version="0.1.0",
+        settings={"evmVersion": "shanghai"},
+        contractType=["test1"],
     )
     compiler_2 = Compiler(
         name="yo",
@@ -280,7 +283,10 @@ def test_compiler_equality():
 
 def test_compiler_hash():
     compiler_1 = Compiler(
-        name="yo", version="0.2.0", settings={"evmVersion": "shanghai"}, contractType=["test1"]
+        name="yo",
+        version="0.2.0",
+        settings={"evmVersion": "shanghai"},
+        contractType=["test1"],
     )
     compiler_2 = Compiler(
         name="foo",
@@ -297,7 +303,10 @@ def test_compiler_hash():
     compiler_4 = Compiler(
         name="yo",
         version="0.2.0",
-        settings={"evmVersion": "shanghai", "optimizer": {"enabled": False, "runs": 200}},
+        settings={
+            "evmVersion": "shanghai",
+            "optimizer": {"enabled": False, "runs": 200},
+        },
         contractType=["test1"],
     )
     compiler_5 = Compiler(
@@ -316,14 +325,15 @@ def test_compiler_hash():
 
 
 def test_checksum_from_file():
-    file = Path(tempfile.mktemp())
-    file.write_text("foobartest123")
-    actual = Checksum.from_file(file)
-    expected = Checksum(
-        algorithm=Algorithm.MD5,
-        hash=compute_checksum(file.read_bytes()),
-    )
-    assert actual == expected
+    with tempfile.TemporaryDirectory() as tmpdir:
+        file = Path(tmpdir).resolve() / "file.txt"
+        file.write_text("foobartest123")
+        actual = Checksum.from_file(file)
+        expected = Checksum(
+            algorithm=Algorithm.MD5,
+            hash=compute_checksum(file.read_bytes()),
+        )
+        assert actual == expected
 
 
 def test_source_excludes_extra_lines():

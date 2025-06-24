@@ -107,9 +107,7 @@ def test_examples(example_name):
         actual_prefix = actual[start:actual_end]
         expected_prefix = expected[start:expected_end]
         fail_msg = (
-            f"Differs at index: {idx}, "
-            f"Actual: '{actual_prefix}', "
-            f"Expected: '{expected_prefix}'"
+            f"Differs at index: {idx}, Actual: '{actual_prefix}', Expected: '{expected_prefix}'"
         )
         assert c1 == c2, fail_msg
 
@@ -161,7 +159,10 @@ def test_unpack_sources():
     # NOTE: Purposely using extra utf-8 symbol `“` as an encoding test.
     foo_txt = Content(root={0: "line “0“ in foo.txt"})
     baz_txt = Content(root={1: "line “1“ in baz.txt"})
-    sources = {"foo.txt": Source(content=foo_txt), "bar/nested/baz.txt": Source(content=baz_txt)}
+    sources = {
+        "foo.txt": Source(content=foo_txt),
+        "bar/nested/baz.txt": Source(content=baz_txt),
+    }
     manifest = PackageManifest(sources=sources)
 
     with tempfile.TemporaryDirectory() as temp_dir:
@@ -201,7 +202,8 @@ def test_package_name_using_all_valid_characters():
 def test_get_compiler():
     compiler = Compiler(name="vyper", version="0.3.7", settings={}, contractTypes=["foobar"])
     manifest = PackageManifest(
-        compilers=[compiler], contractTypes={"foobar": ContractType(contractNam="foobar")}
+        compilers=[compiler],
+        contractTypes={"foobar": ContractType(contractNam="foobar")},
     )
     actual = manifest.get_compiler("vyper", "0.3.7")
     assert actual == compiler
@@ -210,7 +212,8 @@ def test_get_compiler():
 def test_get_contract_compiler():
     compiler = Compiler(name="vyper", version="0.3.7", settings={}, contractTypes=["foobar"])
     manifest = PackageManifest(
-        compilers=[compiler], contractTypes={"foobar": ContractType(contractNam="foobar")}
+        compilers=[compiler],
+        contractTypes={"foobar": ContractType(contractNam="foobar")},
     )
     assert manifest.get_contract_compiler("foobar") == compiler
     assert manifest.get_contract_compiler("yoyoyo") is None
@@ -226,7 +229,12 @@ def test_add_compilers():
         },
     )
     new_compilers = [
-        Compiler(name="vyper", version="0.3.7", settings={}, contractTypes=["foobar", "testtest"]),
+        Compiler(
+            name="vyper",
+            version="0.3.7",
+            settings={},
+            contractTypes=["foobar", "testtest"],
+        ),
         Compiler(name="vyper", version="0.3.10", settings={}, contractTypes=["yoyo"]),
     ]
     manifest.add_compilers(*new_compilers)
@@ -287,7 +295,10 @@ def test_model_dump(package_manifest):
     assert actual
     assert actual["manifest"] == "ethpm/3"
 
-    expected_source_ids = ("contracts/SolidityContract.sol", "contracts/VyperContract.vy")
+    expected_source_ids = (
+        "contracts/SolidityContract.sol",
+        "contracts/VyperContract.vy",
+    )
     for source_id in expected_source_ids:
         assert source_id in actual["sources"]
         assert actual["sources"][source_id]["content"]
