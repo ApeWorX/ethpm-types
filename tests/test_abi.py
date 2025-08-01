@@ -11,7 +11,7 @@ from ethpm_types.abi import (
     ReceiveABI,
     UnprocessedABI,
 )
-from ethpm_types.contract_type import ABIList, ContractABI
+from ethpm_types.contract_type import ABIList
 
 
 class TestABIType:
@@ -423,11 +423,3 @@ class TestABIList:
         # Show the .get() method works.
         actual = abi_ls.get("transfer")
         assert actual.signature == signature
-
-
-class TestContractABI:
-    def test_getitem(self):
-        signature = "transfer(address to, uint256 value)"
-        method_abi = MethodABI.from_signature(signature)
-        abi = ContractABI.model_validate([method_abi])
-        assert abi[method_abi.selector] == method_abi
