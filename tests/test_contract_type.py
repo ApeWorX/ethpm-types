@@ -421,3 +421,15 @@ def test_natspecs_solidity(solidity_contract):
     actual_error = solidity_contract.natspecs["ACustomError()"]
     expected_error = "@details This is a doc for an error"
     assert actual_error == expected_error
+
+
+def test_abi_model_dump_json(vyper_contract):
+    """
+    Show we can conveniently cal ``.model_dump_json()`` on the ``.abi`` of the contract
+    (rather than having to do ``[x.model_dump_json() for x in contract.abi]`` like we used to.
+    """
+    actual = vyper_contract.abi.model_dump_json()
+    assert isinstance(actual, str)
+    assert len(actual) > 1000
+    assert actual.startswith("[")
+    assert "setNumber" in actual

@@ -3,7 +3,7 @@ from functools import cached_property, singledispatchmethod
 from typing import Optional, TypeVar, Union, cast
 
 from eth_utils import is_0x_prefixed
-from pydantic import Field, computed_field, field_validator
+from pydantic import Field, RootModel, computed_field, field_validator
 
 from eth_pydantic_types import Address, HexBytes, HexStr, HexStr32
 from ethpm_types.abi import (
@@ -143,6 +143,21 @@ class ContractInstance(BaseModel):
     """
 
 
+class ContractABI(RootModel[list[ABI]]):
+    """
+    The list of ABIs in a contract.
+    """
+
+    def __iter__(self) -> Iterable[ABI]:
+        yield from self.root
+
+    def __contains__(self, idx: int) -> ABI:
+        return idx in self.root
+
+    def __getitem__(self, idx: int) -> ABI:
+        return self.root[idx]
+
+
 class ABIList(list[ABILIST_T]):
     """
     Adds selection by name, selector and keccak(selector).
@@ -268,7 +283,7 @@ class ContractType(BaseModel):
     runtime_bytecode: Optional[Bytecode] = Field(default=None, alias="runtimeBytecode")
     """The unlinked 0x-prefixed runtime portion of bytecode for this ContractType."""
 
-    abi: list[ABI] = []
+    abi: ContractABI = ContractABI(root=[])
     """The application binary interface to the contract."""
 
     sourcemap: Optional[SourceMap] = None
