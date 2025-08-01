@@ -1,9 +1,9 @@
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Iterator
 from functools import cached_property, singledispatchmethod
 from typing import Optional, TypeVar, Union, cast
 
 from eth_utils import is_0x_prefixed
-from pydantic import Field, computed_field, field_validator
+from pydantic import Field, RootModel, computed_field, field_validator
 
 from eth_pydantic_types import Address, HexBytes, HexStr, HexStr32
 from ethpm_types.abi import (
@@ -23,7 +23,7 @@ from ethpm_types.sourcemap import PCMap, SourceMap
 ABI_W_SELECTOR_T = Union[ConstructorABI, MethodABI, EventABI, StructABI, ErrorABI]
 """ABI types with selectors"""
 
-ABILIST_T = TypeVar("ABILIST_T", bound=Union[MethodABI, EventABI, StructABI, ErrorABI])
+ABILIST_T = TypeVar("ABILIST_T", bound=Union[MethodABI, EventABI, StructABI, ErrorABI, ABI])
 """The generic used for the ABIList class. Only for type-checking."""
 
 ABI_SINGLETON_T = TypeVar("ABI_SINGLETON_T", bound=Union[FallbackABI, ConstructorABI, ReceiveABI])
@@ -143,7 +143,7 @@ class ContractInstance(BaseModel):
     """
 
 
-class ABIList(list[ABILIST_T]):
+class ABIList(RootModel[list[ABILIST_T]]):
     """
     Adds selection by name, selector and keccak(selector).
     """
@@ -157,7 +157,7 @@ class ABIList(list[ABILIST_T]):
     ):
         self._selector_id_size = selector_id_size
         self._selector_hash_fn = selector_hash_fn
-        super().__init__(iterable or ())
+        super().__init__(list(iterable or ()))
 
     @singledispatchmethod
     def __getitem__(self, selector):
@@ -165,25 +165,25 @@ class ABIList(list[ABILIST_T]):
 
     @__getitem__.register
     def __getitem_int(self, selector: int) -> ABILIST_T:
-        return super().__getitem__(selector)
+        return self.root.__getitem__(selector)
 
     @__getitem__.register
-    def __getitem_slice(self, selector: slice) -> list[ABILIST_T]:
-        return super().__getitem__(selector)
+    def __getitem_slice(self, abi_slice: slice) -> list[ABILIST_T]:
+        return self.root.__getitem__(abi_slice)
 
     @__getitem__.register
     def __getitem_str(self, selector: str) -> ABILIST_T:
         try:
             if "(" in selector:
                 # String-style selector e.g. `method(arg0)`.
-                return next(abi for abi in self if abi.selector == selector)
+                return next(abi for abi in self if getattr(abi, "selector", "") == selector)
 
             elif is_0x_prefixed(selector):
                 # Hashed bytes selector, but as a hex str.
                 return self.__getitem__(HexBytes(selector))
 
             # Search by name (could be ambiguous()
-            return next(abi for abi in self if abi.name == selector)
+            return next(abi for abi in self if getattr(abi, "name", "") == selector)
 
         except StopIteration:
             raise KeyError(selector)
@@ -195,7 +195,9 @@ class ABIList(list[ABILIST_T]):
                 return next(
                     abi
                     for abi in self
-                    if self._selector_hash_fn(abi.selector)[: self._selector_id_size]
+                    if self._selector_hash_fn(getattr(abi, "selector", ""))[
+                        : self._selector_id_size
+                    ]
                     == selector[: self._selector_id_size]
                 )
 
@@ -233,6 +235,21 @@ class ABIList(list[ABILIST_T]):
     def __contains_event_abi(self, selector: EventABI) -> bool:
         return self._contains(selector)
 
+    def __iter__(self) -> Iterator[ABILIST_T]:  # type: ignore[override]
+        yield from self.root
+
+    def __len__(self) -> int:
+        return len(self.root)
+
+    def __eq__(self, other):
+        if isinstance(other, ABIList):
+            return self.root == other.root
+        elif isinstance(other, list):
+            return self.root == other
+
+        # Returning `NotImplemented` constant to try from other side (not an error).
+        return NotImplemented
+
     def get(self, item, default: Optional[ABILIST_T] = None) -> Optional[ABILIST_T]:
         return self[item] if item in self else default
 
@@ -268,7 +285,7 @@ class ContractType(BaseModel):
     runtime_bytecode: Optional[Bytecode] = Field(default=None, alias="runtimeBytecode")
     """The unlinked 0x-prefixed runtime portion of bytecode for this ContractType."""
 
-    abi: list[ABI] = []
+    abi: ABIList = ABIList()
     """The application binary interface to the contract."""
 
     sourcemap: Optional[SourceMap] = None

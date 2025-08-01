@@ -38,14 +38,38 @@ contract = ContractInstance(contractType="ContractClassName", address="0x123..."
 print(contract.contract_type)
 ```
 
-You can also parse `ethpm_types.abi` objects using the `.from_signature` classmethod:
+### Contract Type
 
-```py
+Perhaps the most common artifact type from `ethmp_types` is `ContractType`.
+`ContractType` represents components of a compiled contract, such as the `.abi` or the `.runtime_bytecode`.
+
+```python
+from ethpm_types import ContractType
+
+contract = ContractType(abi=[], runtimeBytecode="0x...")
+```
+
+For convenience, you can also initialize a `ContractType` using the `.from_signature()` classmethod:
+
+```python
 from ethpm_types.abi import MethodABI, EventABI
 
->>> MethodABI.from_signature("function_name(uint256 arg1)")
-MethodABI(type='function', name='function_name', inputs=[...], ...)
+MethodABI.from_signature("function_name(uint256 arg1)")
+# => MethodABI(type='function', name='function_name', inputs=[...], ...)
 
->>> EventABI.from_signature("Transfer(address indexed from, address indexed to, uint256 value)")
-EventABI(type='event', name='Transfer', inputs=[...], ...)
+EventABI.from_signature("Transfer(address indexed from, address indexed to, uint256 value)")
+# => EventABI(type='event', name='Transfer', inputs=[...], ...)
+```
+
+#### ABI JSON
+
+To easily acquire the ABI JSON for a `ContractType` artifact, `.model_dump_json()` the `.abi` property:
+
+```python
+from ethpm_types import ContractType
+
+contract_type = ContractType(abi=[], runtimeBytecode="0x...")
+
+# Use the ABI in other application requiring ABI JSON.
+abi = contract_type.abi.model_dump_json()
 ```

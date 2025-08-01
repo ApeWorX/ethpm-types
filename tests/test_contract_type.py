@@ -1,5 +1,6 @@
 import pytest
 from eth_utils import keccak
+from hexbytes import HexBytes
 
 from eth_pydantic_types import HexStr
 from ethpm_types import ContractType
@@ -272,7 +273,7 @@ def test_vyper_default(vyper_default_contract):
 def test_fallback_and_receive_not_defined(contract):
     """
     Ensure that when the fallback method is not defined, in a Solidity contract,
-    it is None. Same with the receive method. Runs for both Solidity and Vyper.
+    it is None. Same with the ``receive()`` method. Runs for both Solidity and Vyper.
     """
 
     # Both `VyperContract` and `SolidityContract` do not define these.
@@ -280,10 +281,16 @@ def test_fallback_and_receive_not_defined(contract):
     assert contract.fallback is None
 
 
+def test_init_bytecode_using_hexstr(contract):
+    byte_str = HexStr(contract.deployment_bytecode.bytecode)
+    new_contract = ContractType(abi=[], deploymentBytecode=byte_str)
+    assert new_contract.deployment_bytecode.bytecode == byte_str
+
+
 def test_init_bytecode_using_bytes(contract):
-    raw_bytes = HexStr(contract.deployment_bytecode.bytecode)
+    raw_bytes = HexBytes(contract.deployment_bytecode.bytecode)
     new_contract = ContractType(abi=[], deploymentBytecode=raw_bytes)
-    assert new_contract.deployment_bytecode.bytecode == raw_bytes
+    assert new_contract.deployment_bytecode.bytecode == f"0x{raw_bytes.hex()}"
 
 
 def test_init_bytecode_using_empty_dict(contract):
@@ -421,3 +428,15 @@ def test_natspecs_solidity(solidity_contract):
     actual_error = solidity_contract.natspecs["ACustomError()"]
     expected_error = "@details This is a doc for an error"
     assert actual_error == expected_error
+
+
+def test_abi_model_dump_json(vyper_contract):
+    """
+    Show we can conveniently cal ``.model_dump_json()`` on the ``.abi`` of the contract
+    (rather than having to do ``[x.model_dump_json() for x in contract.abi]`` like we used to.
+    """
+    actual = vyper_contract.abi.model_dump_json()
+    assert isinstance(actual, str)
+    assert len(actual) > 1000
+    assert actual.startswith("[")
+    assert "setNumber" in actual
