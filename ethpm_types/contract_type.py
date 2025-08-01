@@ -1,4 +1,4 @@
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Iterator
 from functools import cached_property, singledispatchmethod
 from typing import Optional, TypeVar, Union, cast
 
@@ -148,13 +148,13 @@ class ContractABI(RootModel[list[ABI]]):
     The list of ABIs in a contract.
     """
 
-    def __iter__(self) -> Iterable[ABI]:
+    def __iter__(self) -> Iterator[ABI]:  # type: ignore
         yield from self.root
 
-    def __contains__(self, idx: int) -> ABI:
-        return idx in self.root
+    def __contains__(self, abi: ABI) -> bool:  # type: ignore
+        return abi in self.root
 
-    def __getitem__(self, idx: int) -> ABI:
+    def __getitem__(self, idx: int) -> ABI:  # type: ignore
         return self.root[idx]
 
 
