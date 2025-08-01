@@ -154,8 +154,12 @@ class ContractABI(RootModel[list[ABI]]):
     def __contains__(self, abi: ABI) -> bool:  # type: ignore
         return abi in self.root
 
-    def __getitem__(self, idx: int) -> ABI:  # type: ignore
-        return self.root[idx]
+    def __getitem__(self, selector: str) -> ABI:  # type: ignore
+        for abi in self:
+            if abi.selector == selector:
+                return abi
+
+        raise KeyError(selector)
 
 
 class ABIList(list[ABILIST_T]):
