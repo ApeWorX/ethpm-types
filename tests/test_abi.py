@@ -430,6 +430,7 @@ class TestABIList:
         abi3 = MethodABI.from_signature("transferNow(address someone, uint256 value)")
         abi_ls = ABIList((abi1,))
         abi_ls.extend((abi2,))
+        assert len(abi_ls) == 2
         abi_ls.extend(ABIList((abi3,)))
         assert len(abi_ls) == 3
         assert abi_ls[abi1.selector] == abi1
