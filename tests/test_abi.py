@@ -423,3 +423,16 @@ class TestABIList:
         # Show the .get() method works.
         actual = abi_ls.get("transfer")
         assert actual.signature == signature
+
+    def test_extend(self):
+        abi1 = MethodABI.from_signature("transfer(address to, uint256 value)")
+        abi2 = MethodABI.from_signature("transferFrom(address from, uint256 value)")
+        abi3 = MethodABI.from_signature("transferNow(address someone, uint256 value)")
+        abi_ls = ABIList((abi1,))
+        abi_ls.extend((abi2,))
+        assert len(abi_ls) == 2
+        abi_ls.extend(ABIList((abi3,)))
+        assert len(abi_ls) == 3
+        assert abi_ls[abi1.selector] == abi1
+        assert abi_ls[abi2.selector] == abi2
+        assert abi_ls[abi3.selector] == abi3
