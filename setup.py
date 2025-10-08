@@ -72,7 +72,7 @@ setup(
     url="https://github.com/ApeWorX/ethpm-types",
     include_package_data=True,
     install_requires=[
-        "pydantic>=2.4.2,<3",
+        "pydantic>=2.9,<3",
         "eth-abi>=5.1.0,<6",
         "eth-utils>=2.1.0,<6",
         "py-cid>=0.3.0,<0.4",
