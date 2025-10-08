@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional, Self
+from typing import TYPE_CHECKING, Optional
 
 from pydantic import Field, field_validator, model_validator
 from pydantic_core import CoreSchema, PydanticCustomError
@@ -10,6 +10,9 @@ from ethpm_types.base import BaseModel
 from ethpm_types.contract_type import ContractInstance, ContractType
 from ethpm_types.source import Compiler, Source
 from ethpm_types.utils import AnyUrl
+
+if TYPE_CHECKING:
+    from typing_extensions import Self
 
 ALPHABET = set("abcdefghijklmnopqrstuvwxyz")
 NUMBERS = set("0123456789")
@@ -156,7 +159,7 @@ class PackageManifest(BaseModel):
     """
 
     @model_validator(mode="after")
-    def check_valid_manifest_version(self) -> Self:
+    def check_valid_manifest_version(self) -> "Self":
         # NOTE: We only support v3 (EIP-2678) of the ethPM spec currently
         if self.manifest != "ethpm/3":
             raise PydanticCustomError(
