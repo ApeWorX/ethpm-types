@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Self
 
 from pydantic import Field, field_validator, model_validator
 from pydantic_core import CoreSchema, PydanticCustomError
@@ -156,16 +156,16 @@ class PackageManifest(BaseModel):
     """
 
     @model_validator(mode="after")
-    def check_valid_manifest_version(cls, values):
+    def check_valid_manifest_version(self) -> Self:
         # NOTE: We only support v3 (EIP-2678) of the ethPM spec currently
-        if values.manifest != "ethpm/3":
+        if self.manifest != "ethpm/3":
             raise PydanticCustomError(
                 f"{PackageManifest.__name__}Error",
                 "Only ethPM V3 (EIP-2678) supported.",
-                {"version": values.manifest},
+                {"version": self.manifest},
             )
 
-        return values
+        return self
 
     @model_validator(mode="before")
     def check_both_version_and_name(cls, values):
