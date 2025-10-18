@@ -250,6 +250,9 @@ class ABIList(RootModel[list[ABILIST_T]]):
         # Returning `NotImplemented` constant to try from other side (not an error).
         return NotImplemented
 
+    def append(self, abi: ABILIST_T) -> None:
+        self.root.append(abi)
+
     def extend(self, abis: Iterable[Union[ABILIST_T, "ABIList"]]) -> None:
         other_abis = getattr(abis, "root", abis)
         self.root.extend(other_abis)  # type: ignore
