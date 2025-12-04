@@ -67,15 +67,17 @@ jobs:
       - name: Run Pytest
         run: uv run --group test pytest -m "not fuzzing" -s
 
-    fuzzing:
-        runs-on: ubuntu-latest
+  fuzzing:
+    runs-on: ubuntu-latest
 
-        strategy:
-            fail-fast: true
+    strategy:
+      fail-fast: true
 
-        steps:
-        - uses: actions/checkout@v4
-        - name: Setup Python
-          uses: astral-sh/setup-uv@v7
-        - name: Run Tests
-          run: uv run --group test pytest -m "fuzzing" --no-cov -s
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Setup Python
+      uses: astral-sh/setup-uv@v7
+
+    - name: Run Tests
+      run: uv run --group test pytest -m "fuzzing" --no-cov -s
