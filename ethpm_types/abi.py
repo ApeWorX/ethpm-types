@@ -23,7 +23,7 @@ class ABIType(BaseModel):
     The value-type, such as ``address`` or ``address[]``.
     """
 
-    components: "list[ABIType] | None" = None
+    components: list["ABIType"] | None = None
     """
     A field of sub-types that makes up this type.
     Tuples and structs tend to have this field.
