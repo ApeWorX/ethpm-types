@@ -96,7 +96,7 @@ def test_examples(example_name):
     actual = package.model_dump_json()
     expected = example.text
 
-    for idx, (c1, c2) in enumerate(zip(actual, expected)):
+    for idx, (c1, c2) in enumerate(zip(actual, expected, strict=False)):
         # The following logic is because the strings being compared
         # are very long and this more accurately pinpoints
         # the failing section of the string, even on lower verbosity.

@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
 
 from pydantic import Field, field_validator, model_validator
 from pydantic_core import CoreSchema, PydanticCustomError
@@ -10,9 +9,6 @@ from ethpm_types.base import BaseModel
 from ethpm_types.contract_type import ContractInstance, ContractType
 from ethpm_types.source import Compiler, Source
 from ethpm_types.utils import AnyUrl
-
-if TYPE_CHECKING:
-    from typing_extensions import Self
 
 ALPHABET = set("abcdefghijklmnopqrstuvwxyz")
 NUMBERS = set("0123456789")
@@ -67,10 +63,10 @@ class PackageMeta(BaseModel):
     but should be included when publishing.
     """
 
-    authors: Optional[list[str]] = None
+    authors: list[str] | None = None
     """A list of human readable names for the authors of this package."""
 
-    license: Optional[str] = None
+    license: str | None = None
     """
     The license associated with this package.
     This value should conform to the SPDX format.
@@ -79,13 +75,13 @@ class PackageMeta(BaseModel):
     precedence for that particular file over this package-scoped meta license.
     """
 
-    description: Optional[str] = None
+    description: str | None = None
     """Additional detail that may be relevant for this package."""
 
-    keywords: Optional[list[str]] = None
+    keywords: list[str] | None = None
     """Relevant keywords related to this package."""
 
-    links: Optional[dict[str, AnyUrl]] = None
+    links: dict[str, AnyUrl] | None = None
     """
     URIs to relevant resources associated with this package.
     When possible, authors should use the following keys for the following common resources.
@@ -101,13 +97,13 @@ class PackageManifest(BaseModel):
     manifest: str = "ethpm/3"
     """The specification version that the project conforms to."""
 
-    name: Optional[PackageName] = None  # type: ignore[valid-type]
+    name: PackageName | None = None  # type: ignore[valid-type]
     """A human-readable name for the package."""
 
-    version: Optional[str] = None
+    version: str | None = None
     """The version of the release, which should be SemVer."""
 
-    meta: Optional[PackageMeta] = None
+    meta: PackageMeta | None = None
     """
     Important data that is not integral to installation
     but should be included when publishing.
@@ -115,13 +111,13 @@ class PackageManifest(BaseModel):
     ``meta``.
     """
 
-    sources: Optional[dict[str, Source]] = None
+    sources: dict[str, Source] | None = None
     """
     The sources field defines a source tree that should comprise the full source tree
     necessary to recompile the contracts contained in this release.
     """
 
-    contract_types: Optional[dict[str, ContractType]] = Field(default=None, alias="contractTypes")
+    contract_types: dict[str, ContractType] | None = Field(default=None, alias="contractTypes")
     """
     :class:`~ethpm_types.contract_type.ContractType` objects that have been included
     in this release.
@@ -131,13 +127,13 @@ class PackageManifest(BaseModel):
       * Should not include abstracts.
     """
 
-    compilers: Optional[list[Compiler]] = None
+    compilers: list[Compiler] | None = None
     """
     Information about the compilers and their settings that have been
     used to generate the various contractTypes included in this release.
     """
 
-    deployments: Optional[dict[Bip122Uri, dict[str, ContractInstance]]] = None
+    deployments: dict[Bip122Uri, dict[str, ContractInstance]] | None = None
     """
     Information for the chains on which this release has
     :class:`~ethpm_types.contract_type.ContractInstance` references as well as the
@@ -149,7 +145,7 @@ class PackageManifest(BaseModel):
     must be unique across all other contract instances for the given chain.
     """
 
-    dependencies: Optional[dict[PackageName, AnyUrl]] = Field(  # type: ignore[valid-type]
+    dependencies: dict[PackageName, AnyUrl] | None = Field(  # type: ignore[valid-type]
         default=None, alias="buildDependencies"
     )
     """
@@ -159,7 +155,7 @@ class PackageManifest(BaseModel):
     """
 
     @model_validator(mode="after")
-    def check_valid_manifest_version(self) -> "Self":
+    def check_valid_manifest_version(self) -> "PackageManifest":
         # NOTE: We only support v3 (EIP-2678) of the ethPM spec currently
         if self.manifest != "ethpm/3":
             raise PydanticCustomError(
@@ -236,7 +232,7 @@ class PackageManifest(BaseModel):
             f"{self.__class__.__name__} has no attribute or contract type named '{attr_name}'."
         )
 
-    def get_contract_type(self, name: str) -> Optional[ContractType]:
+    def get_contract_type(self, name: str) -> ContractType | None:
         """
         Get a contract type by name, if it exists. Else, returns ``None``.
 
@@ -277,7 +273,7 @@ class PackageManifest(BaseModel):
 
             source_path.write_text(content, encoding="utf8")
 
-    def get_compiler(self, name: str, version: str) -> Optional[Compiler]:
+    def get_compiler(self, name: str, version: str) -> Compiler | None:
         """
         Get a compiler by name and version.
 
@@ -294,7 +290,7 @@ class PackageManifest(BaseModel):
 
         return None
 
-    def get_contract_compiler(self, contract_type_name: str) -> Optional[Compiler]:
+    def get_contract_compiler(self, contract_type_name: str) -> Compiler | None:
         """
         Get the compiler used to compile the contract type, if it exists.
 

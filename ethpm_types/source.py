@@ -1,6 +1,6 @@
 from collections.abc import Iterator
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING
 
 import requests
 from cid import make_cid  # type: ignore
@@ -35,14 +35,14 @@ class Compiler(BaseModel):
     should be denoted in the form of <semver>-<commit-hash> ex: 0.4.8-commit.60cc1668.
     """
 
-    settings: Optional[dict] = None
+    settings: dict | None = None
     """
     Any settings or configuration that was used in compilation. For the ``solc`` compiler,
     this should conform to the
     [Compiler Input and Output Description](https://docs.soliditylang.org/en/latest/using-the-compiler.html#compiler-input-and-output-json-description).
     """  # noqa: E501
 
-    contractTypes: Optional[list[str]] = None
+    contractTypes: list[str] | None = None
     """
     A list of the contract type names in this package
     that used this compiler to generate its outputs.
@@ -86,7 +86,7 @@ class Checksum(BaseModel):
     """
 
     @classmethod
-    def from_file(cls, file: Union[Path, str], algorithm: Algorithm = Algorithm.MD5) -> "Checksum":
+    def from_file(cls, file: Path | str, algorithm: Algorithm = Algorithm.MD5) -> "Checksum":
         source_path = file if isinstance(file, Path) else Path(file)
         return cls.from_bytes(source_path.read_bytes(), algorithm=algorithm)
 
@@ -166,7 +166,7 @@ class Content(RootModel[dict[int, str]]):
 
         return res
 
-    def __getitem__(self, lineno: Union[int, slice]) -> Union[list[str], str]:
+    def __getitem__(self, lineno: int | slice) -> list[str] | str:
         if isinstance(lineno, int):
             return self.root[lineno]
 
@@ -196,16 +196,16 @@ class Source(BaseModel):
     urls: list[AnyUrl] = []
     """Array of urls that resolve to the same source file."""
 
-    checksum: Optional[Checksum] = None
+    checksum: Checksum | None = None
     """
     Hash of the source file. Per EIP-2678,
     this field is only necessary if source must be fetched.
     """
 
-    content: Optional[Content] = None
+    content: Content | None = None
     """Inlined contract source."""
 
-    installPath: Optional[str] = None
+    installPath: str | None = None
     """
     Filesystem path of source file.
     **NOTE**: This was probably done for solidity, needs files cached to disk for compiling.
@@ -213,20 +213,20 @@ class Source(BaseModel):
     If processing remote project, cache them in ape project data folder
     """
 
-    type: Optional[str] = None
+    type: str | None = None
     """The type of the source file."""
 
-    license: Optional[str] = None
+    license: str | None = None
     """The type of license associated with this source file."""
 
-    references: Optional[list[str]] = None
+    references: list[str] | None = None
     """
     List of `Source` objects that depend on this object.
     **NOTE**: Not a part of canonical EIP-2678 spec.
     """
     # TODO: Add `SourceId` type and use instead of `str`
 
-    imports: Optional[list[str]] = None
+    imports: list[str] | None = None
     """
     List of source objects that this object depends on.
     **NOTE**: Not a part of canonical EIP-2678 spec.
@@ -264,7 +264,7 @@ class Source(BaseModel):
 
         return f"<{repr_id}>"
 
-    def __getitem__(self, index: Union[int, slice]):
+    def __getitem__(self, index: int | slice):
         """
         Get a line or slice of lines from ``content``.
 
@@ -276,7 +276,7 @@ class Source(BaseModel):
             raise IndexError("Source has no fetched content.")
 
         line_numbers = self.content.line_numbers
-        lineno: Union[list[int], int] = line_numbers[index]
+        lineno: list[int] | int = line_numbers[index]
         return (
             [self.content[x] for x in lineno] if isinstance(lineno, list) else self.content[lineno]
         )
@@ -393,7 +393,7 @@ class Closure(BaseModel):
     name: str
     """The name of the definition."""
 
-    full_name: Optional[str] = None
+    full_name: str | None = None
     """This is a unique name of the definition."""
 
 
@@ -576,7 +576,7 @@ class SourceStatement(Statement):
         # Excludes whitespace lines.
         return self.to_str(begin_lineno=self.begin_lineno)
 
-    def to_str(self, begin_lineno: Optional[int] = None):
+    def to_str(self, begin_lineno: int | None = None):
         begin_lineno = self.ws_begin_lineno if begin_lineno is None else begin_lineno
         content = ""
         for lineno, line in self.content.items():
@@ -605,7 +605,7 @@ class ContractSource(BaseModel):
     source: Source
     """The source code wrapper."""
 
-    source_path: Optional[Path] = None
+    source_path: Path | None = None
     """The path to the source."""
 
     _function_ast_cache: dict[str, ASTNode] = {}
@@ -623,7 +623,7 @@ class ContractSource(BaseModel):
         cls,
         contract_type: ContractType,
         source: Source,
-        base_path: Optional[Path] = None,
+        base_path: Path | None = None,
     ):
         if base_path:
             source_id = validate_source_id(contract_type)
@@ -656,8 +656,8 @@ class ContractSource(BaseModel):
         return f"<{self.contract_type.source_id}::{self.contract_type.name or 'unknown'}>"
 
     def lookup_function(
-        self, location: SourceLocation, method_id: Optional[HexBytes] = None
-    ) -> Optional[Function]:
+        self, location: "SourceLocation", method_id: HexBytes | None = None
+    ) -> "Function | None":
         """
         Lookup a function by location.
 
