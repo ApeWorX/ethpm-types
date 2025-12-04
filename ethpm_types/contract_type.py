@@ -1,6 +1,6 @@
 from collections.abc import Callable, Iterable, Iterator
 from functools import cached_property, singledispatchmethod
-from typing import Optional, TypeVar, Union, cast
+from typing import TypeVar, cast
 
 from eth_utils import is_0x_prefixed
 from pydantic import Field, RootModel, computed_field, field_validator
@@ -20,13 +20,13 @@ from ethpm_types.ast import ASTNode
 from ethpm_types.base import BaseModel
 from ethpm_types.sourcemap import PCMap, SourceMap
 
-ABI_W_SELECTOR_T = Union[ConstructorABI, MethodABI, EventABI, StructABI, ErrorABI]
+ABI_W_SELECTOR_T = ConstructorABI | MethodABI | EventABI | StructABI | ErrorABI
 """ABI types with selectors"""
 
-ABILIST_T = TypeVar("ABILIST_T", bound=Union[MethodABI, EventABI, StructABI, ErrorABI, ABI])
+ABILIST_T = TypeVar("ABILIST_T", bound=MethodABI | EventABI | StructABI | ErrorABI | ABI)
 """The generic used for the ABIList class. Only for type-checking."""
 
-ABI_SINGLETON_T = TypeVar("ABI_SINGLETON_T", bound=Union[FallbackABI, ConstructorABI, ReceiveABI])
+ABI_SINGLETON_T = TypeVar("ABI_SINGLETON_T", bound=FallbackABI | ConstructorABI | ReceiveABI)
 """
 The generic used for discovering the unique ABIs from the list.
 Only for type-checking.
@@ -72,7 +72,7 @@ class LinkReference(BaseModel):
     end of the bytecode.
     """
 
-    name: Optional[str] = None
+    name: str | None = None
     """
     A valid identifier for the reference.
     Any link references which should be linked with the same link value should
@@ -81,19 +81,17 @@ class LinkReference(BaseModel):
 
 
 class Bytecode(BaseModel):
-    bytecode: Optional[HexStr] = None
+    bytecode: HexStr | None = None
     """
     A string containing the 0x prefixed hexadecimal representation of the bytecode.
     """
 
-    link_references: Optional[list[LinkReference]] = Field(default=None, alias="linkReferences")
+    link_references: list[LinkReference] | None = Field(default=None, alias="linkReferences")
     """
     The locations in the corresponding bytecode which require linking.
     """
 
-    link_dependencies: Optional[list[LinkDependency]] = Field(
-        default=None, alias="linkDependencies"
-    )
+    link_dependencies: list[LinkDependency] | None = Field(default=None, alias="linkDependencies")
     """
     The link values that have been used to link the corresponding bytecode.
     """
@@ -109,7 +107,7 @@ class Bytecode(BaseModel):
 
         return self_str
 
-    def to_bytes(self) -> Optional[HexBytes]:
+    def to_bytes(self) -> HexBytes | None:
         # TODO: Resolve links to produce dynamically linked bytecode
         return HexBytes(self.bytecode) if self.bytecode else None
 
@@ -125,16 +123,16 @@ class ContractInstance(BaseModel):
     address: Address
     """The contract address."""
 
-    transaction: Optional[HexStr32] = None
+    transaction: HexStr32 | None = None
     """The transaction hash from which the contract was created."""
 
-    block: Optional[HexStr32] = None
+    block: HexStr32 | None = None
     """
     The block hash in which this the transaction which created this
     contract instance was mined.
     """
 
-    runtime_bytecode: Optional[Bytecode] = Field(default=None, alias="runtimeBytecode")
+    runtime_bytecode: Bytecode | None = Field(default=None, alias="runtimeBytecode")
     """
     The runtime portion of bytecode for this Contract Instance.
     When present, the value from this field supersedes the ``runtimeBytecode``
@@ -150,10 +148,10 @@ class ABIList(RootModel[list[ABILIST_T]]):
 
     def __init__(
         self,
-        iterable: Optional[Iterable[ABILIST_T]] = None,
+        iterable: Iterable[ABILIST_T] | None = None,
         *,
         selector_id_size: int = 32,
-        selector_hash_fn: Optional[Callable[[str], bytes]] = None,
+        selector_hash_fn: Callable[[str], bytes] | None = None,
     ):
         self._selector_id_size = selector_id_size
         self._selector_hash_fn = selector_hash_fn
@@ -253,14 +251,14 @@ class ABIList(RootModel[list[ABILIST_T]]):
     def append(self, abi: ABILIST_T) -> None:
         self.root.append(abi)
 
-    def extend(self, abis: Iterable[Union[ABILIST_T, "ABIList"]]) -> None:
+    def extend(self, abis: "Iterable[ABILIST_T | ABIList]") -> None:
         other_abis = getattr(abis, "root", abis)
         self.root.extend(other_abis)  # type: ignore
 
-    def get(self, item, default: Optional[ABILIST_T] = None) -> Optional[ABILIST_T]:
+    def get(self, item, default: ABILIST_T | None = None) -> ABILIST_T | None:
         return self[item] if item in self else default
 
-    def _contains(self, selector: Union[str, bytes, MethodABI, EventABI]) -> bool:
+    def _contains(self, selector: str | bytes | MethodABI | EventABI) -> bool:
         try:
             _ = self[selector]
             return True
@@ -275,34 +273,34 @@ class ContractType(BaseModel):
     then ``MyContract`` would be the type.
     """
 
-    name: Optional[str] = Field(default=None, alias="contractName")
+    name: str | None = Field(default=None, alias="contractName")
     """
     The name of the contract type. The field is optional if ``ContractAlias``
     is the same as ``ContractName``.
     """
 
-    source_id: Optional[str] = Field(default=None, alias="sourceId")
+    source_id: str | None = Field(default=None, alias="sourceId")
     """
     The global source identifier for the source file from which this contract type was generated.
     """
 
-    deployment_bytecode: Optional[Bytecode] = Field(default=None, alias="deploymentBytecode")
+    deployment_bytecode: Bytecode | None = Field(default=None, alias="deploymentBytecode")
     """The bytecode for the ContractType."""
 
-    runtime_bytecode: Optional[Bytecode] = Field(default=None, alias="runtimeBytecode")
+    runtime_bytecode: Bytecode | None = Field(default=None, alias="runtimeBytecode")
     """The unlinked 0x-prefixed runtime portion of bytecode for this ContractType."""
 
     abi: ABIList = ABIList()
     """The application binary interface to the contract."""
 
-    sourcemap: Optional[SourceMap] = None
+    sourcemap: SourceMap | None = None
     """
     The range of the source code that is represented by the respective node in the AST.
 
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
-    pcmap: Optional[PCMap] = None
+    pcmap: PCMap | None = None
     """
     The program counter map representing which lines in the source code account for which
     instructions in the bytecode.
@@ -310,27 +308,27 @@ class ContractType(BaseModel):
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
-    dev_messages: Optional[dict[int, str]] = None
+    dev_messages: dict[int, str] | None = None
     """
     A map of dev-message comments in the source contract by their starting line number.
 
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
-    ast: Optional[ASTNode] = None
+    ast: ASTNode | None = None
     """
     The contract's root abstract syntax tree node.
 
     **NOTE**: This is not part of the canonical EIP-2678 spec.
     """
 
-    userdoc: Optional[dict] = None
+    userdoc: dict | None = None
     """
     Documentation for the end-user, generated from NatSpecs
     found in the contract source file.
     """
 
-    devdoc: Optional[dict] = None
+    devdoc: dict | None = None
     """
     Documentation for the contract maintainers, generated from NatSpecs
     found in the contract source file.
@@ -354,13 +352,13 @@ class ContractType(BaseModel):
             and self.deployment_bytecode == other.deployment_bytecode
         )
 
-    def get_runtime_bytecode(self) -> Optional[HexBytes]:
+    def get_runtime_bytecode(self) -> HexBytes | None:
         if bytecode := self.runtime_bytecode:
             return bytecode.to_bytes()
 
         return None
 
-    def get_deployment_bytecode(self) -> Optional[HexBytes]:
+    def get_deployment_bytecode(self) -> HexBytes | None:
         if bytecode := self.deployment_bytecode:
             return bytecode.to_bytes()
 
@@ -423,7 +421,7 @@ class ContractType(BaseModel):
         return self._get_first_instance(ConstructorABI) or ConstructorABI(type="constructor")
 
     @property
-    def fallback(self) -> Optional[FallbackABI]:
+    def fallback(self) -> FallbackABI | None:
         """
         The fallback method of the contract, if it has one. A fallback method
         is external, has no name, arguments, or return value, and gets invoked
@@ -432,7 +430,7 @@ class ContractType(BaseModel):
         return self._get_first_instance(FallbackABI)
 
     @property
-    def receive(self) -> Optional[ReceiveABI]:
+    def receive(self) -> ReceiveABI | None:
         """
         The ``receive()`` method of the contract, if it has one. A contract may
         have 0-1 ``receive()`` methods defined. It gets executed when calling
@@ -549,7 +547,7 @@ class ContractType(BaseModel):
     def _get_abis(
         self,
         selector_id_size: int = 32,
-        filter_fn: Optional[Callable[[ABI], bool]] = None,
+        filter_fn: Callable[[ABI], bool] | None = None,
     ):
         def noop(a: ABI) -> bool:
             return True
@@ -563,7 +561,7 @@ class ContractType(BaseModel):
             selector_hash_fn=self._selector_hash_fn,
         )
 
-    def _get_first_instance(self, _type: type[ABI_SINGLETON_T]) -> Optional[ABI_SINGLETON_T]:
+    def _get_first_instance(self, _type: type[ABI_SINGLETON_T]) -> ABI_SINGLETON_T | None:
         for abi in self.abi:
             if not isinstance(abi, _type):
                 continue

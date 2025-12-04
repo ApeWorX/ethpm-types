@@ -2,7 +2,7 @@ import json
 from collections.abc import Sequence
 from enum import Enum
 from hashlib import md5, sha3_256, sha256
-from typing import Annotated, Any, Optional, Union
+from typing import Annotated, Any
 
 from pydantic import AnyUrl as _AnyUrl
 from pydantic import FileUrl
@@ -10,7 +10,7 @@ from pydantic import FileUrl
 from eth_pydantic_types import HexStr
 
 CONTENT_ADDRESSED_SCHEMES = {"ipfs"}
-AnyUrl = Union[FileUrl, _AnyUrl]
+AnyUrl = FileUrl | _AnyUrl
 
 
 class Algorithm(str, Enum):
@@ -56,8 +56,8 @@ def compute_checksum(content: bytes, algorithm: Algorithm = Algorithm.MD5) -> He
 
 def stringify_dict_for_hash(
     data: dict,
-    include: Optional[Sequence[str]] = None,
-    exclude: Optional[Sequence[str]] = None,
+    include: Sequence[str] | None = None,
+    exclude: Sequence[str] | None = None,
 ) -> str:
     """
     Convert the given dict to a consistent str that can be used in hash.

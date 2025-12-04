@@ -1,5 +1,5 @@
 from collections.abc import Iterator
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING
 
 from pydantic import RootModel, model_validator
 
@@ -16,17 +16,17 @@ class SourceMapItem(BaseModel):
     """
 
     # NOTE: `None` entry means this path was inserted by the compiler during codegen
-    start: Optional[int] = None
+    start: int | None = None
     """
     The byte-offset start of the range in the source file.
     """
 
-    length: Optional[int] = None
+    length: int | None = None
     """
     The byte-offset length.
     """
 
-    contract_id: Optional[int] = None
+    contract_id: int | None = None
     """
     The source identifier.
     """
@@ -39,8 +39,8 @@ class SourceMapItem(BaseModel):
     # NOTE: ignore "modifier_depth" keyword introduced in solidity >0.6.x
 
     @classmethod
-    def parse_str(cls, src_str: str, previous: Optional["SourceMapItem"] = None) -> "SourceMapItem":
-        row: list[Union[int, str]] = [int(i) if i.isnumeric() else i for i in src_str.split(":")]
+    def parse_str(cls, src_str: str, previous: "SourceMapItem | None" = None) -> "SourceMapItem":
+        row: list[int | str] = [int(i) if i.isnumeric() else i for i in src_str.split(":")]
 
         if previous is None:
             start = int(cls._extract_value(row, 0) or -1)
@@ -64,9 +64,9 @@ class SourceMapItem(BaseModel):
 
     @staticmethod
     def _extract_value(
-        row: list[Union[str, int]],
+        row: list[str | int],
         item_idx: int,
-        previous: Optional[Union[int, str]] = None,
+        previous: int | str | None = None,
     ):
         if len(row) > item_idx and row[item_idx] != "":
             return row[item_idx]
@@ -122,11 +122,11 @@ class PCMapItem(BaseModel):
     program counter positions.
     """
 
-    line_start: Optional[int] = None
-    column_start: Optional[int] = None
-    line_end: Optional[int] = None
-    column_end: Optional[int] = None
-    dev: Optional[str] = None
+    line_start: int | None = None
+    column_start: int | None = None
+    line_end: int | None = None
+    column_end: int | None = None
+    dev: str | None = None
 
     @property
     def location(self) -> "SourceLocation":
@@ -138,7 +138,7 @@ class PCMapItem(BaseModel):
         )
 
 
-RawPCMapItem = dict[str, Optional[Union[str, list[Optional[int]]]]]
+RawPCMapItem = dict[str, str | list[int | None] | None]
 RawPCMap = dict[str, RawPCMapItem]
 
 
@@ -166,14 +166,14 @@ class PCMap(RootModel[RawPCMap]):
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__}>"
 
-    def __getitem__(self, pc: Union[int, str]) -> RawPCMapItem:
+    def __getitem__(self, pc: int | str) -> RawPCMapItem:
         return self.root[str(pc)]
 
-    def __setitem__(self, pc: Union[int, str], value: RawPCMapItem):
+    def __setitem__(self, pc: int | str, value: RawPCMapItem):
         value_dict: dict = {"location": value} if isinstance(value, list) else value
         self.root[str(pc)] = value_dict
 
-    def __contains__(self, pc: Union[int, str]) -> bool:
+    def __contains__(self, pc: int | str) -> bool:
         return str(pc) in self.root
 
     def parse(self) -> dict[int, PCMapItem]:

@@ -1,6 +1,5 @@
 from collections.abc import Iterator
 from enum import Enum
-from typing import Optional, Union
 
 from pydantic import model_validator
 
@@ -18,7 +17,7 @@ class ASTClassification(Enum):
 
 
 class ASTNode(BaseModel):
-    name: Optional[str] = None
+    name: str | None = None
     """
     The node's name if it has one, such as a function name.
     """
@@ -33,7 +32,7 @@ class ASTNode(BaseModel):
     A generic classification of what type of AST this is.
     """
 
-    doc_str: Optional[Union[str, "ASTNode"]] = None
+    doc_str: "str | ASTNode | None" = None
     """
     Documentation for the node.
     """
@@ -63,7 +62,7 @@ class ASTNode(BaseModel):
     The offset when the column ends.
     """
 
-    children: list["ASTNode"] = []
+    children: "list[ASTNode]" = []
     """
     All sub-AST nodes within this one.
     """
@@ -98,7 +97,7 @@ class ASTNode(BaseModel):
         return src
 
     @classmethod
-    def find_children(cls, node) -> list["ASTNode"]:
+    def find_children(cls, node) -> "list[ASTNode]":
         children = []
 
         def add_child(data):
@@ -118,7 +117,7 @@ class ASTNode(BaseModel):
         return children
 
     @property
-    def line_numbers(self) -> "SourceLocation":
+    def line_numbers(self) -> SourceLocation:
         """
         The values needed for constructing the line numbers for this node
         in the form ``[lineno, col_offset, end_lineno, end_col_offset]``.
@@ -127,7 +126,7 @@ class ASTNode(BaseModel):
         return self.lineno, self.col_offset, self.end_lineno, self.end_col_offset
 
     @property
-    def functions(self) -> list["ASTNode"]:
+    def functions(self) -> "list[ASTNode]":
         """
         All function nodes defined at this level.
 
@@ -144,7 +143,7 @@ class ASTNode(BaseModel):
         stats = "leaf" if num_children == 0 else f"children={num_children}"
         return f"<{self.ast_type}Node {stats}>"
 
-    def iter_nodes(self) -> Iterator["ASTNode"]:
+    def iter_nodes(self) -> "Iterator[ASTNode]":
         """
         Yield through all nodes in the tree, including this one.
         """
@@ -153,7 +152,7 @@ class ASTNode(BaseModel):
         for node in self.children:
             yield from node.iter_nodes()
 
-    def get_node(self, src: SourceMapItem) -> Optional["ASTNode"]:
+    def get_node(self, src: SourceMapItem) -> "ASTNode | None":
         """
         Get a node by source.
 
@@ -174,7 +173,7 @@ class ASTNode(BaseModel):
 
         return None
 
-    def get_nodes_at_line(self, line_numbers: "SourceLocation") -> list["ASTNode"]:
+    def get_nodes_at_line(self, line_numbers: "SourceLocation") -> "list[ASTNode]":
         """
         Get the AST nodes for the given line number combination
 
@@ -202,7 +201,7 @@ class ASTNode(BaseModel):
 
         return nodes
 
-    def get_defining_function(self, line_numbers: "SourceLocation") -> Optional["ASTNode"]:
+    def get_defining_function(self, line_numbers: "SourceLocation") -> "ASTNode | None":
         """
         Get the function that defines the given line numbers.
 

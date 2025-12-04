@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Literal, Optional, Union
+from typing import Any, Literal
 
 from eth_abi import grammar
 from eth_abi.packed import encode_packed
@@ -10,29 +10,26 @@ from eth_pydantic_types.utils import PadDirection
 from ethpm_types.base import BaseModel
 from ethpm_types.utils import parse_signature
 
-if TYPE_CHECKING:
-    from typing_extensions import Self
-
 
 class ABIType(BaseModel):
-    name: Optional[str] = None
+    name: str | None = None
     """
     The name attached to the type, such as the input name of
     a function.
     """
 
-    type: Union[str, "ABIType"]
+    type: "str | ABIType"
     """
     The value-type, such as ``address`` or ``address[]``.
     """
 
-    components: Optional[list["ABIType"]] = None
+    components: "list[ABIType] | None" = None
     """
     A field of sub-types that makes up this type.
     Tuples and structs tend to have this field.
     """
 
-    internal_type: Optional[str] = Field(default=None, alias="internalType")
+    internal_type: str | None = Field(default=None, alias="internalType")
     """
     Another name for the type. Sometimes, compilers are able to populate
     this field with the struct or enum name.
@@ -304,7 +301,7 @@ class MethodABI(BaseABI):
         return f"{self.name}({input_args}){output_args}"
 
     @classmethod
-    def from_signature(cls, sig: str) -> "Self":
+    def from_signature(cls, sig: str) -> "MethodABI":
         """
         Create an MethodABI instance from a method signature.
 
@@ -356,7 +353,7 @@ class EventABI(BaseABI):
         return f"{self.name}({input_args})"
 
     @classmethod
-    def from_signature(cls, sig: str) -> "Self":
+    def from_signature(cls, sig: str) -> "EventABI":
         """Create an EventABI instance from an event signature."""
         name, inputs, _ = parse_signature(sig)
         input_abis = [
@@ -365,7 +362,7 @@ class EventABI(BaseABI):
         ]
         return cls(name=name, inputs=input_abis)
 
-    def encode_topics(self, inputs: dict[str, Any]) -> list[Union[Optional[str], list[str]]]:
+    def encode_topics(self, inputs: dict[str, Any]) -> list[str | list[str] | None]:
         """
         Encode the given input data into a topics list, useful for log-filtering.
         Missing topics correspond to None values in the returns list, which work
@@ -377,9 +374,7 @@ class EventABI(BaseABI):
         Returns:
             list[Optional[str]]: Encoded topics.
         """
-        topics: list[Union[Optional[str], list[str]]] = [
-            str(to_hex(HexBytes(keccak(text=self.selector))))
-        ]
+        topics: list[str | list[str] | None] = [str(to_hex(HexBytes(keccak(text=self.selector))))]
         for ipt in self.inputs:
             if not ipt.indexed:
                 continue
@@ -399,7 +394,7 @@ class EventABI(BaseABI):
         return topics
 
 
-def encode_topic_value(abi_type, value) -> Union[Optional[str], list[str]]:
+def encode_topic_value(abi_type, value) -> str | list[str] | None:
     """
     Encode a single topic.
 
@@ -427,7 +422,7 @@ def encode_topic_value(abi_type, value) -> Union[Optional[str], list[str]]:
     return HexStr32.__eth_pydantic_validate__(value, pad=PadDirection.LEFT)
 
 
-def is_dynamic_sized_type(abi_type: Union[ABIType, str]) -> bool:
+def is_dynamic_sized_type(abi_type: ABIType | str) -> bool:
     parsed = grammar.parse(str(abi_type))
     return parsed.is_dynamic
 
@@ -524,13 +519,13 @@ class UnprocessedABI(BaseABI):
         return self.model_dump_json()
 
 
-ABI = Union[
-    ConstructorABI,
-    FallbackABI,
-    ReceiveABI,
-    MethodABI,
-    EventABI,
-    ErrorABI,
-    StructABI,
-    UnprocessedABI,
-]
+ABI = (
+    ConstructorABI
+    | FallbackABI
+    | ReceiveABI
+    | MethodABI
+    | EventABI
+    | ErrorABI
+    | StructABI
+    | UnprocessedABI
+)
