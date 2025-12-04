@@ -1,374 +1,162 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html lang="en" data-accent-color="lime" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Package Manifest &mdash; ethpm-types  documentation</title>
-  <link rel="stylesheet" href="/ethpm-types/latest/_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="/ethpm-types/latest/_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="/ethpm-types/latest/_static/custom.css" type="text/css" />
-      <link rel="stylesheet" href="/ethpm-types/latest/_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="/ethpm-types/latest/_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="/ethpm-types/latest/_static/custom.css" type="text/css" />
-    <link rel="canonical" href="/ethpm-types/methoddocs/manifest.html" />
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <script src="../_static/custom.js"></script>
-  <script>
-      var PROJECT = "ethpm-types";
-  </script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="ABI" href="abi.html" />
-    <link rel="prev" title="Contract Type" href="contract_type.html" /> 
-</head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> ethpm-types
-          </a>
-
-          <div class="version">
-            <label for="version-picker" id="version-picker-label">Version:</label>
-            <select id="version-picker">
-              <option value="">Select version...</option>
-              <option value="latest">latest</option>
-              <option value="stable">stable</option>
-            </select>
-          </div>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Package Manifest - ethpm-types documentation</title><link rel="shortcut icon" href="../_static/favicon.ico"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Source" href="source.html" /><link rel="prev" title="Contract Type" href="contract_type.html" />
+      <link rel="canonical" href="ethpm-types/methoddocs/manifest.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=e1a1ceaf" />
+    <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=14737038" />
+    <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    <meta property="og:type" content="website"/>
+  <meta property="og:url" content="ethpm-types/methoddocs/manifest.html"/>
+  <meta property="og:title" content="Package Manifest"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../index.html">
+      <img class="light-logo" src="../_static/logo_grey.svg" alt="ethpm-types" height="28" loading="lazy" />
+      <img class="dark-logo" src="../_static/logo_green.svg" alt="ethpm-types" height="28" loading="lazy" />
+      <strong>ethpm-types</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials"></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
         </div>
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Main">
-              <p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><p class="caption" role="heading" aria-level="3"><span class="caption-text">User Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../userguides/quickstart.html">Quick Start</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Python Reference</span></p>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Python Reference</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="contract_type.html">Contract Type</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Package Manifest</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.manifest.PackageManifest"><code class="docutils literal notranslate"><span class="pre">PackageManifest</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageManifest.add_compilers"><code class="docutils literal notranslate"><span class="pre">PackageManifest.add_compilers()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageManifest.compilers"><code class="docutils literal notranslate"><span class="pre">PackageManifest.compilers</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageManifest.contract_types"><code class="docutils literal notranslate"><span class="pre">PackageManifest.contract_types</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageManifest.dependencies"><code class="docutils literal notranslate"><span class="pre">PackageManifest.dependencies</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageManifest.deployments"><code class="docutils literal notranslate"><span class="pre">PackageManifest.deployments</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageManifest.get_compiler"><code class="docutils literal notranslate"><span class="pre">PackageManifest.get_compiler()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageManifest.get_contract_compiler"><code class="docutils literal notranslate"><span class="pre">PackageManifest.get_contract_compiler()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageManifest.get_contract_type"><code class="docutils literal notranslate"><span class="pre">PackageManifest.get_contract_type()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageManifest.manifest"><code class="docutils literal notranslate"><span class="pre">PackageManifest.manifest</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageManifest.meta"><code class="docutils literal notranslate"><span class="pre">PackageManifest.meta</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageManifest.model_config"><code class="docutils literal notranslate"><span class="pre">PackageManifest.model_config</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageManifest.name"><code class="docutils literal notranslate"><span class="pre">PackageManifest.name</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageManifest.sources"><code class="docutils literal notranslate"><span class="pre">PackageManifest.sources</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageManifest.unpack_sources"><code class="docutils literal notranslate"><span class="pre">PackageManifest.unpack_sources()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageManifest.version"><code class="docutils literal notranslate"><span class="pre">PackageManifest.version</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.manifest.PackageMeta"><code class="docutils literal notranslate"><span class="pre">PackageMeta</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageMeta.authors"><code class="docutils literal notranslate"><span class="pre">PackageMeta.authors</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageMeta.description"><code class="docutils literal notranslate"><span class="pre">PackageMeta.description</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageMeta.keywords"><code class="docutils literal notranslate"><span class="pre">PackageMeta.keywords</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageMeta.license"><code class="docutils literal notranslate"><span class="pre">PackageMeta.license</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageMeta.links"><code class="docutils literal notranslate"><span class="pre">PackageMeta.links</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ethpm_types.manifest.PackageMeta.model_config"><code class="docutils literal notranslate"><span class="pre">PackageMeta.model_config</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#ethpm_types.manifest.PackageName"><code class="docutils literal notranslate"><span class="pre">PackageName</span></code></a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="abi.html">ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contract_type.html">Contract Type</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Package Manifest</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
 </ul>
 
         </div>
       </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" aria-label="Top" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">ethpm-types</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Package Manifest</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/methoddocs/manifest.md.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="module-ethpm_types.manifest">
-<span id="package-manifest"></span><h1>Package Manifest<a class="headerlink" href="#module-ethpm_types.manifest" title="Permalink to this heading"></a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.manifest.</span></span><span class="sig-name descname"><span class="pre">PackageManifest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">manifest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ethpm/3'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.manifest.PackageName" title="ethpm_types.manifest.PackageName"><span class="pre">PackageName</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.manifest.PackageMeta" title="ethpm_types.manifest.PackageMeta"><span class="pre">PackageMeta</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sources</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="source.html#ethpm_types.source.Source" title="ethpm_types.source.Source"><span class="pre">ethpm_types.source.Source</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contractTypes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><span class="pre">ethpm_types.contract_type.ContractType</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compilers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="source.html#ethpm_types.source.Compiler" title="ethpm_types.source.Compiler"><span class="pre">ethpm_types.source.Compiler</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deployments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">eth_pydantic_types.bip122.Bip122Uri</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractInstance" title="ethpm_types.contract_type.ContractInstance"><span class="pre">ethpm_types.contract_type.ContractInstance</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buildDependencies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.manifest.PackageName" title="ethpm_types.manifest.PackageName"><span class="pre">ethpm_types.manifest.PackageName</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pydantic.networks.FileUrl</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pydantic.networks.AnyUrl</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.manifest.PackageManifest" title="Permalink to this definition"></a></dt>
-<dd><p>A data format describing a smart contract software package.
-<a class="reference external" href="https://eips.ethereum.org/EIPS/eip-2678#ethpm-manifest-version">EIP-2678</a>.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.add_compilers">
-<span class="sig-name descname"><span class="pre">add_compilers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">compilers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="source.html#ethpm_types.source.Compiler" title="ethpm_types.source.Compiler"><span class="pre">Compiler</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.add_compilers" title="Permalink to this definition"></a></dt>
-<dd><p>Update compilers in the manifest. This method appends any
-given compiler with a a different name, version, and settings
-combination.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>compilers</strong> (List[<cite>~ethpm_types.source.Compiler]</cite>) – A list of
-compilers.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.compilers">
-<span class="sig-name descname"><span class="pre">compilers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="source.html#ethpm_types.source.Compiler" title="ethpm_types.source.Compiler"><span class="pre">ethpm_types.source.Compiler</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.compilers" title="Permalink to this definition"></a></dt>
-<dd><p>Information about the compilers and their settings that have been
-used to generate the various contractTypes included in this release.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.contract_types">
-<span class="sig-name descname"><span class="pre">contract_types</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><span class="pre">ethpm_types.contract_type.ContractType</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.contract_types" title="Permalink to this definition"></a></dt>
-<dd><p><a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractType</span></code></a> objects that have been included
-in this release.</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Should only include types that can be found in the sources.</p></li>
-<li><p>Should not include types from dependencies.</p></li>
-<li><p>Should not include abstracts.</p></li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.dependencies">
-<span class="sig-name descname"><span class="pre">dependencies</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethpm_types.manifest.PackageName" title="ethpm_types.manifest.PackageName"><span class="pre">ethpm_types.manifest.PackageName</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pydantic.networks.FileUrl</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pydantic.networks.AnyUrl</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.dependencies" title="Permalink to this definition"></a></dt>
-<dd><p>A mapping of EthPM packages that this project depends on.
-The values must be content-addressable URIs that conforms to the same
-manifest version as <code class="docutils literal notranslate"><span class="pre">manifest</span></code>.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.deployments">
-<span class="sig-name descname"><span class="pre">deployments</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">eth_pydantic_types.bip122.Bip122Uri</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractInstance" title="ethpm_types.contract_type.ContractInstance"><span class="pre">ethpm_types.contract_type.ContractInstance</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.deployments" title="Permalink to this definition"></a></dt>
-<dd><p>Information for the chains on which this release has
-<a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractInstance" title="ethpm_types.contract_type.ContractInstance"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractInstance</span></code></a> references as well as the
-<a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractType</span></code></a> definitions and other deployment
-details for those deployed contract instances. The set of chains defined by the BIP122
-URI keys for this object must be unique. There cannot be two different URI keys in a
-deployments field representing the same blockchain. The value of the URIs is a dictionary
-mapping the contract instance names to the instance themselves. The contract instance names
-must be unique across all other contract instances for the given chain.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.get_compiler">
-<span class="sig-name descname"><span class="pre">get_compiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="source.html#ethpm_types.source.Compiler" title="ethpm_types.source.Compiler"><span class="pre">Compiler</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.get_compiler" title="Permalink to this definition"></a></dt>
-<dd><p>Get a compiler by name and version.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – The name of the compiler, such as <code class="docutils literal notranslate"><span class="pre">&quot;vyper&quot;</span></code>.</p></li>
-<li><p><strong>version</strong> (<em>str</em>) – The version of the compiler.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Optional[<cite>~ethpm_types.source.Compiler</cite>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.get_contract_compiler">
-<span class="sig-name descname"><span class="pre">get_contract_compiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract_type_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="source.html#ethpm_types.source.Compiler" title="ethpm_types.source.Compiler"><span class="pre">Compiler</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.get_contract_compiler" title="Permalink to this definition"></a></dt>
-<dd><p>Get the compiler used to compile the contract type, if it exists.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>contract_type_name</strong> (<em>str</em>) – The name of the compiled contract.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Optional[<cite>~ethpm_types.source.Compiler</cite>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.get_contract_type">
-<span class="sig-name descname"><span class="pre">get_contract_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><span class="pre">ContractType</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.get_contract_type" title="Permalink to this definition"></a></dt>
-<dd><p>Get a contract type by name, if it exists. Else, returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
-<p>Args: name (str): The name of the contract type.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Optional[<a class="reference internal" href="contract_type.html#ethpm_types.contract_type.ContractType" title="ethpm_types.contract_type.ContractType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContractType</span></code></a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.manifest">
-<span class="sig-name descname"><span class="pre">manifest</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.manifest" title="Permalink to this definition"></a></dt>
-<dd><p>The specification version that the project conforms to.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.meta">
-<span class="sig-name descname"><span class="pre">meta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethpm_types.manifest.PackageMeta" title="ethpm_types.manifest.PackageMeta"><span class="pre">PackageMeta</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.meta" title="Permalink to this definition"></a></dt>
-<dd><p>Important data that is not integral to installation
-but should be included when publishing.
-<strong>NOTE</strong>: All published projects <em>should</em> include
-<code class="docutils literal notranslate"><span class="pre">meta</span></code>.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.model_config" title="Permalink to this definition"></a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethpm_types.manifest.PackageName" title="ethpm_types.manifest.PackageName"><span class="pre">PackageName</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.name" title="Permalink to this definition"></a></dt>
-<dd><p>A human-readable name for the package.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.sources">
-<span class="sig-name descname"><span class="pre">sources</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="source.html#ethpm_types.source.Source" title="ethpm_types.source.Source"><span class="pre">ethpm_types.source.Source</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.sources" title="Permalink to this definition"></a></dt>
-<dd><p>The sources field defines a source tree that should comprise the full source tree
-necessary to recompile the contracts contained in this release.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.unpack_sources">
-<span class="sig-name descname"><span class="pre">unpack_sources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destination</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.unpack_sources" title="Permalink to this definition"></a></dt>
-<dd><p>Unpack a package manifest’s content sources into
-the given directory.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>destination</strong> (<em>pathlib.Path</em>) – The destination where to unpack.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageManifest.version">
-<span class="sig-name descname"><span class="pre">version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.manifest.PackageManifest.version" title="Permalink to this definition"></a></dt>
-<dd><p>The version of the release, which should be SemVer.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageMeta">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.manifest.</span></span><span class="sig-name descname"><span class="pre">PackageMeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">authors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">license</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keywords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">links</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pydantic.networks.FileUrl</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pydantic.networks.AnyUrl</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.manifest.PackageMeta" title="Permalink to this definition"></a></dt>
-<dd><p>Important data that is not integral to installation
-but should be included when publishing.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageMeta.authors">
-<span class="sig-name descname"><span class="pre">authors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.manifest.PackageMeta.authors" title="Permalink to this definition"></a></dt>
-<dd><p>A list of human readable names for the authors of this package.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageMeta.description">
-<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.manifest.PackageMeta.description" title="Permalink to this definition"></a></dt>
-<dd><p>Additional detail that may be relevant for this package.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageMeta.keywords">
-<span class="sig-name descname"><span class="pre">keywords</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.manifest.PackageMeta.keywords" title="Permalink to this definition"></a></dt>
-<dd><p>Relevant keywords related to this package.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageMeta.license">
-<span class="sig-name descname"><span class="pre">license</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.manifest.PackageMeta.license" title="Permalink to this definition"></a></dt>
-<dd><p>The license associated with this package.
-This value should conform to the SPDX format.
-Packages should include this field.
-If a file Source Object defines its own license, that license takes
-precedence for that particular file over this package-scoped meta license.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageMeta.links">
-<span class="sig-name descname"><span class="pre">links</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pydantic.networks.FileUrl</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pydantic.networks.AnyUrl</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethpm_types.manifest.PackageMeta.links" title="Permalink to this definition"></a></dt>
-<dd><p>URIs to relevant resources associated with this package.
-When possible, authors should use the following keys for the following common resources.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageMeta.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#ethpm_types.manifest.PackageMeta.model_config" title="Permalink to this definition"></a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ethpm_types.manifest.PackageName">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.manifest.</span></span><span class="sig-name descname"><span class="pre">PackageName</span></span><a class="headerlink" href="#ethpm_types.manifest.PackageName" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../index.html"><span itemprop="name">ethpm-types</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">Package Manifest</strong>
+        <meta itemprop="position" content="2" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+        <article class="yue" role="main">
+          <section id="package-manifest">
+<h1>Package Manifest<a class="headerlink" href="#package-manifest" title="Link to this heading"></a></h1>
 </section>
 
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="contract_type.html" class="btn btn-neutral float-left" title="Contract Type" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="abi.html" class="btn btn-neutral float-right" title="ABI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2021, ApeWorX LTD.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
-        </div>
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"><div class="navigation-prev">
+    <a href="contract_type.html">
+      <i class="i-lucide chevron-left"></i>
+      <div class="page-info">
+        <span>Previous</span><div class="title">Contract Type</div></div>
+    </a>
+  </div><div class="navigation-next">
+    <a href="source.html">
+      <div class="page-info">
+        <span>Next</span>
+        <div class="title">Source</div>
       </div>
-    </section>
+      <i class="i-lucide chevron-right"></i>
+    </a>
+  </div></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright"><p>2024, ApeWorX LTD</p>
+  
+  <p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials"></div>
+    </div>
   </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
+</footer>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script data-domain="docs.apeworx.io" defer="defer" src="https://plausible.io/js/script.js"></script>
+      <script src="../_static/shibuya.js?v=c1cf1a6b"></script></body>
 </html>

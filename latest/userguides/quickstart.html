@@ -1,217 +1,246 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html lang="en" data-accent-color="lime" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quick Start &mdash; ethpm-types  documentation</title>
-  <link rel="stylesheet" href="/ethpm-types/latest/_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="/ethpm-types/latest/_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="/ethpm-types/latest/_static/custom.css" type="text/css" />
-      <link rel="stylesheet" href="/ethpm-types/latest/_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="/ethpm-types/latest/_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="/ethpm-types/latest/_static/custom.css" type="text/css" />
-    <link rel="canonical" href="/ethpm-types/userguides/quickstart.html" />
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <script src="../_static/custom.js"></script>
-  <script>
-      var PROJECT = "ethpm-types";
-  </script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Contract Type" href="../methoddocs/contract_type.html" />
-    <link rel="prev" title="EthPM Types Documentation" href="../index.html" /> 
-</head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> ethpm-types
-          </a>
-
-          <div class="version">
-            <label for="version-picker" id="version-picker-label">Version:</label>
-            <select id="version-picker">
-              <option value="">Select version...</option>
-              <option value="latest">latest</option>
-              <option value="stable">stable</option>
-            </select>
-          </div>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Quick Start - ethpm-types documentation</title><link rel="shortcut icon" href="../_static/favicon.ico"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="ABI" href="../methoddocs/abi.html" /><link rel="prev" title="&lt;no title&gt;" href="../index.html" />
+      <link rel="canonical" href="ethpm-types/userguides/quickstart.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=e1a1ceaf" />
+    <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=14737038" />
+    <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    <meta property="og:type" content="website"/>
+  <meta property="og:url" content="ethpm-types/userguides/quickstart.html"/>
+  <meta property="og:title" content="Quick Start"/>
+    <meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../index.html">
+      <img class="light-logo" src="../_static/logo_grey.svg" alt="ethpm-types" height="28" loading="lazy" />
+      <img class="dark-logo" src="../_static/logo_green.svg" alt="ethpm-types" height="28" loading="lazy" />
+      <strong>ethpm-types</strong>
+    </a>
+    <div class="sy-head-nav" id="head-nav">
+      <nav class="sy-head-links"></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials"></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="head-nav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2"></span>
+          <span class="hamburger_3"></span>
         </div>
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Main">
-              <p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><p class="caption" role="heading" aria-level="3"><span class="caption-text">User Guides</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#via-pip">via <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#via-setuptools">via <code class="docutils literal notranslate"><span class="pre">setuptools</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a></li>
 </ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#quick-usage">Quick Usage</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#contract-type">Contract Type</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#abi-json">ABI JSON</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Python Reference</span></p>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Python Reference</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../methoddocs/abi.html">ABI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../methoddocs/contract_type.html">Contract Type</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../methoddocs/manifest.html">Package Manifest</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../methoddocs/abi.html">ABI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../methoddocs/source.html">Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../methoddocs/utils.html">Utils</a></li>
 </ul>
 
         </div>
       </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" aria-label="Top" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">ethpm-types</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Quick Start</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/userguides/quickstart.md.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="quick-start">
-<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading"></a></h1>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#via-pip">via <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+<li><a class="reference internal" href="#via-setuptools">via <code class="docutils literal notranslate"><span class="pre">setuptools</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#quick-usage">Quick Usage</a><ul>
+<li><a class="reference internal" href="#contract-type">Contract Type</a><ul>
+<li><a class="reference internal" href="#abi-json">ABI JSON</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../index.html"><span itemprop="name">ethpm-types</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">Quick Start</strong>
+        <meta itemprop="position" content="2" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+        <article class="yue" role="main">
+          <section id="quick-start">
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h1>
 <p>EthPM is an Ethereum package manifest containing data types for contracts, deployments, and source code using <a class="reference external" href="https://eips.ethereum.org/EIPS/eip-2678">EIP-2678</a>.
 The library validates and serializes contract related data and provides JSON schemas.</p>
 <section id="dependencies">
-<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading"></a></h2>
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.python.org/downloads">python3</a> version 3.9 to 3.12.</p></li>
 </ul>
 </section>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
 <section id="via-pip">
-<h3>via <code class="docutils literal notranslate"><span class="pre">pip</span></code><a class="headerlink" href="#via-pip" title="Permalink to this heading"></a></h3>
+<h3>via <code class="docutils literal notranslate"><span class="pre">pip</span></code><a class="headerlink" href="#via-pip" title="Link to this heading"></a></h3>
 <p>You can install the latest release via <a class="reference external" href="https://pypi.org/project/pip/"><code class="docutils literal notranslate"><span class="pre">pip</span></code></a>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ethpm-types
-</pre></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">pip<span class="w"> </span>install<span class="w"> </span>ethpm-types
+</span></pre></div>
 </div>
 </section>
 <section id="via-setuptools">
-<h3>via <code class="docutils literal notranslate"><span class="pre">setuptools</span></code><a class="headerlink" href="#via-setuptools" title="Permalink to this heading"></a></h3>
+<h3>via <code class="docutils literal notranslate"><span class="pre">setuptools</span></code><a class="headerlink" href="#via-setuptools" title="Link to this heading"></a></h3>
 <p>You can clone the repository and use <a class="reference external" href="https://github.com/pypa/setuptools"><code class="docutils literal notranslate"><span class="pre">setuptools</span></code></a> for the most up-to-date version:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ApeWorX/ethpm-types.git
-<span class="nb">cd</span><span class="w"> </span>ethpm-types
-python3<span class="w"> </span>setup.py<span class="w"> </span>install
-</pre></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span data-line="1">git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ApeWorX/ethpm-types.git
+</span><span data-line="2"><span class="nb">cd</span><span class="w"> </span>ethpm-types
+</span><span data-line="3">python3<span class="w"> </span>setup.py<span class="w"> </span>install
+</span></pre></div>
 </div>
 </section>
 </section>
 <section id="quick-usage">
-<h2>Quick Usage<a class="headerlink" href="#quick-usage" title="Permalink to this heading"></a></h2>
+<h2>Quick Usage<a class="headerlink" href="#quick-usage" title="Link to this heading"></a></h2>
 <p>Starting with a dictionary of attribute data, such as a contract instance, you can build an EthPM typed object.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ethpm_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">ContractInstance</span>
-
-<span class="n">contract</span> <span class="o">=</span> <span class="n">ContractInstance</span><span class="p">(</span><span class="n">contractType</span><span class="o">=</span><span class="s2">&quot;ContractClassName&quot;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="s2">&quot;0x123...&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">contract</span><span class="o">.</span><span class="n">contract_type</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">ethpm_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">ContractInstance</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="n">contract</span> <span class="o">=</span> <span class="n">ContractInstance</span><span class="p">(</span><span class="n">contractType</span><span class="o">=</span><span class="s2">&quot;ContractClassName&quot;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="s2">&quot;0x123...&quot;</span><span class="p">)</span>
+</span><span data-line="4"><span class="nb">print</span><span class="p">(</span><span class="n">contract</span><span class="o">.</span><span class="n">contract_type</span><span class="p">)</span>
+</span></pre></div>
 </div>
 <section id="contract-type">
-<h3>Contract Type<a class="headerlink" href="#contract-type" title="Permalink to this heading"></a></h3>
+<h3>Contract Type<a class="headerlink" href="#contract-type" title="Link to this heading"></a></h3>
 <p>Perhaps the most common artifact type from <code class="docutils literal notranslate"><span class="pre">ethmp_types</span></code> is <code class="docutils literal notranslate"><span class="pre">ContractType</span></code>.
 <code class="docutils literal notranslate"><span class="pre">ContractType</span></code> represents components of a compiled contract, such as the <code class="docutils literal notranslate"><span class="pre">.abi</span></code> or the <code class="docutils literal notranslate"><span class="pre">.runtime_bytecode</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ethpm_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">ContractType</span>
-
-<span class="n">contract</span> <span class="o">=</span> <span class="n">ContractType</span><span class="p">(</span><span class="n">abi</span><span class="o">=</span><span class="p">[],</span> <span class="n">runtimeBytecode</span><span class="o">=</span><span class="s2">&quot;0x...&quot;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">ethpm_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">ContractType</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="n">contract</span> <span class="o">=</span> <span class="n">ContractType</span><span class="p">(</span><span class="n">abi</span><span class="o">=</span><span class="p">[],</span> <span class="n">runtimeBytecode</span><span class="o">=</span><span class="s2">&quot;0x...&quot;</span><span class="p">)</span>
+</span></pre></div>
 </div>
 <p>For convenience, you can also initialize a <code class="docutils literal notranslate"><span class="pre">ContractType</span></code> using the <code class="docutils literal notranslate"><span class="pre">.from_signature()</span></code> classmethod:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ethpm_types.abi</span><span class="w"> </span><span class="kn">import</span> <span class="n">MethodABI</span><span class="p">,</span> <span class="n">EventABI</span>
-
-<span class="n">MethodABI</span><span class="o">.</span><span class="n">from_signature</span><span class="p">(</span><span class="s2">&quot;function_name(uint256 arg1)&quot;</span><span class="p">)</span>
-<span class="c1"># =&gt; MethodABI(type=&#39;function&#39;, name=&#39;function_name&#39;, inputs=[...], ...)</span>
-
-<span class="n">EventABI</span><span class="o">.</span><span class="n">from_signature</span><span class="p">(</span><span class="s2">&quot;Transfer(address indexed from, address indexed to, uint256 value)&quot;</span><span class="p">)</span>
-<span class="c1"># =&gt; EventABI(type=&#39;event&#39;, name=&#39;Transfer&#39;, inputs=[...], ...)</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">ethpm_types.abi</span><span class="w"> </span><span class="kn">import</span> <span class="n">MethodABI</span><span class="p">,</span> <span class="n">EventABI</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="n">MethodABI</span><span class="o">.</span><span class="n">from_signature</span><span class="p">(</span><span class="s2">&quot;function_name(uint256 arg1)&quot;</span><span class="p">)</span>
+</span><span data-line="4"><span class="c1"># =&gt; MethodABI(type=&#39;function&#39;, name=&#39;function_name&#39;, inputs=[...], ...)</span>
+</span><span data-line="5">
+</span><span data-line="6"><span class="n">EventABI</span><span class="o">.</span><span class="n">from_signature</span><span class="p">(</span><span class="s2">&quot;Transfer(address indexed from, address indexed to, uint256 value)&quot;</span><span class="p">)</span>
+</span><span data-line="7"><span class="c1"># =&gt; EventABI(type=&#39;event&#39;, name=&#39;Transfer&#39;, inputs=[...], ...)</span>
+</span></pre></div>
 </div>
 <section id="abi-json">
-<h4>ABI JSON<a class="headerlink" href="#abi-json" title="Permalink to this heading"></a></h4>
+<h4>ABI JSON<a class="headerlink" href="#abi-json" title="Link to this heading"></a></h4>
 <p>To easily acquire the ABI JSON for a <code class="docutils literal notranslate"><span class="pre">ContractType</span></code> artifact, <code class="docutils literal notranslate"><span class="pre">.model_dump_json()</span></code> the <code class="docutils literal notranslate"><span class="pre">.abi</span></code> property:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ethpm_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">ContractType</span>
-
-<span class="n">contract_type</span> <span class="o">=</span> <span class="n">ContractType</span><span class="p">(</span><span class="n">abi</span><span class="o">=</span><span class="p">[],</span> <span class="n">runtimeBytecode</span><span class="o">=</span><span class="s2">&quot;0x...&quot;</span><span class="p">)</span>
-
-<span class="c1"># Use the ABI in other application requiring ABI JSON.</span>
-<span class="n">abi</span> <span class="o">=</span> <span class="n">contract_type</span><span class="o">.</span><span class="n">abi</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">()</span>
-</pre></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">ethpm_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">ContractType</span>
+</span><span data-line="2">
+</span><span data-line="3"><span class="n">contract_type</span> <span class="o">=</span> <span class="n">ContractType</span><span class="p">(</span><span class="n">abi</span><span class="o">=</span><span class="p">[],</span> <span class="n">runtimeBytecode</span><span class="o">=</span><span class="s2">&quot;0x...&quot;</span><span class="p">)</span>
+</span><span data-line="4">
+</span><span data-line="5"><span class="c1"># Use the ABI in other application requiring ABI JSON.</span>
+</span><span data-line="6"><span class="n">abi</span> <span class="o">=</span> <span class="n">contract_type</span><span class="o">.</span><span class="n">abi</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">()</span>
+</span></pre></div>
 </div>
 </section>
 </section>
 </section>
 </section>
 
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../index.html" class="btn btn-neutral float-left" title="EthPM Types Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../methoddocs/contract_type.html" class="btn btn-neutral float-right" title="Contract Type" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2021, ApeWorX LTD.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
-        </div>
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"><div class="navigation-prev">
+    <a href="../index.html">
+      <i class="i-lucide chevron-left"></i>
+      <div class="page-info">
+        <span>Previous</span><div class="title">Home</div></div>
+    </a>
+  </div><div class="navigation-next">
+    <a href="../methoddocs/abi.html">
+      <div class="page-info">
+        <span>Next</span>
+        <div class="title">ABI</div>
       </div>
-    </section>
+      <i class="i-lucide chevron-right"></i>
+    </a>
+  </div></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright"><p>2024, ApeWorX LTD</p>
+  
+  <p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials"></div>
+    </div>
   </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
+</footer>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script data-domain="docs.apeworx.io" defer="defer" src="https://plausible.io/js/script.js"></script>
+      <script src="../_static/shibuya.js?v=c1cf1a6b"></script></body>
 </html>
