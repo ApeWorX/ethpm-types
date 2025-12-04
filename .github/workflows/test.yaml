@@ -65,7 +65,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Run Pytest
-        run: uv run --group test pytest -m "not fuzzing" -n 0 -s --cov
+        run: uv run --group test pytest -m "not fuzzing" -s
 
     fuzzing:
         runs-on: ubuntu-latest
