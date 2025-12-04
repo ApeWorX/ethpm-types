@@ -13,61 +13,69 @@ env:
    GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-    linting:
+  linting:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.10"
+
+      - name: Run Ruff Lint
+        run: uv run --group lint ruff check .
+
+      - name: Run Ruff Format
+        run: uv run --group lint ruff format --check .
+
+      - name: Run mdformat
+        run: uv run --group lint mdformat --check *.md docs/
+
+  type-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: astral-sh/setup-uv@v7
+        with:
+          # NOTE: Use minimum supported Python version to avoid using new syntax
+          python-version: "3.10"
+
+      - name: Run MyPy
+        run: uv run --group lint --group test mypy .
+
+  tests:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run Pytest
+        run: uv run --group test pytest -m "not fuzzing" -n 0 -s --cov
+
+    fuzzing:
         runs-on: ubuntu-latest
-
-        steps:
-        - uses: actions/checkout@v4
-        - uses: astral-sh/setup-uv@v7
-        - name: Install Dependencies
-          run: uv pip install -e '.[lint]'
-        - name: Run Ruff Format
-          run: ruff format --check .
-
-        - name: Run mdformat
-          run: mdformat . --check
-
-    type-check:
-        runs-on: ubuntu-latest
-
-        steps:
-        - uses: actions/checkout@v4
-        - uses: astral-sh/setup-uv@v7
-        - name: Install Dependencies
-          run: uv pip install -e '.[lint,test]'
-        - name: Run MyPy
-          run: mypy .  --exclude build/  # For some reason, this gets caught sometimes
-
-    functional:
-        runs-on: ${{ matrix.os }}
 
         strategy:
-            matrix:
-                os: [ubuntu-latest, macos-latest, windows-latest]
-                python-version: ["3.10", "3.11", "3.12", "3.13", "3.14-dev"]
+            fail-fast: true
 
         steps:
         - uses: actions/checkout@v4
-        - uses: astral-sh/setup-uv@v7
-          with:
-              python-version: ${{ matrix.python-version }}
-        - name: Install Dependencies
-          run: uv pip install -e '.[test]'
-
+        - name: Setup Python
+          uses: astral-sh/setup-uv@v7
         - name: Run Tests
-          run: pytest -m "not fuzzing" -n 0 -s --cov
-
-# NOTE: uncomment this block after you've marked tests with @pytest.mark.fuzzing
-#    fuzzing:
-#        runs-on: ubuntu-latest
-#
-#        strategy:
-#            fail-fast: true
-#
-#        steps:
-#        - uses: actions/checkout@v4
-#        - uses: astral-sh/setup-uv@v7
-#        - name: Install Dependencies
-#          run: uv pip install -e '.[test]'
-#        - name: Run Tests
-#          run: pytest -m "fuzzing" --no-cov -s
+          run: uv run --group test pytest -m "fuzzing" --no-cov -s
