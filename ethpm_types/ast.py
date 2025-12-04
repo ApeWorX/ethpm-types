@@ -62,7 +62,7 @@ class ASTNode(BaseModel):
     The offset when the column ends.
     """
 
-    children: "list[ASTNode]" = []
+    children: list["ASTNode"] = []
     """
     All sub-AST nodes within this one.
     """
@@ -97,7 +97,7 @@ class ASTNode(BaseModel):
         return src
 
     @classmethod
-    def find_children(cls, node) -> "list[ASTNode]":
+    def find_children(cls, node) -> list["ASTNode"]:
         children = []
 
         def add_child(data):
@@ -126,7 +126,7 @@ class ASTNode(BaseModel):
         return self.lineno, self.col_offset, self.end_lineno, self.end_col_offset
 
     @property
-    def functions(self) -> "list[ASTNode]":
+    def functions(self) -> list["ASTNode"]:
         """
         All function nodes defined at this level.
 
@@ -143,7 +143,7 @@ class ASTNode(BaseModel):
         stats = "leaf" if num_children == 0 else f"children={num_children}"
         return f"<{self.ast_type}Node {stats}>"
 
-    def iter_nodes(self) -> "Iterator[ASTNode]":
+    def iter_nodes(self) -> Iterator["ASTNode"]:
         """
         Yield through all nodes in the tree, including this one.
         """
@@ -173,7 +173,7 @@ class ASTNode(BaseModel):
 
         return None
 
-    def get_nodes_at_line(self, line_numbers: "SourceLocation") -> "list[ASTNode]":
+    def get_nodes_at_line(self, line_numbers: "SourceLocation") -> list["ASTNode"]:
         """
         Get the AST nodes for the given line number combination
 
