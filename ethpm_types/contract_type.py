@@ -1,9 +1,10 @@
+import json
 from collections.abc import Callable, Iterable, Iterator
 from functools import cached_property, singledispatchmethod
 from typing import TypeVar, cast
 
 from eth_utils import is_0x_prefixed
-from pydantic import Field, RootModel, computed_field, field_validator
+from pydantic import Field, RootModel, computed_field, field_validator, model_validator
 
 from eth_pydantic_types import Address, HexBytes, HexStr, HexStr32
 from ethpm_types.abi import (
@@ -156,6 +157,15 @@ class ABIList(RootModel[list[ABILIST_T]]):
         self._selector_id_size = selector_id_size
         self._selector_hash_fn = selector_hash_fn
         super().__init__(list(iterable or ()))
+
+    @model_validator(mode="before")
+    @classmethod
+    def _validate_abi(cls, model):
+        if isinstance(model, str):
+            # Allow string ABI.
+            return json.loads(model)
+
+        return model
 
     @singledispatchmethod
     def __getitem__(self, selector):
