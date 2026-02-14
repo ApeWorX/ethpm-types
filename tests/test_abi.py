@@ -449,3 +449,29 @@ class TestABIList:
         assert abi_ls[abi1.selector] == abi1
         assert abi_ls[abi2.selector] == abi2
         assert abi_ls[abi3.selector] == abi3
+
+    def test_model_validate_str(self):
+        abi_str = """
+        [
+            {
+                "type": "function",
+                "name": "setAmount",
+                "stateMutability": "nonpayable",
+                "inputs": [
+                    {
+                        "name": "newAmount",
+                        "type": "uint256",
+                        "components": null,
+                        "internalType": "uint256"
+                    }
+                ],
+                "outputs": []
+            }
+        ]
+        """.strip()
+        abi_ls = ABIList.model_validate(abi_str)
+        assert len(abi_ls) == 1
+        assert abi_ls[0].name == "setAmount"
+        assert abi_ls[0].type == "function"
+        assert len(abi_ls[0].inputs) == 1
+        assert abi_ls[0].inputs[0].name == "newAmount"
