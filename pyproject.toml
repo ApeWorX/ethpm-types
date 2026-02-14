@@ -55,7 +55,7 @@ test = [
     "eth-hash[pysha3]",
 ]
 docs = [
-    "sphinx-ape==0.1.1",
+    "sphinx-ape>=0.1.2,<2",
 ]
 dev = [
     "commitizen>=2.40,<2.41",
