@@ -77,8 +77,8 @@ class ASTNode(BaseModel):
 
         return {
             "doc_str": val.get("doc_string"),
-            "children": cls.find_children(val),
             **val,
+            "children": cls.find_children(val),
             "src": src,
         }
 
@@ -97,22 +97,22 @@ class ASTNode(BaseModel):
         return src
 
     @classmethod
-    def find_children(cls, node) -> list["ASTNode"]:
+    def find_children(cls, node) -> list[dict]:
+        """
+        Collect child AST dicts from *node*.
+        Pydantic's ``list[ASTNode]`` coercion validates each into an
+        ``ASTNode`` in a single pass, eliminating the old double-walk.
+        """
         children = []
-
-        def add_child(data):
-            data["children"] = cls.find_children(data)
-            child = cls.model_validate(data)
-            children.append(child)
 
         for value in node.values():
             if isinstance(value, dict) and ("ast_type" in value or "nodeType" in value):
-                add_child(value)
+                children.append(value)
 
             elif isinstance(value, list):
                 for _val in value:
                     if isinstance(_val, dict) and ("ast_type" in _val or "nodeType" in _val):
-                        add_child(_val)
+                        children.append(_val)
 
         return children
 
