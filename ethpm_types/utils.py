@@ -139,7 +139,7 @@ def _parse_signature_inputs(abi_str: str) -> list[tuple[str, str, str]]:
             working_on = "type"
 
             # Clear random spaces.
-            while characters[0] == " ":
+            while characters and characters[0] == " ":
                 characters.pop(0)
 
             continue
@@ -148,9 +148,12 @@ def _parse_signature_inputs(abi_str: str) -> list[tuple[str, str, str]]:
             if working_on == "type":
                 working_on = "name"
 
-            if "".join(characters).startswith("indexed "):
+            rest = "".join(characters)
+            if rest == "indexed" or rest.startswith("indexed ") or rest.startswith("indexed,"):
                 indexed = "indexed"
-                characters = characters[8:]
+                characters = characters[len("indexed") :]
+                if characters and characters[0] == " ":
+                    characters.pop(0)
 
             continue
 
