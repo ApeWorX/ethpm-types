@@ -7,7 +7,7 @@
     function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
     setColorMode(localStorage._theme||"auto");
   </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=e1a1ceaf" />
-    <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=9454f7d5" />
+    <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=2ceb65ce" />
     <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -151,16 +151,16 @@ data-aria-dark="Switch to auto color mode">
   </div>
 </div><article class="yue" role="main">
           <section id="module-ethpm_types.utils">
-<span id="utils"></span><h1>Utils<a class="headerlink" href="#module-ethpm_types.utils" title="Link to this heading"></a></h1>
+<span id="utils"></span><h1>Utils<a class="headerlink" href="#module-ethpm_types.utils" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethpm_types.utils.Algorithm">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">Algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.utils.Algorithm" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">Algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.utils.Algorithm" title="Link to this definition">#</a></dt>
 <dd><p>Algorithm enum options MD5, SHA3, and SHA256.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethpm_types.utils.Annotated">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">Annotated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.utils.Annotated" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">Annotated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethpm_types.utils.Annotated" title="Link to this definition">#</a></dt>
 <dd><p>Add context specific metadata to a type.</p>
 <p>Example: Annotated[int, runtime_check.Unsigned] indicates to the
 hypothetical runtime_check module that this type is an unsigned int.
@@ -196,13 +196,13 @@ this type as int.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethpm_types.utils.SourceLocation">
-<span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">SourceLocation</span></span><a class="headerlink" href="#ethpm_types.utils.SourceLocation" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">SourceLocation</span></span><a class="headerlink" href="#ethpm_types.utils.SourceLocation" title="Link to this definition">#</a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ethpm_types.utils.compute_checksum">
-<span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">compute_checksum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.utils.Algorithm" title="ethpm_types.utils.Algorithm"><span class="pre">Algorithm</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Algorithm.MD5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">HexStr</span></span></span><a class="headerlink" href="#ethpm_types.utils.compute_checksum" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ethpm_types.utils.</span></span><span class="sig-name descname"><span class="pre">compute_checksum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ethpm_types.utils.Algorithm" title="ethpm_types.utils.Algorithm"><span class="pre">Algorithm</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Algorithm.MD5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">HexStr</span></span></span><a class="headerlink" href="#ethpm_types.utils.compute_checksum" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the checksum of the given content.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
