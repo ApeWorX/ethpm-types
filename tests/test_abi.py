@@ -23,6 +23,22 @@ class TestABIType:
         abi = ABIType(name="foo", type="tuple", components=[ABIType(name="bar", type="string")])
         assert abi.canonical_type == "(string)"
 
+    @pytest.mark.parametrize(
+        "type_,expected",
+        [
+            ("tuple[]", "(string)[]"),
+            ("tuple[3]", "(string)[3]"),
+            ("tuple[][]", "(string)[][]"),
+            ("tuple[2][3]", "(string)[2][3]"),
+            ("tuple[2][]", "(string)[2][]"),
+            ("tuple[][2]", "(string)[][2]"),
+            ("tuple[1][2][3]", "(string)[1][2][3]"),
+        ],
+    )
+    def test_canonical_type_when_tuple_array(self, type_, expected):
+        abi = ABIType(name="foo", type=type_, components=[ABIType(name="bar", type="string")])
+        assert abi.canonical_type == expected
+
     def test_model_dump(self):
         abi = ABIType(name="foo", type="string", internalType="string")
         actual = abi.model_dump()
@@ -370,6 +386,26 @@ class TestMethodABI:
         )
         assert abi.selector == "MyMethod(address,string)"
         assert abi in {abi, MethodABI(name="OtherMethod")}
+
+    def test_selector_when_multidimensional_struct_array(self):
+        # Solidity `function fixed2d(Point[2][3] calldata grid)` where
+        # `struct Point { uint256 x; uint256 y; }`. solc reports the selector as
+        # `fixed2d((uint256,uint256)[2][3])`, so every dimension has to survive.
+        abi = MethodABI(
+            name="fixed2d",
+            inputs=[
+                ABIType(
+                    name="grid",
+                    type="tuple[2][3]",
+                    internalType="struct Multi.Point[2][3]",
+                    components=[
+                        ABIType(name="x", type="uint256"),
+                        ABIType(name="y", type="uint256"),
+                    ],
+                )
+            ],
+        )
+        assert abi.selector == "fixed2d((uint256,uint256)[2][3])"
 
     def test_from_signature(self):
         signature = "transfer(address to, uint256 value)"

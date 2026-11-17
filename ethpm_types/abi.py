@@ -56,7 +56,9 @@ class ABIType(BaseModel):
         if "tuple" in self.type and self.components:  # NOTE: 2nd condition just to satisfy mypy
             value = f"({','.join(m.canonical_type for m in self.components)})"
             if "[" in self.type:
-                value += f"[{str(self.type).split('[')[-1]}"
+                # Keep every dimension, e.g. ``tuple[2][3]`` -> ``(...)[2][3]``.
+                suffix = str(self.type)
+                value += suffix[suffix.index("[") :]
 
             return value
 
