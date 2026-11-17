@@ -98,6 +98,53 @@ def test_source_map_item():
     assert actual.jump_code == ""
 
 
+@pytest.mark.parametrize(
+    "src,expected",
+    (
+        ("0:0:0:-", (0, 0, 0)),
+        ("0:0:0", (0, 0, 0)),
+        ("0:0", (0, 0, None)),
+        ("0", (0, None, None)),
+        ("0:104:0", (0, 104, 0)),  # Solidity's root `SourceUnit` AST node.
+    ),
+)
+def test_source_map_item_zero_values(src, expected):
+    """
+    ``-1`` is the unset-marker, not ``0``, so a zero in any field is a real value.
+    """
+    actual = SourceMapItem.parse_str(src)
+    assert (actual.start, actual.length, actual.contract_id) == expected
+
+
+def test_source_map_parse_inherits_zero_values():
+    """
+    Compressed entries copy the previous entry's value, including zeros. The first
+    source file solc emits has index ``0``, so losing it mis-attributes every
+    instruction in that file to compiler-generated code.
+    """
+    # The head of `solc --combined-json srcmap-runtime` for a 2-file project,
+    # where ``Lib.sol`` is file 0, followed by an entry back in file 1.
+    sourcemap = SourceMap(root="24:79:0:-:0;;;0:0:0:i;154:26::o;7:9:1:-")
+    actual = list(sourcemap.parse())
+
+    assert [i.contract_id for i in actual] == [0, 0, 0, 0, 0, 1]
+    assert [i.start for i in actual] == [24, 24, 24, 0, 154, 7]
+    assert [i.length for i in actual] == [79, 79, 79, 0, 26, 9]
+    assert [i.jump_code for i in actual] == ["-", "-", "-", "i", "o", "-"]
+
+
+def test_source_map_parse_keeps_unset_fields_unset():
+    """
+    ``-1`` still means "no value", and it is inherited as such.
+    """
+    sourcemap = SourceMap(root="-1:-1:-1:-;;0:0:0:-;:::-")
+    actual = list(sourcemap.parse())
+
+    assert [i.start for i in actual] == [None, None, 0, 0]
+    assert [i.length for i in actual] == [None, None, 0, 0]
+    assert [i.contract_id for i in actual] == [None, None, 0, 0]
+
+
 def test_repr_and_str():
     key = list(SOURCE_MAP_FILES.keys())[0]
     sourcemap = SOURCE_MAP_FILES[key].read_text().strip()
