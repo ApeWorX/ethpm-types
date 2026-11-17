@@ -338,6 +338,89 @@ class TestEventABI:
         ]
         assert actual == expected
 
+    # Topics emitted by a solc 0.8.30 contract (`emit Foo(value, 0)`).
+    @pytest.mark.parametrize(
+        "ipt,value,topic",
+        [
+            (
+                {"type": "uint256[2]"},
+                [7, 9],
+                "0xae6299332bcd708cd60e3a8defa55de28078a50a4cf2b3de3a546253240ff9e1",
+            ),
+            (
+                {"type": "address[]"},
+                [
+                    "0x000000000000000000000000000000000000dEaD",
+                    "0x000000000000000000000000000000000000bEEF",
+                ],
+                "0xa0ba882e59c222b5b97e6c80d5ee586dcb6aadfc3ffb7a43e3be291a09fa12e1",
+            ),
+            (
+                {"type": "uint256[][]"},
+                [[1], []],
+                "0xb10e2d527612073b26eecdfd717e6a320cf44b4afac2b0732d9fcbe2b7fa0cf6",
+            ),
+            (
+                {"type": "string[]"},
+                ["a", "", "this string is longer than thirty-two bytes!"],
+                "0xff410e4ddf62e0fd3820329c257a13eab6fd5d82a9b2681a4488703f86a45756",
+            ),
+            (
+                {
+                    "type": "tuple",
+                    "components": [
+                        {"name": "a", "type": "uint256"},
+                        {"name": "b", "type": "address"},
+                    ],
+                },
+                (5, "0x000000000000000000000000000000000000dEaD"),
+                "0x6e34d48e6c189b6316c0dc69278f7052e7faca4f115cf729e597986a65ab6dd0",
+            ),
+            (
+                {
+                    "type": "tuple",
+                    "components": [
+                        {"name": "s", "type": "string"},
+                        {"name": "xs", "type": "uint256[]"},
+                        {"name": "b", "type": "bytes"},
+                    ],
+                },
+                ("hi", [3, 4], b""),
+                "0x40d7f0f88d9c6893f565f67d2a5c6ff462e9f8dafc4945bdcf4686b1f0b8324d",
+            ),
+        ],
+    )
+    def test_encode_topics_indexed_reference_types(self, ipt, value, topic):
+        event = EventABI(
+            name="Foo",
+            inputs=[
+                EventABIType(name="foo", indexed=True, **ipt),
+                EventABIType(name="marker", type="uint256"),
+            ],
+        )
+        actual = event.encode_topics({"foo": value})
+        assert actual[1] == topic
+        # The topic itself, e.g. a decoded log value, passes through as-is.
+        assert event.encode_topics({"foo": HexBytes(topic)})[1] == topic
+
+    def test_encode_topics_multiple_array_values(self):
+        event = EventABI.from_signature("Arr(uint256[2] indexed xs, uint256 marker)")
+        actual = event.encode_topics({"xs": [[7, 9], [1, 2]]})
+        expected = [
+            "0x423b48f13db3ea4764a250a9c4c8e23a6c898fe7b9c01b940c086dba08a3597e",
+            [
+                "0xae6299332bcd708cd60e3a8defa55de28078a50a4cf2b3de3a546253240ff9e1",
+                "0xe90b7bceb6e7df5418fb78d8ee546e97c83a08bbccc01a0644d599ccd2a7c2e0",
+            ],
+        ]
+        assert actual == expected
+
+    def test_encode_topics_hashed_string(self):
+        event = EventABI.from_signature("Str(string indexed s, uint256 marker)")
+        topic = "0x1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8"
+        assert event.encode_topics({"s": "hello"})[1] == topic
+        assert event.encode_topics({"s": HexBytes(topic)})[1] == topic
+
 
 class TestFallbackABI:
     @pytest.mark.parametrize(
