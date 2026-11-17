@@ -43,16 +43,23 @@ class SourceMapItem(BaseModel):
         row: list[int | str] = [int(i) if i.isnumeric() else i for i in src_str.split(":")]
 
         if previous is None:
-            start = int(cls._extract_value(row, 0) or -1)
-            length = int(cls._extract_value(row, 1) or -1)
-            contract_id = int(cls._extract_value(row, 2) or -1)
-            jump_code = cls._extract_value(row, 3) or ""
+            previous_row: list[int | str] = [-1, -1, -1, ""]
 
         else:
-            start = int(cls._extract_value(row, 0, previous=previous.start or -1))
-            length = int(cls._extract_value(row, 1, previous=previous.length or -1))
-            contract_id = int(cls._extract_value(row, 2, previous=previous.contract_id or -1))
-            jump_code = cls._extract_value(row, 3, previous=previous.jump_code or "")
+            # NOTE: `-1` is the unset-marker, and `0` is a valid value, so compare
+            #   against `None` rather than using truthiness here. Else an empty field
+            #   inheriting a `0` (e.g. source file index `0`) would become unset.
+            previous_row = [
+                -1 if previous.start is None else previous.start,
+                -1 if previous.length is None else previous.length,
+                -1 if previous.contract_id is None else previous.contract_id,
+                previous.jump_code or "",
+            ]
+
+        start = int(cls._extract_value(row, 0, previous=previous_row[0]))
+        length = int(cls._extract_value(row, 1, previous=previous_row[1]))
+        contract_id = int(cls._extract_value(row, 2, previous=previous_row[2]))
+        jump_code = cls._extract_value(row, 3, previous=previous_row[3])
 
         return SourceMapItem.model_construct(
             # NOTE: `-1` for these three entries means `None`
@@ -130,11 +137,13 @@ class PCMapItem(BaseModel):
 
     @property
     def location(self) -> "SourceLocation":
+        # NOTE: `-1` means "unknown"; column `0` is a real position, so only
+        #   `None` may become `-1` here.
         return (
-            (self.line_start or -1),
-            (self.column_start or -1),
-            (self.line_end or -1),
-            (self.column_end or -1),
+            (-1 if self.line_start is None else self.line_start),
+            (-1 if self.column_start is None else self.column_start),
+            (-1 if self.line_end is None else self.line_end),
+            (-1 if self.column_end is None else self.column_end),
         )
 
 
