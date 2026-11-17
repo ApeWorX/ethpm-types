@@ -1,6 +1,6 @@
 from typing import Any, Literal
 
-from eth_abi import grammar
+from eth_abi import encode, grammar, is_encodable
 from eth_abi.packed import encode_packed
 from eth_utils import encode_hex, keccak, to_hex
 from pydantic import ConfigDict, Field, model_validator
@@ -381,7 +381,7 @@ class EventABI(BaseABI):
 
             name = getattr(ipt, "name", str(ipt))
             if name and name in inputs:
-                topic = encode_topic_value(ipt.type, inputs[name])
+                topic = encode_topic_value(ipt.canonical_type, inputs[name])
                 topics.append(topic)
             else:
                 # Wildcard.
@@ -398,6 +398,15 @@ def encode_topic_value(abi_type, value) -> str | list[str] | None:
     """
     Encode a single topic.
 
+    Indexed arrays, structs, ``string`` and ``bytes`` are stored as the keccak256 of their
+    in-place encoding (see "Encoding of Indexed Event Parameters" in the Solidity ABI spec).
+    A list of values means "any of these". For an array or struct type, a list that is a valid
+    value of that type is the value itself, so pass a list of values (e.g. ``[[1, 2], [3, 4]]``)
+    to match any of them. This means a list of ``bytes`` topic hashes for a ``bytes32[]`` or
+    ``bytes[]`` input, or of hex-str hashes for a ``string[]`` input, is read as the array. A
+    32-byte ``bytes`` value for an array, struct or ``string`` type is taken as the
+    already-hashed topic.
+
     Args:
         abi_type (str): The ABI type of the topic.
         value (Any): The value to encode.
@@ -408,18 +417,45 @@ def encode_topic_value(abi_type, value) -> str | list[str] | None:
     if value is None:
         return None
 
-    elif isinstance(value, (list, tuple)):
+    type_str = abi_type.canonical_type if isinstance(abi_type, ABIType) else str(abi_type)
+    parsed = grammar.parse(type_str)
+    is_array_or_struct = bool(parsed.arrlist) or isinstance(parsed, grammar.TupleType)
+    if isinstance(value, (list, tuple)):
+        if is_array_or_struct and is_encodable(type_str, value):
+            return encode_hex(keccak(_encode_indexed_value(parsed, value)))
+
         # NOTE: Assume this is just list[str] at this point (hence type-ignore).
         return [encode_topic_value(abi_type, v) for v in value]  # type: ignore
 
-    elif is_dynamic_sized_type(abi_type):
-        if abi_type == "string" and not isinstance(value, str):
+    elif parsed.is_dynamic and not is_array_or_struct:
+        if parsed.base == "string" and not isinstance(value, str):
+            if isinstance(value, bytes) and len(value) == 32:
+                # Already-hashed topic, such as a decoded indexed string.
+                return to_hex(value)
+
             # Bytes or int or something.
             value = to_hex(value)
 
-        return encode_hex(keccak(encode_packed([str(abi_type)], [value])))
+        return encode_hex(keccak(encode_packed([type_str], [value])))
 
+    # Value types, or an already-hashed array or struct topic.
     return HexStr32.__eth_pydantic_validate__(value, pad=PadDirection.LEFT)
+
+
+def _encode_indexed_value(parsed, value) -> bytes:
+    # In-place encoding of an indexed array or struct: element / member encodings,
+    # each padded to a multiple of 32 bytes, with no offsets or length prefixes.
+    if parsed.arrlist:
+        parts = [_encode_indexed_value(parsed.item_type, v) for v in value]
+    elif isinstance(parsed, grammar.TupleType):
+        parts = [_encode_indexed_value(t, v) for t, v in zip(parsed.components, value, strict=True)]
+    elif parsed.is_dynamic:
+        # string or bytes.
+        return value.encode() if isinstance(value, str) else bytes(value)
+    else:
+        return encode([parsed.to_type_str()], [value])
+
+    return b"".join(part + b"\x00" * (-len(part) % 32) for part in parts)
 
 
 def is_dynamic_sized_type(abi_type: ABIType | str) -> bool:
