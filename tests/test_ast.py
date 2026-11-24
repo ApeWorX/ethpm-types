@@ -473,6 +473,15 @@ def test_vy_ast():
     assert node.get_defining_function((55, 11, 56, 14)) is None
 
 
+def test_ast_src_keeps_file_index_zero():
+    """
+    Compiler ASTs give ``src`` as ``start:length:file``, and the first source file
+    a compiler emits is index ``0``. Only ``-1`` means "no file".
+    """
+    node = ASTNode.model_validate(VYPER_AST_JSON)
+    assert {n.src.contract_id for n in node.iter_nodes()} == {0}
+
+
 def test_sol_ast():
     node = ASTNode.model_validate(SOLIDITY_AST_JSON)
     assert node.ast_type == "SourceUnit"

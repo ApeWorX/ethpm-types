@@ -49,6 +49,17 @@ def test_pc_map_missing_line_info():
     )
 
 
+def test_pc_map_item_location_zero_column():
+    """
+    Column ``0`` is the first column, not a missing value. Only ``None`` becomes the
+    ``-1`` unknown-marker, else the location never matches ``ASTNode.line_numbers``.
+    """
+    pcmap = PCMap.model_validate({"1019": [120, 0, 121, 91], "1020": [None, None, 7, 0]}).parse()
+
+    assert pcmap[1019].location == (120, 0, 121, 91)
+    assert pcmap[1020].location == (-1, -1, 7, 0)
+
+
 def test_pc_map_empty():
     """
     Test the parsing of an empty pc-map from a compiler's output.
